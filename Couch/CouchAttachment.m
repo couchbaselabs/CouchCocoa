@@ -1,0 +1,128 @@
+//
+//  CouchAttachment.m
+//  CouchCocoa
+//
+//  Created by Jens Alfke on 5/26/11.
+//  Copyright 2011 Couchbase, Inc. All rights reserved.
+//
+
+#import "CouchAttachment.h"
+#import "CouchDocument.h"
+#import "RESTInternal.h"
+
+
+@interface CouchAttachment ()
+@property (readwrite, copy) NSString* contentType;
+@end
+
+
+@implementation CouchAttachment
+
+
+- (id) initWithDocument: (CouchDocument*)document 
+                   name: (NSString*)name
+                   type: (NSString*)contentType
+{
+    NSParameterAssert(contentType);
+    self = [super initWithParent: document relativePath: name];
+    if (self) {
+        _contentType = [contentType copy];
+    }
+    return self;
+}
+
+
+- (void)dealloc {
+    [_contentType release];
+    [super dealloc];
+}
+
+
+@synthesize contentType = _contentType;
+
+
+- (NSString*) name {
+    return self.relativePath;
+}
+
+
+- (CouchDocument*) document {
+    return (CouchDocument*)self.parent;
+}
+
+
+#pragma mark -
+#pragma mark BODY
+
+
+- (BOOL) contentsAreJSON {
+    return NO; // overridden from CouchResource
+}
+
+
+- (RESTOperation*) PUT: (NSData*)body contentType: (NSString*)contentType {
+    if (!contentType) {
+        contentType = _contentType;
+        NSParameterAssert(contentType != nil);
+    }
+    NSDictionary* params = [NSDictionary dictionaryWithObject: contentType
+                                                       forKey: @"Content-Type"];
+    return [self PUT: body parameters: params];
+}
+
+
+- (RESTOperation*) PUT: (NSData*)body {
+    return [self PUT: body contentType: _contentType];
+}
+
+
+- (NSData*) body {
+    RESTOperation* op = [self GET];
+    if ([op wait])
+        return op.responseBody.content;
+    else {
+        Warn(@"Synchronous CouchAttachment.body getter failed: %@", op.error);
+        return nil;
+    }
+}
+
+
+- (void) setBody: (NSData*)body {
+    RESTOperation* op = [self PUT: body];
+    if (![op wait])
+        Warn(@"Synchronous CouchAttachment.body setter failed: %@", op.error);
+}
+
+
+- (NSMutableURLRequest*) requestWithMethod: (NSString*)method
+                                parameters: (NSDictionary*)parameters {
+    if ([method isEqualToString: @"PUT"] || [method isEqualToString: @"DELETE"]) {
+        // Add a ?rev= query param with the current document revision:
+        NSString* revisionID = self.document.currentRevisionID;
+        if (revisionID) {
+            NSMutableDictionary* nuParams = [[parameters mutableCopy] autorelease];
+            if (!nuParams)
+                nuParams = [NSMutableDictionary dictionary];
+            [nuParams setObject: revisionID forKey: @"?rev"];
+            parameters = nuParams;
+        }
+    }
+    return [super requestWithMethod: method parameters: parameters];
+}
+
+
+- (NSError*) op: (RESTOperation*)op willCompleteWithError: (NSError*)error {
+    error = [super operation: op willCompleteWithError: error];
+    
+    if (!error && op.isSuccessful) {
+        // Capture changes to the contentType made by GETs and PUTs:
+        if (op.isGET)
+            self.contentType = [op.responseHeaders objectForKey: @"Content-Type"];
+        else if (op.isPUT)
+            self.contentType = [op.request valueForHTTPHeaderField: @"Content-Type"];
+    }
+    return error;
+}
+
+
+@end

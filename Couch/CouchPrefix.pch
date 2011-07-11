@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files in the 'Couch' project
+//
+
+#ifdef __OBJC__
+#import <Foundation/Foundation.h>
+#endif
