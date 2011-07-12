@@ -21,8 +21,7 @@
 
     NSString* _eTag;
     NSString* _lastModified;
-    id _representedObject;
-    NSURL* _representedURL;
+    NSURL* _cachedURL;
 }
 
 /** Creates an instance with an absolute URL and no parent. */
@@ -42,31 +41,6 @@
 
 /** The relative path from the parent (as given in the initializer.) */
 @property (readonly) NSString* relativePath;
-
-#pragma mark CONTENT:
-
-/** The HTTP ETag of the last cached response. */
-@property (copy) NSString* eTag;
-
-/** The HTTP Last-Modified timestamp of the last cached response. */
-@property (copy) NSString* lastModified;
-
-
-/** Object representing the content of this resource.
-    A client can store anything it wants here, such as a custom model object, or the result of parsing a JSON or XML response. */
-@property (retain) id representedObject;
-
-/** Convenience that calls -valueForKey: on the -representedObject.
-    This is especially handy when the object is an NSDictionary. */
-- (id) representedValueForKey: (NSString*)key;
-
-/** Caches the parsed contents of a cacheable GET.
-    If the operation is a successful GET, with a valid Etag: or Last-Modified: header, this method will set the representedObject, eTag and lastModified properties appropriately.
-    @param representedObject  The application-specific object representing the contents of the response. (Or nil if you just want to set the eTag and lastModified.)
-    @param operation  The GET operation that representedObject was parsed from.
-    @return  YES if the response was cacheable and the object properties have been updated. */
-- (BOOL) cacheRepresentedObject: (id)representedObject
-                    forResponse: (RESTOperation*)operation;
 
 #pragma mark HTTP METHODS:
 
@@ -105,6 +79,25 @@
 - (NSMutableURLRequest*) requestWithMethod: (NSString*)method
                                 parameters: (NSDictionary*)parameters;
 
+#pragma mark CACHING:
+
+/** Remembers the cacheable state (eTag and Last-Modified) of a GET response.
+    If the operation is a successful GET, with a valid Etag: or Last-Modified: header, this method will set the eTag and lastModified properties appropriately. These will be then be sent in subsequent GET requests, which may then receive empty 304 (Not Modified) responses if the contents have not changed.
+    @param operation  The GET operation that representedObject was parsed from; or nil to clear the cacheable state.
+    @return  YES if the response was cacheable and the object properties have been updated. */
+- (BOOL) cacheResponse: (RESTOperation*)operation;
+
+/** The HTTP ETag of the last cached response. */
+@property (copy) NSString* eTag;
+
+/** The HTTP Last-Modified timestamp of the last cached response. */
+@property (copy) NSString* lastModified;
+
+/** The URL of the last cached response.
+    This is associated with the -eTag and -lastModified properties.
+    This URL might not be the same as the receiver's -URL property, because "?"-prefixed parameters to a request are added to the URL's query. */
+@property (retain) NSURL* cachedURL;
+
 #pragma mark PROTECTED:
 
 /** This is sent by a RESTOperation when it completes, before its state changes or any other handlers are called.
@@ -117,10 +110,5 @@
     The base implementation sets this object's relativePath and URL properties based on the value of the response's Location: header. If you override this method, be sure to call the superclass method.
     @param op  The HTTP operation, which is actually a POST to the parent resource. */
 - (void) createdByPOST: (RESTOperation*)op;
-
-/** The URL of the last cached response.
-    This is associated with the -eTag and -lastModified properties.
-    This URL may not be the same as the receiver's -URL property, because "?"-prefixed parameters to a request are added to the URL's query. */
-@property (retain) NSURL* representedURL;
 
 @end

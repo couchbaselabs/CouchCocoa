@@ -45,4 +45,7 @@
     An exception is raised if the resource is already in a different cache. */
 - (void) forgetResource: (RESTResource*)resource;
 
+/** Removes all resources from the cache. */
+- (void) forgetAllResources;
+
 @end

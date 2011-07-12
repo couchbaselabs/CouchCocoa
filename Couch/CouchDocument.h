@@ -26,18 +26,25 @@
 
 #pragma mark REVISIONS:
 
+/** The ID of the current revision (if known). */
 @property (readonly, copy) NSString* currentRevisionID;
 
+/** The current/latest revision. This object is cached. */
 - (CouchRevision*) currentRevision;
+
+/** The revision with the specified ID.
+    This is merely a factory method that doesn't fetch anything from the server,
+    or even verify that the ID is valid. */
 - (CouchRevision*) revisionWithID: (NSString*)revisionID;
 
+/** Returns an array of available revisions, in basically forward chronological order. */
 - (NSArray*) getRevisionHistory;
 
 #pragma mark PROPERTIES:
 
 /** These are the app-defined properties of the document, without the CouchDB-defined special properties whose names begin with "_".
-    (If you want the entire set of properties returned by the server, use the inherited -representedObject property.)
-    This is shorthand for self.currentRevision.properties. */
+    This is shorthand for self.currentRevision.properties.
+    (If you want the entire document object returned by the server, get the revision's -contents property.) */
 @property (readonly, copy) NSDictionary* properties;
 
 /** Shorthand for [self.properties objectForKey: key]. */
@@ -50,4 +57,7 @@
 @end
 
 
+/** This notification is posted by a CouchDocument in response to an external change (as reported by the _changes feed.)
+    It is not sent in response to 'local' changes made by this CouchDatabase's object tree.
+    It will not be sent unless change-tracking is enabled in its parent CouchDatabase. */
 extern NSString* const kCouchDocumentChangeNotification;

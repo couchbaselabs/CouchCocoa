@@ -7,7 +7,7 @@
 //
 
 #import "REST.h"
-@class RESTCache;
+#import "RESTCache.h"
 
 
 void RESTWarn(NSString* format, ...) __attribute__((format(__NSString__, 1, 2)));;
@@ -26,4 +26,9 @@ id RESTCastIfArrayOf(Class,id);
 
 @interface RESTResource ()
 @property (readwrite, retain) RESTCache* owningCache;
+@end
+
+
+@interface RESTCache ()
+- (void) resourceBeingDealloced:(RESTResource*)resource;
 @end

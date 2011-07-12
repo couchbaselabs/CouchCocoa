@@ -33,8 +33,6 @@
     gRESTWarnRaisesException = YES;
     [self raiseAfterFailure];
 
-    gRESTLogLevel = kRESTLogNothing;
-
     _server = [[CouchServer alloc] init];  // local server
     STAssertNotNil(_server, @"Couldn't create server object");
     
@@ -47,10 +45,13 @@
         AssertWait([_db DELETE]);
         AssertWait([_db create]);
     }
+
+    gRESTLogLevel = kRESTLogRequestHeaders; // kRESTLogNothing;
 }
 
 
 - (void) tearDown {
+    gRESTLogLevel = kRESTLogNothing;
     AssertWait([_db DELETE]);
     [_db release];
     [_server release];
@@ -124,6 +125,32 @@
 }
 
 
+- (void) test02_CreateRevisions {
+    NSDictionary* properties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                @"testCreateRevisions", @"testName",
+                                [NSNumber numberWithInt:1337], @"tag",
+                                nil];
+    CouchDocument* doc = [self createDocumentWithProperties: properties];
+    CouchRevision* rev1 = doc.currentRevision;
+    STAssertTrue([rev1.revisionID hasPrefix: @"1-"], nil);
+    
+    NSMutableDictionary* properties2 = [[properties mutableCopy] autorelease];
+    [properties2 setObject: [NSNumber numberWithInt: 4567] forKey: @"tag"];
+    RESTOperation* op = [rev1 putProperties: properties2];
+    AssertWait(op);
+    
+    STAssertTrue([doc.currentRevisionID hasPrefix: @"2-"],
+                 @"Document revision ID is still %@", doc.currentRevisionID);
+    
+    CouchRevision* rev2 = op.resultObject;
+    STAssertTrue([rev2 isKindOfClass: [CouchRevision class]], nil);
+    STAssertEqualObjects(rev2.revisionID, doc.currentRevisionID, nil);
+    STAssertTrue(rev2.contentsAreLoaded, nil);
+    STAssertEqualObjects(rev2.properties, properties2, nil);
+    STAssertEquals(rev2.document, doc, nil);
+}
+
+
 - (void) test03_SaveMultipleDocuments {
     NSMutableArray* docs = [NSMutableArray array];
     for (int i=0; i<5; i++) {
@@ -171,11 +198,15 @@
 }
 
 
-- (void) test05_AllDocuments {    
+- (void) test05_AllDocuments {
     [self createDocuments: 5];
+
+    // clear the cache so all documents/revisions will be re-fetched:
+    [_db clearDocumentCache];
+    
     NSLog(@"----- all documents -----");
     CouchQuery* query = [_db getAllDocuments];
-    query.prefetch = YES;
+    //query.prefetch = YES;
     NSLog(@"Getting all documents: %@", query);
     
     CouchQueryEnumerator* rows = query.rows;
@@ -186,14 +217,29 @@
         NSLog(@"    --> %@", row);
         CouchDocument* doc = row.document;
         STAssertNotNil(doc, @"Couldn't get doc from query");
+        STAssertTrue(doc.currentRevision.contentsAreLoaded, @"QueryRow should have preloaded revision contents");
         NSLog(@"        Properties = %@", doc.properties);
         STAssertNotNil(doc.properties, @"Couldn't get doc properties");
         STAssertEqualObjects([doc propertyForKey: @"testName"], @"testDatabase", @"Wrong doc contents");
         n++;
     }
     STAssertEquals(n, 5, @"Query returned wrong document count");
+}
+
+
+- (void) test06_RowsIfChanged {
+    [self createDocuments: 5];
+    // clear the cache so all documents/revisions will be re-fetched:
+    [_db clearDocumentCache];
     
-    STAssertNil(query.rowsIfChanged, nil);
+    CouchQuery* query = [_db getAllDocuments];
+    query.prefetch = NO;    // Prefetching prevents view caching, so turn it off
+    CouchQueryEnumerator* rows = query.rows;
+    STAssertEquals(rows.count, 5u, nil);
+    STAssertEquals(rows.totalCount, 5u, nil);
+    
+    // Make sure the query is cached (view eTag hasn't changed):
+    STAssertNil(query.rowsIfChanged, @"View eTag must have changed?");
     
     // Get the rows again to make sure caching isn't messing up:
     rows = query.rows;
@@ -203,7 +249,7 @@
 
 #pragma mark HISTORY
 
-- (void)test06_History {
+- (void)test07_History {
     NSMutableDictionary* properties = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 @"test06_History", @"testName",
                                 [NSNumber numberWithInt:1], @"tag",
@@ -236,22 +282,25 @@
     STAssertEqualObjects([gotProperties objectForKey: @"tag"], [NSNumber numberWithInt: 2], nil);
 }
 
+
 #pragma mark ATTACHMENTS
 
-/* TEMP
-- (void) test06_Attachments {
+
+- (void) test08_Attachments {
     NSDictionary* properties = [NSDictionary dictionaryWithObjectsAndKeys:
                                 @"testAttachments", @"testName",
                                 nil];
     CouchDocument* doc = [self createDocumentWithProperties: properties];
+    CouchRevision* rev = doc.currentRevision;
     
-    STAssertEquals(doc.attachmentNames.count, 0U, nil);
-    STAssertNil([doc attachmentNamed: @"index.html"], nil);
+    STAssertEquals(rev.attachmentNames.count, 0U, nil);
+    STAssertNil([rev attachmentNamed: @"index.html"], nil);
     
-    CouchAttachment* attach = [doc createAttachmentWithName: @"index.html"
+    CouchAttachment* attach = [rev createAttachmentWithName: @"index.html"
                                                        type: @"text/plain; charset=utf-8"];
     STAssertNotNil(attach, nil);
-    STAssertEquals(attach.parent, doc, nil);
+    STAssertEquals(attach.parent, rev, nil);
+    STAssertEquals(attach.revision, rev, nil);
     STAssertEquals(attach.document, doc, nil);
     STAssertEqualObjects(attach.relativePath, @"index.html", nil);
     STAssertEqualObjects(attach.name, attach.relativePath, nil);
@@ -259,23 +308,27 @@
     NSData* body = [@"This is a test attachment!" dataUsingEncoding: NSUTF8StringEncoding];
     AssertWait([attach PUT: body]);
     
+    CouchRevision* rev2 = doc.currentRevision;
+    STAssertTrue([rev2.revisionID hasPrefix: @"2-"], nil);
+    NSLog(@"Now attachments = %@", rev2.attachmentNames);
+    STAssertEqualObjects(rev2.attachmentNames, [NSArray arrayWithObject: @"index.html"], nil);
+
+    attach = [rev2 attachmentNamed: @"index.html"];
     RESTOperation* op = [attach GET];
     AssertWait(op);
     STAssertEqualObjects(op.responseBody.contentType, @"text/plain; charset=utf-8", nil);
     STAssertEqualObjects(op.responseBody.content, body, nil);
     
     AssertWait([doc GET]);
-    NSLog(@"Now docs = %@", doc.attachmentNames);
-    STAssertEqualObjects(doc.attachmentNames, [NSArray arrayWithObject: @"index.html"], nil);
-    
+
     AssertWait([attach DELETE]);
 }
-*/
+
 
 #pragma mark CHANGE TRACKING
 
 
-- (void) test07_ChangeTracking {
+- (void) test09_ChangeTracking {
     CouchDatabase* userDB = [_server databaseNamed: @"_users"];
     __block int changeCount = 0;
     [userDB onChange: ^(CouchDocument* doc){ ++changeCount; }];
@@ -288,7 +341,7 @@
 }
 
 
-- (void) test08_ChangeTrackingNoEchoes {
+- (void) test10_ChangeTrackingNoEchoes {
     __block int changeCount = 0;
     [_db onChange: ^(CouchDocument* doc){ ++changeCount; }];
     _db.tracksChanges = YES;
@@ -304,7 +357,7 @@
 }
 
 
-- (void) test09_ChangeTrackingNoEchoesAfterTheFact {
+- (void) test11_ChangeTrackingNoEchoesAfterTheFact {
     __block int changeCount = 0;
     [_db onChange: ^(CouchDocument* doc){ ++changeCount; }];
     

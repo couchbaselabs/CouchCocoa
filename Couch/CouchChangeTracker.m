@@ -22,6 +22,7 @@ enum {
 };
 
 
+// Extra logging for debugging
 #define kLoggingEnabled NO
 #define LOG if(!kLoggingEnabled) ; else NSLog
 

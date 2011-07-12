@@ -86,4 +86,15 @@ static const NSUInteger kDefaultRetainLimit = 50;
 }
 
 
+- (void) resourceBeingDealloced:(RESTResource*)resource {
+    [_map removeObjectForKey: resource.relativePath];
+}
+
+
+- (void) forgetAllResources {
+    [_map removeAllObjects];
+    [_cache removeAllObjects];
+}
+
+
 @end

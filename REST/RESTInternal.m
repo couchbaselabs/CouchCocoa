@@ -39,17 +39,22 @@ void RESTWarn( NSString *msg, ... )
 
 id RESTCastIf( Class requiredClass, id object )
 {
-    if( object && ! [object isKindOfClass: requiredClass] )
+    if( object && ! [object isKindOfClass: requiredClass] ) {
+        Warn(@"$castIf: Expected %@, got %@ %@", requiredClass, [object class], object);
         object = nil;
+    }
     return object;
 }
 
 NSArray* RESTCastIfArrayOf(Class itemClass, id object)
 {
     NSArray* array = $castIf(NSArray, object);
-    for( id item in array )
-        if (![item isKindOfClass: itemClass])
+    for( id item in array ) {
+        if (![item isKindOfClass: itemClass]) {
+            Warn(@"$castIfArrayOf: Expected %@, got %@ %@", itemClass, [item class], item);
             return nil;
+        }
+    }
     return array;
 }
 

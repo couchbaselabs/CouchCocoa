@@ -66,11 +66,10 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     STAssertTrue(completeBlockCalled, @"onComplete block was not called");
     
     // Test caching:
-    STAssertTrue([child cacheRepresentedObject: @"foo" forResponse: op], @"Should be cacheable");
+    STAssertTrue([child cacheResponse: op], @"Should be cacheable");
     NSLog(@"ETag = %@, lastModified = %@", child.eTag, child.lastModified);
     //STAssertNotNil(child.eTag, @"Failed to get eTag");
     STAssertNotNil(child.lastModified, @"Failed to get lastModified");
-    STAssertEqualObjects(child.representedObject, @"foo", nil);
 }
 
 - (void) testEntityHeaders {

@@ -10,6 +10,13 @@
 #import "RESTInternal.h"
 
 
+@interface CouchAttachment (Private)
+- (id) initWithRevision: (CouchRevision*)revision 
+                   name: (NSString*)name
+                   type: (NSString*)contentType;
+@end
+
+
 @interface CouchDatabase (Private)
 - (void) documentAssignedID: (CouchDocument*)document;
 - (void) receivedChangeLine: (NSData*)chunk;
@@ -17,16 +24,10 @@
 
 
 @interface CouchDocument (Private)
+@property (readwrite, copy) NSString* currentRevisionID;
+- (void) loadRevisionFrom: (NSDictionary*)contents;
 - (void) bulkSaveCompleted: (NSDictionary*) result;
-@property (readwrite, copy) id representedObject;
 - (BOOL) notifyChanged: (NSDictionary*)change;
-@end
-
-
-@interface CouchResource (Private)
-/** Are this resource's contents always expected to be JSON?
-    Default implementation returns YES; overridden by CouchAttachment to return NO. */
-@property (readonly) BOOL contentsAreJSON;
 @end
 
 
@@ -34,6 +35,7 @@
 - (id) initWithDocument: (CouchDocument*)document revisionID: (NSString*)revisionID;
 - (id) initWithDocument: (CouchDocument*)document contents: (NSDictionary*)contents;
 - (id) initWithOperation: (RESTOperation*)operation;
+@property (readwrite, copy) NSDictionary* contents;
 @end
 
 

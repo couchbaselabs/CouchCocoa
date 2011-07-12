@@ -35,7 +35,7 @@ typedef void (^OnCompleteBlock)();
 
     NSHTTPURLResponse* _response;
     NSMutableData* _body;
-    id _representedObject;
+    id _resultObject;
 
     NSMutableArray* _onCompletes;
 }
@@ -102,13 +102,8 @@ typedef void (^OnCompleteBlock)();
 
 
 /** Object associated with this response.
-    A client can store anything it wants here, such as the result of parsing JSON or XML;
-    often this property will be set by an onCompletion block. */
-@property (retain) id representedObject;
-
-/** Convenience that calls -valueForKey: on the -representedObject.
-    This is especially handy when the object is an NSDictionary. */
-- (id) representedValueForKey: (NSString*)key;
+    A client can store anything it wants here; often this property will be set by an onCompletion block. */
+@property (retain) id resultObject;
 
 
 /** Debugging utility that returns a sort-of log of the HTTP request and response. */

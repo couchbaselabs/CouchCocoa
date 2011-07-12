@@ -46,7 +46,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 
 - (NSInteger) getDocumentCount {
-    id count = [[self GET] representedValueForKey: @"doc_count"];  // synchronous
+    id count = [[self GET].responseBody.fromJSON objectForKey: @"doc_count"];  // synchronous
     return [count isKindOfClass: [NSNumber class]] ? [count intValue] : -1;
 }
 
@@ -86,6 +86,11 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
+- (void) clearDocumentCache {
+    [_docCache forgetAllResources];
+}
+
+
 - (RESTOperation*) putChanges: (NSArray*)properties toRevisions: (NSArray*)revisions {
     // http://wiki.apache.org/couchdb/HTTP_Bulk_Document_API
     NSUInteger nRevisions = revisions.count;
@@ -107,7 +112,7 @@ static const NSUInteger kDocRetainLimit = 50;
     [op onCompletion: ^{
         if (op.isSuccessful) {
             NSArray* responses = $castIf(NSArray, op.responseBody.fromJSON);
-            op.representedObject = responses;
+            //op.representedObject = responses;
             int i = 0;
             for (id response in responses) {
                 CouchRevision* revision = [revisions objectAtIndex: i++];
@@ -133,6 +138,7 @@ static const NSUInteger kDocRetainLimit = 50;
 - (CouchQuery*) getDocumentsWithIDs: (NSArray*)docIDs {
     CouchQuery *query = [self getAllDocuments];
     query.keys = docIDs;
+    query.prefetch = YES;
     return query;
 }
 
@@ -157,7 +163,7 @@ static const NSUInteger kDocRetainLimit = 50;
 - (NSUInteger) lastSequenceNumber {
     if (_lastSequenceNumber == 0) {
         // Don't know the current sequence number, so ask for it:
-        id seqObj = [[self GET] representedValueForKey: @"update_seq"];  // synchronous
+        id seqObj = [[self GET].responseBody.fromJSON objectForKey: @"update_seq"];  // synchronous
         if ([seqObj isKindOfClass: [NSNumber class]])
             _lastSequenceNumber = [seqObj intValue];
     }

@@ -52,7 +52,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 
 
 - (void) dealloc {
-    [_representedObject release];
+    [_resultObject release];
     [_connection cancel];
     [_connection release];
     [_request release];
@@ -259,22 +259,17 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 }
 
 
-- (id) representedObject {
+- (id) resultObject {
     [self wait]; // block till loaded
-    return _representedObject;
+    return _resultObject;
 }
 
 
-- (void) setRepresentedObject: (id)object {
-    if (object != _representedObject) {
-        [_representedObject autorelease];
-        _representedObject = [object retain];
+- (void) setResultObject: (id)object {
+    if (object != _resultObject) {
+        [_resultObject autorelease];
+        _resultObject = [object retain];
     }
-}
-
-
-- (id) representedValueForKey: (NSString*)key {
-    return [$castIf(NSDictionary, self.representedObject) objectForKey: key];
 }
 
 

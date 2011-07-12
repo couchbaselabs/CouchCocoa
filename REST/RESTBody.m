@@ -87,6 +87,7 @@
 {
     [_content release];
     [_headers release];
+    [_fromJSON release];
     [super dealloc];
 }
 
@@ -128,14 +129,16 @@
 
 
 - (id) fromJSON {
+    if (!_fromJSON) {
 #if TARGET_OS_IPHONE
-    JSONDecoder* decoder = [[JSONDecoder alloc] init];
-    id object = [decoder objectWithData: _content];
-    [decoder release];
-    return object;
+        JSONDecoder* decoder = [[JSONDecoder alloc] init];
+        _fromJSON = [[decoder objectWithData: _content] copy];
+        [decoder release];
 #else
-    return [_content objectFromJSONData];
+        _fromJSON = [[_content objectFromJSONData] copy];
 #endif
+    }
+    return _fromJSON;
 }
 
 
@@ -155,6 +158,8 @@
     if (content != _content) {
         [_content release];
         _content = [content copy];
+        [_fromJSON release];
+        _fromJSON = nil;
     }
 }
 

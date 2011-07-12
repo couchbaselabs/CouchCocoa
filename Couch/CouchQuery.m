@@ -81,7 +81,7 @@
 
 
 - (CouchQueryEnumerator*) rows {
-    self.representedObject = nil;   // Disallow cached response
+    [self cacheResponse: nil];
     return [self rowsIfChanged];
 }
 
@@ -90,11 +90,12 @@
     RESTOperation* op = [self createResponse];
     if (op.isSuccessful && op.httpStatus == 304)
         return nil;  // unchanged
-    NSArray* rows = $castIf(NSArray, [op representedValueForKey: @"rows"]);    // BLOCKING
+    NSArray* rows = $castIf(NSArray, [op.responseBody.fromJSON objectForKey: @"rows"]);    // BLOCKING
     if (!rows) {
         Warn(@"Error getting %@: %@", self, op.error);
         return nil;
     }
+    [self cacheResponse: op];
     return [[[CouchQueryEnumerator alloc] initWithQuery: self op: op] autorelease];
 }
 
@@ -148,12 +149,12 @@
     self = [super init];
     if (self) {
         _query = [query retain];
-        _rows = [$castIf(NSArray, [op representedValueForKey: @"rows"]) retain];    // BLOCKING
+        _rows = [$castIf(NSArray, [op.responseBody.fromJSON objectForKey: @"rows"]) retain];    // BLOCKING
         if (!_rows) {
             [self release];
             return nil;
         }
-        _totalCount = [[op representedValueForKey: @"total_rows"] intValue];
+        _totalCount = [[op.responseBody.fromJSON objectForKey: @"total_rows"] intValue];
     }
     return self;
 }
@@ -228,11 +229,9 @@
         Warn(@"Unexpected missing id in view results: %@", _result);
         return nil;
     }
-    CouchDocument* doc =  [_query.database documentWithID: docID];
     
-    id docContents = [_result objectForKey: @"doc"];
-    if (docContents)
-        doc.representedObject = docContents;
+    CouchDocument* doc = [_query.database documentWithID: docID];
+    [doc loadRevisionFrom: self.documentContents];
     return doc;
 }
 

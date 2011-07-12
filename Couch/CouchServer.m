@@ -45,7 +45,7 @@ static NSString* const kLocalServerURL = @"http://127.0.0.1:5984/";
     [op wait];
     if (outError)
         *outError = op.error;
-    return [[op representedValueForKey: @"version"] description]; // Blocks!
+    return [[op.responseBody.fromJSON objectForKey: @"version"] description]; // Blocks!
 }
 
 
@@ -54,13 +54,13 @@ static NSString* const kLocalServerURL = @"http://127.0.0.1:5984/";
                                     [NSNumber numberWithUnsignedLong: count]
                                                        forKey: @"?count"];
     RESTOperation* op = [[self childWithPath: @"_uuids"] sendHTTP: @"GET" parameters: params];
-    return [op representedValueForKey: @"uuids"];
+    return [op.responseBody.fromJSON objectForKey: @"uuids"];
 }
 
 
 - (NSArray*) getDatabases {
     RESTOperation* op = [[self childWithPath: @"_all_dbs"] GET];
-    NSArray* names = $castIf(NSArray, op.representedObject); // Blocks!
+    NSArray* names = $castIf(NSArray, op.responseBody.fromJSON); // Blocks!
     if (!names)
         return nil;
 

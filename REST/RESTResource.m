@@ -17,7 +17,7 @@
 
 
 @synthesize parent=_parent, relativePath=_relativePath,
-            representedObject=_representedObject, representedURL=_representedURL;
+            cachedURL=_cachedURL;
 
 
 - (id) initWithURL: (NSURL*)url {
@@ -49,8 +49,7 @@
 
 - (void) dealloc
 {
-    [_owningCache forgetResource: self];
-    [_representedObject release];
+    [_owningCache resourceBeingDealloced: self];
     [_eTag release];
     [_lastModified release];
     [_url release];
@@ -137,8 +136,7 @@
     NSMutableURLRequest* request = [self requestWithMethod: method parameters: parameters];
 
     // Conditional GET?
-    if (_representedObject && [method isEqualToString: @"GET"]
-            && [_representedURL isEqual: request.URL]) {
+    if ([method isEqualToString: @"GET"] && [_cachedURL isEqual: request.URL]) {
         if (_eTag)
             [request setValue: _eTag forHTTPHeaderField: @"If-None-Match"];
         if (_lastModified)
@@ -236,24 +234,23 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 @synthesize eTag=_eTag, lastModified=_lastModified;
 
 
-- (BOOL) cacheRepresentedObject: (id)representedObject forResponse: (RESTOperation*)op {
+- (BOOL) cacheResponse: (RESTOperation*)op {
     if (op.isSuccessful && op.isGET) {
         NSString* eTag = [op.responseHeaders objectForKey: @"Etag"];
         NSString* lastModified = [op.responseHeaders objectForKey: @"Last-Modified"];
         if (eTag || lastModified) {
             self.eTag = eTag;
             self.lastModified = lastModified;
-            self.representedObject = representedObject;
-            self.representedURL = op.URL;
+            self.cachedURL = op.URL;
             return YES;
         }
+    } else if (op == nil) {
+        self.eTag = nil;
+        self.lastModified = nil;
+        self.cachedURL = nil;
+        return YES;
     }
     return NO;
-}
-
-
-- (id) representedValueForKey: (NSString*)key {
-    return [self.representedObject valueForKey: key];
 }
 
 

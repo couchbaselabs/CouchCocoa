@@ -66,6 +66,21 @@
 }
 
 
+- (void) loadRevisionFrom: (NSDictionary*)contents {
+    NSString* rev = $castIf(NSString, [contents objectForKey: @"_rev"]);
+    if (rev) {
+        if (!_currentRevisionID || [_currentRevisionID isEqualToString: rev]) {
+            // OK, I can set the current revisions contents from the given dictionary:
+            [self setCurrentRevisionID: rev];
+            if (!_currentRevision)
+                _currentRevision = [[CouchRevision alloc] initWithDocument: self
+                                                                revisionID: rev];
+            [_currentRevision setContents:contents];
+        }
+    }
+}
+
+
 - (NSArray*) getRevisionHistory {
     RESTOperation* op = [self sendHTTP: @"GET" 
                             parameters: [NSDictionary dictionaryWithObjectsAndKeys:
@@ -120,6 +135,7 @@
 #pragma mark CHANGES:
 
 
+// Called by the database when the _changes feed reports this document's been changed
 - (BOOL) notifyChanged: (NSDictionary*)change {
     // Get revision:
     NSArray* changeList = $castIf(NSArray, [change objectForKey: @"changes"]);
@@ -148,6 +164,7 @@
     NSString* docID = [response objectForKey: @"id"];
     NSString* rev = [response objectForKey: @"rev"];
     
+    // Sanity-check the document ID:
     NSString* myDocID = self.documentID;
     if (myDocID) {
         if (![docID isEqualToString: myDocID]) {
@@ -162,14 +179,6 @@
     }
     
     self.currentRevisionID = rev;
-
-    NSMutableDictionary* rep = [self.representedObject mutableCopy];
-    if (!rep)
-        rep = [[NSMutableDictionary alloc] init];
-    [rep setObject: rev forKey: @"_rev"];
-    [rep setObject: docID forKey: @"_id"];
-    self.representedObject = rep;
-    [rep release];
 }
 
 
@@ -198,25 +207,16 @@
     error = [super operation: op willCompleteWithError: error];
     
     if (op.httpStatus < 300) {
-        // On a PUT or DELETE, update my eTag from the documnt's new revision:
+        // On a PUT or DELETE, update my current revision ID:
         if (op.isPUT || op.isDELETE) {
-            NSString* rev = [op representedValueForKey: @"rev"];
+            NSString* rev = [op.responseBody.fromJSON objectForKey: @"rev"];
             self.currentRevisionID = rev;
-            if (rev) {
-                NSMutableDictionary* rep = [self.representedObject mutableCopy];
-                if (rep) {
-                    [rep setObject: rev forKey: @"_rev"];
-                    self.representedObject = rep;
-                    [rep release];
-                }
-            }
-            
             if (op.isDELETE)
                 self.isDeleted = YES;
         }
     } else if (op.httpStatus == 404 && op.isGET) {
         // Check whether it's been deleted:
-        if ([[op representedValueForKey: @"reason"] isEqualToString: @"deleted"])
+        if ([[op.responseBody.fromJSON objectForKey: @"reason"] isEqualToString: @"deleted"])
             self.isDeleted = YES;
     }
     return error;
@@ -225,11 +225,12 @@
 
 - (void) createdByPOST: (RESTOperation*)op {
     [super createdByPOST: op];    //FIX: Should update relativePath directly from 'id' instead
-    [self updateFromSaveResponse: $castIf(NSDictionary, op.representedObject)];
+    [self updateFromSaveResponse: $castIf(NSDictionary, op.responseBody.fromJSON)];
     [self.database documentAssignedID: self];
 }
 
 
+// Called by -[CouchDatabase putChanges:toRevisions:] after a successful save.
 - (void) bulkSaveCompleted: (NSDictionary*) result {
     if (![result objectForKey: @"error"])
         [self updateFromSaveResponse: result];

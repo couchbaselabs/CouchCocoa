@@ -18,6 +18,7 @@
     NSData* _content;
     NSDictionary* _headers;
     RESTResource* _resource;
+    id _fromJSON;
 }
 
 /** Returns a sub-dictionary of the input, containing only the HTTP 1.1 entity headers and their values. */
@@ -31,8 +32,13 @@
 /** Initializes an instance with content and a Content-Type: header. */
 - (id) initWithData: (NSData*)content contentType: (NSString*)contentType;
 
+/** The raw content. */
 @property (readonly, copy) NSData* content;
+
+/** The HTTP headers, with standard capitalization (first letter of each word capitalized.) */
 @property (readonly, copy) NSDictionary* headers;
+
+/** The owning RESTResource. */
 @property (readonly, retain) RESTResource* resource;
 
 /** The value of the Content-Type: header. */
@@ -47,7 +53,8 @@
 /** Content parsed as string. */
 @property (readonly) NSString* asString;
 
-/** Parses the content as JSON and returns the result. */
+/** Parses the content as JSON and returns the result.
+    This value is cached, so subsequent calls are cheap. */
 @property (readonly) id fromJSON;
 
 

@@ -35,7 +35,7 @@
     
     self = [self initWithDocument: document revisionID: revisionID];
     if (self) {
-        self.representedObject = [[contents copy] autorelease];
+        _contents = [contents copy];
         _isDeleted = [$castIf(NSNumber, [contents objectForKey: @"_deleted"]) boolValue];
     }
     return self;
@@ -43,13 +43,13 @@
 
 
 - (id) initWithOperation: (RESTOperation*)operation {
-    NSParameterAssert(operation);
+    NSParameterAssert(operation.isGET);
     // Have to block to find out the revision ID. :(
     BOOL isDeleted = NO;
     if (![operation wait]) {
         // Check whether it's been deleted:
         if (operation.httpStatus == 404 && 
-            [[operation representedValueForKey: @"reason"] isEqualToString: @"deleted"]) {
+            [[operation.responseBody.fromJSON objectForKey: @"reason"] isEqualToString: @"deleted"]) {
             isDeleted = YES;
         } else {       
             Warn(@"CouchRevision initWithOperation failed: %@ on %@", operation.error, operation);
@@ -58,7 +58,7 @@
         }
     }
     self = [self initWithDocument: $castIf(CouchDocument, operation.resource)
-                         contents: operation.representedObject];
+                         contents: operation.responseBody.fromJSON];
     if (self) {
         _isDeleted = isDeleted;
     }
@@ -115,19 +115,30 @@
 #pragma mark CONTENTS / PROPERTIES:
 
 
-- (NSDictionary*) fromJSON {
-    NSDictionary* json = self.representedObject;
-    if (!json) {
+- (BOOL) contentsAreLoaded {
+    return _contents != nil;
+}
+
+
+- (NSDictionary*) contents {
+    if (!_contents) {
         [[self GET] wait];   // synchronous!
-        json = self.representedObject;
     }
-    return json;
+    return _contents;
+}
+
+
+- (void) setContents: (NSDictionary*)contents {
+    if (contents != _contents) {
+        [_contents release];
+        _contents = [contents copy];
+    }
 }
 
 
 - (NSDictionary*) properties {
     if (!_properties) {
-        NSDictionary* rep = [self fromJSON];
+        NSDictionary* rep = [self contents];
         if (rep) {
             NSMutableDictionary* props = [[NSMutableDictionary alloc] init];
             for (NSString* key in rep) {
@@ -145,7 +156,7 @@
 - (id) propertyForKey: (NSString*)key {
     if ([key hasPrefix: @"_"])
         return nil;
-    return [self.fromJSON objectForKey: key];
+    return [self.contents objectForKey: key];
 }
 
 
@@ -154,7 +165,37 @@
     for (NSString* key in properties)
         NSAssert1(![key hasPrefix: @"_"], @"Illegal property key '%@'", key);
     
-    return [self PUTJSON: properties parameters: nil];
+    NSMutableDictionary* contents = [[properties mutableCopy] autorelease];
+    [contents setObject: self.documentID forKey: @"_id"];
+    [contents setObject: self.revisionID forKey: @"_rev"];
+    
+    RESTOperation* op = [self PUTJSON: contents parameters: nil];
+    [op onCompletion: ^{
+        if (op.isSuccessful) {
+            // Construct a new revision object from the response and assign it to the resultObject:
+            NSString* rev = $castIf(NSString, [op.responseBody.fromJSON objectForKey: @"rev"]);
+            if (rev) {
+                // Also tell the document about the new revision ID:
+                [self.document setCurrentRevisionID: rev];
+                [contents setObject: rev forKey: @"_rev"];
+                CouchRevision* savedRev = [[CouchRevision alloc] initWithDocument: self.document
+                                                                         contents: contents];
+                op.resultObject = savedRev;
+                [savedRev release];
+            }
+        }
+    }];
+    return op;
+}
+
+
+- (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
+    error = [super operation: op willCompleteWithError: error];
+    if (op.isGET && op.isSuccessful) {
+        // Cache document contents after GET:
+        self.contents = op.responseBody.fromJSON;
+    }
+    return error;
 }
 
 
@@ -163,7 +204,7 @@
 
 
 - (NSDictionary*) attachmentMetadata {
-    return $castIf(NSDictionary, [self.fromJSON objectForKey: @"_attachments"]);
+    return $castIf(NSDictionary, [self.contents objectForKey: @"_attachments"]);
 }
 
 
@@ -182,14 +223,14 @@
     NSString* type = $castIf(NSString, [metadata objectForKey: @"content_type"]);
     if (!type)
         return nil;
-    return [[[CouchAttachment alloc] initWithDocument: self.document name: name type: type] autorelease];
+    return [[[CouchAttachment alloc] initWithRevision: self name: name type: type] autorelease];
 }
 
 
 - (CouchAttachment*) createAttachmentWithName: (NSString*)name type: (NSString*)contentType {
     if ([self attachmentMetadataFor: name])
         return nil;
-    return [[[CouchAttachment alloc] initWithDocument: self.document name: name type: contentType] autorelease];
+    return [[[CouchAttachment alloc] initWithRevision: self name: name type: contentType] autorelease];
 }
 
 

@@ -54,6 +54,10 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
     Documents that don't exist on the server yet will be created. */
 - (RESTOperation*) putChanges: (NSArray*)properties toRevisions: (NSArray*)revisions;
 
+/** Empties the cache of recently used CouchDocument objects.
+    API calls will now instantiate and return new instances. */
+- (void) clearDocumentCache;
+
 #pragma mark QUERIES & DESIGN DOCUMENTS:
 
 /** Returns a query that runs custom map/reduce functions.
@@ -80,7 +84,8 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
 @property NSUInteger lastSequenceNumber;
 
 /** The given block will be called every time a document change notification is received.
-    It's not currently possible to register more than one block; each call overwrites the last. */
+    It's not currently possible to register more than one block; each call overwrites the last.
+    See also: kCouchDocumentChangeNotification. */
 - (void) onChange: (OnDatabaseChangeBlock)block;
 
 

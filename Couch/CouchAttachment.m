@@ -7,8 +7,7 @@
 //
 
 #import "CouchAttachment.h"
-#import "CouchDocument.h"
-#import "RESTInternal.h"
+#import "CouchInternal.h"
 
 
 @interface CouchAttachment ()
@@ -19,12 +18,12 @@
 @implementation CouchAttachment
 
 
-- (id) initWithDocument: (CouchDocument*)document 
+- (id) initWithRevision: (CouchRevision*)revision 
                    name: (NSString*)name
                    type: (NSString*)contentType
 {
     NSParameterAssert(contentType);
-    self = [super initWithParent: document relativePath: name];
+    self = [super initWithParent: revision relativePath: name];
     if (self) {
         _contentType = [contentType copy];
     }
@@ -46,18 +45,23 @@
 }
 
 
+- (CouchRevision*) revision {
+    return (CouchRevision*)self.parent;
+}
+
+
 - (CouchDocument*) document {
-    return (CouchDocument*)self.parent;
+    return (CouchDocument*)self.parent.parent;
+}
+
+
+- (NSURL*) unversionedURL  {
+    return [self.document.URL URLByAppendingPathComponent: self.name];
 }
 
 
 #pragma mark -
 #pragma mark BODY
-
-
-- (BOOL) contentsAreJSON {
-    return NO; // overridden from CouchResource
-}
 
 
 - (RESTOperation*) PUT: (NSData*)body contentType: (NSString*)contentType {
@@ -93,12 +97,12 @@
         Warn(@"Synchronous CouchAttachment.body setter failed: %@", op.error);
 }
 
-
+/*
 - (NSMutableURLRequest*) requestWithMethod: (NSString*)method
                                 parameters: (NSDictionary*)parameters {
     if ([method isEqualToString: @"PUT"] || [method isEqualToString: @"DELETE"]) {
         // Add a ?rev= query param with the current document revision:
-        NSString* revisionID = self.document.currentRevisionID;
+        NSString* revisionID = self.revision.revisionID;
         if (revisionID) {
             NSMutableDictionary* nuParams = [[parameters mutableCopy] autorelease];
             if (!nuParams)
@@ -109,17 +113,21 @@
     }
     return [super requestWithMethod: method parameters: parameters];
 }
+*/
 
-
-- (NSError*) op: (RESTOperation*)op willCompleteWithError: (NSError*)error {
+- (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     error = [super operation: op willCompleteWithError: error];
     
     if (!error && op.isSuccessful) {
         // Capture changes to the contentType made by GETs and PUTs:
         if (op.isGET)
             self.contentType = [op.responseHeaders objectForKey: @"Content-Type"];
-        else if (op.isPUT)
+        else if (op.isPUT) {
             self.contentType = [op.request valueForHTTPHeaderField: @"Content-Type"];
+            NSString* revisionID = $castIf(NSString, [op.responseBody.fromJSON objectForKey: @"rev"]);
+            if (revisionID)
+                self.document.currentRevisionID = revisionID;
+        }
     }
     return error;
 }
