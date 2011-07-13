@@ -157,6 +157,7 @@
 		27CDEBF913C67C9B00C979BB /* CouchCocoa-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CouchCocoa-Info.plist"; sourceTree = "<group>"; };
 		27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "CouchAPITests-Mac.octest"; path = "Mac Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27CDEC3913C6806400C979BB /* CouchPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouchPrefix.pch; sourceTree = "<group>"; };
+		27D5997813CE404300694B37 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		27DA430413B659A900BBADB7 /* RESTInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTInternal.h; sourceTree = "<group>"; };
 		27DA430513B659A900BBADB7 /* RESTInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTInternal.m; sourceTree = "<group>"; };
 		27EF14771396D7BA0052913E /* CouchDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CouchDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -225,6 +226,7 @@
 				272E9D8B13A2EBE0009F18E9 /* Test */,
 				27EF147F1396D7CD0052913E /* Demo */,
 				273175A313CBA6B7000FF426 /* Doxyfile */,
+				27D5997813CE404300694B37 /* README.md */,
 				27A57A51139751B2002776DB /* JSONKit */,
 				27CDEBF713C67C9B00C979BB /* Resources */,
 				272E9D8213A2EBDF009F18E9 /* Frameworks */,
