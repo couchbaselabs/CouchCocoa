@@ -132,6 +132,8 @@
     if (contents != _contents) {
         [_contents release];
         _contents = [contents copy];
+        [_properties release];
+        _properties = nil;
     }
 }
 

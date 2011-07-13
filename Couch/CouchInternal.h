@@ -25,7 +25,7 @@
 
 @interface CouchDocument (Private)
 @property (readwrite, copy) NSString* currentRevisionID;
-- (void) loadRevisionFrom: (NSDictionary*)contents;
+- (void) loadCurrentRevisionFrom: (NSDictionary*)contents;
 - (void) bulkSaveCompleted: (NSDictionary*) result;
 - (BOOL) notifyChanged: (NSDictionary*)change;
 @end
@@ -35,6 +35,7 @@
 - (id) initWithDocument: (CouchDocument*)document revisionID: (NSString*)revisionID;
 - (id) initWithDocument: (CouchDocument*)document contents: (NSDictionary*)contents;
 - (id) initWithOperation: (RESTOperation*)operation;
+@property (readwrite) BOOL isDeleted;
 @property (readwrite, copy) NSDictionary* contents;
 @end
 

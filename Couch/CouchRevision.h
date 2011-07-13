@@ -33,6 +33,7 @@
 /** Does this revision mark the deletion of its document? */
 @property (readonly) BOOL isDeleted;
 
+
 #pragma mark PROPERTIES
 
 /** These are the app-defined properties of the document, without the CouchDB-defined special properties whose names begin with "_".

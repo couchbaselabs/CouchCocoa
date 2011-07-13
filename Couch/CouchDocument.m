@@ -66,7 +66,7 @@
 }
 
 
-- (void) loadRevisionFrom: (NSDictionary*)contents {
+- (void) loadCurrentRevisionFrom: (NSDictionary*)contents {
     NSString* rev = $castIf(NSString, [contents objectForKey: @"_rev"]);
     if (rev) {
         if (!_currentRevisionID || [_currentRevisionID isEqualToString: rev]) {
@@ -84,22 +84,84 @@
 - (NSArray*) getRevisionHistory {
     RESTOperation* op = [self sendHTTP: @"GET" 
                             parameters: [NSDictionary dictionaryWithObjectsAndKeys:
-                                         @"true", @"?revs", nil]];
+                                         @"true", @"?revs_info", nil]];
     if (![op wait])
         return nil;
-    NSDictionary* revisions = $castIf(NSDictionary, 
-                                      [op.responseBody.fromJSON objectForKey: @"_revisions"]);
-    NSArray* revIDs = [revisions objectForKey: @"ids"];
-    int start = [$castIf(NSNumber, [revisions objectForKey: @"start"]) intValue];
-    if (start < 1 || start < revIDs.count)
-        return nil;
-    NSMutableArray* revs = [NSMutableArray arrayWithCapacity: revIDs.count];
-    for (NSString* revID in revIDs) {
-        revID = [NSString stringWithFormat: @"%i-%@", start--, revID];
-        // Server returns revs in reverse order, but I want to return them forwards
-        [revs insertObject: [self revisionWithID: revID] atIndex: 0];
+    NSArray* revs_info = $castIf(NSArray, 
+                                 [op.responseBody.fromJSON objectForKey: @"_revs_info"]);
+    NSMutableArray* revisions = [NSMutableArray arrayWithCapacity: revs_info.count];
+    for (NSDictionary* item in revs_info) {
+        if ([[item objectForKey: @"status"] isEqual: @"available"]) {
+            NSString* revID = [item objectForKey: @"rev"];
+            // Insert in reverse order, as CouchDB returns the current revision first:
+            if (revID) {
+                CouchRevision* rev = [self revisionWithID: revID];
+                [revisions insertObject: rev atIndex: 0];
+            }
+        }
     }
-    return revs;
+    return revisions;
+}
+
+
+#pragma mark -
+#pragma mark CONFLICTS:
+
+
+- (NSArray*) getConflictingRevisions {
+    // http://wiki.apache.org/couchdb/Replication_and_conflicts
+    // Apparently open_revs isn't official API, and ?conflicts is preferred, but open_revs
+    // has the advantage of returning the contents of all conflicting revisions at once.
+    RESTOperation* op = [self sendHTTP: @"GET" 
+                            parameters: [NSDictionary dictionaryWithObjectsAndKeys:
+                                         @"all", @"?open_revs",
+                                         @"application/json", @"Accept",
+                                         nil]];
+    if (![op wait])
+        return nil;
+    NSArray* items = $castIf(NSArray, op.responseBody.fromJSON);
+    if (!items)
+        return nil;
+    NSMutableArray* revisions = [NSMutableArray arrayWithCapacity: items.count];
+    for (NSDictionary* item in items) {
+        NSDictionary* contents = $castIf(NSDictionary, [item objectForKey: @"ok"]);
+        if (![[contents objectForKey: @"_deleted"] boolValue]) {
+            NSString* revisionID = $castIf(NSString, [contents objectForKey: @"_rev"]);
+            if (revisionID) {
+                CouchRevision* revision = [self revisionWithID: revisionID];
+                if (!revision.contentsAreLoaded)
+                    revision.contents = contents;
+                [revisions addObject: revision];
+            }
+        }
+    }
+    return revisions;
+}
+
+
+- (RESTOperation*) resolveConflictingRevisions: (NSArray*)conflicts
+                                withProperties: (NSDictionary*)properties
+{
+    NSParameterAssert(properties);
+    NSAssert(_currentRevision, @"Don't know current revision?!");
+    NSAssert([conflicts indexOfObjectIdenticalTo: _currentRevision] != NSNotFound, @"Conflict list doesn't include current revision");
+    NSMutableArray* changes = [NSMutableArray arrayWithCapacity: conflicts.count];
+    for (CouchRevision* revision in conflicts) {
+        id change;
+        if (revision == _currentRevision)
+            change = properties;
+        else
+            change = [NSNull null];
+        [changes addObject: change];
+    }
+    return [self.database putChanges: changes toRevisions: conflicts];
+}
+
+
+- (RESTOperation*) resolveConflictingRevisions: (NSArray*)conflicts 
+                                  withRevision: (CouchRevision*)winningRevision
+{
+    return [self resolveConflictingRevisions: conflicts withProperties: winningRevision.properties];
 }
 
 

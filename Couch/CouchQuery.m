@@ -231,7 +231,7 @@
     }
     
     CouchDocument* doc = [_query.database documentWithID: docID];
-    [doc loadRevisionFrom: self.documentContents];
+    [doc loadCurrentRevisionFrom: self.documentContents];
     return doc;
 }
 

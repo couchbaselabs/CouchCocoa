@@ -54,6 +54,27 @@
     This is asynchronous. Watch response for conflicts! */
 - (RESTOperation*) putProperties: (NSDictionary*)properties;
 
+#pragma mark CONFLICTS:
+
+/** Returns an array of revisions that are currently in conflict, in no particular order.
+    If there is no conflict, returns an array of length 1 containing only the current revision.
+    Returns nil if an error occurs. */
+- (NSArray*) getConflictingRevisions;
+
+/** Resolves a conflict by choosing one existing revision as the winner.
+    (This is the same as calling -resolveConflictingRevisions:withProperties:, passing in
+    winningRevision.properties.)
+    @param conflicts  The array of conflicting revisions as returned by -getConflictingRevisions.
+    @param winningRevision  The revision from 'conflicts' whose properties should be used. */
+- (RESTOperation*) resolveConflictingRevisions: (NSArray*)conflicts 
+                                  withRevision: (CouchRevision*)winningRevision;
+
+/** Resolves a conflict by creating a new winning revision from the given properties.
+    @param conflicts  The array of conflicting revisions as returned by -getConflictingRevisions.
+    @param properties  The properties to store into the document to resolve the conflict. */
+- (RESTOperation*) resolveConflictingRevisions: (NSArray*)conflicts
+                                withProperties: (NSDictionary*)properties;
+
 @end
 
 

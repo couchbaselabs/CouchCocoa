@@ -98,11 +98,17 @@ static const NSUInteger kDocRetainLimit = 50;
     NSMutableArray* entries = [NSMutableArray arrayWithCapacity: nRevisions];
     for (NSUInteger i=0; i<nRevisions; i++) {
         CouchRevision* revision = [revisions objectAtIndex: i];
-        NSMutableDictionary* props = [[properties objectAtIndex: i] mutableCopy];
-        [props setObject: revision.documentID forKey: @"_id"];
-        [props setObject: revision.revisionID forKey: @"_rev"];
-        [entries addObject: props];
-        [props release];
+        id props = [properties objectAtIndex: i];
+        NSMutableDictionary* contents;
+        if ([props isEqual: [NSNull null]]) {
+            contents = [NSDictionary dictionaryWithObject: (id)kCFBooleanTrue forKey: @"_deleted"];
+        } else {
+            NSAssert([props isKindOfClass:[NSDictionary class]], @"invalid property dict");
+            contents = [[props mutableCopy] autorelease];
+        }
+        [contents setObject: revision.documentID forKey: @"_id"];
+        [contents setObject: revision.revisionID forKey: @"_rev"];
+        [entries addObject: contents];
     }
     NSDictionary* body = [NSDictionary dictionaryWithObject: entries forKey: @"docs"];
     

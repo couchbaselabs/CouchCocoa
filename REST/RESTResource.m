@@ -85,6 +85,23 @@
 }
 
 
+- (BOOL) isEqual:(id)object {
+    if (object == self)
+        return YES;
+    if (!object || [object class] != [self class])
+        return NO;
+    RESTResource* other = object;
+    if (_parent != other->_parent && ![_parent isEqual: other->_parent])
+        return NO;
+    return [_relativePath isEqualToString: other->_relativePath];
+}
+
+
+- (NSUInteger) hash {
+    return [_parent hash] ^ [_relativePath hash];
+}
+
+
 #pragma mark -
 #pragma mark HTTP METHODS:
 

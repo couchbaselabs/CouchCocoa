@@ -280,6 +280,9 @@
     STAssertEquals(rev2, doc.currentRevision, @"rev2 = %@; current = %@", rev2, doc.currentRevision);
     gotProperties = rev2.properties;
     STAssertEqualObjects([gotProperties objectForKey: @"tag"], [NSNumber numberWithInt: 2], nil);
+    
+    STAssertEqualObjects(doc.getConflictingRevisions,
+                         [NSArray arrayWithObject: rev2], nil);
 }
 
 
