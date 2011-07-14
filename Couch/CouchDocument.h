@@ -15,6 +15,7 @@
 @interface CouchDocument : CouchResource
 {
     @private
+    id _modelObject;
     BOOL _isDeleted;
     NSString* _currentRevisionID;
     CouchRevision* _currentRevision;
@@ -23,6 +24,11 @@
 
 @property (readonly) NSString* documentID;
 @property (readonly) BOOL isDeleted;
+
+/** Optional reference to an application-defined model object representing this document.
+    This property is unused and uninterpreted by CouchCocoa; use it for whatever you want.
+    Note that this is not a strong/retained reference. */
+@property (assign) id modelObject;
 
 #pragma mark REVISIONS:
 
@@ -82,3 +88,8 @@
     It is not sent in response to 'local' changes made by this CouchDatabase's object tree.
     It will not be sent unless change-tracking is enabled in its parent CouchDatabase. */
 extern NSString* const kCouchDocumentChangeNotification;
+
+
+@protocol CouchDocumentModel <NSObject>
+- (void) couchDocumentChanged: (CouchDocument*)doc;
+@end

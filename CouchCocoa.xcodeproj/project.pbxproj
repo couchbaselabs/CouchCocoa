@@ -29,6 +29,12 @@
 		2739BF5C13BCE5BD004829CD /* CouchResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B24CB1392EE3600DDD950 /* CouchResource.m */; };
 		2739BF5D13BCE5BD004829CD /* CouchChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781244513AFA6CD0051A99D /* CouchChangeTracker.m */; };
 		2739BF5E13BCE5CD004829CD /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781242313AC1B2F0051A99D /* JSONKit.m */; };
+		2784E1B613CE5249009CC5C8 /* Couch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
+		2784E1B713CE5249009CC5C8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
+		2784E1C213CE52FE009CC5C8 /* ShoppingAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784E1C013CE52FE009CC5C8 /* ShoppingAppController.m */; };
+		2784E1C313CE52FE009CC5C8 /* ShoppingDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */; };
+		2784E1C413CE5556009CC5C8 /* DemoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577DE13970D94002776DB /* DemoItem.m */; };
+		2784E1C513CE5559009CC5C8 /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577A713970959002776DB /* DemoQuery.m */; };
 		27A577BB13970A3B002776DB /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577A713970959002776DB /* DemoQuery.m */; };
 		27A5799E13974DD7002776DB /* DemoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577DE13970D94002776DB /* DemoItem.m */; };
 		27A579B313974E41002776DB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
@@ -92,6 +98,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		2784E1B813CE5249009CC5C8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27A57840139748D2002776DB /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,6 +140,10 @@
 		2781242C13AC265A0051A99D /* RESTCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTCache.m; sourceTree = "<group>"; };
 		2781244413AFA6CD0051A99D /* CouchChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchChangeTracker.h; sourceTree = "<group>"; };
 		2781244513AFA6CD0051A99D /* CouchChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CouchChangeTracker.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		2784E1BC13CE5249009CC5C8 /* Shopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2784E1BF13CE52FE009CC5C8 /* ShoppingAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingAppController.h; sourceTree = "<group>"; };
+		2784E1C013CE52FE009CC5C8 /* ShoppingAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingAppController.m; sourceTree = "<group>"; };
+		2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShoppingDemo.xib; sourceTree = "<group>"; };
 		278B22F1138F1F5F00DDD950 /* CouchServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchServer.h; sourceTree = "<group>"; };
 		278B22F2138F1F5F00DDD950 /* CouchServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchServer.m; sourceTree = "<group>"; };
 		278B22F4138F269200DDD950 /* CouchDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchDatabase.h; sourceTree = "<group>"; };
@@ -165,6 +184,7 @@
 		27EF148A1396D8CC0052913E /* DemoAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoAppController.h; sourceTree = "<group>"; };
 		27EF148B1396D8CC0052913E /* DemoAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoAppController.m; sourceTree = "<group>"; };
 		27EF14B21396DD3B0052913E /* CouchDemo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CouchDemo.xib; sourceTree = "<group>"; };
+		27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShoppingDemo-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +205,15 @@
 				2739BF3A13BCE53C004829CD /* Foundation.framework in Frameworks */,
 				2739BF3C13BCE53C004829CD /* CoreGraphics.framework in Frameworks */,
 				2739BF3F13BCE53C004829CD /* libCouch.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2784E1B513CE5249009CC5C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2784E1B613CE5249009CC5C8 /* Couch.framework in Frameworks */,
+				2784E1B713CE5249009CC5C8 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +254,7 @@
 				08FB7795FE84155DC02AAC07 /* Couch */,
 				272E9D8B13A2EBE0009F18E9 /* Test */,
 				27EF147F1396D7CD0052913E /* Demo */,
+				2784E1AD13CE523F009CC5C8 /* Demo-Shopping */,
 				273175A313CBA6B7000FF426 /* Doxyfile */,
 				27D5997813CE404300694B37 /* README.md */,
 				27A57A51139751B2002776DB /* JSONKit */,
@@ -268,6 +298,7 @@
 				2739BF3613BCE53C004829CD /* iOS LibraryTests.octest */,
 				27CDEBF113C67C9B00C979BB /* Couch.framework */,
 				27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */,
+				2784E1BC13CE5249009CC5C8 /* Shopping.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -312,6 +343,17 @@
 				27DA430513B659A900BBADB7 /* RESTInternal.m */,
 			);
 			name = Internal;
+			sourceTree = "<group>";
+		};
+		2784E1AD13CE523F009CC5C8 /* Demo-Shopping */ = {
+			isa = PBXGroup;
+			children = (
+				2784E1BF13CE52FE009CC5C8 /* ShoppingAppController.h */,
+				2784E1C013CE52FE009CC5C8 /* ShoppingAppController.m */,
+				2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */,
+				27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */,
+			);
+			path = "Demo-Shopping";
 			sourceTree = "<group>";
 		};
 		278B231E1391724E00DDD950 /* REST */ = {
@@ -462,6 +504,24 @@
 			productReference = 2739BF3613BCE53C004829CD /* iOS LibraryTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
+		2784E1AE13CE5249009CC5C8 /* Demo-Shopping */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2784E1B913CE5249009CC5C8 /* Build configuration list for PBXNativeTarget "Demo-Shopping" */;
+			buildPhases = (
+				2784E1AF13CE5249009CC5C8 /* Resources */,
+				2784E1B113CE5249009CC5C8 /* Sources */,
+				2784E1B513CE5249009CC5C8 /* Frameworks */,
+				2784E1B813CE5249009CC5C8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Demo-Shopping";
+			productName = CouchDemo;
+			productReference = 2784E1BC13CE5249009CC5C8 /* Shopping.app */;
+			productType = "com.apple.product-type.application";
+		};
 		27CDEBF013C67C9B00C979BB /* Mac Library */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27CDEC1313C67C9B00C979BB /* Build configuration list for PBXNativeTarget "Mac Library" */;
@@ -540,6 +600,7 @@
 				27CDEBF013C67C9B00C979BB /* Mac Library */,
 				27CDEC0213C67C9B00C979BB /* Mac Tests */,
 				27EF14761396D7BA0052913E /* CouchDemo */,
+				2784E1AE13CE5249009CC5C8 /* Demo-Shopping */,
 				2739BF2A13BCE53B004829CD /* iOS Library */,
 				2739BF3513BCE53C004829CD /* iOS Tests */,
 				2731759A13CBA57B000FF426 /* Documentation */,
@@ -552,6 +613,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2784E1AF13CE5249009CC5C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2784E1C313CE52FE009CC5C8 /* ShoppingDemo.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,6 +707,16 @@
 			files = (
 				27CDEBEA13C675C900C979BB /* Test_REST.m in Sources */,
 				27CDEBEB13C675CD00C979BB /* Test_Couch.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2784E1B113CE5249009CC5C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2784E1C213CE52FE009CC5C8 /* ShoppingAppController.m in Sources */,
+				2784E1C413CE5556009CC5C8 /* DemoItem.m in Sources */,
+				2784E1C513CE5559009CC5C8 /* DemoQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -869,6 +948,46 @@
 			};
 			name = Release;
 		};
+		2784E1BA13CE5249009CC5C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Demo-Shopping/ShoppingDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Shopping;
+			};
+			name = Debug;
+		};
+		2784E1BB13CE5249009CC5C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Demo-Shopping/ShoppingDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PRODUCT_NAME = Shopping;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		27CDEC1413C67C9B00C979BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1020,6 +1139,15 @@
 			buildConfigurations = (
 				2739BF4E13BCE53C004829CD /* Debug */,
 				2739BF4F13BCE53C004829CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2784E1B913CE5249009CC5C8 /* Build configuration list for PBXNativeTarget "Demo-Shopping" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2784E1BA13CE5249009CC5C8 /* Debug */,
+				2784E1BB13CE5249009CC5C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

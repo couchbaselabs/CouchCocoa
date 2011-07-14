@@ -28,12 +28,6 @@ void RESTWarn( NSString *msg, ... )
                  arguments: args];
 
     va_end(args);
-    
-#if TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
-    // If running in Xcode, drop into the debugger on a warning.
-    // You must check the "Run > Stop On Debugger()/DebugStr()" menu item to enable this.
-    Debugger();
-#endif
 }
 
 

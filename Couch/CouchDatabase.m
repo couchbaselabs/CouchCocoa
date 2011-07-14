@@ -63,7 +63,7 @@ static const NSUInteger kDocRetainLimit = 50;
         if (!_docCache)
             _docCache = [[RESTCache alloc] initWithRetainLimit: kDocRetainLimit];
         [_docCache addResource: doc];
-        [doc release];
+        [doc autorelease];
     }
     return doc;
 }
@@ -81,7 +81,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) documentAssignedID: (CouchDocument*)document {
     if (!_docCache)
-        _docCache = [[RESTCache alloc] init];
+        _docCache = [[RESTCache alloc] initWithRetainLimit: kDocRetainLimit];
     [_docCache addResource: document];
 }
 
@@ -212,10 +212,6 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
     if ([document notifyChanged: change]) {
         if (_onChange)
             _onChange(document);
-        NSNotification* n = [NSNotification notificationWithName: kCouchDocumentChangeNotification
-                                                          object: self
-                                                        userInfo: change];
-        [[NSNotificationCenter defaultCenter] postNotification: n];
     } else {
         NSLog(@"    CouchDatabase change with seq=%lu already known", (unsigned long)sequence);
     }
@@ -225,7 +221,8 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
 
 
 - (void) receivedChangeLine: (NSData*)chunk {
-    NSString* line = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding] autorelease];
+    NSString* line = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
+                            autorelease];
     if (!line) {
         Warn(@"Couldn't parse UTF-8 from _changes");
         return;
@@ -234,7 +231,6 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
         return;
     NSDictionary* change = $castIf(NSDictionary, [line objectFromJSONString]);
     if (change) {
-        NSLog(@"**** CHANGED: %@", line);
         [self receivedChange: change];
     } else {
         Warn(@"Received unparseable change line from server: %@", line);
@@ -250,7 +246,7 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
 - (void) setTracksChanges: (BOOL)track {
     if (track && !_tracker) {
         _tracker = [[CouchChangeTracker alloc] initWithDatabase: self
-                                                 sequenceNumber: _lastSequenceNumber];
+                                                 sequenceNumber: self.lastSequenceNumber];
         [_tracker start];
     } else if (!track && _tracker) {
         [_tracker stop];

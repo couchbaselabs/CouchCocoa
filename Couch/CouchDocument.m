@@ -19,6 +19,8 @@
 
 
 - (void)dealloc {
+    if (_modelObject)
+        Warn(@"Deallocing %@ while it still has a modelObject %@", self, _modelObject);
     [_currentRevisionID release];
     [_currentRevision release];
     [super dealloc];
@@ -33,10 +35,12 @@
 #pragma mark REVISIONS:
 
 
-@synthesize isDeleted=_isDeleted, currentRevisionID=_currentRevisionID;
+@synthesize isDeleted=_isDeleted, currentRevisionID=_currentRevisionID,
+            modelObject=_modelObject;
 
 
 - (void) setCurrentRevisionID:(NSString *)revisionID {
+    NSParameterAssert(revisionID);
     if (![revisionID isEqualToString: _currentRevisionID]) {
         [_currentRevisionID release];
         _currentRevisionID = [revisionID copy];
@@ -187,6 +191,8 @@
         NSMutableDictionary* newProperties = [[properties mutableCopy] autorelease];
         [newProperties setObject: _currentRevisionID forKey: @"_rev"];
         properties = newProperties;
+    } else if (self.relativePath) {
+        Warn(@"Trying to PUT %@ without knowing its current rev ID", self);
     }
     
     return [self PUTJSON: properties parameters: nil];
@@ -209,10 +215,16 @@
     
     if ([_currentRevisionID isEqualToString: rev])
         return NO;
+
+    NSLog(@"**** CHANGED: %@  %@ -> %@", self, _currentRevisionID, rev);
+
     self.currentRevisionID = rev;
 
     if ([[change objectForKey: @"deleted"] isEqual: (id)kCFBooleanTrue])
         self.isDeleted = YES;
+    
+    if ([_modelObject respondsToSelector: @selector(couchDocumentChanged:)])
+        [_modelObject couchDocumentChanged: self];
     
     NSNotification* n = [NSNotification notificationWithName: kCouchDocumentChangeNotification
                                                       object: self
@@ -251,7 +263,7 @@
 - (NSMutableURLRequest*) requestWithMethod: (NSString*)method
                                 parameters: (NSDictionary*)parameters {
     if ([method isEqualToString: @"DELETE"]) {
-        NSString* revision = self.currentRevisionID;
+        NSString* revision = _currentRevisionID;
         if (revision) {
             // Add a ?rev= query param with the current document revision:
             NSMutableDictionary* nuParams = [[parameters mutableCopy] autorelease];
@@ -259,6 +271,8 @@
                 nuParams = [NSMutableDictionary dictionary];
             [nuParams setObject: revision forKey: @"?rev"];
             parameters = nuParams;
+        } else {
+            Warn(@"Trying to DELETE %@ without knowing its current rev ID", self);
         }
     }
     return [super requestWithMethod: method parameters: parameters];

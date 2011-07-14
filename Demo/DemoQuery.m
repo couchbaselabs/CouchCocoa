@@ -9,9 +9,7 @@
 #import "DemoQuery.h"
 #import "DemoItem.h"
 
-#import "CouchServer.h"
-#import "CouchDatabase.h"
-#import "CouchQuery.h"
+#import "Couch.h"
 #import "RESTOperation.h"
 
 
@@ -23,7 +21,7 @@
     NSParameterAssert(query);
     self = [super init];
     if (self != nil) {
-        _query = query;
+        _query = [query retain];
         [self loadEntries];
         _query.database.tracksChanges = YES;
         [_query.database onChange: ^(CouchDocument* doc) {[self updateEntries];}];
@@ -44,15 +42,15 @@
     NSLog(@"Reloading entries...");
     NSMutableArray* entries = [NSMutableArray array];
 
-    for (CouchQueryRow* row in [_query rows]) {
-        DemoItem* item = [[DemoItem alloc] initWithDocument: row.document];
-        [entries addObject: item];
-        [item release];
-    }
+    for (CouchQueryRow* row in [_query rows])
+        [entries addObject: [DemoItem itemForDocument: row.document]];
 
-    [self willChangeValueForKey: @"entries"];
-    _entries = [entries mutableCopy];
-    [self didChangeValueForKey: @"entries"];
+    if (![entries isEqual:_entries]) {
+        [self willChangeValueForKey: @"entries"];
+        [_entries release];
+        _entries = [entries mutableCopy];
+        [self didChangeValueForKey: @"entries"];
+    }
 }
 
 
@@ -63,12 +61,17 @@
 
 
 - (BOOL) updateEntries {
+    _query.prefetch = NO;   // prefetch disables rowsIfChanged optimization
     CouchQueryEnumerator* rows = [_query rowsIfChanged];
     if (!rows)
         return NO;
     [self loadEntriesFrom: rows];
     return YES;
 }
+
+
+#pragma mark -
+#pragma mark ENTRIES PROPERTY:
 
 
 - (NSUInteger) countOfEntries {

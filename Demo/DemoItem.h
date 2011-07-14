@@ -13,8 +13,11 @@
 @interface DemoItem : NSObject
 {
     CouchDocument* _document;
-    NSMutableDictionary* _changedContents;
+    NSDictionary* _properties;
+    NSMutableDictionary* _changedProperties;
 }
+
++ (DemoItem*) itemForDocument: (CouchDocument*)document;
 
 - (id) init;
 - (id) initWithDocument: (CouchDocument*)document;
