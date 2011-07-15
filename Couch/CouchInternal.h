@@ -20,6 +20,8 @@
 @interface CouchDatabase (Private)
 - (void) documentAssignedID: (CouchDocument*)document;
 - (void) receivedChangeLine: (NSData*)chunk;
+- (void) beginDocumentOperation: (CouchDocument*)document;
+- (void) endDocumentOperation: (CouchDocument*)document;
 @end
 
 

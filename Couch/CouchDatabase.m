@@ -21,11 +21,18 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 static const NSUInteger kDocRetainLimit = 50;
 
 
+@interface CouchDatabase ()
+- (void) processDeferredChanges;
+@end
+
+
 @implementation CouchDatabase
 
 
 - (void)dealloc {
     self.tracksChanges = NO;
+    [_busyDocuments release];
+    [_deferredChanges release];
     [super dealloc];
 }
 
@@ -130,6 +137,22 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
+- (void) beginDocumentOperation: (CouchDocument*)document {
+    if (!_busyDocuments)
+        _busyDocuments = [[NSCountedSet alloc] init];
+    [_busyDocuments addObject: document];
+    NSLog(@">>>>>> %u docs being updated", _busyDocuments.count);
+}
+
+
+- (void) endDocumentOperation: (CouchDocument*)document {
+    [_busyDocuments removeObject: document];
+    NSLog(@"<<<<<< %u docs being updated", _busyDocuments.count);
+    if (_busyDocuments.count == 0)
+        [self processDeferredChanges];
+}
+
+
 #pragma mark -
 #pragma mark QUERIES
 
@@ -204,6 +227,17 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
     if (sequence <= _lastSequenceNumber)
         return;
     
+    if (_busyDocuments.count) {
+        // Don't process changes while I have pending PUT/POST/DELETEs out. Wait till they finish,
+        // so I don't think the change is external.
+        NSLog(@"CouchDatabase deferring change (seq %lu) till operations finish", 
+              (unsigned long)sequence);
+        if (!_deferredChanges)
+            _deferredChanges = [[NSMutableArray alloc] init];
+        [_deferredChanges addObject: change];
+        return;
+    }
+    
     // Get document:
     NSString* docID = [change objectForKey: @"id"];
     CouchDocument* document = [self documentWithID: docID];
@@ -213,10 +247,20 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
         if (_onChange)
             _onChange(document);
     } else {
-        NSLog(@"    CouchDatabase change with seq=%lu already known", (unsigned long)sequence);
+        NSLog(@"CouchDatabase change with seq=%lu already known", (unsigned long)sequence);
     }
     
     _lastSequenceNumber = sequence;
+}
+
+
+- (void) processDeferredChanges {
+    NSArray* changes = [_deferredChanges autorelease];
+    _deferredChanges = nil;
+    
+    for (NSDictionary* change in changes) {
+        [self receivedChange: change];
+    }
 }
 
 

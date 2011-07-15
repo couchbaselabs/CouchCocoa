@@ -234,30 +234,16 @@
 }
 
 
-- (void) updateFromSaveResponse: (NSDictionary*)response {
-    NSString* docID = [response objectForKey: @"id"];
-    NSString* rev = [response objectForKey: @"rev"];
-    
-    // Sanity-check the document ID:
-    NSString* myDocID = self.documentID;
-    if (myDocID) {
-        if (![docID isEqualToString: myDocID]) {
-            Warn(@"Document ID mismatch: id='%@' for %@", docID, self);
-            return;
-        }
-    } else {
-        if (!docID) {
-            Warn(@"No document ID received for saving untitled %@", self);
-            return;
-        }
-    }
-    
-    self.currentRevisionID = rev;
-}
-
-
 #pragma mark -
 #pragma mark OPERATION HANDLING:
+
+
+- (RESTOperation*) sendRequest: (NSURLRequest*)request {
+    RESTOperation* op = [super sendRequest: request];
+    if (!op.isReadOnly)
+        [self.database beginDocumentOperation: self];
+    return op;
+}
 
 
 - (NSMutableURLRequest*) requestWithMethod: (NSString*)method
@@ -295,7 +281,33 @@
         if ([[op.responseBody.fromJSON objectForKey: @"reason"] isEqualToString: @"deleted"])
             self.isDeleted = YES;
     }
+    
+    if (!op.isReadOnly)
+        [self.database endDocumentOperation: self];
+
     return error;
+}
+
+
+- (void) updateFromSaveResponse: (NSDictionary*)response {
+    NSString* docID = [response objectForKey: @"id"];
+    NSString* rev = [response objectForKey: @"rev"];
+    
+    // Sanity-check the document ID:
+    NSString* myDocID = self.documentID;
+    if (myDocID) {
+        if (![docID isEqualToString: myDocID]) {
+            Warn(@"Document ID mismatch: id='%@' for %@", docID, self);
+            return;
+        }
+    } else {
+        if (!docID) {
+            Warn(@"No document ID received for saving untitled %@", self);
+            return;
+        }
+    }
+    
+    self.currentRevisionID = rev;
 }
 
 

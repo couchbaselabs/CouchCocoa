@@ -149,6 +149,11 @@
 }
 
 
+- (RESTOperation*) sendRequest: (NSURLRequest*)request {
+    return [[[RESTOperation alloc] initWithResource: self request: request] autorelease];
+}
+
+
 - (RESTOperation*) sendHTTP: (NSString*)method parameters: (NSDictionary*)parameters {
     NSMutableURLRequest* request = [self requestWithMethod: method parameters: parameters];
 
@@ -160,7 +165,7 @@
             [request setValue: _lastModified forHTTPHeaderField: @"If-Modified-Since"];
     }
 
-    return [[[RESTOperation alloc] initWithResource: self request: request] autorelease];
+    return [self sendRequest: request];
 }
 
 
@@ -175,7 +180,7 @@
     NSMutableURLRequest* request = [self requestWithMethod: @"POST" parameters: parameters];
     if (body)
         [request setHTTPBody:body];
-    return [[[RESTOperation alloc] initWithResource: self request: request] autorelease];
+    return [self sendRequest: request];
 }
 
 
@@ -199,7 +204,7 @@
         NSMutableURLRequest* request = [self requestWithMethod: @"PUT" parameters: parameters];
         if (body)
             [request setHTTPBody:body];
-        return [[[RESTOperation alloc] initWithResource: self request: request] autorelease];
+        return [self sendRequest: request];
 
     } else {
         // If I have no URL yet, do a POST to my parent:
@@ -235,7 +240,7 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
     NSMutableURLRequest* request = [self requestWithMethod: @"POST"
                                                 parameters: addJSONType(parameters)];
     [request setHTTPBody: [body JSONData]];
-    return [[[RESTOperation alloc] initWithResource: self request: request] autorelease];
+    return [self sendRequest: request];
 }
 
 

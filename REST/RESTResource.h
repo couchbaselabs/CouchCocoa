@@ -75,9 +75,13 @@
 
 /** Creates an NSURLRequest without a RESTOperation.
     Called by -sendHTTP:parameters:.
-    You can call this directly if you want to customize the NSMutableURLRequest and then create a RESTOperation object from it. */
+    Clients usually won't need this, but you can call this directly if you want to customize the NSMutableURLRequest and then call -sendRequest: on it. */
 - (NSMutableURLRequest*) requestWithMethod: (NSString*)method
                                 parameters: (NSDictionary*)parameters;
+
+/** Bottleneck for starting a RESTOperation.
+    Clients usually won't need to call this. */
+- (RESTOperation*) sendRequest: (NSURLRequest*)request;
 
 #pragma mark CACHING:
 

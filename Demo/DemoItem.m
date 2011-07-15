@@ -93,16 +93,6 @@
 }
 
 
-- (void) save {
-    if (_changedProperties) {
-        NSLog(@"DEMOITEM: <%p> Saving %@", self, _document);
-        [[_document putProperties:_changedProperties] start]; //TODO: Error handling
-        [_changedProperties release];
-        _changedProperties = nil;
-    }
-}
-
-
 // Respond to an external change (likely from sync)
 - (void) couchDocumentChanged: (CouchDocument*)doc {
     NSAssert(doc == _document, @"Notified for wrong document");
@@ -125,6 +115,23 @@
 }
 
 
+- (void) saveCompleted: (RESTOperation*)op {
+    if (op.error) {
+        [self couchDocumentChanged: _document];     // reset to contents from server
+        [[NSApp delegate] presentError: op.error];
+    }
+}
+
+
+- (void) save {
+    if (_changedProperties) {
+        NSLog(@"DEMOITEM: <%p> Saving %@", self, _document);
+        RESTOperation* op = [_document putProperties:_changedProperties];
+        [op onCompletion: ^{[self saveCompleted: op];}];
+        [op start];
+    }
+}
+
 
 // Key-value coding: delegate to _properties (or _changedProperties, if it exists)
 
@@ -135,6 +142,7 @@
 
 - (void) setValue: (id)value forKey: (id)key {
     NSParameterAssert(_document);
+    NSLog(@"DEMOITEM: <%p> .%@ = \"%@\"", self, key, value);
     if (![value isEqual: [self valueForKey: key]]) {
         if (!_changedProperties) {
             _changedProperties = _properties ? [_properties mutableCopy] 

@@ -86,6 +86,11 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 - (BOOL) isPOST     {return [_request.HTTPMethod isEqualToString: @"POST"];}
 - (BOOL) isDELETE   {return [_request.HTTPMethod isEqualToString: @"DELETE"];}
 
+- (BOOL) isReadOnly {
+    NSString* method = _request.HTTPMethod;
+    return [method isEqualToString: @"GET"] || [method isEqualToString: @"HEAD"];
+}
+
 
 - (NSString*) dump {
     NSMutableString* output = [NSMutableString stringWithFormat: @"\t%@ %@\n",

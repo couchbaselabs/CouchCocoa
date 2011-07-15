@@ -50,6 +50,7 @@ typedef void (^OnCompleteBlock)();
 @property (readonly) NSString* method;
 @property (readonly) NSURLRequest* request;
 
+@property (readonly) BOOL isReadOnly;   // true for GET and HEAD
 @property (readonly) BOOL isGET;
 @property (readonly) BOOL isPUT;
 @property (readonly) BOOL isPOST;

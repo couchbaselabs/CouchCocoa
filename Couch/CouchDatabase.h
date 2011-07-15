@@ -21,9 +21,11 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
 {
     @private
     RESTCache* _docCache;
+    NSCountedSet* _busyDocuments;
     CouchChangeTracker* _tracker;
     NSUInteger _lastSequenceNumber;
     OnDatabaseChangeBlock _onChange;
+    NSMutableArray* _deferredChanges;
 }
 
 @property (readonly) CouchServer* server;
