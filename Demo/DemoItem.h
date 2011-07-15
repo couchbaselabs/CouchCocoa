@@ -18,6 +18,7 @@
     CouchDocument* _document;
     NSDictionary* _properties;
     NSMutableDictionary* _changedProperties;
+    CFAbsoluteTime _changedTime;
 }
 
 /** Returns the DemoItem associated with a CouchDocument, or creates & assigns one if necessary. */
@@ -38,5 +39,9 @@
 /** Writes any changes made by KVC to the database. This happens automatically after changes are
     made, so it doesn't need to be called explicitly. */
 - (void) save;
+
+- (void) markExternallyChanged;
+
+@property (readonly) NSTimeInterval timeSinceExternallyChanged;
 
 @end

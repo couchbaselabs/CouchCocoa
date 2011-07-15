@@ -23,8 +23,13 @@
     if (self != nil) {
         _query = [query retain];
         [self loadEntries];
+        
+        // Listen for external changes:
         _query.database.tracksChanges = YES;
-        [_query.database onChange: ^(CouchDocument* doc) {[self updateEntries];}];
+        [[NSNotificationCenter defaultCenter] addObserver: self 
+                                                 selector: @selector(updateEntries)
+                                                     name: kCouchDatabaseChangeNotification 
+                                                   object: nil];
     }
     return self;
 }
@@ -32,6 +37,7 @@
 
 - (void) dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     [_entries release];
     [_query release];
     [super dealloc];
@@ -42,8 +48,13 @@
     NSLog(@"Reloading entries...");
     NSMutableArray* entries = [NSMutableArray array];
 
-    for (CouchQueryRow* row in [_query rows])
-        [entries addObject: [DemoItem itemForDocument: row.document]];
+    for (CouchQueryRow* row in rows) {
+        DemoItem* item = [DemoItem itemForDocument: row.document];
+        [entries addObject: item];
+        // If this item isn't in the prior _entries, it's an external insertion:
+        if (_entries && [_entries indexOfObjectIdenticalTo: item] == NSNotFound)
+            [item markExternallyChanged];
+    }
 
     if (![entries isEqual:_entries]) {
         [self willChangeValueForKey: @"entries"];
@@ -72,9 +83,6 @@
 
 #pragma mark -
 #pragma mark ENTRIES PROPERTY:
-
-
-@dynamic entries;  // Appeases the compiler. The actual implementation of the property is below.
 
 
 - (NSUInteger) countOfEntries {

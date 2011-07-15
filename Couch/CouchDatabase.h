@@ -92,3 +92,9 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
 
 
 @end
+
+
+/** This notification is posted by a CouchDatabase in response to an external change (as reported by the _changes feed.)
+    It is not sent in response to 'local' changes made by its child objects.
+    It will not be sent unless tracksChanges is enabled. */
+extern NSString* const kCouchDatabaseChangeNotification;

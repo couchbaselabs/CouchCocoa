@@ -100,6 +100,7 @@
     NSDictionary* oldProperties = (_changedProperties ?: _properties);
     if (![newProperties isEqual: oldProperties]) {
         NSLog(@"DEMOITEM: <%p> External change to %@", self, _document);
+        [self markExternallyChanged];
         NSArray* keys = [oldProperties allKeys];
         for (id key in keys)
             [self willChangeValueForKey: key];
@@ -112,6 +113,16 @@
         // TODO: This doesn't post KV notifications of *newly-added* properties,
         // i.e. keys that exist in newProperties but not oldProperties.
     }
+}
+
+
+- (void) markExternallyChanged {
+    _changedTime = CFAbsoluteTimeGetCurrent();
+}
+
+
+- (NSTimeInterval) timeSinceExternallyChanged {
+    return CFAbsoluteTimeGetCurrent() - _changedTime;
 }
 
 

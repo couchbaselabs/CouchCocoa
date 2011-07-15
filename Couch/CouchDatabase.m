@@ -15,7 +15,8 @@
 #import "JSONKit.h"
 
 
-NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
+NSString* const kCouchDatabaseChangeNotification = @"CouchDatabaseChange";
+
 
 /** Number of CouchDocument objects to cache in memory */
 static const NSUInteger kDocRetainLimit = 50;
@@ -246,6 +247,10 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
     if ([document notifyChanged: change]) {
         if (_onChange)
             _onChange(document);
+        NSNotification* n = [NSNotification notificationWithName: kCouchDatabaseChangeNotification
+                                                          object: self
+                                                        userInfo: change];
+        [[NSNotificationCenter defaultCenter] postNotification: n];
     } else {
         NSLog(@"CouchDatabase change with seq=%lu already known", (unsigned long)sequence);
     }

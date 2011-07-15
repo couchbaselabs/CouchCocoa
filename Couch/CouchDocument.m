@@ -10,6 +10,9 @@
 #import "CouchInternal.h"
 
 
+NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
+
+
 @interface CouchDocument ()
 @property (readwrite) BOOL isDeleted;
 @end

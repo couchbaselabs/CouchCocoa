@@ -16,11 +16,14 @@
 @interface DemoAppController : NSObject
 {
     IBOutlet NSWindow* _window;
-
+    IBOutlet NSTableView* _table;
+    IBOutlet NSArrayController* _tableController;
+    
     CouchDatabase* _database;
-    DemoQuery* _view;
+    DemoQuery* _query;
+    BOOL _glowing;
 }
 
-@property (retain) DemoQuery* view;
+@property (retain) DemoQuery* query;
 
 @end

@@ -28,6 +28,6 @@
 
 /** The documents returned by the query, wrapped in DemoItem objects.
     An NSArrayController can be bound to this property. */
-@property (readonly) NSMutableArray* entries;
+//@property (readonly) NSMutableArray* entries;
 
 @end
