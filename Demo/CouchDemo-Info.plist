@@ -24,5 +24,7 @@
 	<string>CouchDemo</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>DemoDatabase</key>
+	<string>demo-addresses</string>
 </dict>
 </plist>

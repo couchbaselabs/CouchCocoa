@@ -12,9 +12,6 @@
 #import "RESTOperation.h"
 
 
-static NSString* const kDatabaseName = @"demo-addresses";
-
-
 @implementation DemoAppController
 
 
@@ -23,9 +20,15 @@ static NSString* const kDatabaseName = @"demo-addresses";
 
 - (void) applicationDidFinishLaunching: (NSNotification*)n {
     gRESTLogLevel = kRESTLogRequestHeaders;
+    
+    NSString* dbName = [[[NSBundle mainBundle] infoDictionary] objectForKey: @"DemoDatabase"];
+    if (!dbName) {
+        NSLog(@"FATAL: Please specify a CouchDB database name in the app's Info.plist under the 'DemoDatabase' key");
+        exit(1);
+    }
 
     CouchServer *server = [[CouchServer alloc] init];
-    _database = [[server databaseNamed: kDatabaseName] retain];
+    _database = [[server databaseNamed: dbName] retain];
     [server release];
     
     RESTOperation* op = [_database create];

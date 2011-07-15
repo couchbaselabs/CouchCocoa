@@ -34,5 +34,7 @@
 	<array/>
 	<key>UTImportedTypeDeclarations</key>
 	<array/>
+	<key>DemoDatabase</key>
+	<string>demo-shopping</string>
 </dict>
 </plist>

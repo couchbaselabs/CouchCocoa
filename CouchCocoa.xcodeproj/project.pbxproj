@@ -31,13 +31,13 @@
 		2739BF5E13BCE5CD004829CD /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781242313AC1B2F0051A99D /* JSONKit.m */; };
 		2784E1B613CE5249009CC5C8 /* Couch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
 		2784E1B713CE5249009CC5C8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
-		2784E1C213CE52FE009CC5C8 /* ShoppingAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784E1C013CE52FE009CC5C8 /* ShoppingAppController.m */; };
 		2784E1C313CE52FE009CC5C8 /* ShoppingDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */; };
 		2784E1C413CE5556009CC5C8 /* DemoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577DE13970D94002776DB /* DemoItem.m */; };
 		2784E1C513CE5559009CC5C8 /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577A713970959002776DB /* DemoQuery.m */; };
 		27A577BB13970A3B002776DB /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577A713970959002776DB /* DemoQuery.m */; };
 		27A5799E13974DD7002776DB /* DemoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577DE13970D94002776DB /* DemoItem.m */; };
 		27A579B313974E41002776DB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
+		27C5229C13CFA7C2003909B7 /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EF148B1396D8CC0052913E /* DemoAppController.m */; };
 		27CDEBEA13C675C900C979BB /* Test_REST.m in Sources */ = {isa = PBXBuildFile; fileRef = 272E9D9313A2EBE0009F18E9 /* Test_REST.m */; };
 		27CDEBEB13C675CD00C979BB /* Test_Couch.m in Sources */ = {isa = PBXBuildFile; fileRef = 270A663A13A5B36900791F4A /* Test_Couch.m */; };
 		27CDEC0413C67C9B00C979BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */; };
@@ -141,9 +141,7 @@
 		2781244413AFA6CD0051A99D /* CouchChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchChangeTracker.h; sourceTree = "<group>"; };
 		2781244513AFA6CD0051A99D /* CouchChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CouchChangeTracker.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2784E1BC13CE5249009CC5C8 /* Shopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2784E1BF13CE52FE009CC5C8 /* ShoppingAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingAppController.h; sourceTree = "<group>"; };
-		2784E1C013CE52FE009CC5C8 /* ShoppingAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingAppController.m; sourceTree = "<group>"; };
-		2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShoppingDemo.xib; sourceTree = "<group>"; };
+		2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShoppingDemo.xib; path = Demo/ShoppingDemo.xib; sourceTree = SOURCE_ROOT; };
 		278B22F1138F1F5F00DDD950 /* CouchServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchServer.h; sourceTree = "<group>"; };
 		278B22F2138F1F5F00DDD950 /* CouchServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchServer.m; sourceTree = "<group>"; };
 		278B22F4138F269200DDD950 /* CouchDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchDatabase.h; sourceTree = "<group>"; };
@@ -184,7 +182,7 @@
 		27EF148A1396D8CC0052913E /* DemoAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoAppController.h; sourceTree = "<group>"; };
 		27EF148B1396D8CC0052913E /* DemoAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoAppController.m; sourceTree = "<group>"; };
 		27EF14B21396DD3B0052913E /* CouchDemo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CouchDemo.xib; sourceTree = "<group>"; };
-		27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShoppingDemo-Info.plist"; sourceTree = "<group>"; };
+		27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ShoppingDemo-Info.plist"; path = "Demo/ShoppingDemo-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,7 +252,6 @@
 				08FB7795FE84155DC02AAC07 /* Couch */,
 				272E9D8B13A2EBE0009F18E9 /* Test */,
 				27EF147F1396D7CD0052913E /* Demo */,
-				2784E1AD13CE523F009CC5C8 /* Demo-Shopping */,
 				273175A313CBA6B7000FF426 /* Doxyfile */,
 				27D5997813CE404300694B37 /* README.md */,
 				27A57A51139751B2002776DB /* JSONKit */,
@@ -345,17 +342,6 @@
 			name = Internal;
 			sourceTree = "<group>";
 		};
-		2784E1AD13CE523F009CC5C8 /* Demo-Shopping */ = {
-			isa = PBXGroup;
-			children = (
-				2784E1BF13CE52FE009CC5C8 /* ShoppingAppController.h */,
-				2784E1C013CE52FE009CC5C8 /* ShoppingAppController.m */,
-				2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */,
-				27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */,
-			);
-			path = "Demo-Shopping";
-			sourceTree = "<group>";
-		};
 		278B231E1391724E00DDD950 /* REST */ = {
 			isa = PBXGroup;
 			children = (
@@ -413,6 +399,8 @@
 				27EF148B1396D8CC0052913E /* DemoAppController.m */,
 				27EF14B21396DD3B0052913E /* CouchDemo.xib */,
 				27EF14791396D7BA0052913E /* CouchDemo-Info.plist */,
+				2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */,
+				27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -714,9 +702,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2784E1C213CE52FE009CC5C8 /* ShoppingAppController.m in Sources */,
 				2784E1C413CE5556009CC5C8 /* DemoItem.m in Sources */,
 				2784E1C513CE5559009CC5C8 /* DemoQuery.m in Sources */,
+				27C5229C13CFA7C2003909B7 /* DemoAppController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -959,7 +947,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "Demo-Shopping/ShoppingDemo-Info.plist";
+				INFOPLIST_FILE = "Demo/ShoppingDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = Shopping;
 			};
@@ -975,7 +963,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "Demo-Shopping/ShoppingDemo-Info.plist";
+				INFOPLIST_FILE = "Demo/ShoppingDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",

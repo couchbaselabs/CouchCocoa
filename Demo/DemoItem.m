@@ -11,13 +11,17 @@
 #import "RESTOperation.h"
 
 
+@interface DemoItem ()
+@property (readwrite, retain) CouchDocument* document;
+@end
+
+
 @implementation DemoItem
 
 - (id)init {
     self = [super init];
     if (self) {
         NSLog(@"DEMOITEM: <%p> init", self);
-        //_changedContents = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -27,10 +31,7 @@
     self = [super init];
     if (self) {
         NSLog(@"DEMOITEM: <%p> initWithDocument: %@", self, document);
-        NSAssert(document.modelObject == nil, @"Document already has a model");
-        _document = [document retain];
-        _document.modelObject = self;
-        _properties = [document.properties copy];
+        self.document = document;
     }
     return self;
 }
@@ -49,8 +50,23 @@
     NSLog(@"DEMOITEM: <%p> dealloc; doc = %@", self, _document);
     _document.modelObject = nil;
     [_document release];
+    [_properties release];
     [_changedProperties release];
     [super dealloc];
+}
+
+
+- (CouchDocument*) document {
+    return _document;
+}
+
+
+- (void) setDocument:(CouchDocument *)document {
+    NSAssert(!_document && document, @"Can't change or clear document");
+    NSAssert(document.modelObject == nil, @"Document already has a model");
+    _document = [document retain];
+    _document.modelObject = self;
+    _properties = [document.properties copy];
 }
 
 
@@ -62,10 +78,7 @@
 - (void) setDatabase: (CouchDatabase*)db {
     if (db) {
         // On setting database, create a new untitled/unsaved CouchDocument:
-        NSParameterAssert(!_document);
-        _document = [[db untitledDocument] retain];
-        _document.modelObject = self;
-        _properties = [_document.properties copy];
+        self.document = [db untitledDocument];
         NSLog(@"DEMOITEM: <%p> create %@", self, _document);
     } else if (_document) {
         // On clearing database, delete the document:
@@ -92,7 +105,8 @@
 
 // Respond to an external change (likely from sync)
 - (void) couchDocumentChanged: (CouchDocument*)doc {
-    NSDictionary* newProperties = doc.properties;
+    NSAssert(doc == _document, @"Notified for wrong document");
+    NSDictionary* newProperties = _document.properties;
     NSDictionary* oldProperties = (_changedProperties ?: _properties);
     if (![newProperties isEqual: oldProperties]) {
         NSLog(@"DEMOITEM: <%p> External change to %@", self, _document);
@@ -105,20 +119,17 @@
         _changedProperties = nil;
         for (id key in keys)
             [self didChangeValueForKey: key];
-        // TODO: This doesn't post KV notifications of *new* properties,
+        // TODO: This doesn't post KV notifications of *newly-added* properties,
         // i.e. keys that exist in newProperties but not oldProperties.
     }
 }
 
 
 
-// Key-value coding: delegate to _contents
+// Key-value coding: delegate to _properties (or _changedProperties, if it exists)
 
 - (id) valueForKey: (id)key {
-    if (_changedProperties)
-        return [_changedProperties objectForKey: key];
-    else
-        return [_document propertyForKey: key];
+    return [(_changedProperties ?: _properties) objectForKey: key];
 }
 
 
@@ -126,9 +137,8 @@
     NSParameterAssert(_document);
     if (![value isEqual: [self valueForKey: key]]) {
         if (!_changedProperties) {
-            _changedProperties = [_document.properties mutableCopy];
-            if (!_changedProperties)
-                _changedProperties = [[NSMutableDictionary alloc] init];
+            _changedProperties = _properties ? [_properties mutableCopy] 
+                                             : [[NSMutableDictionary alloc] init];
         }
         [_changedProperties setObject: value forKey: key];
 

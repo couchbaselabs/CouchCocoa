@@ -74,6 +74,9 @@
 #pragma mark ENTRIES PROPERTY:
 
 
+@dynamic entries;  // Appeases the compiler. The actual implementation of the property is below.
+
+
 - (NSUInteger) countOfEntries {
     return _entries.count;
 }

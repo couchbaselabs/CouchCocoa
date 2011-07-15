@@ -10,6 +10,10 @@
 @class CouchQuery;
 
 
+/** Simple controller for CouchDB demo apps.
+    This class acts as glue between a CouchQuery (a CouchDB view) and an NSArrayController.
+    The app can then bind its UI controls to the NSArrayController and get basic CRUD operations
+    without needing any code. */
 @interface DemoQuery : NSObject
 {
     CouchQuery* _query;
@@ -22,6 +26,8 @@
 
 - (BOOL) updateEntries;
 
-// The property 'entries' is available by key-value coding.
+/** The documents returned by the query, wrapped in DemoItem objects.
+    An NSArrayController can be bound to this property. */
+@property (readonly) NSMutableArray* entries;
 
 @end

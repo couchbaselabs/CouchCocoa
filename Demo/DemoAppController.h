@@ -10,6 +10,9 @@
 @class CouchDatabase, DemoQuery;
 
 
+/** Generic application delegate for simple Mac OS CouchDB demo apps.
+    The name of the (local) database to use should be added to the app's Info.plist
+    under the 'DemoDatabase' key. */
 @interface DemoAppController : NSObject
 {
     IBOutlet NSWindow* _window;
