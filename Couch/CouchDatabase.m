@@ -142,14 +142,14 @@ static const NSUInteger kDocRetainLimit = 50;
     if (!_busyDocuments)
         _busyDocuments = [[NSCountedSet alloc] init];
     [_busyDocuments addObject: resource];
-    NSLog(@">>>>>> %u docs being updated", _busyDocuments.count);
+    NSLog(@">>>>>> %lu docs being updated", _busyDocuments.count);
 }
 
 
 - (void) endDocumentOperation: (CouchResource*)resource {
     NSAssert([_busyDocuments containsObject: resource], @"unbalanced endDocumentOperation call: %p %@", resource, resource);
     [_busyDocuments removeObject: resource];
-    NSLog(@"<<<<<< %u docs being updated", _busyDocuments.count);
+    NSLog(@"<<<<<< %lu docs being updated", _busyDocuments.count);
     if (_busyDocuments.count == 0)
         [self processDeferredChanges];
 }
