@@ -21,6 +21,7 @@
     NSParameterAssert(query);
     self = [super init];
     if (self != nil) {
+        _modelClass = [DemoItem class];
         _query = [query retain];
         [self loadEntries];
         
@@ -44,12 +45,15 @@
 }
 
 
+@synthesize modelClass=_modelClass;
+
+
 - (void) loadEntriesFrom: (CouchQueryEnumerator*)rows {
     NSLog(@"Reloading entries...");
     NSMutableArray* entries = [NSMutableArray array];
 
     for (CouchQueryRow* row in rows) {
-        DemoItem* item = [DemoItem itemForDocument: row.document];
+        DemoItem* item = [_modelClass itemForDocument: row.document];
         [entries addObject: item];
         // If this item isn't in the prior _entries, it's an external insertion:
         if (_entries && [_entries indexOfObjectIdenticalTo: item] == NSNotFound)

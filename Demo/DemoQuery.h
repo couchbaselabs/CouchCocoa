@@ -18,9 +18,13 @@
 {
     CouchQuery* _query;
     NSMutableArray* _entries;
+    Class _modelClass;
 }
 
 - (id) initWithQuery: (CouchQuery*)query;
+
+/** Class to instantiate for entries. Defaults to DemoItem. */
+@property (assign) Class modelClass;
 
 - (void) loadEntries;
 

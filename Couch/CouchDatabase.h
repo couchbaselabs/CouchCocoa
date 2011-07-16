@@ -24,6 +24,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
     NSCountedSet* _busyDocuments;
     CouchChangeTracker* _tracker;
     NSUInteger _lastSequenceNumber;
+    BOOL _lastSequenceNumberKnown;
     OnDatabaseChangeBlock _onChange;
     NSMutableArray* _deferredChanges;
 }
@@ -77,19 +78,15 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
 #pragma mark CHANGE TRACKING:
 
 /** Controls whether document change-tracking is enabled.
-    It's off by default. Turning it on creates a long-lived socket connection to the database, and will post potentially a lot of notifications, so don't turn it on unless you're actually going to use the notifications. */
+    It's off by default.
+    Only external changes are tracked, not ones made through this database object and its children. This is useful in handling synchronization, or multi-client access to the same database, or on application relaunch to detect changes made after it last quit.
+    Turning tracking on creates a persistent socket connection to the database, and will post potentially a lot of notifications, so don't turn it on unless you're actually going to use the notifications. */
 @property BOOL tracksChanges;
 
 /** The last change sequence number received from the database.
     If this is not known yet, the current value will be fetched via a synchronous query.
     You can save the current value on quit, and restore it on relaunch before enabling change tracking, to get notifications of all changes that have occurred in the meantime. */
 @property NSUInteger lastSequenceNumber;
-
-/** The given block will be called every time a document change notification is received.
-    It's not currently possible to register more than one block; each call overwrites the last.
-    See also: kCouchDocumentChangeNotification. */
-- (void) onChange: (OnDatabaseChangeBlock)block;
-
 
 @end
 

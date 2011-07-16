@@ -202,6 +202,16 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 }
 
 
+- (RESTOperation*) PUT: (NSData*)body
+            parameters: (NSDictionary*)parameters
+{
+    RESTOperation* op = [super PUT: body parameters: parameters];
+    if (op.isPOST)
+        [self.database beginDocumentOperation: self];   // I'm being created via a POST
+    return op;
+}
+
+
 #pragma mark -
 #pragma mark CHANGES:
 
@@ -318,6 +328,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     [super createdByPOST: op];    //FIX: Should update relativePath directly from 'id' instead
     [self updateFromSaveResponse: $castIf(NSDictionary, op.responseBody.fromJSON)];
     [self.database documentAssignedID: self];
+    [self.database endDocumentOperation: self];   // I was created via a POST
 }
 
 

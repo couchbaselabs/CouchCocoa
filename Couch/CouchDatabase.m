@@ -138,16 +138,17 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
-- (void) beginDocumentOperation: (CouchDocument*)document {
+- (void) beginDocumentOperation: (CouchResource*)resource {
     if (!_busyDocuments)
         _busyDocuments = [[NSCountedSet alloc] init];
-    [_busyDocuments addObject: document];
+    [_busyDocuments addObject: resource];
     NSLog(@">>>>>> %u docs being updated", _busyDocuments.count);
 }
 
 
-- (void) endDocumentOperation: (CouchDocument*)document {
-    [_busyDocuments removeObject: document];
+- (void) endDocumentOperation: (CouchResource*)resource {
+    NSAssert([_busyDocuments containsObject: resource], @"unbalanced endDocumentOperation call: %p %@", resource, resource);
+    [_busyDocuments removeObject: resource];
     NSLog(@"<<<<<< %u docs being updated", _busyDocuments.count);
     if (_busyDocuments.count == 0)
         [self processDeferredChanges];
@@ -191,7 +192,8 @@ static const NSUInteger kDocRetainLimit = 50;
 
 
 - (NSUInteger) lastSequenceNumber {
-    if (_lastSequenceNumber == 0) {
+    if (!_lastSequenceNumberKnown) {
+        _lastSequenceNumberKnown = YES;
         // Don't know the current sequence number, so ask for it:
         id seqObj = [[self GET].responseBody.fromJSON objectForKey: @"update_seq"];  // synchronous
         if ([seqObj isKindOfClass: [NSNumber class]])
@@ -203,6 +205,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) setLastSequenceNumber:(NSUInteger)lastSequenceNumber {
     _lastSequenceNumber = lastSequenceNumber;
+    _lastSequenceNumberKnown = YES;
 }
 
 

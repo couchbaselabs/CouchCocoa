@@ -60,6 +60,8 @@ static const NSUInteger kDefaultRetainLimit = 50;
 - (void) addResource: (RESTResource*)resource {
     resource.owningCache = self;
     NSString* key = resource.relativePath;
+    NSAssert(![_map objectForKey: key], @"Caching duplicate items for '%@': %p, now %p",
+             key, [_map objectForKey: key], resource);
     [_map setObject: resource forKey: key];
     if (_cache)
         [_cache setObject: resource forKey: key];

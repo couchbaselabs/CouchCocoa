@@ -30,7 +30,7 @@
 {
     self = [super init];
     if (self) {
-        NSLog(@"DEMOITEM: <%p> initWithDocument: %@", self, document);
+        NSLog(@"DEMOITEM: <%p> initWithDocument: %@ @%p", self, document, document);
         self.document = document;
     }
     return self;
@@ -79,7 +79,7 @@
     if (db) {
         // On setting database, create a new untitled/unsaved CouchDocument:
         self.document = [db untitledDocument];
-        NSLog(@"DEMOITEM: <%p> create %@", self, _document);
+        NSLog(@"DEMOITEM: <%p> create %@ @%p", self, _document, _document);
     } else if (_document) {
         // On clearing database, delete the document:
         NSLog(@"DEMOITEM: <%p> Deleting %@", self, _document);
@@ -153,13 +153,16 @@
 
 - (void) setValue: (id)value forKey: (id)key {
     NSParameterAssert(_document);
-    NSLog(@"DEMOITEM: <%p> .%@ = \"%@\"", self, key, value);
-    if (![value isEqual: [self valueForKey: key]]) {
+    id curValue = [(_changedProperties ?: _properties) objectForKey: key];
+    if (![value isEqual: curValue]) {
+        NSLog(@"DEMOITEM: <%p> .%@ := \"%@\"", self, key, value);
+        [self willChangeValueForKey: key];
         if (!_changedProperties) {
             _changedProperties = _properties ? [_properties mutableCopy] 
                                              : [[NSMutableDictionary alloc] init];
         }
         [_changedProperties setObject: value forKey: key];
+        [self didChangeValueForKey: key];
 
         [self performSelector: @selector(save) withObject: nil afterDelay: 0.0];
     }

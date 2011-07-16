@@ -6,7 +6,7 @@
 //  Copyright 2011 Couchbase, Inc. All rights reserved.
 //
 
-#import "Couch.h"
+#import "CouchInternal.h"
 #import "RESTInternal.h"
 
 
@@ -335,12 +335,13 @@
     CouchDatabase* userDB = [_server databaseNamed: @"_users"];
     __block int changeCount = 0;
     [userDB onChange: ^(CouchDocument* doc){ ++changeCount; }];
+    userDB.lastSequenceNumber = 0;
     userDB.tracksChanges = YES;
 
     NSDate* stopAt = [NSDate dateWithTimeIntervalSinceNow: 1.0];
     while (changeCount < 1 && [stopAt timeIntervalSinceNow] > 0)
         [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1.0]];
-    STAssertEquals(changeCount, 1, nil);
+    STAssertTrue(changeCount > 0, nil);
 }
 
 

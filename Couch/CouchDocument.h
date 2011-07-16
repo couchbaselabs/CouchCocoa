@@ -91,5 +91,6 @@ extern NSString* const kCouchDocumentChangeNotification;
 
 
 @protocol CouchDocumentModel <NSObject>
+/** If a CouchDocument's modelObject implements this method, it will be called whenever the document posts a kCouchDocumentChangeNotification. */
 - (void) couchDocumentChanged: (CouchDocument*)doc;
 @end

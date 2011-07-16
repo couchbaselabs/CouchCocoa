@@ -936,7 +936,6 @@
 							<int key="NSvFlags">288</int>
 							<string key="NSFrame">{{144, 5}, {96, 32}}</string>
 							<reference key="NSSuperview" ref="930771090"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="12205183">
 								<int key="NSCellFlags">67239424</int>
@@ -970,7 +969,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>checked</string>
 					<string>text</string>
-					<string>Key</string>
 				</object>
 				<string key="NSObjectClassName">DemoItem</string>
 				<bool key="NSEditable">YES</bool>
