@@ -61,6 +61,14 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
     API calls will now instantiate and return new instances. */
 - (void) clearDocumentCache;
 
+#pragma mark REPLICATION & SYNCHRONIZATION:
+
+/** Triggers replication from the source, to this database. */
+- (RESTOperation*) syncFromSource: (NSString*)urlString;
+
+/** Triggers replication from this database, to the target. */
+- (RESTOperation*) syncToTarget: (NSString*)urlString;
+
 #pragma mark QUERIES & DESIGN DOCUMENTS:
 
 /** Returns a query that runs custom map/reduce functions.

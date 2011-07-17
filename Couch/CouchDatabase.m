@@ -154,6 +154,30 @@ static const NSUInteger kDocRetainLimit = 50;
         [self processDeferredChanges];
 }
 
+#pragma mark -
+#pragma mark REPLICATION & SYNCHRONIZATION
+
+/** Triggers replication from the source, to this database. */
+- (RESTOperation*) syncFromSource: (NSString*)urlString {
+    NSDictionary* body = [NSDictionary dictionaryWithObjectsAndKeys:
+                            urlString, @"source"
+                            , self.relativePath, @"target"
+                            , nil];
+    RESTResource* replicate = [[[RESTResource alloc] initWithParent: self.server 
+                                                    relativePath: @"_replicate"] autorelease];
+    return [replicate POSTJSON: body parameters: nil];
+}
+
+/** Triggers replication from this database, to the target. */
+- (RESTOperation*) syncToTarget: (NSString*)urlString {
+    NSDictionary* body = [NSDictionary dictionaryWithObjectsAndKeys:
+                          urlString, @"target"
+                          , self.relativePath, @"source"
+                          , nil];
+    RESTResource* replicate = [[[RESTResource alloc] initWithParent: self.server 
+                                                    relativePath: @"_replicate"] autorelease];
+    return [replicate POSTJSON: body parameters: nil];
+}
 
 #pragma mark -
 #pragma mark QUERIES
