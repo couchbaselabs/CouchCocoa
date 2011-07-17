@@ -10,7 +10,9 @@
 @class RESTCache, RESTOperation;
 
 
-/** Represents an HTTP resource identified by a specific URL. */
+/** Represents an HTTP resource identified by a specific URL.
+    RESTResource instances form a hierarchy. Root instances are instantiated with an explicit URL, and children with paths relative to their parents. Children know their parents, but parents don't automatically remember their children. (Subclasses can use the RESTCache utility to enable such downward links, however.)
+*/
 @interface RESTResource : NSObject
 {
     @private
@@ -104,7 +106,7 @@
 
 #pragma mark PROTECTED:
 
-/** This is sent by a RESTOperation when it completes, before its state changes or any other handlers are called.
+/** This is sent by a RESTOperation to its resource when it completes, before its state changes or any other handlers are called.
     @param op  The RESTOperation, created by this object, that just completed.
     @param error  The error (or nil) result of the operation. This value has not yet been stored into the operation's -error property.
     @return  The error to store into the operation's -error property. You can return the input error value unchanged, or return a different (or no) error.*/

@@ -21,8 +21,10 @@
     CouchRevision* _currentRevision;
 }
 
-
+/** The unique ID of this document; its key in the database. */
 @property (readonly) NSString* documentID;
+
+/** YES if the document has been deleted from the database. */
 @property (readonly) BOOL isDeleted;
 
 /** Optional reference to an application-defined model object representing this document.
@@ -32,10 +34,11 @@
 
 #pragma mark REVISIONS:
 
-/** The ID of the current revision (if known). */
+/** The ID of the current revision (if known; else nil). */
 @property (readonly, copy) NSString* currentRevisionID;
 
-/** The current/latest revision. This object is cached. */
+/** The current/latest revision. This object is cached.
+    This method may need to make a synchronous call to the server to fetch the revision, if its revision ID is not yet known. */
 - (CouchRevision*) currentRevision;
 
 /** The revision with the specified ID.
@@ -43,12 +46,14 @@
     or even verify that the ID is valid. */
 - (CouchRevision*) revisionWithID: (NSString*)revisionID;
 
-/** Returns an array of available revisions, in basically forward chronological order. */
+/** Returns an array of available revisions.
+    The ordering is essentially arbitrary, but usually chronological (unless there has been merging with changes from another server.)
+    The number of historical revisions available may vary; it depends on how recently the database has been compacted. You should not rely on earlier revisions being available, except for those representing unresolved conflicts. */
 - (NSArray*) getRevisionHistory;
 
 #pragma mark PROPERTIES:
 
-/** These are the app-defined properties of the document, without the CouchDB-defined special properties whose names begin with "_".
+/** These are the app-defined properties of the document, without the CouchDB-defined special keys whose names begin with "_".
     This is shorthand for self.currentRevision.properties.
     (If you want the entire document object returned by the server, get the revision's -contents property.) */
 @property (readonly, copy) NSDictionary* properties;
@@ -56,8 +61,10 @@
 /** Shorthand for [self.properties objectForKey: key]. */
 - (id) propertyForKey: (NSString*)key;
 
-/** Updates the document with new properties.
-    This is asynchronous. Watch response for conflicts! */
+/** Updates the document with new properties, creating a new revision (Asynchronous.)
+    If the PUT succeeds, the operation's resultObject will be set to the new CouchRevision.
+    You should be prepared for the operation to fail with a 412 status, indicating that a newer revision has already been added by another client.
+    In this case you need to call -currentRevision again, to get that newer revision, incorporate any changes into your properties dictionary, and try again. (This is not the same as a conflict resulting from synchronization. Those conflicts result in multiple versions of a document appearing in the database; but in this case, you were prevented from creating a conflict.) */
 - (RESTOperation*) putProperties: (NSDictionary*)properties;
 
 #pragma mark CONFLICTS:

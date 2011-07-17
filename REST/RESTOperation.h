@@ -44,19 +44,25 @@ typedef void (^OnCompleteBlock)();
     Call -load, -wait or any synchronous method to start it. */
 - (id) initWithResource: (RESTResource*)resource request: (NSURLRequest*)request;
 
+/** The RESTResource instance that created this operation. */
 @property (readonly) RESTResource* resource;
+/** The target URL of this operation. 
+    (This is not necessarily the same as the URL of its resource! It's often the same, but it may have query parameters or sub-paths appended to it.) */
 @property (readonly) NSURL* URL;
-@property (readonly) NSString* name;    // for documents this is the identifier
+/** The last component of the URL's path. */
+@property (readonly) NSString* name;
+/** The HTTP method of the request. */
 @property (readonly) NSString* method;
+/** The underlying URL request. */
 @property (readonly) NSURLRequest* request;
 
-@property (readonly) BOOL isReadOnly;   // true for GET and HEAD
-@property (readonly) BOOL isGET;
-@property (readonly) BOOL isPUT;
-@property (readonly) BOOL isPOST;
-@property (readonly) BOOL isDELETE;
+@property (readonly) BOOL isReadOnly;   /**< Is this a GET or HEAD request? */
+@property (readonly) BOOL isGET;        /**< Is this a GET request? */
+@property (readonly) BOOL isPUT;        /**< Is this a PUT request? */
+@property (readonly) BOOL isPOST;       /**< Is this a POST request? */
+@property (readonly) BOOL isDELETE;     /**< Is this a DELETE request? */
 
-/** Sets an HTTP request header. Must be called before loading begins. */
+/** Sets an HTTP request header. Must be called before loading begins! */
 - (void) setValue: (NSString*)value forHeader: (NSString*)headerName;
 
 /** The HTTP request body. Cannot be changed after the operation starts. */
@@ -69,8 +75,9 @@ typedef void (^OnCompleteBlock)();
 - (BOOL) start;
 
 /** Will call the given block when the request finishes.
-    If it's already finished, it calls the block immediately (and returns YES).
-    This method may be called multiple times; blocks will be called in the order added. */
+    This method may be called multiple times; blocks will be called in the order added.
+    @param onComplete  The block to be called when the request finishes.
+    @return  YES if the block has been called by the time this method returns, NO if it will be called in the future. */
 - (BOOL) onCompletion: (OnCompleteBlock)onComplete;
 
 /** Blocks till any pending network operation finishes (i.e. -isComplete becomes true.)
@@ -85,25 +92,26 @@ typedef void (^OnCompleteBlock)();
 /** YES if the response is complete (whether successful or unsuccessful.) */
 @property (readonly) BOOL isComplete;
 
-/** Status of the request; nil if everything's OK.
-    This does not block, but it won't be set to a non-nil value until the operation finishes. */
+/** If the request has failed, this will be set to an NSError describing what went wrong; else it's nil.
+    This method does not block, but it won't be set to a non-nil value until the operation finishes. */
 @property (readonly, retain) NSError* error;
 
-/** YES if there is no error and the HTTP status is <= 299. (Synchronous) */
+/** YES if there is no error and the HTTP status is <= 299 (Synchronous.) */
 @property (readonly) BOOL isSuccessful;
 
-/** HTTP status code of the response. (Synchronous) */
+/** HTTP status code of the response (Synchronous.)
+    Until the request finishes, this is zero. It's also zero if a lower-level network error occurred (like if the host couldn't be found or the TCP connection was reset.) */
 @property (readonly) int httpStatus;
 
-/** Dictionary of HTTP response headers. (Synchronous) */
+/** Dictionary of HTTP response headers (Synchronous.) */
 @property (readonly) NSDictionary* responseHeaders;
 
-/** The body of the response (data and entity headers). (Synchronous) */
+/** The body of the response, with its entity headers (Synchronous.) */
 @property (readonly) RESTBody* responseBody;
 
 
 /** Object associated with this response.
-    A client can store anything it wants here; often this property will be set by an onCompletion block. */
+    A client can store anything it wants here, typically a value parsed from or represented by the response body; often this property will be set by an onCompletion block. */
 @property (retain) id resultObject;
 
 
