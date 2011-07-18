@@ -15,6 +15,15 @@ struct CouchViewDefinition;
 typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
 
 
+/** Option flags for replication (push/pull). */
+enum {
+    kCouchReplicationCreateTarget = 1,  /**< Create the destination database if it doesn't exist */
+    kCouchReplicationContinuous   = 2,  /**< Continuous mode; remains active till canceled */
+    kCouchReplicationCancel       = 4   /**< Cancel a current replication in progress */
+};
+typedef NSUInteger CouchReplicationOptions;
+
+
 /** A CouchDB database; contains CouchDocuments.
     The CouchServer is the factory object for CouchDatabases. */
 @interface CouchDatabase : CouchResource
@@ -61,14 +70,6 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
     API calls will now instantiate and return new instances. */
 - (void) clearDocumentCache;
 
-#pragma mark REPLICATION & SYNCHRONIZATION:
-
-/** Triggers replication from the source, to this database. */
-- (RESTOperation*) syncFromSource: (NSString*)urlString;
-
-/** Triggers replication from this database, to the target. */
-- (RESTOperation*) syncToTarget: (NSString*)urlString;
-
 #pragma mark QUERIES & DESIGN DOCUMENTS:
 
 /** Returns a query that runs custom map/reduce functions.
@@ -95,6 +96,23 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
     If this is not known yet, the current value will be fetched via a synchronous query.
     You can save the current value on quit, and restore it on relaunch before enabling change tracking, to get notifications of all changes that have occurred in the meantime. */
 @property NSUInteger lastSequenceNumber;
+
+#pragma mark REPLICATION & SYNCHRONIZATION:
+
+/** Triggers replication from a source database, to this database.
+    @param sourceURL  The URL of the database to replicate from.
+    @param options  Zero or more option flags affecting the replication.
+    @return  A RESTOperation that will complete when the replication finishes. The response body will be a JSON object describing what occurred. */
+- (RESTOperation*) pullFromDatabaseAtURL: (NSURL*)sourceURL 
+                                 options: (CouchReplicationOptions)options;
+
+/** Triggers replication from this database to a target database.
+    @param targetURL  The URL of the database to replicate to.
+    @param options  Zero or more option flags affecting the replication.
+    @return  A RESTOperation that will complete when the replication finishes. The response body will be a JSON object describing what occurred. */
+- (RESTOperation*) pushToDatabaseAtURL: (NSURL*)targetURL
+                               options: (CouchReplicationOptions)options;
+
 
 @end
 

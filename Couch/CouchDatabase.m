@@ -154,30 +154,6 @@ static const NSUInteger kDocRetainLimit = 50;
         [self processDeferredChanges];
 }
 
-#pragma mark -
-#pragma mark REPLICATION & SYNCHRONIZATION
-
-/** Triggers replication from the source, to this database. */
-- (RESTOperation*) syncFromSource: (NSString*)urlString {
-    NSDictionary* body = [NSDictionary dictionaryWithObjectsAndKeys:
-                            urlString, @"source"
-                            , self.relativePath, @"target"
-                            , nil];
-    RESTResource* replicate = [[[RESTResource alloc] initWithParent: self.server 
-                                                    relativePath: @"_replicate"] autorelease];
-    return [replicate POSTJSON: body parameters: nil];
-}
-
-/** Triggers replication from this database, to the target. */
-- (RESTOperation*) syncToTarget: (NSString*)urlString {
-    NSDictionary* body = [NSDictionary dictionaryWithObjectsAndKeys:
-                          urlString, @"target"
-                          , self.relativePath, @"source"
-                          , nil];
-    RESTResource* replicate = [[[RESTResource alloc] initWithParent: self.server 
-                                                    relativePath: @"_replicate"] autorelease];
-    return [replicate POSTJSON: body parameters: nil];
-}
 
 #pragma mark -
 #pragma mark QUERIES
@@ -209,6 +185,41 @@ static const NSUInteger kDocRetainLimit = 50;
     return [self slowQueryWithViewDefinition: defn];
 }
 
+
+#pragma mark -
+#pragma mark REPLICATION & SYNCHRONIZATION
+
+- (RESTOperation*) replicateFrom: (NSString*)source 
+                              to: (NSString*)target
+                         options: (CouchReplicationOptions)options
+{
+    // http://wiki.apache.org/couchdb/Replication
+    NSParameterAssert(source);
+    NSParameterAssert(target);
+    NSMutableDictionary* body = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                          source, @"source",
+                          target, @"target",
+                          nil];
+    if (options & kCouchReplicationCreateTarget)
+        [body setObject: @"true" forKey: @"create_target"];
+    if (options & kCouchReplicationContinuous)
+        [body setObject: @"true" forKey: @"continuous"];
+    if (options & kCouchReplicationCancel)
+        [body setObject: @"true" forKey: @"cancel"];
+    RESTResource* replicate = [[[RESTResource alloc] initWithParent: self.server 
+                                                       relativePath: @"_replicate"] autorelease];
+    return [replicate POSTJSON: body parameters: nil];
+}
+
+- (RESTOperation*) pullFromDatabaseAtURL: (NSURL*)sourceURL 
+                                 options: (CouchReplicationOptions)options {
+    return [self replicateFrom: sourceURL.absoluteString to: self.relativePath options: options];
+}
+
+- (RESTOperation*) pushToDatabaseAtURL: (NSURL*)targetURL
+                               options: (CouchReplicationOptions)options {
+    return [self replicateFrom: self.relativePath to: targetURL.absoluteString options: options];
+}
 
 
 #pragma mark -
