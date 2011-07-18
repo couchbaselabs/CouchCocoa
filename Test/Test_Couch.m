@@ -69,7 +69,7 @@
     
     STAssertNotNil(doc.documentID, nil);
     STAssertNotNil(doc.currentRevisionID, nil);
-    STAssertEqualObjects(doc.properties, properties, @"");
+    STAssertEqualObjects(doc.userProperties, properties, @"");
     STAssertEquals([_db documentWithID: doc.documentID], doc, @"Saved document wasn't cached");
     NSLog(@"Created %p = %@", doc, doc);
     return doc;
@@ -116,12 +116,12 @@
     NSString* currentRevisionID = doc.currentRevisionID;
     STAssertTrue(currentRevisionID.length > 10, @"Invalid doc revision: '%@'", currentRevisionID);
 
-    STAssertEqualObjects(doc.properties, properties, @"Couldn't get doc properties");
+    STAssertEqualObjects(doc.userProperties, properties, @"Couldn't get doc properties");
 
     RESTOperation* op = AssertWait([doc GET]);
     STAssertEquals(op.httpStatus, 200, @"GET failed");
 
-    STAssertEqualObjects(doc.properties, properties, @"Couldn't get doc properties after GET");
+    STAssertEqualObjects(doc.userProperties, properties, @"Couldn't get doc properties after GET");
 }
 
 
@@ -145,8 +145,8 @@
     CouchRevision* rev2 = op.resultObject;
     STAssertTrue([rev2 isKindOfClass: [CouchRevision class]], nil);
     STAssertEqualObjects(rev2.revisionID, doc.currentRevisionID, nil);
-    STAssertTrue(rev2.contentsAreLoaded, nil);
-    STAssertEqualObjects(rev2.properties, properties2, nil);
+    STAssertTrue(rev2.propertiesAreLoaded, nil);
+    STAssertEqualObjects(rev2.userProperties, properties2, nil);
     STAssertEquals(rev2.document, doc, nil);
 }
 
@@ -217,7 +217,7 @@
         NSLog(@"    --> %@", row);
         CouchDocument* doc = row.document;
         STAssertNotNil(doc, @"Couldn't get doc from query");
-        STAssertTrue(doc.currentRevision.contentsAreLoaded, @"QueryRow should have preloaded revision contents");
+        STAssertTrue(doc.currentRevision.propertiesAreLoaded, @"QueryRow should have preloaded revision contents");
         NSLog(@"        Properties = %@", doc.properties);
         STAssertNotNil(doc.properties, @"Couldn't get doc properties");
         STAssertEqualObjects([doc propertyForKey: @"testName"], @"testDatabase", @"Wrong doc contents");
@@ -255,15 +255,16 @@
                                 [NSNumber numberWithInt:1], @"tag",
                                 nil];
     CouchDocument* doc = [self createDocumentWithProperties: properties];
-    NSString* rev1ID = doc.currentRevisionID;
+    NSString* rev1ID = [[doc.currentRevisionID copy] autorelease];
     NSLog(@"1st revision: %@", rev1ID);
     STAssertTrue([rev1ID hasPrefix: @"1-"], @"1st revision looks wrong: '%@'", rev1ID);
-    STAssertEqualObjects(doc.properties, properties, nil);
+    STAssertEqualObjects(doc.userProperties, properties, nil);
+    properties = [doc.properties.mutableCopy autorelease];
     [properties setObject: [NSNumber numberWithInt: 2] forKey: @"tag"];
     STAssertFalse([properties isEqual: doc.properties], nil);
     AssertWait([doc putProperties: properties]);
     NSString* rev2ID = doc.currentRevisionID;
-    NSLog(@"2nd revision: %@", rev1ID);
+    NSLog(@"2nd revision: %@", rev2ID);
     STAssertTrue([rev2ID hasPrefix: @"2-"], @"2nd revision looks wrong: '%@'", rev2ID);
     
     NSArray* revisions = [doc getRevisionHistory];

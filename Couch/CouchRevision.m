@@ -24,10 +24,10 @@
 }
 
 
-- (id) initWithDocument: (CouchDocument*)document contents: (NSDictionary*)contents {
+- (id) initWithDocument: (CouchDocument*)document properties: (NSDictionary*)properties {
     NSParameterAssert(document);
-    NSParameterAssert(contents);
-    NSString* revisionID = $castIf(NSString, [contents objectForKey: @"_rev"]);
+    NSParameterAssert(properties);
+    NSString* revisionID = $castIf(NSString, [properties objectForKey: @"_rev"]);
     if (!revisionID) {
         [self release];
         return nil;
@@ -35,8 +35,8 @@
     
     self = [self initWithDocument: document revisionID: revisionID];
     if (self) {
-        _contents = [contents copy];
-        _isDeleted = [$castIf(NSNumber, [contents objectForKey: @"_deleted"]) boolValue];
+        _properties = [properties copy];
+        _isDeleted = [$castIf(NSNumber, [properties objectForKey: @"_deleted"]) boolValue];
     }
     return self;
 }
@@ -58,7 +58,7 @@
         }
     }
     self = [self initWithDocument: $castIf(CouchDocument, operation.resource)
-                         contents: operation.responseBody.fromJSON];
+                         properties: operation.responseBody.fromJSON];
     if (self) {
         _isDeleted = isDeleted;
     }
@@ -115,58 +115,47 @@
 #pragma mark CONTENTS / PROPERTIES:
 
 
-- (BOOL) contentsAreLoaded {
-    return _contents != nil;
-}
-
-
-- (NSDictionary*) contents {
-    if (!_contents) {
-        [[self GET] wait];   // synchronous!
-    }
-    return _contents;
-}
-
-
-- (void) setContents: (NSDictionary*)contents {
-    if (contents != _contents) {
-        [_contents release];
-        _contents = [contents copy];
-        [_properties release];
-        _properties = nil;
-    }
+- (BOOL) propertiesAreLoaded {
+    return _properties != nil;
 }
 
 
 - (NSDictionary*) properties {
     if (!_properties) {
-        NSDictionary* rep = [self contents];
-        if (rep) {
-            NSMutableDictionary* props = [[NSMutableDictionary alloc] init];
-            for (NSString* key in rep) {
-                if (![key hasPrefix: @"_"])
-                    [props setObject: [rep objectForKey: key] forKey: key];
-            }
-            _properties = [props copy];
-            [props release];
-        }
+        [[self GET] wait];   // synchronous!
     }
     return _properties;
 }
 
 
-- (id) propertyForKey: (NSString*)key {
-    if ([key hasPrefix: @"_"])
+- (void) setProperties: (NSDictionary*)properties {
+    if (properties != _properties) {
+        [_properties release];
+        _properties = [properties copy];
+    }
+}
+
+
+- (NSDictionary*) userProperties {
+    NSDictionary* rep = [self properties];
+    if (!rep)
         return nil;
-    return [self.contents objectForKey: key];
+    NSMutableDictionary* props = [NSMutableDictionary dictionary];
+    for (NSString* key in rep) {
+        if (![key hasPrefix: @"_"])
+            [props setObject: [rep objectForKey: key] forKey: key];
+    }
+    return props;
+}
+
+
+- (id) propertyForKey: (NSString*)key {
+    return [self.properties objectForKey: key];
 }
 
 
 - (RESTOperation*) putProperties: (NSDictionary*)properties {
     NSParameterAssert(properties != nil);
-    for (NSString* key in properties)
-        NSAssert1(![key hasPrefix: @"_"], @"Illegal property key '%@'", key);
-    
     NSMutableDictionary* contents = [[properties mutableCopy] autorelease];
     [contents setObject: self.documentID forKey: @"_id"];
     [contents setObject: self.revisionID forKey: @"_rev"];
@@ -177,11 +166,9 @@
             // Construct a new revision object from the response and assign it to the resultObject:
             NSString* rev = $castIf(NSString, [op.responseBody.fromJSON objectForKey: @"rev"]);
             if (rev) {
-                // Also tell the document about the new revision ID:
-                [self.document setCurrentRevisionID: rev];
                 [contents setObject: rev forKey: @"_rev"];
                 CouchRevision* savedRev = [[CouchRevision alloc] initWithDocument: self.document
-                                                                         contents: contents];
+                                                                       properties: contents];
                 op.resultObject = savedRev;
                 [savedRev release];
             }
@@ -191,12 +178,31 @@
 }
 
 
+- (RESTOperation*) sendRequest: (NSURLRequest*)request {
+    RESTOperation* op = [super sendRequest: request];
+    if (!op.isReadOnly)
+        [self.database beginDocumentOperation: self];
+    return op;
+}
+
+
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     error = [super operation: op willCompleteWithError: error];
-    if (op.isGET && op.isSuccessful) {
-        // Cache document contents after GET:
-        self.contents = op.responseBody.fromJSON;
+    if (op.isSuccessful) {
+        if (op.isGET) {
+            // Cache document properties after GET:
+            self.properties = op.responseBody.fromJSON;
+        } else if (op.isPUT) {
+            // Tell the document about the new revision ID:
+            NSString* rev = $castIf(NSString, [op.responseBody.fromJSON objectForKey: @"rev"]);
+            if (rev)
+                [self.document setCurrentRevisionID: rev];
+        }
     }
+
+    if (!op.isReadOnly)
+        [self.database endDocumentOperation: self];
+    
     return error;
 }
 
@@ -206,7 +212,7 @@
 
 
 - (NSDictionary*) attachmentMetadata {
-    return $castIf(NSDictionary, [self.contents objectForKey: @"_attachments"]);
+    return $castIf(NSDictionary, [self.properties objectForKey: @"_attachments"]);
 }
 
 

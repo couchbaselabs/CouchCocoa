@@ -38,14 +38,17 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 #pragma mark REVISIONS:
 
 
-@synthesize isDeleted=_isDeleted, currentRevisionID=_currentRevisionID,
-            modelObject=_modelObject;
+@synthesize isDeleted=_isDeleted, modelObject=_modelObject;
 
+
+- (NSString*) currentRevisionID {
+    return _currentRevisionID;
+}
 
 - (void) setCurrentRevisionID:(NSString *)revisionID {
     NSParameterAssert(revisionID);
     if (![revisionID isEqualToString: _currentRevisionID]) {
-        [_currentRevisionID release];
+        [_currentRevisionID autorelease];
         _currentRevisionID = [revisionID copy];
         [_currentRevision autorelease];
         _currentRevision = nil;
@@ -73,8 +76,8 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 }
 
 
-- (void) loadCurrentRevisionFrom: (NSDictionary*)contents {
-    NSString* rev = $castIf(NSString, [contents objectForKey: @"_rev"]);
+- (void) loadCurrentRevisionFrom: (NSDictionary*)properties {
+    NSString* rev = $castIf(NSString, [properties objectForKey: @"_rev"]);
     if (rev) {
         if (!_currentRevisionID || [_currentRevisionID isEqualToString: rev]) {
             // OK, I can set the current revisions contents from the given dictionary:
@@ -82,7 +85,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
             if (!_currentRevision)
                 _currentRevision = [[CouchRevision alloc] initWithDocument: self
                                                                 revisionID: rev];
-            [_currentRevision setContents:contents];
+            [_currentRevision setProperties:properties];
         }
     }
 }
@@ -136,8 +139,8 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
             NSString* revisionID = $castIf(NSString, [contents objectForKey: @"_rev"]);
             if (revisionID) {
                 CouchRevision* revision = [self revisionWithID: revisionID];
-                if (!revision.contentsAreLoaded)
-                    revision.contents = contents;
+                if (!revision.propertiesAreLoaded)
+                    revision.properties = contents;
                 [revisions addObject: revision];
             }
         }
@@ -179,6 +182,9 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     return self.currentRevision.properties;
 }
 
+- (NSDictionary*) userProperties {
+    return self.currentRevision.userProperties;
+}
 
 - (id) propertyForKey: (NSString*)key {
     return [self.currentRevision propertyForKey: key];
@@ -187,15 +193,9 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 - (RESTOperation*) putProperties: (NSDictionary*)properties {
     NSParameterAssert(properties != nil);
-    for (NSString* key in properties)
-        NSAssert1(![key hasPrefix: @"_"], @"Illegal property key '%@'", key);
     
-    if (_currentRevisionID) {
-        NSMutableDictionary* newProperties = [[properties mutableCopy] autorelease];
-        [newProperties setObject: _currentRevisionID forKey: @"_rev"];
-        properties = newProperties;
-    } else if (self.relativePath) {
-        Warn(@"Trying to PUT %@ without knowing its current rev ID", self);
+    if (_currentRevisionID && ![properties objectForKey: @"_rev"]) {
+        Warn(@"Trying to PUT to %@ without specifying a rev ID", self);
     }
     
     return [self PUTJSON: properties parameters: nil];

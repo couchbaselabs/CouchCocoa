@@ -36,24 +36,21 @@
 
 #pragma mark PROPERTIES
 
-/** These are the app-defined properties of the document, without the CouchDB-defined special properties whose names begin with "_".
+/** The document as returned from the server and parsed from JSON. (Synchronous)
+    Keys beginning with "_" are defined and reserved by CouchDB; others are app-specific.
     The properties are cached for the lifespan of this object, so subsequent calls after the first are cheap.
     (This accessor is synchronous.) */
 @property (readonly, copy) NSDictionary* properties;
+
+/** The user-defined properties, without the ones reserved by CouchDB.
+    This is based on -properties, with every key whose name starts with "_" removed. */
+@property (readonly, copy) NSDictionary* userProperties;
 
 /** Shorthand for [self.properties objectForKey: key]. (Synchronous) */
 - (id) propertyForKey: (NSString*)key;
 
 /** Has this object fetched its contents from the server yet? */
-@property (readonly) BOOL contentsAreLoaded;
-
-/** The document as returned from the server and parsed from JSON. (Synchronous)
-    Keys beginning with "_" are defined and reserved by CouchDB; others are app-specific.
-    For most purposes you probably want to use the -properties property instead.
-    The contents are cached for the lifespan of this object, so subsequent calls after the first are cheap.
-*/
-@property (readonly) NSDictionary* contents;
-
+@property (readonly) BOOL propertiesAreLoaded;
 
 /** Creates a new revision with the given properties.
     This is asynchronous. Watch response for conflict errors!

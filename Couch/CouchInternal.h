@@ -10,14 +10,14 @@
 #import "RESTInternal.h"
 
 
-@interface CouchAttachment (Private)
+@interface CouchAttachment ()
 - (id) initWithRevision: (CouchRevision*)revision 
                    name: (NSString*)name
                    type: (NSString*)contentType;
 @end
 
 
-@interface CouchDatabase (Private)
+@interface CouchDatabase ()
 - (void) documentAssignedID: (CouchDocument*)document;
 - (void) receivedChangeLine: (NSData*)chunk;
 - (void) beginDocumentOperation: (CouchResource*)resource;
@@ -26,7 +26,7 @@
 @end
 
 
-@interface CouchDocument (Private)
+@interface CouchDocument ()
 @property (readwrite, copy) NSString* currentRevisionID;
 - (void) loadCurrentRevisionFrom: (NSDictionary*)contents;
 - (void) bulkSaveCompleted: (NSDictionary*) result;
@@ -34,12 +34,12 @@
 @end
 
 
-@interface CouchRevision (Private)
+@interface CouchRevision ()
 - (id) initWithDocument: (CouchDocument*)document revisionID: (NSString*)revisionID;
-- (id) initWithDocument: (CouchDocument*)document contents: (NSDictionary*)contents;
+- (id) initWithDocument: (CouchDocument*)document properties: (NSDictionary*)contents;
 - (id) initWithOperation: (RESTOperation*)operation;
 @property (readwrite) BOOL isDeleted;
-@property (readwrite, copy) NSDictionary* contents;
+@property (readwrite, copy) NSDictionary* properties;
 @end
 
 

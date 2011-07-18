@@ -53,15 +53,19 @@
 
 #pragma mark PROPERTIES:
 
-/** These are the app-defined properties of the document, without the CouchDB-defined special keys whose names begin with "_".
-    This is shorthand for self.currentRevision.properties.
-    (If you want the entire document object returned by the server, get the revision's -contents property.) */
+/** The contents of the current revision of the document.
+    This is shorthand for self.currentRevision.contents. */
 @property (readonly, copy) NSDictionary* properties;
+
+/** The user-defined properties, without the ones reserved by CouchDB.
+    This is based on -properties, with every key whose name starts with "_" removed. */
+@property (readonly, copy) NSDictionary* userProperties;
 
 /** Shorthand for [self.properties objectForKey: key]. */
 - (id) propertyForKey: (NSString*)key;
 
 /** Updates the document with new properties, creating a new revision (Asynchronous.)
+    The properties dictionary needs to contain a "_rev" key whose value is the current revision's ID; the dictionary returned by -properties will already have this, so if you modify that dictionary you're OK. The exception is if this is a new document, as there is no current revision, so no "_rev" key is needed.
     If the PUT succeeds, the operation's resultObject will be set to the new CouchRevision.
     You should be prepared for the operation to fail with a 412 status, indicating that a newer revision has already been added by another client.
     In this case you need to call -currentRevision again, to get that newer revision, incorporate any changes into your properties dictionary, and try again. (This is not the same as a conflict resulting from synchronization. Those conflicts result in multiple versions of a document appearing in the database; but in this case, you were prevented from creating a conflict.) */
