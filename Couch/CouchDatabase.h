@@ -40,7 +40,8 @@ typedef NSUInteger CouchReplicationOptions;
 
 @property (readonly) CouchServer* server;
 
-/** Creates the database on the server. */
+/** Creates the database on the server.
+    Fails with an HTTP status 412 (Conflict) if a database with this name already exists. */
 - (RESTOperation*) create;
 
 /** Gets the current total number of documents. (Synchronous) */

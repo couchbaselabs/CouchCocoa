@@ -12,6 +12,7 @@
 #import "CouchDocument.h"
 #import "CouchRevision.h"
 #import "CouchAttachment.h"
+#import "RESTOperation.h"
 
 
 /** @mainpage About CouchCocoa

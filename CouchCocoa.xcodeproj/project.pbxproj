@@ -76,8 +76,23 @@
 		27CDEC3713C67E1600C979BB /* Test_REST.m in Sources */ = {isa = PBXBuildFile; fileRef = 272E9D9313A2EBE0009F18E9 /* Test_REST.m */; };
 		27CDEC3813C67E1A00C979BB /* Test_Couch.m in Sources */ = {isa = PBXBuildFile; fileRef = 270A663A13A5B36900791F4A /* Test_Couch.m */; };
 		27CDEC3A13C6841E00C979BB /* Couch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
+		27EEA59A13D602EA00D7ACA4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */; };
+		27EEA5A913D604F500D7ACA4 /* RESTResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B231A13916F1400DDD950 /* RESTResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5AA13D604F800D7ACA4 /* RESTOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22FD138F32CB00DDD950 /* RESTOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5AB13D604FC00D7ACA4 /* RESTBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 27A57B3B1397E6FB002776DB /* RESTBody.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5AC13D6050000D7ACA4 /* RESTCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 2781242B13AC265A0051A99D /* RESTCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5AD13D6050600D7ACA4 /* CouchServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22F1138F1F5F00DDD950 /* CouchServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5AE13D6050C00D7ACA4 /* CouchDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22F4138F269200DDD950 /* CouchDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5AF13D6050F00D7ACA4 /* CouchDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22F7138F2AA600DDD950 /* CouchDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5B013D6051100D7ACA4 /* CouchRevision.h in Headers */ = {isa = PBXBuildFile; fileRef = 2739BF2013BAB411004829CD /* CouchRevision.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5B113D6051300D7ACA4 /* CouchAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22FA138F320A00DDD950 /* CouchAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5B213D6051600D7ACA4 /* CouchDesignDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 27BB781613A08B520069ABA7 /* CouchDesignDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5B313D6051800D7ACA4 /* CouchQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B275E1394225600DDD950 /* CouchQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5B413D6051B00D7ACA4 /* CouchResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B24CA1392EE3600DDD950 /* CouchResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5B513D6052000D7ACA4 /* Couch.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A663C13A5B3DF00791F4A /* Couch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5B613D6052300D7ACA4 /* REST.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A664413A5BA4600791F4A /* REST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EF148C1396D8CC0052913E /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EF148B1396D8CC0052913E /* DemoAppController.m */; };
-		27EF14B31396DD3B0052913E /* CouchDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27EF14B21396DD3B0052913E /* CouchDemo.xib */; };
+		27EF14B31396DD3B0052913E /* AddressesDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27EF14B21396DD3B0052913E /* AddressesDemo.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +109,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 27CDEBF013C67C9B00C979BB;
 			remoteInfo = CouchAPI;
+		};
+		27EEA5A513D604C000D7ACA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2739BF2A13BCE53B004829CD;
+			remoteInfo = "iOS Library";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -177,11 +199,13 @@
 		27D5997813CE404300694B37 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		27DA430413B659A900BBADB7 /* RESTInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTInternal.h; sourceTree = "<group>"; };
 		27DA430513B659A900BBADB7 /* RESTInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTInternal.m; sourceTree = "<group>"; };
-		27EF14771396D7BA0052913E /* CouchDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CouchDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		27EF14791396D7BA0052913E /* CouchDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CouchDemo-Info.plist"; sourceTree = "<group>"; };
+		27EEA59813D602EA00D7ACA4 /* Couch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Couch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		27EF14771396D7BA0052913E /* Addresses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Addresses.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		27EF14791396D7BA0052913E /* AddressesDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AddressesDemo-Info.plist"; sourceTree = "<group>"; };
 		27EF148A1396D8CC0052913E /* DemoAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoAppController.h; sourceTree = "<group>"; };
 		27EF148B1396D8CC0052913E /* DemoAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoAppController.m; sourceTree = "<group>"; };
-		27EF14B21396DD3B0052913E /* CouchDemo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CouchDemo.xib; sourceTree = "<group>"; };
+		27EF14B21396DD3B0052913E /* AddressesDemo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressesDemo.xib; sourceTree = "<group>"; };
 		27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ShoppingDemo-Info.plist"; path = "Demo/ShoppingDemo-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -230,6 +254,14 @@
 				27CDEC0413C67C9B00C979BB /* SenTestingKit.framework in Frameworks */,
 				27CDEC0513C67C9B00C979BB /* Cocoa.framework in Frameworks */,
 				27CDEC0813C67C9B00C979BB /* Couch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27EEA59513D602EA00D7ACA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27EEA59A13D602EA00D7ACA4 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,12 +322,13 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				27EF14771396D7BA0052913E /* CouchDemo.app */,
+				27EF14771396D7BA0052913E /* Addresses.app */,
 				2739BF2B13BCE53B004829CD /* libCouch.a */,
 				2739BF3613BCE53C004829CD /* iOS LibraryTests.octest */,
 				27CDEBF113C67C9B00C979BB /* Couch.framework */,
 				27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */,
 				2784E1BC13CE5249009CC5C8 /* Shopping.app */,
+				27EEA59813D602EA00D7ACA4 /* Couch.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -308,6 +341,7 @@
 				2739BF2C13BCE53B004829CD /* Foundation.framework */,
 				2739BF3813BCE53C004829CD /* UIKit.framework */,
 				2739BF3B13BCE53C004829CD /* CoreGraphics.framework */,
+				27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */,
 				27CDEBF313C67C9B00C979BB /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -397,8 +431,8 @@
 				27A577A713970959002776DB /* DemoQuery.m */,
 				27EF148A1396D8CC0052913E /* DemoAppController.h */,
 				27EF148B1396D8CC0052913E /* DemoAppController.m */,
-				27EF14B21396DD3B0052913E /* CouchDemo.xib */,
-				27EF14791396D7BA0052913E /* CouchDemo-Info.plist */,
+				27EF14B21396DD3B0052913E /* AddressesDemo.xib */,
+				27EF14791396D7BA0052913E /* AddressesDemo-Info.plist */,
 				2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */,
 				27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */,
 			);
@@ -436,6 +470,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		27EEA5A813D604E100D7ACA4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27EEA5B613D6052300D7ACA4 /* REST.h in Headers */,
+				27EEA5A913D604F500D7ACA4 /* RESTResource.h in Headers */,
+				27EEA5AA13D604F800D7ACA4 /* RESTOperation.h in Headers */,
+				27EEA5AB13D604FC00D7ACA4 /* RESTBody.h in Headers */,
+				27EEA5AC13D6050000D7ACA4 /* RESTCache.h in Headers */,
+				27EEA5B513D6052000D7ACA4 /* Couch.h in Headers */,
+				27EEA5B013D6051100D7ACA4 /* CouchRevision.h in Headers */,
+				27EEA5AF13D6050F00D7ACA4 /* CouchDocument.h in Headers */,
+				27EEA5B113D6051300D7ACA4 /* CouchAttachment.h in Headers */,
+				27EEA5B213D6051600D7ACA4 /* CouchDesignDocument.h in Headers */,
+				27EEA5B313D6051800D7ACA4 /* CouchQuery.h in Headers */,
+				27EEA5B413D6051B00D7ACA4 /* CouchResource.h in Headers */,
+				27EEA5AD13D6050600D7ACA4 /* CouchServer.h in Headers */,
+				27EEA5AE13D6050C00D7ACA4 /* CouchDatabase.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
@@ -463,6 +518,7 @@
 				2739BF2713BCE53B004829CD /* Sources */,
 				2739BF2813BCE53B004829CD /* Frameworks */,
 				2739BF2913BCE53B004829CD /* Headers */,
+				27EEA5B813D6062900D7ACA4 /* Build Fat Library */,
 			);
 			buildRules = (
 			);
@@ -547,9 +603,29 @@
 			productReference = 27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		27EF14761396D7BA0052913E /* CouchDemo */ = {
+		27EEA59713D602EA00D7ACA4 /* iOS Framework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 27EF147C1396D7BB0052913E /* Build configuration list for PBXNativeTarget "CouchDemo" */;
+			buildConfigurationList = 27EEA5A413D602EA00D7ACA4 /* Build configuration list for PBXNativeTarget "iOS Framework" */;
+			buildPhases = (
+				27EEA59413D602EA00D7ACA4 /* Sources */,
+				27EEA59513D602EA00D7ACA4 /* Frameworks */,
+				27EEA59613D602EA00D7ACA4 /* Resources */,
+				27EEA5A813D604E100D7ACA4 /* Headers */,
+				27EEA5B713D6054800D7ACA4 /* Copy Library */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				27EEA5A613D604C000D7ACA4 /* PBXTargetDependency */,
+			);
+			name = "iOS Framework";
+			productName = Couch.frameworik;
+			productReference = 27EEA59813D602EA00D7ACA4 /* Couch.framework */;
+			productType = "com.apple.product-type.bundle";
+		};
+		27EF14761396D7BA0052913E /* Demo-Addresses */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27EF147C1396D7BB0052913E /* Build configuration list for PBXNativeTarget "Demo-Addresses" */;
 			buildPhases = (
 				27EF14731396D7BA0052913E /* Resources */,
 				27EF14741396D7BA0052913E /* Sources */,
@@ -560,9 +636,9 @@
 			);
 			dependencies = (
 			);
-			name = CouchDemo;
+			name = "Demo-Addresses";
 			productName = CouchDemo;
-			productReference = 27EF14771396D7BA0052913E /* CouchDemo.app */;
+			productReference = 27EF14771396D7BA0052913E /* Addresses.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -587,8 +663,9 @@
 			targets = (
 				27CDEBF013C67C9B00C979BB /* Mac Library */,
 				27CDEC0213C67C9B00C979BB /* Mac Tests */,
-				27EF14761396D7BA0052913E /* CouchDemo */,
+				27EF14761396D7BA0052913E /* Demo-Addresses */,
 				2784E1AE13CE5249009CC5C8 /* Demo-Shopping */,
+				27EEA59713D602EA00D7ACA4 /* iOS Framework */,
 				2739BF2A13BCE53B004829CD /* iOS Library */,
 				2739BF3513BCE53C004829CD /* iOS Tests */,
 				2731759A13CBA57B000FF426 /* Documentation */,
@@ -627,11 +704,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		27EEA59613D602EA00D7ACA4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27EF14731396D7BA0052913E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27EF14B31396DD3B0052913E /* CouchDemo.xib in Resources */,
+				27EF14B31396DD3B0052913E /* AddressesDemo.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -663,6 +747,35 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		27EEA5B713D6054800D7ACA4 /* Copy Library */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Library";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp \"${CONFIGURATION_BUILD_DIR}/libCouch.a\" \"${CONFIGURATION_BUILD_DIR}/${EXECUTABLE_PATH}\"";
+		};
+		27EEA5B813D6062900D7ACA4 /* Build Fat Library */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Fat Library";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Version 2.0 (updated for Xcode 4, with some fixes)\n# Changes:\n#    - Works with xcode 4, even when running xcode 3 projects (Workarounds for apple bugs)\n#    - Faster / better: only runs lipo once, instead of once per recursion\n#    - Added some debugging statemetns that can be switched on/off by changing the DEBUG_THIS_SCRIPT variable to \"true\"\n#    - Fixed some typos\n# \n# Purpose:\n#   Create a static library for iPhone from within XCode\n#   Because Apple staff DELIBERATELY broke Xcode to make this impossible from the GUI (Xcode 3.2.3 specifically states this in the Release notes!)\n#   ...no, I don't understand why they did this!\n#\n# Author: Adam Martin - http://twitter.com/redglassesapps\n# Based on: original script from Eonil (main changes: Eonil's script WILL NOT WORK in Xcode GUI - it WILL CRASH YOUR COMPUTER)\n#\n# More info: see this Stack Overflow question: http://stackoverflow.com/questions/3520977/build-fat-static-library-device-simulator-using-xcode-and-sdk-4\n\n#################[ Tests: helps workaround any future bugs in Xcode ]########\n#\nDEBUG_THIS_SCRIPT=\"false\"\n\nif [ $DEBUG_THIS_SCRIPT = \"true\" ]\nthen\necho \"########### TESTS #############\"\necho \"Use the following variables when debugging this script; note that they may change on recursions\"\necho \"BUILD_DIR = $BUILD_DIR\"\necho \"BUILD_ROOT = $BUILD_ROOT\"\necho \"CONFIGURATION_BUILD_DIR = $CONFIGURATION_BUILD_DIR\"\necho \"BUILT_PRODUCTS_DIR = $BUILT_PRODUCTS_DIR\"\necho \"CONFIGURATION_TEMP_DIR = $CONFIGURATION_TEMP_DIR\"\necho \"TARGET_BUILD_DIR = $TARGET_BUILD_DIR\"\nfi\n\n#####################[ part 1 ]##################\n# First, work out the BASESDK version number (NB: Apple ought to report this, but they hide it)\n#    (incidental: searching for substrings in sh is a nightmare! Sob)\n\nSDK_VERSION=$(echo ${SDK_NAME} | grep -o '.\\{3\\}$')\n\n# Next, work out if we're in SIM or DEVICE\n\nif [ ${PLATFORM_NAME} = \"iphonesimulator\" ]\nthen\nOTHER_SDK_TO_BUILD=iphoneos${SDK_VERSION}\nelse\nOTHER_SDK_TO_BUILD=iphonesimulator${SDK_VERSION}\nfi\n\necho \"XCode has selected SDK: ${PLATFORM_NAME} with version: ${SDK_VERSION} (although back-targetting: ${IPHONEOS_DEPLOYMENT_TARGET})\"\necho \"...therefore, OTHER_SDK_TO_BUILD = ${OTHER_SDK_TO_BUILD}\"\n#\n#####################[ end of part 1 ]##################\n\n#####################[ part 2 ]##################\n#\n# IF this is the original invocation, invoke WHATEVER other builds are required\n#\n# Xcode is already building ONE target...\n#\n# ...but this is a LIBRARY, so Apple is wrong to set it to build just one.\n# ...we need to build ALL targets\n# ...we MUST NOT re-build the target that is ALREADY being built: Xcode WILL CRASH YOUR COMPUTER if you try this (infinite recursion!)\n#\n#\n# So: build ONLY the missing platforms/configurations.\n\nif [ \"true\" == ${ALREADYINVOKED:-false} ]\nthen\necho \"RECURSION: I am NOT the root invocation, so I'm NOT going to recurse\"\nelse\n# CRITICAL:\n# Prevent infinite recursion (Xcode sucks)\nexport ALREADYINVOKED=\"true\"\n\necho \"RECURSION: I am the root ... recursing all missing build targets NOW...\"\necho \"RECURSION: ...about to invoke: xcodebuild -configuration \\\"${CONFIGURATION}\\\" -target \\\"${TARGET_NAME}\\\" -sdk \\\"${OTHER_SDK_TO_BUILD}\\\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO\"\nxcodebuild -configuration \"${CONFIGURATION}\" -target \"${TARGET_NAME}\" -sdk \"${OTHER_SDK_TO_BUILD}\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" || exit 1\n\nACTION=\"build\"\n\n#Merge all platform binaries as a fat binary for each configurations.\n\n# Calculate where the (multiple) built files are coming from:\nCURRENTCONFIG_DEVICE_DIR=${SYMROOT}/${CONFIGURATION}-iphoneos\nCURRENTCONFIG_SIMULATOR_DIR=${SYMROOT}/${CONFIGURATION}-iphonesimulator\n\necho \"Taking device build from: ${CURRENTCONFIG_DEVICE_DIR}\"\necho \"Taking simulator build from: ${CURRENTCONFIG_SIMULATOR_DIR}\"\n\nCREATING_UNIVERSAL_DIR=${SYMROOT}/${CONFIGURATION}-ios-universal\necho \"...I will output a universal build to: ${CREATING_UNIVERSAL_DIR}\"\n\n# ... remove the products of previous runs of this script\n#      NB: this directory is ONLY created by this script - it should be safe to delete!\n\nrm -rf \"${CREATING_UNIVERSAL_DIR}\"\nmkdir \"${CREATING_UNIVERSAL_DIR}\"\n\n#\necho \"lipo: for current configuration (${CONFIGURATION}) creating output file: ${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\nlipo -create -output \"${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\" || exit 1\n\n#########\n#\n# Added: StackOverflow suggestion to also copy \"include\" files\n#    (untested, but should work OK)\n#\nif [ -d \"${CURRENTCONFIG_DEVICE_DIR}/usr/local/include\" ]\nthen\nmkdir -p \"${CREATING_UNIVERSAL_DIR}/usr/local/include\"\n# * needs to be outside the double quotes?\ncp \"${CURRENTCONFIG_DEVICE_DIR}/usr/local/include/\"* \"${CREATING_UNIVERSAL_DIR}/usr/local/include\"\nfi\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -739,6 +852,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		27EEA59413D602EA00D7ACA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27EF14741396D7BA0052913E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -761,6 +881,11 @@
 			isa = PBXTargetDependency;
 			target = 27CDEBF013C67C9B00C979BB /* Mac Library */;
 			targetProxy = 27CDEC0613C67C9B00C979BB /* PBXContainerItemProxy */;
+		};
+		27EEA5A613D604C000D7ACA4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2739BF2A13BCE53B004829CD /* iOS Library */;
+			targetProxy = 27EEA5A513D604C000D7ACA4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -873,7 +998,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Couch;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos4.0;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -889,7 +1014,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Couch;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos4.0;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1052,6 +1177,54 @@
 			};
 			name = Release;
 		};
+		27EEA5A213D602EA00D7ACA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)-ios-universal";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Couch.frameworik/Couch.frameworik-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = Couch;
+				SDKROOT = iphoneos4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		27EEA5A313D602EA00D7ACA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)-ios-universal";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Couch.frameworik/Couch.frameworik-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = Couch;
+				SDKROOT = iphoneos4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
 		27EF147A1396D7BB0052913E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1063,9 +1236,9 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "Demo/CouchDemo-Info.plist";
+				INFOPLIST_FILE = "Demo/AddressesDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = CouchDemo;
+				PRODUCT_NAME = Addresses;
 			};
 			name = Debug;
 		};
@@ -1079,7 +1252,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "Demo/CouchDemo-Info.plist";
+				INFOPLIST_FILE = "Demo/AddressesDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1087,7 +1260,7 @@
 					"-framework",
 					AppKit,
 				);
-				PRODUCT_NAME = CouchDemo;
+				PRODUCT_NAME = Addresses;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1158,7 +1331,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		27EF147C1396D7BB0052913E /* Build configuration list for PBXNativeTarget "CouchDemo" */ = {
+		27EEA5A413D602EA00D7ACA4 /* Build configuration list for PBXNativeTarget "iOS Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27EEA5A213D602EA00D7ACA4 /* Debug */,
+				27EEA5A313D602EA00D7ACA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		27EF147C1396D7BB0052913E /* Build configuration list for PBXNativeTarget "Demo-Addresses" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				27EF147A1396D7BB0052913E /* Debug */,
