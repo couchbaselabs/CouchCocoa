@@ -27,11 +27,6 @@ NSString* const kCouchLanguageJavaScript = @"javascript";
 }
 
 
-- (NSDictionary*) properties {
-    return self.currentRevision.properties;
-}
-
-
 /** Returns a dictionary mapping view names to the dictionaries defining them (as in the design document's JSON source.)
     The first call fetches the entire design document; subsequent calls are cached. */
 - (NSDictionary*) views {

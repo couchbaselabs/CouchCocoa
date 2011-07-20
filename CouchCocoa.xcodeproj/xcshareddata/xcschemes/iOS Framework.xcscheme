@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "27EEA59713D602EA00D7ACA4"
-               BuildableName = "Couch.frameworik.bundle"
+               BuildableName = "Couch.framework"
                BlueprintName = "iOS Framework"
                ReferencedContainer = "container:CouchCocoa.xcodeproj">
             </BuildableReference>

@@ -10,7 +10,6 @@
 #import "DemoItem.h"
 
 #import "Couch.h"
-#import "RESTOperation.h"
 
 
 @implementation DemoQuery

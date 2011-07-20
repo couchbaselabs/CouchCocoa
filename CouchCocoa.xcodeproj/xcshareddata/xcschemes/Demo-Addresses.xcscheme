@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "27EF14761396D7BA0052913E"
-               BuildableName = "CouchDemo.app"
+               BuildableName = "Addresses.app"
                BlueprintName = "Demo-Addresses"
                ReferencedContainer = "container:CouchCocoa.xcodeproj">
             </BuildableReference>
@@ -40,7 +40,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "27EF14761396D7BA0052913E"
-            BuildableName = "CouchDemo.app"
+            BuildableName = "Addresses.app"
             BlueprintName = "Demo-Addresses"
             ReferencedContainer = "container:CouchCocoa.xcodeproj">
          </BuildableReference>
@@ -58,7 +58,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "27EF14761396D7BA0052913E"
-            BuildableName = "CouchDemo.app"
+            BuildableName = "Addresses.app"
             BlueprintName = "Demo-Addresses"
             ReferencedContainer = "container:CouchCocoa.xcodeproj">
          </BuildableReference>

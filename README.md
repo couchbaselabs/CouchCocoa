@@ -7,11 +7,16 @@ CouchCocoa is a medium-level Objective-C API for working with [CouchDB][1] on iO
 
 This API is not the only way to access CouchDB on iOS and Mac OS. There are other Objective-C APIs available, such as [Trundle][2], or you can go down to the metal and talk to the HTTP API yourself using NSURLConnection.
 
+### Kick The Tires!
+
+* [Peruse some simple code snippets!][7]
+* [Explore the API documentation!][8]
+
 ### Join Us
 
-You can discuss this API or ask questions at the [Mobile Couchbase Google Group][3].
+* You can discuss this API or ask questions at the [Mobile Couchbase Google Group][3].
 
-You might also want to look at the [issue tracker][5] to see known problems and feature requests.
+* You might also want to look at the [issue tracker][5] to see known problems and feature requests.
 
 ## Build Instructions
 
@@ -61,3 +66,5 @@ Copyright 2011, Couchbase, Inc.
 [4]: http://www.couchbase.com/downloads/couchbase-single-server/community
 [5]: https://github.com/couchbaselabs/CouchCocoa/issues
 [6]: http://www.apache.org/licenses/LICENSE-2.0.html
+[7]: https://github.com/couchbaselabs/CouchCocoa/wiki/Example-Snippets
+[8]: http://couchbaselabs.github.com/CouchCocoa/docs/

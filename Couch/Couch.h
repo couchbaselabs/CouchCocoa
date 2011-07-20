@@ -26,6 +26,8 @@
  
  This API is not the only way to access CouchDB on iOS and Mac OS. There are other Objective-C APIs available, such as <a href="https://github.com/schwa/trundle">Trundle</a>, or you can go down to the metal and talk to CouchDB's HTTP interface yourself using NSURLConnection.
  
+ The source code, Git repository and wiki are available on <a href="https://github.com/couchbaselabs/CouchCocoa">Github</a>.
+ 
  @section concepts_sec  Basic Concepts
  
  CouchCocoa has two layers. The lower layer, called "REST", implements a service-agnostic interface to web applications that follow the REST architectural style. It wraps NSURLConnection to make it easy to represent a REST API's endpoint URLs as a hierarchy of RESTResource objects and perform the basic get/put/create/delete operations on them. Operations are represented by the RESTOperation class, which can be used either synchronously or asynchronously. This layer knows nothing about CouchDB in particular.
@@ -33,6 +35,8 @@
  The upper layer, whose classes are prefixed with "Couch", extends the REST layer with a class hierarchy representing CouchDB abstractions like servers, databases, documents and views. Each of these has its own subclass of RESTResource, and so each instance represents a particular URL on the CouchDB server. However, this API relieves you of having to know about the details of the CouchDB URL structure.
  
  Most of the time you'll be working with methods declared in the Couch classes, but don't forget that they inherit from the REST classes. In particular, there are some commonly used methods declared in RESTResource, like -URL and -DELETE, that are easy to overlook if you forget about inheritance.
+ 
+ Some <a href="https://github.com/couchbaselabs/CouchCocoa/wiki/Example-Snippets">example code snippets</a> are available.
  
  @section restrictions_sec  Restrictions
  
