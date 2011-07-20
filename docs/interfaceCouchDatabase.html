@@ -129,6 +129,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience method that creates a custom query from a JavaScript map function.  <a href="#a2be6aa7da19576f4f3575085f5a0f40e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDesignDocument.html">CouchDesignDocument</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#ae0ea4103c0658afeb8c34d67ef10d79b">designDocumentWithName:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a <a class="el" href="interfaceCouchDesignDocument.html" title="A Design Document is a special document type that contains things like map/reduce functions...">CouchDesignDocument</a> object with the given ID.  <a href="#ae0ea4103c0658afeb8c34d67ef10d79b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a52180676f2bd43b9084678fb43982aec">pullFromDatabaseAtURL:options:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from a source database, to this database.  <a href="#a52180676f2bd43b9084678fb43982aec"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a074be7baa022a0a11c18d9361964fc9e">pushToDatabaseAtURL:options:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from this database to a target database.  <a href="#a074be7baa022a0a11c18d9361964fc9e"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99d523b7cd3821a2cb48c70b0836553b"></a><!-- doxytag: member="CouchDatabase::server" ref="a99d523b7cd3821a2cb48c70b0836553b" args="" -->
@@ -157,6 +161,7 @@ Properties</h2></td></tr>
 <div class="memdoc">
 
 <p>Creates the database on the server. </p>
+<p>Fails with an HTTP status 412 (Conflict) if a database with this name already exists. </p>
 
 </div>
 </div>
@@ -363,6 +368,80 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a52180676f2bd43b9084678fb43982aec"></a><!-- doxytag: member="CouchDatabase::pullFromDatabaseAtURL:options:" ref="a52180676f2bd43b9084678fb43982aec" args="(NSURL *sourceURL,[options] CouchReplicationOptions options)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) pullFromDatabaseAtURL: </td>
+          <td></td>
+          <td class="paramtype">(NSURL *)&#160;</td>
+          <td class="paramname"><em>sourceURL</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">options:</td>
+          <td></td>
+          <td class="paramtype">(CouchReplicationOptions)&#160;</td>
+          <td class="paramname"><em>options</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Triggers replication from a source database, to this database. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sourceURL</td><td>The URL of the database to replicate from. </td></tr>
+    <tr><td class="paramname">options</td><td>Zero or more option flags affecting the replication. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A <a class="el" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a> that will complete when the replication finishes. The response body will be a JSON object describing what occurred. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a074be7baa022a0a11c18d9361964fc9e"></a><!-- doxytag: member="CouchDatabase::pushToDatabaseAtURL:options:" ref="a074be7baa022a0a11c18d9361964fc9e" args="(NSURL *targetURL,[options] CouchReplicationOptions options)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) pushToDatabaseAtURL: </td>
+          <td></td>
+          <td class="paramtype">(NSURL *)&#160;</td>
+          <td class="paramname"><em>targetURL</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">options:</td>
+          <td></td>
+          <td class="paramtype">(CouchReplicationOptions)&#160;</td>
+          <td class="paramname"><em>options</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Triggers replication from this database to a target database. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">targetURL</td><td>The URL of the database to replicate to. </td></tr>
+    <tr><td class="paramname">options</td><td>Zero or more option flags affecting the replication. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A <a class="el" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a> that will complete when the replication finishes. The response body will be a JSON object describing what occurred. </dd></dl>
+
+</div>
+</div>
 <hr/><h2>Property Documentation</h2>
 <a class="anchor" id="adb7a1b1c5b1083dd3de18b8ad3c55704"></a><!-- doxytag: member="CouchDatabase::tracksChanges" ref="adb7a1b1c5b1083dd3de18b8ad3c55704" args="" -->
 <div class="memitem">
@@ -404,7 +483,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>      </li>
-      <li class="footer">Generated on Sat Jul 16 2011 23:38:11 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Jul 20 2011 10:18:38 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

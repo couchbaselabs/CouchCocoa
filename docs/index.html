@@ -84,11 +84,13 @@ Introduction</h2>
 <li>But it doesn't provide a full-fledged model layer like CoreData or ActiveRecord. You're still working with CouchDB documents as, basically, NSDictionaries, and you'll need your own mapping between those and your app's object model.</li>
 </ul>
 <p>This API is not the only way to access CouchDB on iOS and Mac OS. There are other Objective-C APIs available, such as <a href="https://github.com/schwa/trundle">Trundle</a>, or you can go down to the metal and talk to CouchDB's HTTP interface yourself using NSURLConnection.</p>
+<p>The source code, Git repository and wiki are available on <a href="https://github.com/couchbaselabs/CouchCocoa">Github</a>.</p>
 <h2><a class="anchor" id="concepts_sec"></a>
 Basic Concepts</h2>
 <p>CouchCocoa has two layers. The lower layer, called "REST", implements a service-agnostic interface to web applications that follow the REST architectural style. It wraps NSURLConnection to make it easy to represent a REST API's endpoint URLs as a hierarchy of <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a> objects and perform the basic get/put/create/delete operations on them. Operations are represented by the <a class="el" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a> class, which can be used either synchronously or asynchronously. This layer knows nothing about CouchDB in particular.</p>
 <p>The upper layer, whose classes are prefixed with "Couch", extends the REST layer with a class hierarchy representing CouchDB abstractions like servers, databases, documents and views. Each of these has its own subclass of <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>, and so each instance represents a particular URL on the CouchDB server. However, this API relieves you of having to know about the details of the CouchDB URL structure.</p>
 <p>Most of the time you'll be working with methods declared in the Couch classes, but don't forget that they inherit from the REST classes. In particular, there are some commonly used methods declared in <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>, like -URL and -DELETE, that are easy to overlook if you forget about inheritance.</p>
+<p>Some <a href="https://github.com/couchbaselabs/CouchCocoa/wiki/Example-Snippets">example code snippets</a> are available.</p>
 <h2><a class="anchor" id="restrictions_sec"></a>
 Restrictions</h2>
 <h3><a class="anchor" id="compatibility_sec"></a>
@@ -104,7 +106,7 @@ Thread Safety</h3>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Sat Jul 16 2011 23:38:11 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Jul 20 2011 10:18:38 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

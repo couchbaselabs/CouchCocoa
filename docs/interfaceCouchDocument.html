@@ -117,7 +117,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDocument.html#a6a2f5c62b0fc6f0d2359c130b24626e5">propertyForKey:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for [self.properties objectForKey: key].  <a href="#a6a2f5c62b0fc6f0d2359c130b24626e5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDocument.html#a678ae5c5757952216c94f31c4e7c1186">putProperties:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the document with new properties, creating a new revision (Asynchronous.) If the PUT succeeds, the operation's resultObject will be set to the new <a class="el" href="interfaceCouchRevision.html" title="A single revision of a CouchDocument.">CouchRevision</a>.  <a href="#a678ae5c5757952216c94f31c4e7c1186"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the document with new properties, creating a new revision (Asynchronous.) The properties dictionary needs to contain a "_rev" key whose value is the current revision's ID; the dictionary returned by -properties will already have this, so if you modify that dictionary you're OK.  <a href="#a678ae5c5757952216c94f31c4e7c1186"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(NSArray *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDocument.html#a25e96a60bbc0f65b43067dedc2068e79">getConflictingRevisions</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array of revisions that are currently in conflict, in no particular order.  <a href="#a25e96a60bbc0f65b43067dedc2068e79"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDocument.html#adc109f8dd05d84b7a6e9ec621ba613ab">resolveConflictingRevisions:withRevision:</a></td></tr>
@@ -135,7 +135,9 @@ Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDocument.html#a976cbcb8ba155018a14a7481bf973a25">currentRevisionID</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the current revision (if known; else nil).  <a href="#a976cbcb8ba155018a14a7481bf973a25"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDocument.html#a7c234a81385b17dbf37ca9850b7de2f1">properties</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">These are the app-defined properties of the document, without the CouchDB-defined special keys whose names begin with "_".  <a href="#a7c234a81385b17dbf37ca9850b7de2f1"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The contents of the current revision of the document.  <a href="#a7c234a81385b17dbf37ca9850b7de2f1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDocument.html#a40d8f4fa6e8af995d3b90d2d4a2ed3bd">userProperties</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The user-defined properties, without the ones reserved by CouchDB.  <a href="#a40d8f4fa6e8af995d3b90d2d4a2ed3bd"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A CouchDB document, aka "record" aka "row". </p>
@@ -233,8 +235,8 @@ Properties</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Updates the document with new properties, creating a new revision (Asynchronous.) If the PUT succeeds, the operation's resultObject will be set to the new <a class="el" href="interfaceCouchRevision.html" title="A single revision of a CouchDocument.">CouchRevision</a>. </p>
-<p>You should be prepared for the operation to fail with a 412 status, indicating that a newer revision has already been added by another client. In this case you need to call -currentRevision again, to get that newer revision, incorporate any changes into your properties dictionary, and try again. (This is not the same as a conflict resulting from synchronization. Those conflicts result in multiple versions of a document appearing in the database; but in this case, you were prevented from creating a conflict.) </p>
+<p>Updates the document with new properties, creating a new revision (Asynchronous.) The properties dictionary needs to contain a "_rev" key whose value is the current revision's ID; the dictionary returned by -properties will already have this, so if you modify that dictionary you're OK. </p>
+<p>The exception is if this is a new document, as there is no current revision, so no "_rev" key is needed. If the PUT succeeds, the operation's resultObject will be set to the new <a class="el" href="interfaceCouchRevision.html" title="A single revision of a CouchDocument.">CouchRevision</a>. You should be prepared for the operation to fail with a 412 status, indicating that a newer revision has already been added by another client. In this case you need to call -currentRevision again, to get that newer revision, incorporate any changes into your properties dictionary, and try again. (This is not the same as a conflict resulting from synchronization. Those conflicts result in multiple versions of a document appearing in the database; but in this case, you were prevented from creating a conflict.) </p>
 
 </div>
 </div>
@@ -403,8 +405,24 @@ Properties</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>These are the app-defined properties of the document, without the CouchDB-defined special keys whose names begin with "_". </p>
-<p>This is shorthand for self.currentRevision.properties. (If you want the entire document object returned by the server, get the revision's -contents property.) </p>
+<p>The contents of the current revision of the document. </p>
+<p>This is shorthand for self.currentRevision.contents. </p>
+
+</div>
+</div>
+<a class="anchor" id="a40d8f4fa6e8af995d3b90d2d4a2ed3bd"></a><!-- doxytag: member="CouchDocument::userProperties" ref="a40d8f4fa6e8af995d3b90d2d4a2ed3bd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSDictionary*) userProperties<code> [read, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The user-defined properties, without the ones reserved by CouchDB. </p>
+<p>This is based on -properties, with every key whose name starts with "_" removed. </p>
 
 </div>
 </div>
@@ -416,7 +434,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDocument.html">CouchDocument</a>      </li>
-      <li class="footer">Generated on Sat Jul 16 2011 23:38:11 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Jul 20 2011 10:18:38 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
