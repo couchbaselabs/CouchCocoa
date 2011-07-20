@@ -32,9 +32,16 @@ NSString* const kCouchLanguageJavaScript = @"javascript";
 - (NSDictionary*) views {
     //FIX: How/when to invalidate the cache?
     if (!_views) {
-        if (![[self GET] wait])
-            return nil;
-        NSDictionary* views = $castIf(NSDictionary, [self.properties objectForKey: @"views"]);
+        NSDictionary* views = nil;
+        RESTOperation* op = [self GET];
+        if ([op wait]) {
+            views = $castIf(NSDictionary, [self.properties objectForKey: @"views"]);
+        } else {
+            if (op.httpStatus != 404) {
+                Warn(@"Failed to GET designDocument at <%@>: %@", self.URL, op.error);
+                return nil;
+            }
+        }
         if (views)
             _views = [views mutableCopy];
         else
@@ -91,9 +98,11 @@ NSString* const kCouchLanguageJavaScript = @"javascript";
         return nil;
 
     NSMutableDictionary* newProps = [[self.properties mutableCopy] autorelease];
+    if (!newProps)
+        newProps = [NSMutableDictionary dictionary];
     [newProps setObject: _views forKey: @"views"];
     self.changed = NO;
-    return [self.currentRevision putProperties: newProps];
+    return [self putProperties: newProps];
     // TODO: What about conflicts?
 }
 

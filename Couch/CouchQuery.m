@@ -31,7 +31,7 @@
 
 
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
-            prefetch=_prefetch, keys=_keys;
+            prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel;
 
 
 - (CouchDesignDocument*) designDocument {
@@ -66,6 +66,8 @@
         [params setObject: @"true" forKey: @"?descending"];
     if (_prefetch)
         [params setObject: @"true" forKey: @"?include_docs"];
+    if (_groupLevel > 0)
+        [params setObject: [NSNumber numberWithUnsignedInt: _groupLevel] forKey: @"?group_level"];
     return params;
 }
 
@@ -225,11 +227,8 @@
 
 - (CouchDocument*) document {
     NSString* docID = [_result objectForKey: @"id"];
-    if (!docID) {
-        Warn(@"Unexpected missing id in view results: %@", _result);
+    if (!docID)
         return nil;
-    }
-    
     CouchDocument* doc = [_query.database documentWithID: docID];
     [doc loadCurrentRevisionFrom: self.documentContents];
     return doc;

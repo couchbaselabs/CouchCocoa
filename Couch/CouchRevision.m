@@ -51,8 +51,9 @@
         if (operation.httpStatus == 404 && 
             [[operation.responseBody.fromJSON objectForKey: @"reason"] isEqualToString: @"deleted"]) {
             isDeleted = YES;
-        } else {       
-            Warn(@"CouchRevision initWithOperation failed: %@ on %@", operation.error, operation);
+        } else {
+            if (operation.httpStatus != 404)
+                Warn(@"CouchRevision initWithOperation failed: %@ on %@", operation.error, operation);
             [self release];
             return nil;
         }

@@ -22,6 +22,7 @@
     id _startKey, _endKey;
     BOOL _descending, _prefetch;
     NSArray *_keys;
+    NSUInteger _groupLevel;
 }
 
 /** The design document that contains this view. */
@@ -45,6 +46,9 @@
 
 /** If non-nil, the query will fetch only the rows with the given keys. */
 @property (copy) NSArray* keys;
+
+/** If non-zero, enables grouping of results, in views that have reduce functions. */
+@property NSUInteger groupLevel;
 
 /** If set to YES, the results will include the entire document contents of the associated rows.
     These can be accessed via CouchQueryRow's -documentContents property. */

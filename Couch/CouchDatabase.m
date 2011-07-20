@@ -99,23 +99,30 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
+- (RESTOperation*) putChanges: (NSArray*)properties {
+    return [self putChanges: properties toRevisions: nil];
+}
+
 - (RESTOperation*) putChanges: (NSArray*)properties toRevisions: (NSArray*)revisions {
     // http://wiki.apache.org/couchdb/HTTP_Bulk_Document_API
-    NSUInteger nRevisions = revisions.count;
-    NSAssert(properties.count == nRevisions, @"Mismatched array counts");
-    NSMutableArray* entries = [NSMutableArray arrayWithCapacity: nRevisions];
-    for (NSUInteger i=0; i<nRevisions; i++) {
-        CouchRevision* revision = [revisions objectAtIndex: i];
+    NSUInteger nChanges = properties.count;
+    NSAssert(revisions==nil || revisions.count == nChanges, @"Mismatched array counts");
+    NSMutableArray* entries = [NSMutableArray arrayWithCapacity: nChanges];
+    for (NSUInteger i=0; i<nChanges; i++) {
         id props = [properties objectAtIndex: i];
         NSMutableDictionary* contents;
         if ([props isEqual: [NSNull null]]) {
+            NSAssert(revisions, @"Can't pass null properties without specifying a revision");
             contents = [NSDictionary dictionaryWithObject: (id)kCFBooleanTrue forKey: @"_deleted"];
         } else {
             NSAssert([props isKindOfClass:[NSDictionary class]], @"invalid property dict");
             contents = [[props mutableCopy] autorelease];
         }
-        [contents setObject: revision.documentID forKey: @"_id"];
-        [contents setObject: revision.revisionID forKey: @"_rev"];
+        if (revisions) {
+            CouchRevision* revision = [revisions objectAtIndex: i];
+            [contents setObject: revision.documentID forKey: @"_id"];
+            [contents setObject: revision.revisionID forKey: @"_rev"];
+        }
         [entries addObject: contents];
     }
     NSDictionary* body = [NSDictionary dictionaryWithObject: entries forKey: @"docs"];
@@ -126,11 +133,17 @@ static const NSUInteger kDocRetainLimit = 50;
     [op onCompletion: ^{
         if (op.isSuccessful) {
             NSArray* responses = $castIf(NSArray, op.responseBody.fromJSON);
-            //op.representedObject = responses;
+            op.resultObject = [NSMutableArray arrayWithCapacity: nChanges];
             int i = 0;
             for (id response in responses) {
-                CouchRevision* revision = [revisions objectAtIndex: i++];
-                [revision.document bulkSaveCompleted: $castIf(NSDictionary, response)];
+                NSDictionary* responseDict = $castIf(NSDictionary, response);
+                CouchDocument* document;
+                if (revisions)
+                    document = [[revisions objectAtIndex: i++] document];
+                else
+                    document = [self documentWithID: [responseDict objectForKey: @"id"]];
+                [document bulkSaveCompleted: responseDict];
+                [op.resultObject addObject: document];
             }
         }
     }];

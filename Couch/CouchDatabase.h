@@ -67,6 +67,13 @@ typedef NSUInteger CouchReplicationOptions;
     Documents that don't exist on the server yet will be created. */
 - (RESTOperation*) putChanges: (NSArray*)properties toRevisions: (NSArray*)revisions;
 
+/** Bulk-writes multiple documents in one HTTP call.
+    Each property dictionary with an "_id" key will update the existing document with that ID, or create a new document with that ID. A dictionary without an "_id" key will always create a new document with a server-assigned unique ID.
+    If a dictionary updates an existing document, it must also have an "_rev" key that contains the document's current revision ID.
+    The write is asynchronous, but after the returned operation finishes, its -resultObject will be an NSArray of CouchDocuments.
+    @param properties  Array of NSDictionaries, each one the properties of a document. */
+- (RESTOperation*) putChanges: (NSArray*)properties;
+
 /** Empties the cache of recently used CouchDocument objects.
     API calls will now instantiate and return new instances. */
 - (void) clearDocumentCache;
