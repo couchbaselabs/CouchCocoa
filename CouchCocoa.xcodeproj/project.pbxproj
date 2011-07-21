@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2725993913D8B43F006E391E /* Couch.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
+		2725993A13D8CEB7006E391E /* Couch.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
 		2730940E13C68E080093857D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2730940C13C68E080093857D /* InfoPlist.strings */; };
 		2739BF2D13BCE53B004829CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2C13BCE53B004829CD /* Foundation.framework */; };
 		2739BF3713BCE53C004829CD /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */; };
@@ -126,6 +128,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				2725993A13D8CEB7006E391E /* Couch.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +138,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				2725993913D8B43F006E391E /* Couch.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -904,7 +908,7 @@
 		1DEB927908733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -925,7 +929,7 @@
 		1DEB927A08733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Couch/CouchPrefix.pch;
@@ -1118,6 +1122,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = Couch;
 				WRAPPER_EXTENSION = framework;
@@ -1136,6 +1141,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = Couch;
 				WRAPPER_EXTENSION = framework;
@@ -1338,6 +1344,7 @@
 				27EEA5A313D602EA00D7ACA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		27EF147C1396D7BB0052913E /* Build configuration list for PBXNativeTarget "Demo-Addresses" */ = {
 			isa = XCConfigurationList;

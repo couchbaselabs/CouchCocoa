@@ -15,46 +15,59 @@ This API is not the only way to access CouchDB on iOS and Mac OS. There are othe
 ### Join Us
 
 * You can discuss this API or ask questions at the [Mobile Couchbase Google Group][3].
-
 * You might also want to look at the [issue tracker][5] to see known problems and feature requests.
 
 ## Build Instructions
 
-### Running The Demo App
+### Running The Demo Apps
 
-There is a very simple demo app included in the Demo/ subfolder. It lets you edit a simple list of names and email addresses. To run it:
+There are two simple Mac demo apps included in the Demo/ subfolder. One lets you edit a simple list of names and email addresses, the other is a shopping list. (They actually share the same source code; all the differences are in their .xib files, thanks to the magic of Cocoa bindings.) To run them:
 
 0. Start a CouchDB server (such as [CouchBase Server][4]) on localhost.
 1. Open CouchDemo.xcodeproj (in Xcode 4.0.2 or later)
-2. Select "CouchDemo" from the scheme pop-up in the toolbar
+2. Select "Demo-Addresses" or "Demo-Shopping" from the scheme pop-up in the toolbar
 3. Press the Run button
 
-### Viewing API Documentation
+### Building The Framework
 
 1. Open CouchDemo.xcodeproj
-2. Select "Documentation" from the scheme pop-up in the toolbar
-3. Product > Build
-4. Open Documentation/html/index.html in a web browser.
-
-### Building The Mac Framework
-
-1. Open CouchDemo.xcodeproj
-2. Select "Mac Library" from the scheme pop-up in the toolbar
+2. Select "Mac Framework" or "iOS Framework" from the scheme pop-up in the toolbar
 3. Product > Build
 
 If you want to run the unit tests, first make sure a CouchDB server is running on localhost, then choose Product > Test.
 
-The framework will be located at build/CouchCocoa/Build/Products/Debug/Couch.framework.
+The framework will be located at:
 
-### Using The Framework In Your Apps
+* Mac: build/CouchCocoa/Build/Products/Debug/Couch.framework
+* iOS: build/CouchCocoa/Build/Products/Debug-universal/Couch.framework
 
-_TBD_
+## Using The Framework In Your Apps
+
+### Mac OS:
+
+1. Build the Mac framework (see above).
+2. Copy Couch.framework somewhere, either into your project's folder or into a location shared between all your projects.
+3. Open your Xcode project.
+4. Drag the copied framework into the project window's file list.
+5. Add the framework to your target (if you weren't already prompted to in the previous step.)
+6. Edit your target and add a new Copy Files build phase.
+7. Set the build phase's destination to Frameworks, and drag Couch.framework into its list from the main project file list.
+
+### iOS:
+
+1. Build the iOS framework (see above).
+2. Copy Couch.framework somewhere, either into your project's folder or into a location shared between all your projects.
+3. Open your Xcode project.
+4. Drag the copied framework into the project window's file list.
+5. Add the framework to your target (if you weren't already prompted to in the previous step.)
+
+You'll probably want to run a local database server on your iOS device, since it'll allow your app to work offline (and improves performance.) Couch.framework doesn't contain CouchDB itself, so you should also add the Couchbase.framework to your app. Using the two together is very simple: when CouchbaseEmbeddedServer calls your delegate method to tell you the server's up and running, just use the URL it gives you to instantiate a CouchServer object.
 
 ## License
 
 Released under the [Apache license, version 2.0][6].
 
-Contributors: [Jens Alfke](mailto:jens@couchbase.com)
+Contributors: [Jens Alfke](https://github.com/snej/), [J Chris Anderson](https://github.com/jchris/)
 
 Copyright 2011, Couchbase, Inc.
 
