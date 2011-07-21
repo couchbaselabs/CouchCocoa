@@ -30,7 +30,8 @@ int main (int argc, const char * argv[]) {
 - (void) applicationDidFinishLaunching: (NSNotification*)n {
     gRESTLogLevel = kRESTLogRequestHeaders;
     
-    NSString* dbName = [[[NSBundle mainBundle] infoDictionary] objectForKey: @"DemoDatabase"];
+    NSDictionary* bundleInfo = [[NSBundle mainBundle] infoDictionary];
+    NSString* dbName = [bundleInfo objectForKey: @"DemoDatabase"];
     if (!dbName) {
         NSLog(@"FATAL: Please specify a CouchDB database name in the app's Info.plist under the 'DemoDatabase' key");
         exit(1);
@@ -50,6 +51,28 @@ int main (int argc, const char * argv[]) {
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(databaseChanged:)
                                                  name: kCouchDatabaseChangeNotification 
                                                object: _database];
+    
+    // Enable continuous sync:
+    NSString* otherDbURL = [bundleInfo objectForKey: @"SyncDatabaseURL"];
+    if (otherDbURL.length > 0)
+        [self startContinuousSyncWith: [NSURL URLWithString: otherDbURL]];
+}
+
+
+- (void) startContinuousSyncWith: (NSURL*)otherDbURL {
+    RESTOperation *pull = [_database pullFromDatabaseAtURL: otherDbURL
+                                                  options: kCouchReplicationContinuous];
+    [pull onCompletion:^() {
+		NSLog(@"Pull ended, error=%@", pull.error);
+	}];
+    [pull start];
+    
+    RESTOperation *push = [_database pushToDatabaseAtURL: otherDbURL
+                                                options: kCouchReplicationContinuous];
+    [push onCompletion:^() {
+		NSLog(@"Push ended, error=%@", pull.error);
+	}];
+    [push start];
 }
 
 

@@ -36,5 +36,7 @@
 	<array/>
 	<key>DemoDatabase</key>
 	<string>demo-shopping</string>
+	<key>SyncDatabaseURL</key>
+	<string></string>
 </dict>
 </plist>

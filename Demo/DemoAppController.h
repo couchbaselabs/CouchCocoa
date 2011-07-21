@@ -26,4 +26,6 @@
 
 @property (retain) DemoQuery* query;
 
+- (void) startContinuousSyncWith: (NSURL*)otherDbURL;
+
 @end

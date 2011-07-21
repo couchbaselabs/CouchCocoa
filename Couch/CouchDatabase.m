@@ -214,11 +214,11 @@ static const NSUInteger kDocRetainLimit = 50;
                           target, @"target",
                           nil];
     if (options & kCouchReplicationCreateTarget)
-        [body setObject: @"true" forKey: @"create_target"];
+        [body setObject: (id)kCFBooleanTrue forKey: @"create_target"];
     if (options & kCouchReplicationContinuous)
-        [body setObject: @"true" forKey: @"continuous"];
+        [body setObject: (id)kCFBooleanTrue forKey: @"continuous"];
     if (options & kCouchReplicationCancel)
-        [body setObject: @"true" forKey: @"cancel"];
+        [body setObject: (id)kCFBooleanTrue forKey: @"cancel"];
     RESTResource* replicate = [[[RESTResource alloc] initWithParent: self.server 
                                                        relativePath: @"_replicate"] autorelease];
     return [replicate POSTJSON: body parameters: nil];
