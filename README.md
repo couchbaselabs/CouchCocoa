@@ -38,30 +38,30 @@ If you want to run the unit tests, first make sure a CouchDB server is running o
 
 The framework will be located at:
 
-* Mac: build/CouchCocoa/Build/Products/Debug/Couch.framework
-* iOS: build/CouchCocoa/Build/Products/Debug-universal/Couch.framework
+* Mac: build/CouchCocoa/Build/Products/Debug/CouchCocoa.framework
+* iOS: build/CouchCocoa/Build/Products/Debug-universal/CouchCocoa.framework
 
 ## Using The Framework In Your Apps
 
 ### Mac OS:
 
 1. Build the Mac framework (see above).
-2. Copy Couch.framework somewhere, either into your project's folder or into a location shared between all your projects.
+2. Copy CouchCocoa.framework somewhere, either into your project's folder or into a location shared between all your projects.
 3. Open your Xcode project.
 4. Drag the copied framework into the project window's file list.
 5. Add the framework to your target (if you weren't already prompted to in the previous step.)
 6. Edit your target and add a new Copy Files build phase.
-7. Set the build phase's destination to Frameworks, and drag Couch.framework into its list from the main project file list.
+7. Set the build phase's destination to Frameworks, and drag CouchCocoa.framework into its list from the main project file list.
 
 ### iOS:
 
 1. Build the iOS framework (see above).
-2. Copy Couch.framework somewhere, either into your project's folder or into a location shared between all your projects.
+2. Copy CouchCocoa.framework somewhere, either into your project's folder or into a location shared between all your projects.
 3. Open your Xcode project.
 4. Drag the copied framework into the project window's file list.
 5. Add the framework to your target (if you weren't already prompted to in the previous step.)
 
-You'll probably want to run a local database server on your iOS device, since it'll allow your app to work offline (and improves performance.) Couch.framework doesn't contain CouchDB itself, so you should also add the Couchbase.framework to your app. Using the two together is very simple: when CouchbaseEmbeddedServer calls your delegate method to tell you the server's up and running, just use the URL it gives you to instantiate a CouchServer object.
+You'll probably want to run a local database server on your iOS device, since it'll allow your app to work offline (and improves performance.) CouchCocoa.framework doesn't contain CouchDB itself, so you should also add the Couchbase.framework to your app. Using the two together is very simple: when CouchbaseEmbeddedServer calls your delegate method to tell you the server's up and running, just use the URL it gives you to instantiate a CouchServer object.
 
 ## License
 
