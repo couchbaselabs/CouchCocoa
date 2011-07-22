@@ -303,10 +303,14 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
     if ([document notifyChanged: change]) {
         if (_onChange)
             _onChange(document);
+        
         NSNotification* n = [NSNotification notificationWithName: kCouchDatabaseChangeNotification
-                                                          object: self
-                                                        userInfo: change];
-        [[NSNotificationCenter defaultCenter] postNotification: n];
+                                                          object: self];
+        NSArray* modes = [NSArray arrayWithObject: NSRunLoopCommonModes];
+        [[NSNotificationQueue defaultQueue] enqueueNotification: n
+                                                   postingStyle: NSPostASAP 
+                                                   coalesceMask: NSNotificationCoalescingOnSender
+                                                       forModes: modes];
     } else {
         NSLog(@"CouchDatabase change with seq=%lu already known", (unsigned long)sequence);
     }

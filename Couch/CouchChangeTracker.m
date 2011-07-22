@@ -49,7 +49,7 @@ enum {
                          @"Host: %@\r\n"
                          @"\r\n",
                          _database.relativePath, _lastSequenceNo, url.host] copy];
-    LOG(@"CouchChangeTracker: Starting with request:\n%@", _trackingRequest);//TEMP
+    LOG(@"CouchChangeTracker: Starting with request:\n%@", _trackingRequest);
     
     /* Why are we using raw TCP streams rather than NSURLConnection? Good question.
         NSURLConnection seems to have some kind of but with reading the output of _changes, maybe
@@ -114,7 +114,7 @@ enum {
     NSString* line = [[[NSString alloc] initWithBytes: start
                                                length: lineLength
                                              encoding: NSUTF8StringEncoding] autorelease];
-    LOG(@"CouchChangeTracker: LINE: \"%@\"", line);//TEMP
+    LOG(@"CouchChangeTracker: LINE: \"%@\"", line);
     if (line) {
         switch (_state) {
             case kStateStatus: {

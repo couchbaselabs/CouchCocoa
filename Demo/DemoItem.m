@@ -66,7 +66,6 @@
     NSAssert(document.modelObject == nil, @"Document already has a model");
     _document = [document retain];
     _document.modelObject = self;
-    _properties = [document.properties copy];
 }
 
 
@@ -96,22 +95,18 @@
 // Respond to an external change (likely from sync)
 - (void) couchDocumentChanged: (CouchDocument*)doc {
     NSAssert(doc == _document, @"Notified for wrong document");
-    NSDictionary* newProperties = _document.properties;
-    NSDictionary* oldProperties = (_changedProperties ?: _properties);
-    if (![newProperties isEqual: oldProperties]) {
-        NSLog(@"DEMOITEM: <%p> External change to %@", self, _document);
-        [self markExternallyChanged];
-        NSArray* keys = [oldProperties allKeys];
+    NSLog(@"DEMOITEM: <%p> External change to %@", self, _document);
+    [self markExternallyChanged];
+    if (_properties || _changedProperties) {
+        NSArray* keys = [(_changedProperties ?: _properties) allKeys];
         for (id key in keys)
             [self willChangeValueForKey: key];
         [_properties release];
-        _properties = [newProperties copy];
+        _properties = nil;
         [_changedProperties release];
         _changedProperties = nil;
         for (id key in keys)
             [self didChangeValueForKey: key];
-        // TODO: This doesn't post KV notifications of *newly-added* properties,
-        // i.e. keys that exist in newProperties but not oldProperties.
     }
 }
 
@@ -129,7 +124,12 @@
 - (void) saveCompleted: (RESTOperation*)op {
     if (op.error) {
         [self couchDocumentChanged: _document];     // reset to contents from server
-        [[NSApp delegate] presentError: op.error];
+        [NSApp presentError: op.error];
+    } else {
+        [_properties release];
+        _properties = nil;
+        [_changedProperties release];
+        _changedProperties = nil;
     }
 }
 
@@ -144,16 +144,25 @@
 }
 
 
+- (NSDictionary*) properties {
+    if (_changedProperties)
+        return _changedProperties;
+    if (!_properties)
+        _properties = [_document.properties copy];
+    return _properties;
+}
+
+
 // Key-value coding: delegate to _properties (or _changedProperties, if it exists)
 
 - (id) valueForKey: (id)key {
-    return [(_changedProperties ?: _properties) objectForKey: key];
+    return [self.properties objectForKey: key];
 }
 
 
 - (void) setValue: (id)value forKey: (id)key {
     NSParameterAssert(_document);
-    id curValue = [(_changedProperties ?: _properties) objectForKey: key];
+    id curValue = [self.properties objectForKey: key];
     if (![value isEqual: curValue]) {
         NSLog(@"DEMOITEM: <%p> .%@ := \"%@\"", self, key, value);
         [self willChangeValueForKey: key];

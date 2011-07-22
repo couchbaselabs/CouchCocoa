@@ -48,7 +48,8 @@
 
 
 - (void) loadEntriesFrom: (CouchQueryEnumerator*)rows {
-    NSLog(@"Reloading entries...");
+    NSLog(@"Reloading %lu rows from sequence #%lu...",
+          (unsigned long)rows.count, (unsigned long)rows.sequenceNumber);
     NSMutableArray* entries = [NSMutableArray array];
 
     for (CouchQueryRow* row in rows) {
@@ -60,6 +61,7 @@
     }
 
     if (![entries isEqual:_entries]) {
+        NSLog(@"    ...entries changed!");
         [self willChangeValueForKey: @"entries"];
         [_entries release];
         _entries = [entries mutableCopy];
@@ -75,6 +77,7 @@
 
 
 - (BOOL) updateEntries {
+    NSLog(@"Updating the query...");
     _query.prefetch = NO;   // prefetch disables rowsIfChanged optimization
     CouchQueryEnumerator* rows = [_query rowsIfChanged];
     if (!rows)

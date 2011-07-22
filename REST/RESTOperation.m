@@ -302,7 +302,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     NSInteger httpStatus = [_response statusCode];
 
     if (gRESTLogLevel >= kRESTLogRequestURLs) {
-        NSLog(@"REST: << %ld for %@ %@", (long)httpStatus, _request.HTTPMethod, _request.URL);
+        NSLog(@"REST: << %ld for %@ %@ (%lu bytes)",
+              (long)httpStatus, _request.HTTPMethod, _request.URL, (unsigned long)_body.length);
         if (gRESTLogLevel >= kRESTLogRequestHeaders) {
             NSDictionary* headers = _response.allHeaderFields;
             for (NSString* key in headers)

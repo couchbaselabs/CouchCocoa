@@ -66,6 +66,7 @@
         [params setObject: @"true" forKey: @"?include_docs"];
     if (_groupLevel > 0)
         [params setObject: [NSNumber numberWithUnsignedLong: _groupLevel] forKey: @"?group_level"];
+    [params setObject: @"true" forKey: @"?update_seq"];
     return params;
 }
 
@@ -142,19 +143,21 @@
 @implementation CouchQueryEnumerator
 
 
-@synthesize totalCount=_totalCount;
+@synthesize totalCount=_totalCount, sequenceNumber=_sequenceNumber;
 
 
 - (id) initWithQuery: (CouchQuery*)query op: (RESTOperation*)op {
     self = [super init];
     if (self) {
+        NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
         _query = [query retain];
-        _rows = [$castIf(NSArray, [op.responseBody.fromJSON objectForKey: @"rows"]) retain];    // BLOCKING
+        _rows = [$castIf(NSArray, [result objectForKey: @"rows"]) retain];    // BLOCKING
         if (!_rows) {
             [self release];
             return nil;
         }
-        _totalCount = [[op.responseBody.fromJSON objectForKey: @"total_rows"] intValue];
+        _totalCount = [[result objectForKey: @"total_rows"] intValue];
+        _sequenceNumber = [[result objectForKey: @"update_seq"] intValue];
     }
     return self;
 }

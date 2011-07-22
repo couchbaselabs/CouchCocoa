@@ -10,9 +10,8 @@
 @class CouchDatabase, CouchDocument;
 
 
-/** A simple generic model class that wraps a CouchDocument, making its properties available
-    for key-value coding/observing. UI controls can then be bound to these properties,
-    and changes they make will be saved to the database automatically. */
+/** A simple generic model class that wraps a CouchDocument, making its properties available  for key-value coding/observing.
+    UI controls can then be bound to these properties, and changes they make will be saved to the database automatically. */
 @interface DemoItem : NSObject
 {
     CouchDocument* _document;

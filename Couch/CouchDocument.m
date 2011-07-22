@@ -222,12 +222,16 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     
     if ([_currentRevisionID isEqualToString: rev])
         return NO;
+    
+    BOOL deleted = [[change objectForKey: @"deleted"] isEqual: (id)kCFBooleanTrue];
 
-    NSLog(@"**** CHANGED: %@  %@ -> %@", self, _currentRevisionID, rev);
+    NSLog(@"**** CHANGE #%@: %@  %@ -> %@%@",
+          [change objectForKey: @"seq"], self, _currentRevisionID, rev,
+          (deleted ?@" DELETED" :@""));
 
     self.currentRevisionID = rev;
 
-    if ([[change objectForKey: @"deleted"] isEqual: (id)kCFBooleanTrue])
+    if (deleted)
         self.isDeleted = YES;
     
     if ([_modelObject respondsToSelector: @selector(couchDocumentChanged:)])

@@ -75,6 +75,7 @@
     NSArray* _rows;
     NSUInteger _totalCount;
     NSUInteger _nextRow;
+    NSUInteger _sequenceNumber;
 }
 
 /** The number of rows returned in this enumerator */
@@ -82,6 +83,9 @@
 
 /** The total number of rows in the query (excluding options like limit, skip, etc.) */
 @property (readonly) NSUInteger totalCount;
+
+/** The database's current sequenceNumber at the time the view was generated. */
+@property (readonly) NSUInteger sequenceNumber;
 
 /** The next result row. This is the same as -nextObject but with a checked return type. */
 - (CouchQueryRow*) nextRow;
