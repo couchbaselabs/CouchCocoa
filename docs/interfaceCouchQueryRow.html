@@ -81,6 +81,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a>  </div>
   <div class="headertitle">
 <div class="title">CouchQueryRow Class Reference</div>  </div>
@@ -94,6 +95,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p><a href="classCouchQueryRow-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchQueryRow.html#ace38c418dacfca860a1e5e57c50842bc">keyAtIndex:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If the key is an array, returns the item at that index in the array.  <a href="#ace38c418dacfca860a1e5e57c50842bc"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef10950ba3816e60ba53f847d8d9c971"></a><!-- doxytag: member="CouchQueryRow::query" ref="aef10950ba3816e60ba53f847d8d9c971" args="" -->
@@ -104,12 +109,41 @@ id&#160;</td><td class="memItemRight" valign="bottom"><b>key</b></td></tr>
 id&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceCouchDocument.html">CouchDocument</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQueryRow.html#a4e706a6b4009a1992248ec5714b31983">document</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The document this row was mapped from.  <a href="#a4e706a6b4009a1992248ec5714b31983"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQueryRow.html#a6be81425d0bc6b5673db788229d91d31">documentContents</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The contents of the document this row was mapped from.  <a href="#a6be81425d0bc6b5673db788229d91d31"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQueryRow.html#ac906fdc8bf2651aa22f9995c15d6872e">documentProperties</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The properties of the document this row was mapped from.  <a href="#ac906fdc8bf2651aa22f9995c15d6872e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">id&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQueryRow.html#ab707e103665125194c22f999d4713734">key0</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience for use in keypaths.  <a href="#ab707e103665125194c22f999d4713734"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fb103532cc6f2fddc03ab784990ae50"></a><!-- doxytag: member="CouchQueryRow::key1" ref="a1fb103532cc6f2fddc03ab784990ae50" args="" -->
+id&#160;</td><td class="memItemRight" valign="bottom"><b>key1</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fd0148fa4cbab84c3107af3bb46764f"></a><!-- doxytag: member="CouchQueryRow::key2" ref="a8fd0148fa4cbab84c3107af3bb46764f" args="" -->
+id&#160;</td><td class="memItemRight" valign="bottom"><b>key2</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b0becfaf2a08bc9b07d6f6e7388e72c"></a><!-- doxytag: member="CouchQueryRow::key3" ref="a0b0becfaf2a08bc9b07d6f6e7388e72c" args="" -->
+id&#160;</td><td class="memItemRight" valign="bottom"><b>key3</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A result row from a CouchDB view query. </p>
-</div><hr/><h2>Property Documentation</h2>
+</div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ace38c418dacfca860a1e5e57c50842bc"></a><!-- doxytag: member="CouchQueryRow::keyAtIndex:" ref="ace38c418dacfca860a1e5e57c50842bc" args="(NSUInteger index)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (id) keyAtIndex: </td>
+          <td></td>
+          <td class="paramtype">(NSUInteger)&#160;</td>
+          <td class="paramname"><em>index</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>If the key is an array, returns the item at that index in the array. </p>
+<p>If the key is not an array, index=0 will return the key itself. If the index is out of range, returns nil. </p>
+
+</div>
+</div>
+<hr/><h2>Property Documentation</h2>
 <a class="anchor" id="a4e706a6b4009a1992248ec5714b31983"></a><!-- doxytag: member="CouchQueryRow::document" ref="a4e706a6b4009a1992248ec5714b31983" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -125,19 +159,35 @@ id&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6be81425d0bc6b5673db788229d91d31"></a><!-- doxytag: member="CouchQueryRow::documentContents" ref="a6be81425d0bc6b5673db788229d91d31" args="" -->
+<a class="anchor" id="ac906fdc8bf2651aa22f9995c15d6872e"></a><!-- doxytag: member="CouchQueryRow::documentProperties" ref="ac906fdc8bf2651aa22f9995c15d6872e" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSDictionary*) documentContents<code> [read, assign]</code></td>
+          <td class="memname">- (NSDictionary*) documentProperties<code> [read, assign]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>The contents of the document this row was mapped from. </p>
+<p>The properties of the document this row was mapped from. </p>
 <p>To get this, you must have set the -prefetch property on the query; else this will be nil. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab707e103665125194c22f999d4713734"></a><!-- doxytag: member="CouchQueryRow::key0" ref="ab707e103665125194c22f999d4713734" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (id) key0<code> [read, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Convenience for use in keypaths. </p>
+<p>Returns the key at the given index. </p>
 
 </div>
 </div>
@@ -149,7 +199,7 @@ id&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchQueryRow.html">CouchQueryRow</a>      </li>
-      <li class="footer">Generated on Wed Jul 20 2011 10:18:38 for CouchCocoa by&#160;
+      <li class="footer">Generated on Fri Jul 22 2011 15:42:30 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

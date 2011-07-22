@@ -126,25 +126,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00055"></a><a class="code" href="interfaceRESTBody.html#add5142b3376132e0fe212477811ef87d">00055</a> 
 <a name="l00058"></a>00058 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> fromJSON;
 <a name="l00059"></a><a class="code" href="interfaceRESTBody.html#a19a3ca9c449958bea2843856cbeb9665">00059</a> 
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 <span class="keyword">@end</span>
+<a name="l00060"></a>00060 <span class="keyword">@end</span>
+<a name="l00061"></a>00061 
 <a name="l00062"></a>00062 
-<a name="l00063"></a>00063 
-<a name="l00065"></a>00065 <span class="keyword">@interface </span><a class="code" href="interfaceRESTMutableBody.html" title="A mutable subclass of RESTBody that allows the content and headers to be replaced.">RESTMutableBody</a> : <a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a>
-<a name="l00066"></a><a class="code" href="interfaceRESTMutableBody.html">00066</a> 
-<a name="l00067"></a>00067 @property (readwrite, copy) NSData* <a class="code" href="interfaceRESTMutableBody.html#a61b1a3381b6d469d7ac6935eee029761" title="The raw content.">content</a>;
-<a name="l00068"></a><a class="code" href="interfaceRESTMutableBody.html#a61b1a3381b6d469d7ac6935eee029761">00068</a> @property (readwrite, copy) NSDictionary* <a class="code" href="interfaceRESTMutableBody.html#a20fb65551c8442d824ba7dfb34d866eb" title="The HTTP headers, with standard capitalization (first letter of each word capitalized.)">headers</a>;
-<a name="l00069"></a><a class="code" href="interfaceRESTMutableBody.html#a20fb65551c8442d824ba7dfb34d866eb">00069</a> @property (readwrite, copy) NSMutableDictionary* mutableHeaders;
-<a name="l00070"></a>00070 @property (readwrite, copy) NSString* <a class="code" href="interfaceRESTMutableBody.html#a23200055bef6286cebacb668dd211009" title="The value of the Content-Type: header.">contentType</a>;
-<a name="l00071"></a><a class="code" href="interfaceRESTMutableBody.html#a23200055bef6286cebacb668dd211009">00071</a> @property (readwrite, retain) <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* resource;
-<a name="l00072"></a><a class="code" href="interfaceRESTMutableBody.html#add7bbe385d6a81f6adaa12a581914e6b">00072</a> 
-<a name="l00073"></a>00073 @end
+<a name="l00064"></a>00064 <span class="keyword">@interface </span><a class="code" href="interfaceRESTMutableBody.html" title="A mutable subclass of RESTBody that allows the content and headers to be replaced.">RESTMutableBody</a> : <a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a>
+<a name="l00065"></a><a class="code" href="interfaceRESTMutableBody.html">00065</a> 
+<a name="l00066"></a>00066 @property (readwrite, copy) NSData* <a class="code" href="interfaceRESTMutableBody.html#a61b1a3381b6d469d7ac6935eee029761" title="The raw content.">content</a>;
+<a name="l00067"></a><a class="code" href="interfaceRESTMutableBody.html#a61b1a3381b6d469d7ac6935eee029761">00067</a> @property (readwrite, copy) NSDictionary* <a class="code" href="interfaceRESTMutableBody.html#a20fb65551c8442d824ba7dfb34d866eb" title="The HTTP headers, with standard capitalization (first letter of each word capitalized.)">headers</a>;
+<a name="l00068"></a><a class="code" href="interfaceRESTMutableBody.html#a20fb65551c8442d824ba7dfb34d866eb">00068</a> @property (readwrite, copy) NSMutableDictionary* mutableHeaders;
+<a name="l00069"></a>00069 @property (readwrite, copy) NSString* <a class="code" href="interfaceRESTMutableBody.html#a23200055bef6286cebacb668dd211009" title="The value of the Content-Type: header.">contentType</a>;
+<a name="l00070"></a><a class="code" href="interfaceRESTMutableBody.html#a23200055bef6286cebacb668dd211009">00070</a> @property (readwrite, retain) <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* resource;
+<a name="l00071"></a><a class="code" href="interfaceRESTMutableBody.html#add7bbe385d6a81f6adaa12a581914e6b">00071</a> 
+<a name="l00072"></a>00072 @end
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 @interface <a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a> (JSON)
+<a name="l00076"></a>00076 + (NSData*) dataWithJSONObject: (<span class="keywordtype">id</span>)obj;
+<a name="l00077"></a>00077 + (NSString*) stringWithJSONObject: (<span class="keywordtype">id</span>)obj;
+<a name="l00078"></a>00078 + (id) JSONObjectWithData: (NSData*)data;
+<a name="l00079"></a>00079 + (id) JSONObjectWithString: (NSString*)string;
+<a name="l00080"></a>00080 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>RESTBody.h</b>      </li>
-      <li class="footer">Generated on Wed Jul 20 2011 10:18:38 for CouchCocoa by&#160;
+      <li class="footer">Generated on Fri Jul 22 2011 15:42:30 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

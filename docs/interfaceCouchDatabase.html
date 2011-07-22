@@ -82,6 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a>  </div>
   <div class="headertitle">
 <div class="title">CouchDatabase Class Reference</div>  </div>
@@ -121,6 +122,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a query that will fetch the documents with the given IDs.  <a href="#a1d1aec7a7def6b4a807d28d56f43c6d0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a8ea35eb0fad76a623b556ecc72d2a134">putChanges:toRevisions:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bulk-writes multiple documents in one HTTP call.  <a href="#a8ea35eb0fad76a623b556ecc72d2a134"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a04476bc96c55897a2b9a4f5d0a0ac8b5">putChanges:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bulk-writes multiple documents in one HTTP call.  <a href="#a04476bc96c55897a2b9a4f5d0a0ac8b5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a70dd409ff51d61ebc7d3415c9e7dc2f5">clearDocumentCache</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Empties the cache of recently used <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> objects.  <a href="#a70dd409ff51d61ebc7d3415c9e7dc2f5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQuery.html">CouchQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a5ceeab355248704989d758c4fe0dc216">slowQueryWithViewDefinition:</a></td></tr>
@@ -133,6 +136,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from a source database, to this database.  <a href="#a52180676f2bd43b9084678fb43982aec"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a074be7baa022a0a11c18d9361964fc9e">pushToDatabaseAtURL:options:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from this database to a target database.  <a href="#a074be7baa022a0a11c18d9361964fc9e"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a> *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceCouchDatabase.html#a66f68e93735588dfb3b57293de2c4959">databaseWithURL:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenience to instantiate a <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> directly from a URL, without having to first instantiate a <a class="el" href="interfaceCouchServer.html" title="The top level of a CouchDB server.">CouchServer</a>.  <a href="#a66f68e93735588dfb3b57293de2c4959"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99d523b7cd3821a2cb48c70b0836553b"></a><!-- doxytag: member="CouchDatabase::server" ref="a99d523b7cd3821a2cb48c70b0836553b" args="" -->
@@ -146,6 +153,26 @@ Properties</h2></td></tr>
 <div class="textblock"><p>A CouchDB database; contains CouchDocuments. </p>
 <p>The <a class="el" href="interfaceCouchServer.html" title="The top level of a CouchDB server.">CouchServer</a> is the factory object for CouchDatabases. </p>
 </div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a66f68e93735588dfb3b57293de2c4959"></a><!-- doxytag: member="CouchDatabase::databaseWithURL:" ref="a66f68e93735588dfb3b57293de2c4959" args="(NSURL *databaseURL)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>*) databaseWithURL: </td>
+          <td></td>
+          <td class="paramtype">(NSURL *)&#160;</td>
+          <td class="paramname"><em>databaseURL</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>A convenience to instantiate a <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> directly from a URL, without having to first instantiate a <a class="el" href="interfaceCouchServer.html" title="The top level of a CouchDB server.">CouchServer</a>. </p>
+<p>Unlike CouchServer's -databaseNamed: method, if you call this twice with the same URL you _will_ get two distinct <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> objects (with two distinct CouchServers as parents.) </p>
+
+</div>
+</div>
 <a class="anchor" id="a4a0e3ca1a80076ad540ac8c2e73523db"></a><!-- doxytag: member="CouchDatabase::create" ref="a4a0e3ca1a80076ad540ac8c2e73523db" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -287,6 +314,32 @@ Properties</h2></td></tr>
 
 <p>Bulk-writes multiple documents in one HTTP call. </p>
 <p>Documents that don't exist on the server yet will be created. </p>
+
+</div>
+</div>
+<a class="anchor" id="a04476bc96c55897a2b9a4f5d0a0ac8b5"></a><!-- doxytag: member="CouchDatabase::putChanges:" ref="a04476bc96c55897a2b9a4f5d0a0ac8b5" args="(NSArray *properties)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) putChanges: </td>
+          <td></td>
+          <td class="paramtype">(NSArray *)&#160;</td>
+          <td class="paramname"><em>properties</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Bulk-writes multiple documents in one HTTP call. </p>
+<p>Each property dictionary with an "_id" key will update the existing document with that ID, or create a new document with that ID. A dictionary without an "_id" key will always create a new document with a server-assigned unique ID. If a dictionary updates an existing document, it must also have an "_rev" key that contains the document's current revision ID. The write is asynchronous, but after the returned operation finishes, its -resultObject will be an NSArray of CouchDocuments. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">properties</td><td>Array of NSDictionaries, each one the properties of a document. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -483,7 +536,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>      </li>
-      <li class="footer">Generated on Wed Jul 20 2011 10:18:38 for CouchCocoa by&#160;
+      <li class="footer">Generated on Fri Jul 22 2011 15:42:30 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
