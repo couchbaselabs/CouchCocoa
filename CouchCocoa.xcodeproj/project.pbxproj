@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2725993913D8B43F006E391E /* Couch.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
-		2725993A13D8CEB7006E391E /* Couch.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
+		2725993913D8B43F006E391E /* CouchCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
+		2725993A13D8CEB7006E391E /* CouchCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		2730940E13C68E080093857D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2730940C13C68E080093857D /* InfoPlist.strings */; };
 		2739BF2D13BCE53B004829CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2C13BCE53B004829CD /* Foundation.framework */; };
 		2739BF3713BCE53C004829CD /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */; };
 		2739BF3913BCE53C004829CD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF3813BCE53C004829CD /* UIKit.framework */; };
 		2739BF3A13BCE53C004829CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2C13BCE53B004829CD /* Foundation.framework */; };
 		2739BF3C13BCE53C004829CD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF3B13BCE53C004829CD /* CoreGraphics.framework */; };
-		2739BF3F13BCE53C004829CD /* libCouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2B13BCE53B004829CD /* libCouch.a */; };
+		2739BF3F13BCE53C004829CD /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2B13BCE53B004829CD /* libCouchCocoa.a */; };
 		2739BF5013BCE560004829CD /* RESTResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B231B13916F1400DDD950 /* RESTResource.m */; };
 		2739BF5113BCE562004829CD /* RESTOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B22FE138F32CB00DDD950 /* RESTOperation.m */; };
 		2739BF5213BCE565004829CD /* RESTBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A57B3C1397E6FB002776DB /* RESTBody.m */; };
@@ -31,7 +31,7 @@
 		2739BF5C13BCE5BD004829CD /* CouchResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B24CB1392EE3600DDD950 /* CouchResource.m */; };
 		2739BF5D13BCE5BD004829CD /* CouchChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781244513AFA6CD0051A99D /* CouchChangeTracker.m */; };
 		2739BF5E13BCE5CD004829CD /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781242313AC1B2F0051A99D /* JSONKit.m */; };
-		2784E1B613CE5249009CC5C8 /* Couch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
+		2784E1B613CE5249009CC5C8 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		2784E1B713CE5249009CC5C8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
 		2784E1C313CE52FE009CC5C8 /* ShoppingDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */; };
 		2784E1C413CE5556009CC5C8 /* DemoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577DE13970D94002776DB /* DemoItem.m */; };
@@ -44,7 +44,7 @@
 		27CDEBEB13C675CD00C979BB /* Test_Couch.m in Sources */ = {isa = PBXBuildFile; fileRef = 270A663A13A5B36900791F4A /* Test_Couch.m */; };
 		27CDEC0413C67C9B00C979BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */; };
 		27CDEC0513C67C9B00C979BB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
-		27CDEC0813C67C9B00C979BB /* Couch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
+		27CDEC0813C67C9B00C979BB /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		27CDEC1913C67D0300C979BB /* RESTResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B231B13916F1400DDD950 /* RESTResource.m */; };
 		27CDEC1A13C67D0300C979BB /* RESTOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B22FE138F32CB00DDD950 /* RESTOperation.m */; };
 		27CDEC1B13C67D0300C979BB /* RESTBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A57B3C1397E6FB002776DB /* RESTBody.m */; };
@@ -74,10 +74,10 @@
 		27CDEC3313C67D3500C979BB /* CouchDesignDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 27BB781613A08B520069ABA7 /* CouchDesignDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CDEC3413C67D3500C979BB /* CouchQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B275E1394225600DDD950 /* CouchQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CDEC3513C67D3500C979BB /* CouchResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B24CA1392EE3600DDD950 /* CouchResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		27CDEC3613C67D3500C979BB /* Couch.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A663C13A5B3DF00791F4A /* Couch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27CDEC3613C67D3500C979BB /* CouchCocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A663C13A5B3DF00791F4A /* CouchCocoa.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CDEC3713C67E1600C979BB /* Test_REST.m in Sources */ = {isa = PBXBuildFile; fileRef = 272E9D9313A2EBE0009F18E9 /* Test_REST.m */; };
 		27CDEC3813C67E1A00C979BB /* Test_Couch.m in Sources */ = {isa = PBXBuildFile; fileRef = 270A663A13A5B36900791F4A /* Test_Couch.m */; };
-		27CDEC3A13C6841E00C979BB /* Couch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* Couch.framework */; };
+		27CDEC3A13C6841E00C979BB /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		27EEA59A13D602EA00D7ACA4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */; };
 		27EEA5A913D604F500D7ACA4 /* RESTResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B231A13916F1400DDD950 /* RESTResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EEA5AA13D604F800D7ACA4 /* RESTOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22FD138F32CB00DDD950 /* RESTOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -91,7 +91,7 @@
 		27EEA5B213D6051600D7ACA4 /* CouchDesignDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 27BB781613A08B520069ABA7 /* CouchDesignDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EEA5B313D6051800D7ACA4 /* CouchQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B275E1394225600DDD950 /* CouchQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EEA5B413D6051B00D7ACA4 /* CouchResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B24CA1392EE3600DDD950 /* CouchResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		27EEA5B513D6052000D7ACA4 /* Couch.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A663C13A5B3DF00791F4A /* Couch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27EEA5B513D6052000D7ACA4 /* CouchCocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A663C13A5B3DF00791F4A /* CouchCocoa.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EEA5B613D6052300D7ACA4 /* REST.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A664413A5BA4600791F4A /* REST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EF148C1396D8CC0052913E /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EF148B1396D8CC0052913E /* DemoAppController.m */; };
 		27EF14B31396DD3B0052913E /* AddressesDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27EF14B21396DD3B0052913E /* AddressesDemo.xib */; };
@@ -128,7 +128,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				2725993A13D8CEB7006E391E /* Couch.framework in CopyFiles */,
+				2725993A13D8CEB7006E391E /* CouchCocoa.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +138,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				2725993913D8B43F006E391E /* Couch.framework in CopyFiles */,
+				2725993913D8B43F006E391E /* CouchCocoa.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +146,7 @@
 
 /* Begin PBXFileReference section */
 		270A663A13A5B36900791F4A /* Test_Couch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Test_Couch.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		270A663C13A5B3DF00791F4A /* Couch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Couch.h; sourceTree = "<group>"; };
+		270A663C13A5B3DF00791F4A /* CouchCocoa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouchCocoa.h; sourceTree = "<group>"; };
 		270A664413A5BA4600791F4A /* REST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REST.h; sourceTree = "<group>"; };
 		272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		272E9D9313A2EBE0009F18E9 /* Test_REST.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Test_REST.m; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 		27333BCA13B7E61700EF5A10 /* CouchInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchInternal.h; sourceTree = "<group>"; };
 		2739BF2013BAB411004829CD /* CouchRevision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchRevision.h; sourceTree = "<group>"; };
 		2739BF2113BAB412004829CD /* CouchRevision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchRevision.m; sourceTree = "<group>"; };
-		2739BF2B13BCE53B004829CD /* libCouch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCouch.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2739BF2B13BCE53B004829CD /* libCouchCocoa.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCouchCocoa.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2739BF2C13BCE53B004829CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2739BF3613BCE53C004829CD /* iOS Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2739BF3813BCE53C004829CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -193,7 +193,7 @@
 		27A57B3C1397E6FB002776DB /* RESTBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTBody.m; sourceTree = "<group>"; };
 		27BB781613A08B520069ABA7 /* CouchDesignDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchDesignDocument.h; sourceTree = "<group>"; };
 		27BB781713A08B520069ABA7 /* CouchDesignDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchDesignDocument.m; sourceTree = "<group>"; };
-		27CDEBF113C67C9B00C979BB /* Couch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Couch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CouchCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27CDEBF413C67C9B00C979BB /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		27CDEBF513C67C9B00C979BB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		27CDEBF613C67C9B00C979BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -203,7 +203,7 @@
 		27D5997813CE404300694B37 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		27DA430413B659A900BBADB7 /* RESTInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTInternal.h; sourceTree = "<group>"; };
 		27DA430513B659A900BBADB7 /* RESTInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTInternal.m; sourceTree = "<group>"; };
-		27EEA59813D602EA00D7ACA4 /* Couch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Couch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27EEA59813D602EA00D7ACA4 /* CouchCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CouchCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		27EF14771396D7BA0052913E /* Addresses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Addresses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27EF14791396D7BA0052913E /* AddressesDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AddressesDemo-Info.plist"; sourceTree = "<group>"; };
@@ -230,7 +230,7 @@
 				2739BF3913BCE53C004829CD /* UIKit.framework in Frameworks */,
 				2739BF3A13BCE53C004829CD /* Foundation.framework in Frameworks */,
 				2739BF3C13BCE53C004829CD /* CoreGraphics.framework in Frameworks */,
-				2739BF3F13BCE53C004829CD /* libCouch.a in Frameworks */,
+				2739BF3F13BCE53C004829CD /* libCouchCocoa.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,7 +238,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2784E1B613CE5249009CC5C8 /* Couch.framework in Frameworks */,
+				2784E1B613CE5249009CC5C8 /* CouchCocoa.framework in Frameworks */,
 				2784E1B713CE5249009CC5C8 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,7 +257,7 @@
 			files = (
 				27CDEC0413C67C9B00C979BB /* SenTestingKit.framework in Frameworks */,
 				27CDEC0513C67C9B00C979BB /* Cocoa.framework in Frameworks */,
-				27CDEC0813C67C9B00C979BB /* Couch.framework in Frameworks */,
+				27CDEC0813C67C9B00C979BB /* CouchCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,7 +273,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27CDEC3A13C6841E00C979BB /* Couch.framework in Frameworks */,
+				27CDEC3A13C6841E00C979BB /* CouchCocoa.framework in Frameworks */,
 				27A579B313974E41002776DB /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,7 +317,7 @@
 				278B275F1394225600DDD950 /* CouchQuery.m */,
 				278B24CA1392EE3600DDD950 /* CouchResource.h */,
 				278B24CB1392EE3600DDD950 /* CouchResource.m */,
-				270A663C13A5B3DF00791F4A /* Couch.h */,
+				270A663C13A5B3DF00791F4A /* CouchCocoa.h */,
 				27333BCB13B7E70100EF5A10 /* Internal */,
 			);
 			path = Couch;
@@ -327,12 +327,12 @@
 			isa = PBXGroup;
 			children = (
 				27EF14771396D7BA0052913E /* Addresses.app */,
-				2739BF2B13BCE53B004829CD /* libCouch.a */,
+				2739BF2B13BCE53B004829CD /* libCouchCocoa.a */,
 				2739BF3613BCE53C004829CD /* iOS Tests.octest */,
-				27CDEBF113C67C9B00C979BB /* Couch.framework */,
+				27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */,
 				27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */,
 				2784E1BC13CE5249009CC5C8 /* Shopping.app */,
-				27EEA59813D602EA00D7ACA4 /* Couch.framework */,
+				27EEA59813D602EA00D7ACA4 /* CouchCocoa.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -470,7 +470,7 @@
 				27CDEC3313C67D3500C979BB /* CouchDesignDocument.h in Headers */,
 				27CDEC3413C67D3500C979BB /* CouchQuery.h in Headers */,
 				27CDEC3513C67D3500C979BB /* CouchResource.h in Headers */,
-				27CDEC3613C67D3500C979BB /* Couch.h in Headers */,
+				27CDEC3613C67D3500C979BB /* CouchCocoa.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,7 +483,7 @@
 				27EEA5AA13D604F800D7ACA4 /* RESTOperation.h in Headers */,
 				27EEA5AB13D604FC00D7ACA4 /* RESTBody.h in Headers */,
 				27EEA5AC13D6050000D7ACA4 /* RESTCache.h in Headers */,
-				27EEA5B513D6052000D7ACA4 /* Couch.h in Headers */,
+				27EEA5B513D6052000D7ACA4 /* CouchCocoa.h in Headers */,
 				27EEA5B013D6051100D7ACA4 /* CouchRevision.h in Headers */,
 				27EEA5AF13D6050F00D7ACA4 /* CouchDocument.h in Headers */,
 				27EEA5B113D6051300D7ACA4 /* CouchAttachment.h in Headers */,
@@ -530,7 +530,7 @@
 			);
 			name = "iOS Library";
 			productName = "iOS Library";
-			productReference = 2739BF2B13BCE53B004829CD /* libCouch.a */;
+			productReference = 2739BF2B13BCE53B004829CD /* libCouchCocoa.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		2739BF3513BCE53C004829CD /* iOS Tests */ = {
@@ -570,9 +570,9 @@
 			productReference = 2784E1BC13CE5249009CC5C8 /* Shopping.app */;
 			productType = "com.apple.product-type.application";
 		};
-		27CDEBF013C67C9B00C979BB /* Mac Library */ = {
+		27CDEBF013C67C9B00C979BB /* Mac Framework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 27CDEC1313C67C9B00C979BB /* Build configuration list for PBXNativeTarget "Mac Library" */;
+			buildConfigurationList = 27CDEC1313C67C9B00C979BB /* Build configuration list for PBXNativeTarget "Mac Framework" */;
 			buildPhases = (
 				27CDEBEC13C67C9B00C979BB /* Sources */,
 				27CDEBED13C67C9B00C979BB /* Frameworks */,
@@ -583,9 +583,9 @@
 			);
 			dependencies = (
 			);
-			name = "Mac Library";
+			name = "Mac Framework";
 			productName = CouchAPI;
-			productReference = 27CDEBF113C67C9B00C979BB /* Couch.framework */;
+			productReference = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		27CDEC0213C67C9B00C979BB /* Mac Tests */ = {
@@ -624,7 +624,7 @@
 			);
 			name = "iOS Framework";
 			productName = Couch.frameworik;
-			productReference = 27EEA59813D602EA00D7ACA4 /* Couch.framework */;
+			productReference = 27EEA59813D602EA00D7ACA4 /* CouchCocoa.framework */;
 			productType = "com.apple.product-type.bundle";
 		};
 		27EF14761396D7BA0052913E /* Demo-Addresses */ = {
@@ -665,7 +665,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				27CDEBF013C67C9B00C979BB /* Mac Library */,
+				27CDEBF013C67C9B00C979BB /* Mac Framework */,
 				27CDEC0213C67C9B00C979BB /* Mac Tests */,
 				27EF14761396D7BA0052913E /* Demo-Addresses */,
 				2784E1AE13CE5249009CC5C8 /* Demo-Shopping */,
@@ -764,7 +764,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp \"${CONFIGURATION_BUILD_DIR}/libCouch.a\" \"${CONFIGURATION_BUILD_DIR}/${EXECUTABLE_PATH}\"";
+			shellScript = "cp \"${CONFIGURATION_BUILD_DIR}/libCouchCocoa.a\" \"${CONFIGURATION_BUILD_DIR}/${EXECUTABLE_PATH}\"";
 		};
 		27EEA5B813D6062900D7ACA4 /* Build Fat Library */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -883,7 +883,7 @@
 		};
 		27CDEC0713C67C9B00C979BB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 27CDEBF013C67C9B00C979BB /* Mac Library */;
+			target = 27CDEBF013C67C9B00C979BB /* Mac Framework */;
 			targetProxy = 27CDEC0613C67C9B00C979BB /* PBXContainerItemProxy */;
 		};
 		27EEA5A613D604C000D7ACA4 /* PBXTargetDependency */ = {
@@ -1000,7 +1000,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Couch;
+				PRODUCT_NAME = CouchCocoa;
 				SDKROOT = iphoneos4.0;
 				SKIP_INSTALL = YES;
 			};
@@ -1015,7 +1015,7 @@
 				COPY_PHASE_STRIP = YES;
 				DSTROOT = /tmp/iOS_Library.dst;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Couch;
+				PRODUCT_NAME = CouchCocoa;
 				SDKROOT = iphoneos4.0;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
@@ -1118,7 +1118,7 @@
 				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = Couch;
+				PRODUCT_NAME = CouchCocoa;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -1137,7 +1137,7 @@
 				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = Couch;
+				PRODUCT_NAME = CouchCocoa;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -1196,7 +1196,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = Couch;
+				PRODUCT_NAME = CouchCocoa;
 				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = framework;
@@ -1216,7 +1216,7 @@
 				GCC_PREFIX_HEADER = "Couch.frameworik/Couch.frameworik-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_NAME = Couch;
+				PRODUCT_NAME = CouchCocoa;
 				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = framework;
@@ -1311,7 +1311,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		27CDEC1313C67C9B00C979BB /* Build configuration list for PBXNativeTarget "Mac Library" */ = {
+		27CDEC1313C67C9B00C979BB /* Build configuration list for PBXNativeTarget "Mac Framework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				27CDEC1413C67C9B00C979BB /* Debug */,

@@ -14,8 +14,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "27CDEBF013C67C9B00C979BB"
-               BuildableName = "Couch.framework"
-               BlueprintName = "Mac Library"
+               BuildableName = "CouchCocoa.framework"
+               BlueprintName = "Mac Framework"
                ReferencedContainer = "container:CouchCocoa.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

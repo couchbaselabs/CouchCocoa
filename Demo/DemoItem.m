@@ -7,8 +7,7 @@
 //
 
 #import "DemoItem.h"
-#import "Couch.h"
-#import "RESTOperation.h"
+#import "CouchCocoa.h"  // in a separate project you would use <CouchCocoa/CouchCocoa.h>
 
 
 @interface DemoItem ()

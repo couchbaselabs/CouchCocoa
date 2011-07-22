@@ -9,7 +9,7 @@
 #import "DemoQuery.h"
 #import "DemoItem.h"
 
-#import "Couch.h"
+#import "CouchCocoa.h"  // in a separate project you would use <CouchCocoa/CouchCocoa.h>
 
 
 @implementation DemoQuery

@@ -6,7 +6,7 @@
 //  Copyright 2011 Couchbase, Inc. All rights reserved.
 //
 
-#import "Couch.h"
+#import "CouchCocoa.h"
 #import "RESTInternal.h"
 
 

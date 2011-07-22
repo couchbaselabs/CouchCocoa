@@ -9,8 +9,7 @@
 #import "DemoAppController.h"
 #import "DemoItem.h"
 #import "DemoQuery.h"
-#import "Couch.h"
-#import "RESTOperation.h"
+#import "CouchCocoa.h"  // in a separate project you would use <CouchCocoa/CouchCocoa.h>
 
 
 #define kChangeGlowDuration 3.0
