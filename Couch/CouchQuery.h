@@ -107,8 +107,16 @@
 /** The document this row was mapped from. */
 @property (readonly) CouchDocument* document;
 
-/** The contents of the document this row was mapped from.
+/** The properties of the document this row was mapped from.
     To get this, you must have set the -prefetch property on the query; else this will be nil. */
-@property (readonly) NSDictionary* documentContents;
+@property (readonly) NSDictionary* documentProperties;
+
+/** If the key is an array, returns the item at that index in the array.
+    If the key is not an array, index=0 will return the key itself.
+    If the index is out of range, returns nil. */
+- (id) keyAtIndex: (NSUInteger)index;
+
+/** Convenience for use in keypaths. Returns the key at the given index. */
+@property (readonly) id key0, key1, key2, key3;
 
 @end

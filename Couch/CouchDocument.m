@@ -132,8 +132,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     NSArray* items = $castIf(NSArray, op.responseBody.fromJSON);
     if (!items)
         return nil;
-    NSMutableArray* revisions = [NSMutableArray arrayWithCapacity: items.count];
-    for (NSDictionary* item in items) {
+    return [items rest_map: ^(id item) {
         NSDictionary* contents = $castIf(NSDictionary, [item objectForKey: @"ok"]);
         if (![[contents objectForKey: @"_deleted"] boolValue]) {
             NSString* revisionID = $castIf(NSString, [contents objectForKey: @"_rev"]);
@@ -141,11 +140,11 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
                 CouchRevision* revision = [self revisionWithID: revisionID];
                 if (!revision.propertiesAreLoaded)
                     revision.properties = contents;
-                [revisions addObject: revision];
+                return revision;
             }
         }
-    }
-    return revisions;
+        return (id)nil;
+    }];
 }
 
 
@@ -154,16 +153,11 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 {
     NSParameterAssert(properties);
     NSAssert(_currentRevision, @"Don't know current revision?!");
-    NSAssert([conflicts indexOfObjectIdenticalTo: _currentRevision] != NSNotFound, @"Conflict list doesn't include current revision");
-    NSMutableArray* changes = [NSMutableArray arrayWithCapacity: conflicts.count];
-    for (CouchRevision* revision in conflicts) {
-        id change;
-        if (revision == _currentRevision)
-            change = properties;
-        else
-            change = [NSNull null];
-        [changes addObject: change];
-    }
+    NSAssert([conflicts indexOfObjectIdenticalTo: _currentRevision] != NSNotFound,
+             @"Conflict list doesn't include current revision");
+    NSArray* changes = [conflicts rest_map: ^(id revision) {
+        return (revision == _currentRevision) ? properties : [NSNull null];
+    }];
     return [self.database putChanges: changes toRevisions: conflicts];
 }
 

@@ -57,7 +57,6 @@
     This value is cached, so subsequent calls are cheap. */
 @property (readonly) id fromJSON;
 
-
 @end
 
 
@@ -70,4 +69,12 @@
 @property (readwrite, copy) NSString* contentType;
 @property (readwrite, retain) RESTResource* resource;
 
+@end
+
+
+@interface RESTBody (JSON)
++ (NSData*) dataWithJSONObject: (id)obj;
++ (NSString*) stringWithJSONObject: (id)obj;
++ (id) JSONObjectWithData: (NSData*)data;
++ (id) JSONObjectWithString: (NSString*)string;
 @end

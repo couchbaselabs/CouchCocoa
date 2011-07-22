@@ -88,19 +88,26 @@
 
 
 - (void) test01_Server {
+    static const NSUInteger kUUIDCount = 5;
     NSError* error;
     NSString* version = [_server getVersion: &error];
     STAssertNotNil(version, @"Failed to get server version");
     NSLog(@"Server is version %@", version);
     
-    NSArray* uuids = [_server generateUUIDs:5];
+    NSArray* uuids = [_server generateUUIDs: kUUIDCount];
     STAssertNotNil(uuids, @"Failed to get UUIDs");
-    STAssertEquals(uuids.count, 5U, @"Wrong number of UUIDs");
+    STAssertEquals(uuids.count, kUUIDCount, @"Wrong number of UUIDs");
     NSLog(@"Have some UUIDs: %@", [uuids componentsJoinedByString: @", "]);
     
     for (CouchDatabase *db in [_server getDatabases]) {
         NSLog(@"Database '%@': %ld documents", db.relativePath, (long)[db getDocumentCount]);
     }
+    
+    // Test the +databaseWithURL: factory method:
+    CouchDatabase* db2 = [CouchDatabase databaseWithURL: _db.URL];
+    STAssertNotNil(db2, @"+databaseWithURL failed");
+    STAssertEqualObjects(db2.URL, _db.URL, nil);
+    STAssertEqualObjects(db2.parent.URL, _server.URL, nil);
 }
 
 
@@ -199,7 +206,8 @@
 
 
 - (void) test05_AllDocuments {
-    [self createDocuments: 5];
+    static const NSUInteger kNDocs = 5;
+    [self createDocuments: kNDocs];
 
     // clear the cache so all documents/revisions will be re-fetched:
     [_db clearDocumentCache];
@@ -210,9 +218,9 @@
     NSLog(@"Getting all documents: %@", query);
     
     CouchQueryEnumerator* rows = query.rows;
-    STAssertEquals(rows.count, 5u, nil);
-    STAssertEquals(rows.totalCount, 5u, nil);
-    int n = 0;
+    STAssertEquals(rows.count, kNDocs, nil);
+    STAssertEquals(rows.totalCount, kNDocs, nil);
+    NSUInteger n = 0;
     for (CouchQueryRow* row in rows) {
         NSLog(@"    --> %@", row);
         CouchDocument* doc = row.document;
@@ -223,28 +231,29 @@
         STAssertEqualObjects([doc propertyForKey: @"testName"], @"testDatabase", @"Wrong doc contents");
         n++;
     }
-    STAssertEquals(n, 5, @"Query returned wrong document count");
+    STAssertEquals(n, kNDocs, @"Query returned wrong document count");
 }
 
 
 - (void) test06_RowsIfChanged {
-    [self createDocuments: 5];
+    static const NSUInteger kNDocs = 5;
+    [self createDocuments: kNDocs];
     // clear the cache so all documents/revisions will be re-fetched:
     [_db clearDocumentCache];
     
     CouchQuery* query = [_db getAllDocuments];
     query.prefetch = NO;    // Prefetching prevents view caching, so turn it off
     CouchQueryEnumerator* rows = query.rows;
-    STAssertEquals(rows.count, 5u, nil);
-    STAssertEquals(rows.totalCount, 5u, nil);
+    STAssertEquals(rows.count, kNDocs, nil);
+    STAssertEquals(rows.totalCount, kNDocs, nil);
     
     // Make sure the query is cached (view eTag hasn't changed):
     STAssertNil(query.rowsIfChanged, @"View eTag must have changed?");
     
     // Get the rows again to make sure caching isn't messing up:
     rows = query.rows;
-    STAssertEquals(rows.count, 5u, nil);
-    STAssertEquals(rows.totalCount, 5u, nil);
+    STAssertEquals(rows.count, kNDocs, nil);
+    STAssertEquals(rows.totalCount, kNDocs, nil);
 }
 
 #pragma mark HISTORY
@@ -269,7 +278,7 @@
     
     NSArray* revisions = [doc getRevisionHistory];
     NSLog(@"Revisions = %@", revisions);
-    STAssertEquals(revisions.count, 2u, nil);
+    STAssertEquals(revisions.count, (NSUInteger)2, nil);
     
     CouchRevision* rev1 = [revisions objectAtIndex: 0];
     STAssertEqualObjects(rev1.revisionID, rev1ID, nil);
@@ -297,7 +306,7 @@
     CouchDocument* doc = [self createDocumentWithProperties: properties];
     CouchRevision* rev = doc.currentRevision;
     
-    STAssertEquals(rev.attachmentNames.count, 0U, nil);
+    STAssertEquals(rev.attachmentNames.count, (NSUInteger)0, nil);
     STAssertNil([rev attachmentNamed: @"index.html"], nil);
     
     CouchAttachment* attach = [rev createAttachmentWithName: @"index.html"
@@ -358,7 +367,7 @@
     // are already cached in memory.
     STAssertEquals(changeCount, 0, nil);
     
-    STAssertEquals(_db.lastSequenceNumber, 2u, nil);
+    STAssertEquals(_db.lastSequenceNumber, (NSUInteger)2, nil);
 }
 
 
@@ -376,7 +385,7 @@
     // are already cached in memory.
     STAssertEquals(changeCount, 0, nil);
     
-    STAssertEquals(_db.lastSequenceNumber, 5u, nil);
+    STAssertEquals(_db.lastSequenceNumber, (NSUInteger)5, nil);
 }
 
 

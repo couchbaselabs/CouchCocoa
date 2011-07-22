@@ -61,16 +61,9 @@ static NSString* const kLocalServerURL = @"http://127.0.0.1:5984/";
 - (NSArray*) getDatabases {
     RESTOperation* op = [[self childWithPath: @"_all_dbs"] GET];
     NSArray* names = $castIf(NSArray, op.responseBody.fromJSON); // Blocks!
-    if (!names)
-        return nil;
-
-    NSMutableArray* databases = [NSMutableArray array];
-    for (id name in names) {
-        if (![name isKindOfClass:[NSString class]])
-            return nil;
-        [databases addObject: [self databaseNamed: name]];
-    }
-    return databases;
+    return [names rest_map: ^(id name) {
+        return [name isKindOfClass:[NSString class]] ? [self databaseNamed: name] : nil;
+    }];
 }
 
 

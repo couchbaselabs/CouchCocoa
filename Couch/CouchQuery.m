@@ -13,8 +13,6 @@
 #import "CouchDesignDocument.h"
 #import "CouchInternal.h"
 
-#import "JSONKit.h"
-
 
 @interface CouchQueryEnumerator ()
 - (id) initWithQuery: (CouchQuery*)query op: (RESTOperation*)op;
@@ -59,15 +57,15 @@
     if (_skip)
         [params setObject: [NSNumber numberWithUnsignedLong: _skip] forKey: @"?skip"];
     if (_startKey)
-        [params setObject: [_startKey JSONString] forKey: @"?startkey"];
+        [params setObject: [RESTBody stringWithJSONObject: _startKey] forKey: @"?startkey"];
     if (_endKey)
-        [params setObject: [_endKey JSONString] forKey: @"?endkey"];
+        [params setObject: [RESTBody stringWithJSONObject: _endKey] forKey: @"?endkey"];
     if (_descending)
         [params setObject: @"true" forKey: @"?descending"];
     if (_prefetch)
         [params setObject: @"true" forKey: @"?include_docs"];
     if (_groupLevel > 0)
-        [params setObject: [NSNumber numberWithUnsignedInt: _groupLevel] forKey: @"?group_level"];
+        [params setObject: [NSNumber numberWithUnsignedLong: _groupLevel] forKey: @"?group_level"];
     return params;
 }
 
@@ -222,7 +220,21 @@
 - (id) key                          {return [_result objectForKey: @"key"];}
 - (id) value                        {return [_result objectForKey: @"value"];}
 - (NSString*) documentID            {return [_result objectForKey: @"id"];}
-- (NSDictionary*) documentContents  {return [_result objectForKey: @"doc"];}
+- (NSDictionary*) documentProperties  {return [_result objectForKey: @"doc"];}
+
+
+- (id) keyAtIndex: (NSUInteger)index {
+    id key = [_result objectForKey: @"key"];
+    if ([key isKindOfClass:[NSArray class]])
+        return (index < [key count]) ? [key objectAtIndex: index] : nil;
+    else
+        return (index == 0) ? key : nil;
+}
+
+- (id) key0                         {return [self keyAtIndex: 0];}
+- (id) key1                         {return [self keyAtIndex: 1];}
+- (id) key2                         {return [self keyAtIndex: 2];}
+- (id) key3                         {return [self keyAtIndex: 3];}
 
 
 - (CouchDocument*) document {
@@ -230,7 +242,7 @@
     if (!docID)
         return nil;
     CouchDocument* doc = [_query.database documentWithID: docID];
-    [doc loadCurrentRevisionFrom: self.documentContents];
+    [doc loadCurrentRevisionFrom: self.documentProperties];
     return doc;
 }
 
@@ -238,7 +250,9 @@
 - (NSString*) description {
     return [NSString stringWithFormat: @"%@[key=%@; value=%@; id=%@]",
             [self class],
-            [self.key JSONString], [self.value JSONString], self.documentID];
+            [RESTBody stringWithJSONObject: self.key],
+            [RESTBody stringWithJSONObject: self.value],
+            self.documentID];
 }
 
 

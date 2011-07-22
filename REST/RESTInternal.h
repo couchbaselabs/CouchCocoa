@@ -32,3 +32,8 @@ id RESTCastIfArrayOf(Class,id);
 @interface RESTCache ()
 - (void) resourceBeingDealloced:(RESTResource*)resource;
 @end
+
+
+@interface NSArray (RESTExtensions)
+- (NSArray*) rest_map: (id (^)(id obj))block;
+@end

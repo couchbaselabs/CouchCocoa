@@ -38,6 +38,10 @@ typedef NSUInteger CouchReplicationOptions;
     NSMutableArray* _deferredChanges;
 }
 
+/** A convenience to instantiate a CouchDatabase directly from a URL, without having to first instantiate a CouchServer.
+    Unlike CouchServer's -databaseNamed: method, if you call this twice with the same URL you _will_ get two distinct CouchDatabase objects (with two distinct CouchServers as parents.) */
++ (CouchDatabase*) databaseWithURL: (NSURL*)databaseURL;
+
 @property (readonly) CouchServer* server;
 
 /** Creates the database on the server.

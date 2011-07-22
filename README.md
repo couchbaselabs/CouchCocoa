@@ -23,7 +23,7 @@ This API is not the only way to access CouchDB on iOS and Mac OS. There are othe
 
 There are two simple Mac demo apps included in the Demo/ subfolder. One lets you edit a simple list of names and email addresses, the other is a shopping list. (They actually share the same source code; all the differences are in their .xib files, thanks to the magic of Cocoa bindings.) To run them:
 
-0. Start a CouchDB server (such as [CouchBase Server][4]) on localhost.
+0. Start a CouchDB server (such as [Couchbase Server][4]) on localhost.
 1. Open CouchDemo.xcodeproj (in Xcode 4.0.2 or later)
 2. Select "Demo-Addresses" or "Demo-Shopping" from the scheme pop-up in the toolbar
 3. Press the Run button

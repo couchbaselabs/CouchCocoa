@@ -10,7 +10,6 @@
 
 #import "RESTInternal.h"
 #import "RESTCache.h"
-#import "JSONKit.h"
 
 
 @implementation RESTResource
@@ -214,7 +213,7 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 
 
 - (RESTOperation*) PUTJSON: (id)body parameters: (NSDictionary*)parameters {
-    return [self PUT: [body JSONData]
+    return [self PUT: [RESTBody dataWithJSONObject: body]
           parameters: addJSONType(parameters)];
 }
 
@@ -222,7 +221,7 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 - (RESTOperation*) POSTJSON: (id)body parameters: (NSDictionary*)parameters {
     NSMutableURLRequest* request = [self requestWithMethod: @"POST"
                                                 parameters: addJSONType(parameters)];
-    [request setHTTPBody: [body JSONData]];
+    [request setHTTPBody: [RESTBody dataWithJSONObject: body]];
     return [self sendRequest: request];
 }
 

@@ -12,8 +12,6 @@
 #import "CouchDesignDocument.h"
 #import "CouchInternal.h"
 
-#import "JSONKit.h"
-
 
 NSString* const kCouchDatabaseChangeNotification = @"CouchDatabaseChange";
 
@@ -28,6 +26,13 @@ static const NSUInteger kDocRetainLimit = 50;
 
 
 @implementation CouchDatabase
+
+
++ (CouchDatabase*) databaseWithURL: (NSURL*)databaseURL {
+    NSURL* serverURL = [databaseURL URLByDeletingLastPathComponent];
+    CouchServer* server = [[[CouchServer alloc] initWithURL: serverURL] autorelease];
+    return [server databaseNamed: [databaseURL lastPathComponent]];
+}
 
 
 - (void)dealloc {
@@ -329,7 +334,7 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
     }
     if (line.length == 0 || [line isEqualToString: @"\n"])
         return;
-    NSDictionary* change = $castIf(NSDictionary, [line objectFromJSONString]);
+    NSDictionary* change = $castIf(NSDictionary, [RESTBody JSONObjectWithString: line]);
     if (change) {
         [self receivedChange: change];
     } else {

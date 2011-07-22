@@ -157,7 +157,7 @@
 		2739BF2113BAB412004829CD /* CouchRevision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchRevision.m; sourceTree = "<group>"; };
 		2739BF2B13BCE53B004829CD /* libCouch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCouch.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2739BF2C13BCE53B004829CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		2739BF3613BCE53C004829CD /* iOS LibraryTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "iOS LibraryTests.octest"; path = "iOS Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2739BF3613BCE53C004829CD /* iOS Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2739BF3813BCE53C004829CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		2739BF3B13BCE53C004829CD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		2781242213AC1B2F0051A99D /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Vendor/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
@@ -328,7 +328,7 @@
 			children = (
 				27EF14771396D7BA0052913E /* Addresses.app */,
 				2739BF2B13BCE53B004829CD /* libCouch.a */,
-				2739BF3613BCE53C004829CD /* iOS LibraryTests.octest */,
+				2739BF3613BCE53C004829CD /* iOS Tests.octest */,
 				27CDEBF113C67C9B00C979BB /* Couch.framework */,
 				27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */,
 				2784E1BC13CE5249009CC5C8 /* Shopping.app */,
@@ -549,7 +549,7 @@
 			);
 			name = "iOS Tests";
 			productName = "iOS LibraryTests";
-			productReference = 2739BF3613BCE53C004829CD /* iOS LibraryTests.octest */;
+			productReference = 2739BF3613BCE53C004829CD /* iOS Tests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		2784E1AE13CE5249009CC5C8 /* Demo-Shopping */ = {
@@ -652,7 +652,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "CouchBase, Inc.";
+				ORGANIZATIONNAME = "Couchbase, Inc.";
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "CouchCocoa" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -908,7 +908,7 @@
 		1DEB927908733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -921,7 +921,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.6;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -929,7 +929,7 @@
 		1DEB927A08733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Couch/CouchPrefix.pch;
@@ -940,7 +940,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.6;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
@@ -999,7 +999,6 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Couch;
 				SDKROOT = iphoneos4.0;
@@ -1015,7 +1014,6 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = YES;
 				DSTROOT = /tmp/iOS_Library.dst;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Couch;
 				SDKROOT = iphoneos4.0;
@@ -1028,7 +1026,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -1040,9 +1037,8 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos4.0;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -1051,15 +1047,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos4.0;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1201,7 +1195,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Couch;
 				SDKROOT = iphoneos4.0;
@@ -1223,7 +1216,6 @@
 				GCC_PREFIX_HEADER = "Couch.frameworik/Couch.frameworik-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Couch;
 				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
