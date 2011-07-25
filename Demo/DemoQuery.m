@@ -19,6 +19,11 @@
 #import "CouchCocoa.h"  // in a separate project you would use <CouchCocoa/CouchCocoa.h>
 
 
+@interface DemoQuery ()
+- (void) loadEntriesFrom: (CouchQueryEnumerator*)rows;
+@end
+
+
 @implementation DemoQuery
 
 
@@ -29,8 +34,10 @@
     if (self != nil) {
         _modelClass = [DemoItem class];
         _query = [query retain];
-        [self loadEntries];
-        
+
+        _query.prefetch = YES;        // for efficiency, include docs on first load
+        [self loadEntriesFrom: [_query rows]];
+
         // Listen for external changes:
         _query.database.tracksChanges = YES;
         [[NSNotificationCenter defaultCenter] addObserver: self 
@@ -45,6 +52,7 @@
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
+    [_op cancel];
     [_entries release];
     [_query release];
     [super dealloc];
@@ -77,20 +85,18 @@
 }
 
 
-- (void) loadEntries {
-    _query.prefetch = (_entries == nil);        // for efficiency, include docs on first load
-    [self loadEntriesFrom: [_query rows]];
-}
-
-
-- (BOOL) updateEntries {
+- (void) updateEntries {
+    if (_op)
+        return;
     NSLog(@"Updating the query...");
     _query.prefetch = NO;   // prefetch disables rowsIfChanged optimization
-    CouchQueryEnumerator* rows = [_query rowsIfChanged];
-    if (!rows)
-        return NO;
-    [self loadEntriesFrom: rows];
-    return YES;
+    _op = [_query start];
+    [_op onCompletion: ^{
+        CouchQueryEnumerator* rows = _op.resultObject;
+        _op = nil;
+        if (rows)
+            [self loadEntriesFrom: rows];
+    }];
 }
 
 

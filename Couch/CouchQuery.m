@@ -78,7 +78,7 @@
 }
 
 
-- (RESTOperation*) createResponse {
+- (RESTOperation*) start {
     NSDictionary* params = self.requestParams;
     NSDictionary* json = self.jsonToPost;
     if (json)
@@ -95,16 +95,24 @@
 
 
 - (CouchQueryEnumerator*) rowsIfChanged {
-    RESTOperation* op = [self createResponse];
-    if (op.isSuccessful && op.httpStatus == 304)
-        return nil;  // unchanged
-    NSArray* rows = $castIf(NSArray, [op.responseBody.fromJSON objectForKey: @"rows"]);    // BLOCKING
-    if (!rows) {
-        Warn(@"Error getting %@: %@", self, op.error);
-        return nil;
+    return [[self start] resultObject];
+}
+
+
+- (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
+    error = [super operation: op willCompleteWithError: error];
+    if (!error && op.httpStatus == 200) {
+        NSArray* rows = $castIf(NSArray, [op.responseBody.fromJSON objectForKey: @"rows"]);
+        if (rows) {
+            [self cacheResponse: op];
+            op.resultObject = [[[CouchQueryEnumerator alloc] initWithQuery: self
+                                                                        op: op] autorelease];
+        } else {
+            Warn(@"Couldn't parse rows from CouchDB view response");
+            error = [NSError errorWithDomain: CouchHTTPErrorDomain code: 500 userInfo:nil];
+        }
     }
-    [self cacheResponse: op];
-    return [[[CouchQueryEnumerator alloc] initWithQuery: self op: op] autorelease];
+    return error;
 }
 
 

@@ -233,6 +233,16 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 }
 
 
+- (void) cancel {
+    if (_state == kRESTObjectLoading || _state == kRESTObjectUnloaded) {
+        [_connection cancel];
+        [self completedWithError: [NSError errorWithDomain: NSURLErrorDomain
+                                                      code: NSURLErrorCancelled
+                                                  userInfo: nil]];
+    }
+}
+
+
 #pragma mark -
 #pragma mark RESPONSE:
 

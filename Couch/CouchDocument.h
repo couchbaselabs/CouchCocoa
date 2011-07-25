@@ -61,7 +61,8 @@
 #pragma mark PROPERTIES:
 
 /** The contents of the current revision of the document.
-    This is shorthand for self.currentRevision.contents. */
+    This is shorthand for self.currentRevision.properties.
+    Any keys in the dictionary that begin with "_", such as "_id" and "_rev", contain CouchDB metadata. */
 @property (readonly, copy) NSDictionary* properties;
 
 /** The user-defined properties, without the ones reserved by CouchDB.

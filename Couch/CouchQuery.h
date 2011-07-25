@@ -62,12 +62,14 @@
 @property BOOL prefetch;
 
 
-/** Sends the query to the server and returns an enumerator over the result rows.
-    This is currently synchronous (blocks until the response is complete) but may not remain so. */
+/** Starts an asynchronous query of the CouchDB view.
+    When complete, the operation's resultObject will be the CouchQueryEnumerator. */
+- (RESTOperation*) start;
+
+/** Sends the query to the server and returns an enumerator over the result rows (Synchronous). */
 - (CouchQueryEnumerator*) rows;
 
-/** Same as -rows, except returns nil if the query results have not changed since the last time
-    it was evaluated. (Synchronous) */
+/** Same as -rows, except returns nil if the query results have not changed since the last time it was evaluated (Synchronous). */
 - (CouchQueryEnumerator*) rowsIfChanged;
 
 @end

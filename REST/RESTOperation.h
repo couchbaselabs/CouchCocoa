@@ -88,11 +88,16 @@ typedef void (^OnCompleteBlock)();
 - (BOOL) onCompletion: (OnCompleteBlock)onComplete;
 
 /** Blocks till any pending network operation finishes (i.e. -isComplete becomes true.)
-    -load will be called if it hasn't yet been.
+    -start will be called if it hasn't yet been.
     On completion, any pending onCompletion blocks are called first, before this method returns.
     The synchronous methods below all end up calling this one.
     @return  YES on success, NO on error. */
 - (BOOL) wait;
+
+/** Stops an active operation.
+    The operation will immediately complete, with error NSURLErrorCancelled in domain NSURLErrorDomain.
+    Has no effect if the operation has already completed. */
+- (void) cancel;
 
 #pragma mark RESPONSE:
 
@@ -100,6 +105,7 @@ typedef void (^OnCompleteBlock)();
 @property (readonly) BOOL isComplete;
 
 /** If the request has failed, this will be set to an NSError describing what went wrong; else it's nil.
+    An HTTP response status of 300 or greater is considered an error and will cause this property to be set.
     This method does not block, but it won't be set to a non-nil value until the operation finishes. */
 @property (readonly, retain) NSError* error;
 
