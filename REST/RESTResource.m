@@ -56,6 +56,7 @@
 - (void) dealloc
 {
     [_owningCache resourceBeingDealloced: self];
+    [_credential release];
     [_eTag release];
     [_lastModified release];
     [_url release];
@@ -277,6 +278,21 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
     }
 
     return error;
+}
+
+
+#pragma mark -
+#pragma mark ACCESS CONTROL:
+
+
+- (void) setCredential:(NSURLCredential *)credential {
+    [_credential autorelease];
+    _credential = [credential retain];
+}
+
+
+- (NSURLCredential*) credentialForOperation: (RESTOperation*)op {
+    return _credential ? _credential : [_parent credentialForOperation: op];
 }
 
 

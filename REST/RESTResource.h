@@ -31,6 +31,8 @@
     NSString* _eTag;
     NSString* _lastModified;
     NSURL* _cachedURL;
+    
+    NSURLCredential* _credential;
 }
 
 /** Creates an instance with an absolute URL and no parent. */
@@ -50,6 +52,9 @@
 
 /** The relative path from the parent (as given in the initializer.) */
 @property (readonly) NSString* relativePath;
+
+/** Sets the login credential (e.g. username/password) to be used for authentication by this resource and its children. */
+- (void) setCredential: (NSURLCredential*)credential;
 
 #pragma mark HTTP METHODS:
 

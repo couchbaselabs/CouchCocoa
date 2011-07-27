@@ -33,6 +33,7 @@ id RESTCastIfArrayOf(Class,id);
 
 @interface RESTResource ()
 @property (readwrite, retain) RESTCache* owningCache;
+- (NSURLCredential*) credentialForOperation: (RESTOperation*)op;
 @end
 
 

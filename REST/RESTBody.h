@@ -80,8 +80,31 @@
 
 
 @interface RESTBody (JSON)
+/** Converts an object to UTF-8-encoded JSON data.
+    JSON 'fragments' (NSString / NSNumber) are allowed. Returns nil on nil input. */
 + (NSData*) dataWithJSONObject: (id)obj;
+/** Converts an object to a JSON string.
+    JSON 'fragments' (NSString / NSNumber) are allowed. Returns nil on nil input. */
 + (NSString*) stringWithJSONObject: (id)obj;
+/** Parses JSON data into a Foundation object tree.
+    If parsing fails, returns nil. */
 + (id) JSONObjectWithData: (NSData*)data;
+/** Parses a JSON string into a Foundation object tree.
+    If parsing fails, returns nil. */
 + (id) JSONObjectWithString: (NSString*)string;
+
+/** Converts an NSDate to a string in ISO-8601 format (standard JSON representation). */
++ (NSString*) JSONObjectWithDate: (NSDate*)date;
+
+/** Parses a string in ISO-8601 date format into an NSDate.
+    Returns nil if the string isn't parseable, or if it isn't a string at all. */
++ (NSDate*) dateWithJSONObject: (id)jsonObject;
+
+/** Encodes NSData to a Base64 string, which can be stored in JSON. */
++ (NSString*) base64WithData: (NSData*)data;
+
+/** Decodes a Base64 string to NSData.
+    Returns nil if the string is not valid Base64, or is not a string at all. */
++ (NSData*) dataWithBase64: (NSString*)base64;
+
 @end

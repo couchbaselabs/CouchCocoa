@@ -73,7 +73,8 @@
 - (CouchAttachment*) attachmentNamed: (NSString*)name;
 
 /** Creates a new attachment object, but doesn't write it to the database yet.
-    To actually create the attachment, you'll need to call -PUT on the CouchAttachment. */
+    To actually create the attachment, you'll need to call -PUT on the CouchAttachment.
+    It's OK to call this with an attachment name that already exists; saving will overwrite the old attachment contents. */
 - (CouchAttachment*) createAttachmentWithName: (NSString*)name type: (NSString*)contentType;
 
 

@@ -130,4 +130,16 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     [body release];
 }
 
+- (void) testBase64 {
+    NSData* input = [@"this is the original string" dataUsingEncoding: NSUTF8StringEncoding];
+    NSString* base64 = [RESTBody base64WithData: input];
+    STAssertEqualObjects(base64, @"dGhpcyBpcyB0aGUgb3JpZ2luYWwgc3RyaW5n", nil);
+    
+    NSData* output = [RESTBody dataWithBase64: base64];
+    STAssertEqualObjects(output, input, @"Base64 decoding failed");
+    
+    STAssertNil([RESTBody base64WithData: nil], @"Base64 encoding failed on nil input");
+    STAssertNil([RESTBody dataWithBase64: nil], @"Base64 decoding failed on nil input");
+}
+
 @end

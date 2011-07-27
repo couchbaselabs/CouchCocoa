@@ -359,5 +359,20 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 }
 
 
+- (void)connection:(NSURLConnection *)connection 
+    didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    if (challenge.previousFailureCount == 0) {
+        NSURLCredential* credential = [_resource credentialForOperation: self];
+        NSLog(@"REST: Authentication challenge! credential=%@", credential);
+        if (credential) {
+            [challenge.sender useCredential: credential forAuthenticationChallenge: challenge];
+            return;
+        }
+    }
+    // give up
+    [challenge.sender cancelAuthenticationChallenge: challenge];
+}
+
 
 @end

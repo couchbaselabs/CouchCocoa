@@ -48,7 +48,8 @@
     RESTOperation* op = [_db create];
     if (![op wait]) {
         NSLog(@"NOTE: DB '%@' exists; deleting and re-creating it for tests", _db.relativePath);
-        STAssertEquals(op.httpStatus, 412, nil);
+        STAssertEquals(op.httpStatus, 412,
+                       @"Unexpected error creating db: %@", op.error);
         AssertWait([_db DELETE]);
         AssertWait([_db create]);
     }

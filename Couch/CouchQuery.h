@@ -117,7 +117,8 @@
 @property (readonly) id key;
 @property (readonly) id value;
 
-/** The document this row was mapped from. */
+/** The document this row was mapped from.
+    This will be nil if a grouping was enabled in the query, because then the result rows don't correspond to individual documents. */
 @property (readonly) CouchDocument* document;
 
 /** The properties of the document this row was mapped from.

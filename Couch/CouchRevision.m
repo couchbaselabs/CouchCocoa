@@ -244,9 +244,8 @@
 
 
 - (CouchAttachment*) createAttachmentWithName: (NSString*)name type: (NSString*)contentType {
-    if ([self attachmentMetadataFor: name])
-        return nil;
-    return [[[CouchAttachment alloc] initWithRevision: self name: name type: contentType] autorelease];
+    return [[[CouchAttachment alloc] initWithRevision: self name: name type: contentType]
+                autorelease];
 }
 
 
