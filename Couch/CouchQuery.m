@@ -240,6 +240,15 @@
 - (NSString*) documentID            {return [_result objectForKey: @"id"];}
 - (NSDictionary*) documentProperties  {return [_result objectForKey: @"doc"];}
 
+- (NSString*) documentRevision {
+    // Get the revision id from either the embedded document contents,
+    // or the 'rev' value key:
+    NSString* rev = [[_result objectForKey: @"doc"] objectForKey: @"_rev"];
+    if (!rev)
+        rev = [$castIf(NSDictionary, self.value) objectForKey: @"rev"];
+    return rev;
+}
+
 
 - (id) keyAtIndex: (NSUInteger)index {
     id key = [_result objectForKey: @"key"];
@@ -260,7 +269,7 @@
     if (!docID)
         return nil;
     CouchDocument* doc = [_query.database documentWithID: docID];
-    [doc loadCurrentRevisionFrom: self.documentProperties];
+    [doc loadCurrentRevisionFrom: self];
     return doc;
 }
 

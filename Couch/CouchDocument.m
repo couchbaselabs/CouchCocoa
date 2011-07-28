@@ -83,16 +83,19 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 }
 
 
-- (void) loadCurrentRevisionFrom: (NSDictionary*)properties {
-    NSString* rev = $castIf(NSString, [properties objectForKey: @"_rev"]);
+- (void) loadCurrentRevisionFrom: (CouchQueryRow*)row {
+    NSString* rev = row.documentRevision;
     if (rev) {
         if (!_currentRevisionID || [_currentRevisionID isEqualToString: rev]) {
-            // OK, I can set the current revisions contents from the given dictionary:
             [self setCurrentRevisionID: rev];
-            if (!_currentRevision)
-                _currentRevision = [[CouchRevision alloc] initWithDocument: self
-                                                                revisionID: rev];
-            [_currentRevision setProperties:properties];
+            
+            NSDictionary* properties = row.documentProperties;
+            if (properties) {
+                if (!_currentRevision)
+                    _currentRevision = [[CouchRevision alloc] initWithDocument: self
+                                                                    revisionID: rev];
+                [_currentRevision setProperties:properties];
+            }
         }
     }
 }

@@ -121,6 +121,9 @@
     This will be nil if a grouping was enabled in the query, because then the result rows don't correspond to individual documents. */
 @property (readonly) CouchDocument* document;
 
+/** The revision ID of the document this row was mapped from. */
+@property (readonly) NSString* documentRevision;
+
 /** The properties of the document this row was mapped from.
     To get this, you must have set the -prefetch property on the query; else this will be nil. */
 @property (readonly) NSDictionary* documentProperties;
