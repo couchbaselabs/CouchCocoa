@@ -35,6 +35,22 @@
 @implementation CouchQuery
 
 
+- (id) initWithQuery: (CouchQuery*)query {
+    self = [super initWithParent: query.parent relativePath: query.relativePath];
+    if (self) {
+        _limit = query.limit;
+        _skip = query.skip;
+        self.startKey = query.startKey;
+        self.endKey = query.endKey;
+        _descending = query.descending;
+        _prefetch = query.prefetch;
+        self.keys = query.keys;
+        _groupLevel = query.groupLevel;
+    }
+    return self;
+}
+
+
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
             prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel;
 
@@ -116,6 +132,11 @@
 }
 
 
+- (CouchLiveQuery*) asLiveQuery {
+    return [[[CouchLiveQuery alloc] initWithQuery: self] autorelease];
+}
+
+
 @end
 
 
@@ -154,6 +175,82 @@
 
 
 
+@implementation CouchLiveQuery
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    [_op release];
+    [super dealloc];
+}
+
+
+- (CouchQueryEnumerator*) rows {
+    if (!_observing)
+        [self start];
+    return _rows;
+}
+
+
+- (void) setRows:(CouchQueryEnumerator *)rows {
+    [_rows autorelease];
+    _rows = [rows retain];
+}
+
+
+- (RESTOperation*) start {
+    if (!_op) {
+        if (!_observing) {
+            _observing = YES;
+            self.database.tracksChanges = YES;
+            [[NSNotificationCenter defaultCenter] addObserver: self 
+                                                     selector: @selector(databaseChanged)
+                                                         name: kCouchDatabaseChangeNotification 
+                                                       object: self.database];
+        }
+        NSLog(@"CouchLiveQuery: Starting...");
+        _op = [[super start] retain];
+        [_op start];
+    }
+    return _op;
+}
+
+
+- (void) updateRows {
+    if (_op)
+        return;  // TODO: Should probably re-run query after current _op completes, instead
+    if (_rows)
+        self.prefetch = NO;   // (prefetch disables conditional GET shortcut)
+    [self start];
+}
+
+
+- (void) databaseChanged {
+    [self updateRows];
+}
+
+
+- (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
+    error = [super operation: op willCompleteWithError: error];
+
+    if (op == _op) {
+        NSLog(@"CouchLiveQuery: ...Finished (status=%i)", op.httpStatus);
+        [_op release];
+        _op = nil;
+        CouchQueryEnumerator* rows = op.resultObject;
+        if (rows && ![rows isEqual: _rows]) {
+            NSLog(@"CouchLiveQuery: ...Rows changed! (now %lu)", (unsigned long)rows.count);
+            self.rows = rows;   // Triggers KVO notification
+        }
+    }
+    
+    return error;
+}
+
+
+@end
+
+
+
 
 @implementation CouchQueryEnumerator
 
@@ -166,7 +263,7 @@
     if (self) {
         NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
         _query = [query retain];
-        _rows = [$castIf(NSArray, [result objectForKey: @"rows"]) retain];    // BLOCKING
+        _rows = [$castIf(NSArray, [result objectForKey: @"rows"]) retain];
         if (!_rows) {
             [self release];
             return nil;
@@ -183,6 +280,16 @@
     [_query release];
     [_rows release];
     [super dealloc];
+}
+
+
+- (BOOL) isEqual:(id)object {
+    if (object == self)
+        return YES;
+    if (![object isKindOfClass: [CouchQueryEnumerator class]])
+        return NO;
+    CouchQueryEnumerator* otherEnum = object;
+    return [otherEnum->_rows isEqual: _rows];
 }
 
 

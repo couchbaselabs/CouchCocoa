@@ -14,7 +14,7 @@
 //  and limitations under the License.
 
 #import <Cocoa/Cocoa.h>
-@class CouchQuery, RESTOperation;
+@class CouchQuery, CouchLiveQuery, RESTOperation;
 
 
 /** Simple controller for CouchDB demo apps.
@@ -23,7 +23,7 @@
     without needing any code. */
 @interface DemoQuery : NSObject
 {
-    CouchQuery* _query;
+    CouchLiveQuery* _query;
     RESTOperation* _op;
     NSMutableArray* _entries;
     Class _modelClass;
@@ -33,8 +33,6 @@
 
 /** Class to instantiate for entries. Defaults to DemoItem. */
 @property (assign) Class modelClass;
-
-- (void) updateEntries;
 
 /** The documents returned by the query, wrapped in DemoItem objects.
     An NSArrayController can be bound to this property. */

@@ -33,17 +33,13 @@
     self = [super init];
     if (self != nil) {
         _modelClass = [DemoItem class];
-        _query = [query retain];
+        _query = [[query asLiveQuery] retain];
 
         _query.prefetch = YES;        // for efficiency, include docs on first load
-        [self loadEntriesFrom: [_query rows]];
+        [_query start];
 
-        // Listen for external changes:
-        _query.database.tracksChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver: self 
-                                                 selector: @selector(updateEntries)
-                                                     name: kCouchDatabaseChangeNotification 
-                                                   object: nil];
+        // Observe changes to _query.rows:
+        [_query addObserver: self forKeyPath: @"rows" options: 0 context: NULL];
     }
     return self;
 }
@@ -51,9 +47,8 @@
 
 - (void) dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver: self];
-    [_op cancel];
     [_entries release];
+    [_query removeObserver: self forKeyPath: @"rows"];
     [_query release];
     [super dealloc];
 }
@@ -76,7 +71,8 @@
     }
 
     if (![entries isEqual:_entries]) {
-        NSLog(@"    ...entries changed!");
+        NSLog(@"    ...entries changed! (was %u, now %u)", 
+              (unsigned)_entries.count, (unsigned)entries.count);
         [self willChangeValueForKey: @"entries"];
         [_entries release];
         _entries = [entries mutableCopy];
@@ -85,18 +81,12 @@
 }
 
 
-- (void) updateEntries {
-    if (_op)
-        return;
-    NSLog(@"Updating the query...");
-    _query.prefetch = NO;   // prefetch disables rowsIfChanged optimization
-    _op = [_query start];
-    [_op onCompletion: ^{
-        CouchQueryEnumerator* rows = _op.resultObject;
-        _op = nil;
-        if (rows)
-            [self loadEntriesFrom: rows];
-    }];
+- (void)observeValueForKeyPath: (NSString*)keyPath ofObject: (id)object
+                        change: (NSDictionary*)change context: (void*)context 
+{
+    if (object == _query) {
+        [self loadEntriesFrom: _query.rows];
+    }
 }
 
 

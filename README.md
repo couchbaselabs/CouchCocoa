@@ -30,6 +30,8 @@ There are two simple Mac demo apps included in the Demo/ subfolder. One lets you
 
 ### Building The Framework
 
+(You only need to do this if you checked out the CouchCocoa source code and want to build it yourself. If you downloaded a precompiled framework, just go onto the next section.)
+
 1. Open CouchDemo.xcodeproj
 2. Select "Mac Framework" or "iOS Framework" from the scheme pop-up in the toolbar
 3. Product > Build

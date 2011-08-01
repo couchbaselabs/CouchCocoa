@@ -14,11 +14,8 @@
 //  and limitations under the License.
 
 #import "CouchResource.h"
-@class CouchDatabase;
-@class CouchDocument;
-@class CouchDesignDocument;
-@class CouchQueryEnumerator;
-@class CouchQueryRow;
+@class CouchDatabase, CouchDocument, CouchDesignDocument;
+@class CouchLiveQuery, CouchQueryEnumerator, CouchQueryRow;
 
 
 /** Represents a CouchDB 'view', or a view-like resource like _all_documents. */
@@ -71,6 +68,26 @@
 
 /** Same as -rows, except returns nil if the query results have not changed since the last time it was evaluated (Synchronous). */
 - (CouchQueryEnumerator*) rowsIfChanged;
+
+
+/** Returns a live query with the same parameters. */
+- (CouchLiveQuery*) asLiveQuery;
+
+@end
+
+
+/** A CouchQuery subclass that automatically refreshes the result rows every time the database changes.
+    All you need to do is watch for changes to the .rows property. */
+@interface CouchLiveQuery : CouchQuery
+{
+    @private
+    BOOL _observing;
+    RESTOperation* _op;
+    CouchQueryEnumerator* _rows;
+}
+
+/** In CouchLiveQuery the -rows accessor is now a non-blocking property that can be observed using KVO. Its value will be nil until the initial query finishes. */
+@property (readonly, retain) CouchQueryEnumerator* rows;
 
 @end
 

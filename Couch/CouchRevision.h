@@ -20,7 +20,6 @@
 @interface CouchRevision : CouchResource
 {
     @private
-    NSDictionary* _contents;
     NSDictionary* _properties;
     BOOL _isDeleted;
 }

@@ -52,11 +52,9 @@ int main (int argc, const char * argv[]) {
         NSAssert(op.error.code == 412, @"Error creating db: %@", op.error);
     }
     
-    self.query = [[[DemoQuery alloc] initWithQuery: [_database getAllDocuments]] autorelease];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(databaseChanged:)
-                                                 name: kCouchDatabaseChangeNotification 
-                                               object: _database];
+    CouchQuery* q = [_database getAllDocuments];
+    q.descending = YES;
+    self.query = [[[DemoQuery alloc] initWithQuery: q] autorelease];
     
     // Enable continuous sync:
     NSString* otherDbURL = [bundleInfo objectForKey: @"SyncDatabaseURL"];
@@ -85,29 +83,9 @@ int main (int argc, const char * argv[]) {
 #pragma mark HIGHLIGHTING NEW ITEMS:
 
 
-- (void) databaseChanged: (NSNotification*)n {
-    if (!_glowing) {
-        // Wait to redraw the table, else there is a race condition where if the
-        // DemoItem gets notified after I do, it won't have updated timeSinceExternallyChanged yet.
-        _glowing = YES;
-        [self performSelector: @selector(updateTableGlows) withObject: nil afterDelay:0.0];
-    }
-}
-
-
 - (void) updateTableGlows {
-    BOOL glowing = NO;
-    for (DemoItem* item in _tableController.arrangedObjects) {
-        if (item.timeSinceExternallyChanged < kChangeGlowDuration) {
-            glowing = YES;
-            break;
-        }
-    }
-    if (glowing || _glowing)
-        [_table setNeedsDisplay: YES];
-    _glowing = glowing;
-    if (glowing)
-        [self performSelector: @selector(updateTableGlows) withObject: nil afterDelay: 0.1];
+    _glowing = NO;
+    [_table setNeedsDisplay: YES];
 }
 
 
@@ -118,7 +96,10 @@ int main (int argc, const char * argv[]) {
 {
     NSColor* bg = nil;
 
-    DemoItem* item = [_tableController.arrangedObjects objectAtIndex: row];
+    NSArray* items = _tableController.arrangedObjects;
+    if (row >= items.count)
+        return;                 // Don't know why I get called on illegal rows, but it happens...
+    DemoItem* item = [items objectAtIndex: row];
     NSTimeInterval changedFor = item.timeSinceExternallyChanged;
     if (changedFor > 0 && changedFor < kChangeGlowDuration) {
         float fraction = 1.0 - changedFor / kChangeGlowDuration;
@@ -127,6 +108,11 @@ int main (int argc, const char * argv[]) {
                                                         ofColor: [NSColor yellowColor]];
         else
             bg = [[NSColor yellowColor] colorWithAlphaComponent: fraction];
+        
+        if (!_glowing) {
+            _glowing = YES;
+            [self performSelector: @selector(updateTableGlows) withObject: nil afterDelay: 0.1];
+        }
     }
     
     [cell setBackgroundColor: bg];
