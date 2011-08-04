@@ -94,7 +94,7 @@
 
 /** Enumerator on a CouchQuery's result rows.
     The objects returned are instances of CouchQueryRow. */
-@interface CouchQueryEnumerator : NSEnumerator
+@interface CouchQueryEnumerator : NSEnumerator <NSCopying>
 {
     @private
     CouchQuery* _query;

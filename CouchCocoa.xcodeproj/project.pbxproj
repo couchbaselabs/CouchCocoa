@@ -42,6 +42,8 @@
 		27A5799E13974DD7002776DB /* DemoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577DE13970D94002776DB /* DemoItem.m */; };
 		27A579B313974E41002776DB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
 		27C5229C13CFA7C2003909B7 /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EF148B1396D8CC0052913E /* DemoAppController.m */; };
+		27C727FF13EB237200C7ADF5 /* CouchUITableSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C727FB13EB237200C7ADF5 /* CouchUITableSource.m */; };
+		27C7280013EB238900C7ADF5 /* CouchUITableSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 27C727FA13EB237200C7ADF5 /* CouchUITableSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CDEBEA13C675C900C979BB /* Test_REST.m in Sources */ = {isa = PBXBuildFile; fileRef = 272E9D9313A2EBE0009F18E9 /* Test_REST.m */; };
 		27CDEBEB13C675CD00C979BB /* Test_Couch.m in Sources */ = {isa = PBXBuildFile; fileRef = 270A663A13A5B36900791F4A /* Test_Couch.m */; };
 		27CDEC0413C67C9B00C979BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */; };
@@ -197,6 +199,8 @@
 		27A57B3C1397E6FB002776DB /* RESTBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTBody.m; sourceTree = "<group>"; };
 		27BB781613A08B520069ABA7 /* CouchDesignDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchDesignDocument.h; sourceTree = "<group>"; };
 		27BB781713A08B520069ABA7 /* CouchDesignDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchDesignDocument.m; sourceTree = "<group>"; };
+		27C727FA13EB237200C7ADF5 /* CouchUITableSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchUITableSource.h; sourceTree = "<group>"; };
+		27C727FB13EB237200C7ADF5 /* CouchUITableSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchUITableSource.m; sourceTree = "<group>"; };
 		27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CouchCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27CDEBF413C67C9B00C979BB /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		27CDEBF513C67C9B00C979BB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -292,6 +296,7 @@
 			children = (
 				278B231E1391724E00DDD950 /* REST */,
 				08FB7795FE84155DC02AAC07 /* Couch */,
+				27C727F713EB232700C7ADF5 /* UI */,
 				272E9D8B13A2EBE0009F18E9 /* Test */,
 				27EF147F1396D7CD0052913E /* Demo */,
 				273175A313CBA6B7000FF426 /* Doxyfile */,
@@ -415,6 +420,31 @@
 			path = Vendor/JSONKit;
 			sourceTree = "<group>";
 		};
+		27C727F713EB232700C7ADF5 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				27C727F813EB234F00C7ADF5 /* iOS */,
+				27C727F913EB234F00C7ADF5 /* Mac */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		27C727F813EB234F00C7ADF5 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				27C727FA13EB237200C7ADF5 /* CouchUITableSource.h */,
+				27C727FB13EB237200C7ADF5 /* CouchUITableSource.m */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		27C727F913EB234F00C7ADF5 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Mac;
+			sourceTree = "<group>";
+		};
 		27CDEBF313C67C9B00C979BB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,6 +530,7 @@
 				27EEA5B413D6051B00D7ACA4 /* CouchResource.h in Headers */,
 				27EEA5AD13D6050600D7ACA4 /* CouchServer.h in Headers */,
 				27EEA5AE13D6050C00D7ACA4 /* CouchDatabase.h in Headers */,
+				27C7280013EB238900C7ADF5 /* CouchUITableSource.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -811,6 +842,7 @@
 				2739BF5413BCE56D004829CD /* RESTInternal.m in Sources */,
 				2739BF5513BCE5A5004829CD /* CouchServer.m in Sources */,
 				2739BF5613BCE5A8004829CD /* CouchDatabase.m in Sources */,
+				27C727FF13EB237200C7ADF5 /* CouchUITableSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

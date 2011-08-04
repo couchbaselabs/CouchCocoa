@@ -187,7 +187,8 @@
 - (CouchQueryEnumerator*) rows {
     if (!_observing)
         [self start];
-    return _rows;
+    // Have to return a copy because the enumeration has to start at item #0 every time
+    return [[_rows copy] autorelease];
 }
 
 
@@ -258,20 +259,39 @@
 @synthesize totalCount=_totalCount, sequenceNumber=_sequenceNumber;
 
 
-- (id) initWithQuery: (CouchQuery*)query op: (RESTOperation*)op {
+- (id) initWithQuery: (CouchQuery*)query
+                rows: (NSArray*)rows
+          totalCount: (NSUInteger)totalCount
+      sequenceNumber: (NSUInteger)sequenceNumber
+{
+    NSParameterAssert(query);
     self = [super init];
-    if (self) {
-        NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
-        _query = [query retain];
-        _rows = [$castIf(NSArray, [result objectForKey: @"rows"]) retain];
-        if (!_rows) {
+    if (self ) {
+        if (!rows) {
             [self release];
             return nil;
         }
-        _totalCount = [[result objectForKey: @"total_rows"] intValue];
-        _sequenceNumber = [[result objectForKey: @"update_seq"] intValue];
+        _query = [query retain];
+        _rows = [rows retain];
+        _totalCount = totalCount;
+        _sequenceNumber = sequenceNumber;
     }
     return self;
+}
+
+- (id) initWithQuery: (CouchQuery*)query op: (RESTOperation*)op {
+    NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
+    return [self initWithQuery: query
+                          rows: $castIf(NSArray, [result objectForKey: @"rows"])
+                    totalCount: [[result objectForKey: @"total_rows"] intValue]
+                sequenceNumber: [[result objectForKey: @"update_seq"] intValue]];
+}
+
+- (id) copyWithZone: (NSZone*)zone {
+    return [[[self class] alloc] initWithQuery: _query
+                                          rows: _rows
+                                    totalCount: _totalCount
+                                sequenceNumber: _sequenceNumber];
 }
 
 
