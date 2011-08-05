@@ -19,6 +19,14 @@ This API is not the only way to access CouchDB on iOS and Mac OS. There are othe
 
 ## Build Instructions
 
+### One-Time Repository Setup
+
+After cloning the CouchCocoa repo, you'll need to initialize Git "submodules". This will clone the dependency JSONKit into the "vendor" subfolder:
+
+    cd CouchCocoa
+    git submodule init
+    git submodule update
+
 ### Running The Demo Apps
 
 There are two simple Mac demo apps included in the Demo/ subfolder. One lets you edit a simple list of names and email addresses, the other is a shopping list. (They actually share the same source code; all the differences are in their .xib files, thanks to the magic of Cocoa bindings.) To run them:
