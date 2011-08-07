@@ -202,6 +202,27 @@
 }
 
 
+- (void) test03_DeleteMultipleDocuments {
+    NSMutableArray* docs = [NSMutableArray array];
+    for (int i=0; i<5; i++) {
+        NSDictionary* properties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    @"testDeleteMultipleDocuments", @"testName",
+                                    [NSNumber numberWithInt: i], @"sequence",
+                                    nil];
+        CouchDocument* doc = [self createDocumentWithProperties: properties];
+        [docs addObject: doc];
+    }
+    
+    AssertWait([_db deleteDocuments: docs]);
+    
+    for (CouchDocument* doc in docs) {
+        STAssertTrue(doc.isDeleted, nil);
+    }
+    
+    STAssertEquals([_db getDocumentCount], (NSInteger)0, nil);
+}
+
+
 - (void) test04_DeleteDocument {
     NSDictionary* properties = [NSDictionary dictionaryWithObjectsAndKeys:
                                 @"testDeleteDocument", @"testName",

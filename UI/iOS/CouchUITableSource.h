@@ -7,36 +7,52 @@
 //
 
 #import <UIKit/UIKit.h>
-@class CouchLiveQuery, CouchQueryRow, RESTOperation;
+@class CouchDocument, CouchLiveQuery, CouchQueryRow, RESTOperation;
 
 /** A UITableView data source driven by a CouchLiveQuery. */
 @interface CouchUITableSource : NSObject <UITableViewDataSource>
-{
-    @private
-    UITableView* _tableView;
-    CouchLiveQuery* _query;
-	NSMutableArray* _rows;
-    NSString* _labelProperty;
-    BOOL _deletionAllowed;
-}
 
 @property (nonatomic, retain) IBOutlet UITableView* tableView;
 
 @property (retain) CouchLiveQuery* query;
 
+/** Rebuilds the table from the query's current .rows property. */
 -(void) reloadFromQuery;
 
+
+#pragma mark Row Accessors:
+
+/** The current array of CouchQueryRows being used as the data source for the table. */
 @property (nonatomic, readonly) NSArray* rows;
+
+/** Convenience accessor to get the row object for a given table row index. */
 - (CouchQueryRow*) rowAtIndex: (NSUInteger)index;
+
+/** Convenience accessor to find the index path of the row with a given document. */
+- (NSIndexPath*) indexPathForDocument: (CouchDocument*)document;
+
+/** Convenience accessor to return the document at a given index path. */
+- (CouchDocument*) documentAtIndexPath: (NSIndexPath*)path;
+
 
 #pragma mark Displaying The Table:
 
+/** If non-nil, specifies the property name of the query row's value that will be used for the table row's visible label.
+    If the row's value is not a dictionary, or if the property doesn't exist, the property will next be looked up in the document's properties.
+    If this doesn't meet your needs for labeling rows, you should implement -couchTableSource:willUseCell:forRow: in the table's delegate. */
 @property (copy) NSString* labelProperty;
 
-- (NSString*) labelForRow: (CouchQueryRow*)row;
 
-/** Is the user allowed to delete rows? (Defaults to YES.) */
+#pragma mark Editing The Table:
+
+/** Is the user allowed to delete rows by UI gestures? (Defaults to YES.) */
 @property (nonatomic) BOOL deletionAllowed;
+
+/** Asynchronously deletes the documents at the given row indexes, animating the removal from the table. */
+- (void) deleteDocumentsAtIndexes: (NSArray*)indexPaths;
+
+/** Asynchronously deletes the given documents, animating the removal from the table. */
+- (void) deleteDocuments: (NSArray*)documents;
 
 @end
 

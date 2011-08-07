@@ -310,7 +310,9 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 }
 
 
-- (void) updateFromSaveResponse: (NSDictionary*)response {
+- (void) updateFromSaveResponse: (NSDictionary*)response 
+                 withProperties: (NSDictionary*)properties
+{
     NSString* docID = [response objectForKey: @"id"];
     NSString* rev = [response objectForKey: @"rev"];
     
@@ -328,22 +330,36 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         }
     }
     
+    if (!rev) {
+        Warn(@"No revision ID received for save response of %@", self);
+        return;
+    }
+    
     self.currentRevisionID = rev;
+    if (properties) {
+        if (!_currentRevision)
+            _currentRevision = [[CouchRevision alloc] initWithDocument: self
+                                                            revisionID: rev];
+        [_currentRevision setProperties:properties];
+        if (_currentRevision.isDeleted)
+            self.isDeleted = YES;
+    }
 }
 
 
 - (void) createdByPOST: (RESTOperation*)op {
     [super createdByPOST: op];    //FIX: Should update relativePath directly from 'id' instead
-    [self updateFromSaveResponse: $castIf(NSDictionary, op.responseBody.fromJSON)];
+    [self updateFromSaveResponse: $castIf(NSDictionary, op.responseBody.fromJSON)
+                  withProperties: nil];
     [self.database documentAssignedID: self];
     [self.database endDocumentOperation: self];   // I was created via a POST
 }
 
 
 // Called by -[CouchDatabase putChanges:toRevisions:] after a successful save.
-- (void) bulkSaveCompleted: (NSDictionary*) result {
+- (void) bulkSaveCompleted: (NSDictionary*) result forProperties: (NSDictionary*)properties {
     if (![result objectForKey: @"error"])
-        [self updateFromSaveResponse: result];
+        [self updateFromSaveResponse: result withProperties: properties];
 }
 
 

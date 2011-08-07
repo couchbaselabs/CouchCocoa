@@ -42,8 +42,7 @@
     
     self = [self initWithDocument: document revisionID: revisionID];
     if (self) {
-        _properties = [properties copy];
-        _isDeleted = [$castIf(NSNumber, [properties objectForKey: @"_deleted"]) boolValue];
+        [self setProperties: properties];
     }
     return self;
 }
@@ -140,6 +139,7 @@
     if (properties != _properties) {
         [_properties release];
         _properties = [properties copy];
+        _isDeleted = [$castIf(NSNumber, [properties objectForKey: @"_deleted"]) boolValue];
     }
 }
 

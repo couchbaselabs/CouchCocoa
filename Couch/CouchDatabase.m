@@ -111,6 +111,10 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
+#pragma mark -
+#pragma mark BATCH CHANGES
+
+
 - (RESTOperation*) putChanges: (NSArray*)properties {
     return [self putChanges: properties toRevisions: nil];
 }
@@ -125,7 +129,8 @@ static const NSUInteger kDocRetainLimit = 50;
         NSMutableDictionary* contents;
         if ([props isEqual: [NSNull null]]) {
             NSAssert(revisions, @"Can't pass null properties without specifying a revision");
-            contents = [NSDictionary dictionaryWithObject: (id)kCFBooleanTrue forKey: @"_deleted"];
+            contents = [NSMutableDictionary dictionaryWithObject: (id)kCFBooleanTrue
+                                                          forKey: @"_deleted"];
         } else {
             NSAssert([props isKindOfClass:[NSDictionary class]], @"invalid property dict");
             contents = [[props mutableCopy] autorelease];
@@ -141,6 +146,7 @@ static const NSUInteger kDocRetainLimit = 50;
     
     RESTResource* bulkDocs = [[[RESTResource alloc] initWithParent: self 
                                                       relativePath: @"_bulk_docs"] autorelease];
+    [self beginDocumentOperation: self];
     RESTOperation* op = [bulkDocs POSTJSON: body parameters: nil];
     [op onCompletion: ^{
         if (op.isSuccessful) {
@@ -151,15 +157,30 @@ static const NSUInteger kDocRetainLimit = 50;
                 NSDictionary* responseDict = $castIf(NSDictionary, response);
                 CouchDocument* document;
                 if (revisions)
-                    document = [[revisions objectAtIndex: i++] document];
+                    document = [[revisions objectAtIndex: i] document];
                 else
                     document = [self documentWithID: [responseDict objectForKey: @"id"]];
-                [document bulkSaveCompleted: responseDict];
+                [document bulkSaveCompleted: responseDict
+                              forProperties: [entries objectAtIndex: i]];
                 [op.resultObject addObject: document];
+                ++i;
             }
         }
+        [self endDocumentOperation: self];
     }];
     return op;
+}
+
+
+- (RESTOperation*) deleteRevisions: (NSArray*)revisions {
+    NSArray* properties = [revisions rest_map: ^(id revision) {return [NSNull null];}];
+    return [self putChanges: properties toRevisions: revisions];
+}
+
+
+- (RESTOperation*) deleteDocuments: (NSArray*)documents {
+    NSArray* revisions = [documents rest_map: ^(id document) {return [document currentRevision];}];
+    return [self deleteRevisions: revisions];
 }
 
 

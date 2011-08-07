@@ -134,18 +134,20 @@
 @property (readonly) id key;
 @property (readonly) id value;
 
-/** The document this row was mapped from.
-    This will be nil if a grouping was enabled in the query, because then the result rows don't correspond to individual documents. */
-@property (readonly) CouchDocument* document;
+@property (readonly) NSString* documentID;
 
 /** The revision ID of the document this row was mapped from. */
 @property (readonly) NSString* documentRevision;
+
+/** The document this row was mapped from.
+    This will be nil if a grouping was enabled in the query, because then the result rows don't correspond to individual documents. */
+@property (readonly) CouchDocument* document;
 
 /** The properties of the document this row was mapped from.
     To get this, you must have set the -prefetch property on the query; else this will be nil. */
 @property (readonly) NSDictionary* documentProperties;
 
-/** If the key is an array, returns the item at that index in the array.
+/** If this row's key is an array, returns the item at that index in the array.
     If the key is not an array, index=0 will return the key itself.
     If the index is out of range, returns nil. */
 - (id) keyAtIndex: (NSUInteger)index;

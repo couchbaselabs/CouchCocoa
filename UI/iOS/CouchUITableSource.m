@@ -7,7 +7,19 @@
 //
 
 #import "CouchUITableSource.h"
-#import <CouchCocoa/CouchCocoa.h>
+#import "CouchInternal.h"
+
+
+@interface CouchUITableSource ()
+{
+    @private
+    UITableView* _tableView;
+    CouchLiveQuery* _query;
+	NSMutableArray* _rows;
+    NSString* _labelProperty;
+    BOOL _deletionAllowed;
+}
+@end
 
 
 @implementation CouchUITableSource
@@ -30,12 +42,35 @@
 }
 
 
+#pragma mark -
+#pragma mark ACCESSORS:
+
+
 @synthesize tableView=_tableView;
 @synthesize rows=_rows;
 
 
 - (CouchQueryRow*) rowAtIndex: (NSUInteger)index {
     return [_rows objectAtIndex: index];
+}
+
+
+- (NSIndexPath*) indexPathForDocument: (CouchDocument*)document {
+    NSString* documentID = document.documentID;
+    NSUInteger index = 0;
+    for (CouchQueryRow* row in _rows) {
+        if ([row.documentID isEqualToString: documentID])
+            return [NSIndexPath indexPathForRow: index inSection: 0];
+        ++index;
+    }
+    return nil;
+}
+
+
+- (CouchDocument*) documentAtIndexPath: (NSIndexPath*)path {
+    if (path.section == 0)
+        return [[_rows objectAtIndex: path.row] document];
+    return nil;
 }
 
 
@@ -148,6 +183,15 @@
 }
 
 
+- (void) checkDelete: (RESTOperation*)op {
+    if (!op.isSuccessful) {
+        // If the delete failed, undo the table row deletion by reloading from the db:
+        [self tellDelegate: @selector(couchTableSource:operationFailed:) withObject: op];
+        [self reloadFromQuery];
+    }
+}
+
+
 - (void)tableView:(UITableView *)tableView
         commitEditingStyle:(UITableViewCellEditingStyle)editingStyle 
          forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -155,20 +199,41 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the document from the database, asynchronously.
         RESTOperation* op = [[[self rowAtIndex:indexPath.row] document] DELETE];
-        [op onCompletion: ^{
-            if (!op.isSuccessful) {
-                // If the delete failed, undo the table row deletion by reloading from the db:
-                [self tellDelegate: @selector(couchTableSource:operationFailed:) withObject: op];
-                [self reloadFromQuery];
-            }
-        }];
+        [op onCompletion: ^{ [self checkDelete: op]; }];
         [op start];
         
         // Delete the row from the table data source.
         [_rows removeObjectAtIndex:indexPath.row];
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                              withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:indexPath]
+                              withRowAnimation: UITableViewRowAnimationFade];
     }
+}
+
+
+- (void) deleteDocuments: (NSArray*)documents atIndexes: (NSArray*)indexPaths {
+    RESTOperation* op = [_query.database deleteDocuments: documents];
+    [op onCompletion: ^{ [self checkDelete: op]; }];
+    
+    NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+    for (NSIndexPath* path in indexPaths) {
+        if (path.section == 0)
+            [indexSet addIndex: path.row];
+    }
+    [_rows removeObjectsAtIndexes: indexSet];
+
+    [_tableView deleteRowsAtIndexPaths: indexPaths withRowAnimation: UITableViewRowAnimationFade];
+}
+
+
+- (void) deleteDocumentsAtIndexes: (NSArray*)indexPaths {
+    NSArray* docs = [indexPaths rest_map: ^(id path) {return [self documentAtIndexPath: path];}];
+    [self deleteDocuments: docs atIndexes: indexPaths];
+}
+
+
+- (void) deleteDocuments: (NSArray*)documents {
+    NSArray* paths = [documents rest_map: ^(id doc) {return [self indexPathForDocument: doc];}];
+    [self deleteDocuments: documents atIndexes: paths];
 }
 
 

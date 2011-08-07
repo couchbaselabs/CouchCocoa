@@ -36,7 +36,7 @@
 @interface CouchDocument ()
 @property (readwrite, copy) NSString* currentRevisionID;
 - (void) loadCurrentRevisionFrom: (CouchQueryRow*)row;
-- (void) bulkSaveCompleted: (NSDictionary*) result;
+- (void) bulkSaveCompleted: (NSDictionary*) result forProperties: (NSDictionary*)properties;
 - (BOOL) notifyChanged: (NSDictionary*)change;
 @end
 

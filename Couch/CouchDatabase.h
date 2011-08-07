@@ -75,7 +75,7 @@ typedef NSUInteger CouchReplicationOptions;
 - (CouchQuery*) getDocumentsWithIDs: (NSArray*)docIDs;
 
 /** Bulk-writes multiple documents in one HTTP call.
-    Documents that don't exist on the server yet will be created. */
+    @param properties  An array specifying the new properties of each item in revisions. Each item must be an NSDictionary, or an NSNull object which means to delete the corresponding document. */
 - (RESTOperation*) putChanges: (NSArray*)properties toRevisions: (NSArray*)revisions;
 
 /** Bulk-writes multiple documents in one HTTP call.
@@ -84,6 +84,12 @@ typedef NSUInteger CouchReplicationOptions;
     The write is asynchronous, but after the returned operation finishes, its -resultObject will be an NSArray of CouchDocuments.
     @param properties  Array of NSDictionaries, each one the properties of a document. */
 - (RESTOperation*) putChanges: (NSArray*)properties;
+
+/** Deletes the given revisions. */
+- (RESTOperation*) deleteRevisions: (NSArray*)revisions;
+
+/** Deletes the given documents. */
+- (RESTOperation*) deleteDocuments: (NSArray*)documents;
 
 /** Empties the cache of recently used CouchDocument objects.
     API calls will now instantiate and return new instances. */
