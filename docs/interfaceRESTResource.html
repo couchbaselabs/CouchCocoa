@@ -98,14 +98,16 @@ Inheritance diagram for RESTResource:</div>
  <div class="center">
   <img src="interfaceRESTResource.png" usemap="#RESTResource_map" alt=""/>
   <map id="RESTResource_map" name="RESTResource_map">
-<area href="interfaceCouchResource.html" title="Superclass of CouchDB model classes." alt="CouchResource" shape="rect" coords="385,56,529,80"/>
+<area href="interfaceCouchResource.html" title="Superclass of CouchDB model classes." alt="CouchResource" shape="rect" coords="462,56,606,80"/>
 <area href="interfaceCouchAttachment.html" title="A binary attachment to a document." alt="CouchAttachment" shape="rect" coords="0,112,144,136"/>
 <area href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments." alt="CouchDatabase" shape="rect" coords="154,112,298,136"/>
 <area href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;." alt="CouchDocument" shape="rect" coords="308,112,452,136"/>
 <area href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents." alt="CouchQuery" shape="rect" coords="462,112,606,136"/>
-<area href="interfaceCouchRevision.html" title="A single revision of a CouchDocument." alt="CouchRevision" shape="rect" coords="616,112,760,136"/>
-<area href="interfaceCouchServer.html" title="The top level of a CouchDB server." alt="CouchServer" shape="rect" coords="770,112,914,136"/>
+<area href="interfaceCouchReplicator.html" alt="CouchReplicator" shape="rect" coords="616,112,760,136"/>
+<area href="interfaceCouchRevision.html" title="A single revision of a CouchDocument." alt="CouchRevision" shape="rect" coords="770,112,914,136"/>
+<area href="interfaceCouchServer.html" title="The top level of a CouchDB server." alt="CouchServer" shape="rect" coords="924,112,1068,136"/>
 <area href="interfaceCouchDesignDocument.html" title="A Design Document is a special document type that contains things like map/reduce functions..." alt="CouchDesignDocument" shape="rect" coords="308,168,452,192"/>
+<area href="interfaceCouchLiveQuery.html" title="A CouchQuery subclass that automatically refreshes the result rows every time the database changes..." alt="CouchLiveQuery" shape="rect" coords="462,168,606,192"/>
 </map>
  </div></div>
 
@@ -119,6 +121,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an instance with a path relative to a parent.  <a href="#a4b5742e374cb3f9eb42f339859589ff2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTResource.html#a0f3ad4a9d5d25715ff94edbabdef7ffa">initUntitledWithParent:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an instance that has a parent but no URL yet.  <a href="#a0f3ad4a9d5d25715ff94edbabdef7ffa"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTResource.html#a92004c46050c39f53d4c3ec86e857a05">setCredential:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the login credential (e.g.  <a href="#a92004c46050c39f53d4c3ec86e857a05"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTResource.html#a5ba2583100f51cf782a8c94e2d1c409e">GET</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts an asynchronous HTTP GET operation, with no parameters.  <a href="#a5ba2583100f51cf782a8c94e2d1c409e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTResource.html#a17ff0dd38b359325b815e2073a71a286">POST:parameters:</a></td></tr>
@@ -237,6 +241,26 @@ NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 
 <p>Creates an instance that has a parent but no URL yet. </p>
 <p>This resource will become real when it's first PUT, which will behind the scenes actually do a POST to the parent and assign the resource the URL returned in the Location: response header. </p>
+
+</div>
+</div>
+<a class="anchor" id="a92004c46050c39f53d4c3ec86e857a05"></a><!-- doxytag: member="RESTResource::setCredential:" ref="a92004c46050c39f53d4c3ec86e857a05" args="(NSURLCredential *credential)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) setCredential: </td>
+          <td></td>
+          <td class="paramtype">(NSURLCredential *)&#160;</td>
+          <td class="paramname"><em>credential</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the login credential (e.g. </p>
+<p>username/password) to be used for authentication by this resource and its children. </p>
 
 </div>
 </div>
@@ -628,7 +652,7 @@ NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceRESTResource.html">RESTResource</a>      </li>
-      <li class="footer">Generated on Fri Jul 22 2011 15:42:30 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

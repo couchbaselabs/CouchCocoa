@@ -116,14 +116,22 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(NSDictionary *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a468d9e20a5ea7fdc814c18f7a05d187b">entityHeadersFrom:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a sub-dictionary of the input, containing only the HTTP 1.1 entity headers and their values.  <a href="#a468d9e20a5ea7fdc814c18f7a05d187b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae757c2e4db6dbb318d9bc0ad8de4533d"></a><!-- doxytag: member="RESTBody::dataWithJSONObject:" ref="ae757c2e4db6dbb318d9bc0ad8de4533d" args="(id obj)" -->
-(NSData *)&#160;</td><td class="memItemRight" valign="bottom">+ <b>dataWithJSONObject:</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96c9e3a1cf7e271f014806a58ec519b1"></a><!-- doxytag: member="RESTBody::stringWithJSONObject:" ref="a96c9e3a1cf7e271f014806a58ec519b1" args="(id obj)" -->
-(NSString *)&#160;</td><td class="memItemRight" valign="bottom">+ <b>stringWithJSONObject:</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f89ef884888ccc2bfa16b5ef2f10752"></a><!-- doxytag: member="RESTBody::JSONObjectWithData:" ref="a0f89ef884888ccc2bfa16b5ef2f10752" args="(NSData *data)" -->
-(id)&#160;</td><td class="memItemRight" valign="bottom">+ <b>JSONObjectWithData:</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d33faffbc3fa6f88e8204a9c8ccc873"></a><!-- doxytag: member="RESTBody::JSONObjectWithString:" ref="a4d33faffbc3fa6f88e8204a9c8ccc873" args="(NSString *string)" -->
-(id)&#160;</td><td class="memItemRight" valign="bottom">+ <b>JSONObjectWithString:</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSData *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#ae757c2e4db6dbb318d9bc0ad8de4533d">dataWithJSONObject:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an object to UTF-8-encoded JSON data.  <a href="#ae757c2e4db6dbb318d9bc0ad8de4533d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSString *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a96c9e3a1cf7e271f014806a58ec519b1">stringWithJSONObject:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an object to a JSON string.  <a href="#a96c9e3a1cf7e271f014806a58ec519b1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a0f89ef884888ccc2bfa16b5ef2f10752">JSONObjectWithData:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses JSON data into a Foundation object tree.  <a href="#a0f89ef884888ccc2bfa16b5ef2f10752"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a4d33faffbc3fa6f88e8204a9c8ccc873">JSONObjectWithString:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a JSON string into a Foundation object tree.  <a href="#a4d33faffbc3fa6f88e8204a9c8ccc873"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSString *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a952bb7d44f7cb8fbd60d578f72fd70ba">JSONObjectWithDate:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an NSDate to a string in ISO-8601 format (standard JSON representation).  <a href="#a952bb7d44f7cb8fbd60d578f72fd70ba"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSDate *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a0fc0b35772438f1ae57652e10edb7f5e">dateWithJSONObject:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string in ISO-8601 date format into an NSDate.  <a href="#a0fc0b35772438f1ae57652e10edb7f5e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSString *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a788b65fb9503cec629bd68d2bae0b017">base64WithData:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes NSData to a Base64 string, which can be stored in JSON.  <a href="#a788b65fb9503cec629bd68d2bae0b017"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSData *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#acedaa642847c3b5f296a02897fb364df">dataWithBase64:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes a Base64 string to NSData.  <a href="#acedaa642847c3b5f296a02897fb364df"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad180dbfa22908b7d467c9a7d34f1ab4b"></a><!-- doxytag: member="RESTBody::_content" ref="ad180dbfa22908b7d467c9a7d34f1ab4b" args="" -->
@@ -238,6 +246,164 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div class="memdoc">
 
 <p>Initializes an instance with content and a Content-Type: header. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae757c2e4db6dbb318d9bc0ad8de4533d"></a><!-- doxytag: member="RESTBody::dataWithJSONObject:" ref="ae757c2e4db6dbb318d9bc0ad8de4533d" args="(id obj)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (NSData*) dataWithJSONObject: </td>
+          <td></td>
+          <td class="paramtype">(id)&#160;</td>
+          <td class="paramname"><em>obj</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts an object to UTF-8-encoded JSON data. </p>
+<p>JSON 'fragments' (NSString / NSNumber) are allowed. Returns nil on nil input. </p>
+
+</div>
+</div>
+<a class="anchor" id="a96c9e3a1cf7e271f014806a58ec519b1"></a><!-- doxytag: member="RESTBody::stringWithJSONObject:" ref="a96c9e3a1cf7e271f014806a58ec519b1" args="(id obj)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (NSString*) stringWithJSONObject: </td>
+          <td></td>
+          <td class="paramtype">(id)&#160;</td>
+          <td class="paramname"><em>obj</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts an object to a JSON string. </p>
+<p>JSON 'fragments' (NSString / NSNumber) are allowed. Returns nil on nil input. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0f89ef884888ccc2bfa16b5ef2f10752"></a><!-- doxytag: member="RESTBody::JSONObjectWithData:" ref="a0f89ef884888ccc2bfa16b5ef2f10752" args="(NSData *data)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (id) JSONObjectWithData: </td>
+          <td></td>
+          <td class="paramtype">(NSData *)&#160;</td>
+          <td class="paramname"><em>data</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Parses JSON data into a Foundation object tree. </p>
+<p>If parsing fails, returns nil. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4d33faffbc3fa6f88e8204a9c8ccc873"></a><!-- doxytag: member="RESTBody::JSONObjectWithString:" ref="a4d33faffbc3fa6f88e8204a9c8ccc873" args="(NSString *string)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (id) JSONObjectWithString: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>string</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Parses a JSON string into a Foundation object tree. </p>
+<p>If parsing fails, returns nil. </p>
+
+</div>
+</div>
+<a class="anchor" id="a952bb7d44f7cb8fbd60d578f72fd70ba"></a><!-- doxytag: member="RESTBody::JSONObjectWithDate:" ref="a952bb7d44f7cb8fbd60d578f72fd70ba" args="(NSDate *date)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (NSString*) JSONObjectWithDate: </td>
+          <td></td>
+          <td class="paramtype">(NSDate *)&#160;</td>
+          <td class="paramname"><em>date</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts an NSDate to a string in ISO-8601 format (standard JSON representation). </p>
+
+</div>
+</div>
+<a class="anchor" id="a0fc0b35772438f1ae57652e10edb7f5e"></a><!-- doxytag: member="RESTBody::dateWithJSONObject:" ref="a0fc0b35772438f1ae57652e10edb7f5e" args="(id jsonObject)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (NSDate*) dateWithJSONObject: </td>
+          <td></td>
+          <td class="paramtype">(id)&#160;</td>
+          <td class="paramname"><em>jsonObject</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Parses a string in ISO-8601 date format into an NSDate. </p>
+<p>Returns nil if the string isn't parseable, or if it isn't a string at all. </p>
+
+</div>
+</div>
+<a class="anchor" id="a788b65fb9503cec629bd68d2bae0b017"></a><!-- doxytag: member="RESTBody::base64WithData:" ref="a788b65fb9503cec629bd68d2bae0b017" args="(NSData *data)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (NSString*) base64WithData: </td>
+          <td></td>
+          <td class="paramtype">(NSData *)&#160;</td>
+          <td class="paramname"><em>data</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Encodes NSData to a Base64 string, which can be stored in JSON. </p>
+
+</div>
+</div>
+<a class="anchor" id="acedaa642847c3b5f296a02897fb364df"></a><!-- doxytag: member="RESTBody::dataWithBase64:" ref="acedaa642847c3b5f296a02897fb364df" args="(NSString *base64)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (NSData*) dataWithBase64: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>base64</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Decodes a Base64 string to NSData. </p>
+<p>Returns nil if the string is not valid Base64, or is not a string at all. </p>
 
 </div>
 </div>
@@ -362,7 +528,7 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceRESTBody.html">RESTBody</a>      </li>
-      <li class="footer">Generated on Fri Jul 22 2011 15:42:30 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

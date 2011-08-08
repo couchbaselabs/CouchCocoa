@@ -124,6 +124,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bulk-writes multiple documents in one HTTP call.  <a href="#a8ea35eb0fad76a623b556ecc72d2a134"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a04476bc96c55897a2b9a4f5d0a0ac8b5">putChanges:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bulk-writes multiple documents in one HTTP call.  <a href="#a04476bc96c55897a2b9a4f5d0a0ac8b5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a4828f0d7bf5f6eb2c6534a5cbd4d28fd">deleteRevisions:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the given revisions.  <a href="#a4828f0d7bf5f6eb2c6534a5cbd4d28fd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a27ad95f653386df188a2a6db822280d2">deleteDocuments:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the given documents.  <a href="#a27ad95f653386df188a2a6db822280d2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a70dd409ff51d61ebc7d3415c9e7dc2f5">clearDocumentCache</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Empties the cache of recently used <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> objects.  <a href="#a70dd409ff51d61ebc7d3415c9e7dc2f5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQuery.html">CouchQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a5ceeab355248704989d758c4fe0dc216">slowQueryWithViewDefinition:</a></td></tr>
@@ -313,7 +317,13 @@ Properties</h2></td></tr>
 <div class="memdoc">
 
 <p>Bulk-writes multiple documents in one HTTP call. </p>
-<p>Documents that don't exist on the server yet will be created. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">properties</td><td>An array specifying the new properties of each item in revisions. Each item must be an NSDictionary, or an NSNull object which means to delete the corresponding document. </td></tr>
+    <tr><td class="paramname">revisions</td><td>A parallel array to 'properties', containing each <a class="el" href="interfaceCouchRevision.html" title="A single revision of a CouchDocument.">CouchRevision</a> to be updated. Can be nil, in which case the method acts as described in the docs for -putChanges:. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -340,6 +350,44 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a4828f0d7bf5f6eb2c6534a5cbd4d28fd"></a><!-- doxytag: member="CouchDatabase::deleteRevisions:" ref="a4828f0d7bf5f6eb2c6534a5cbd4d28fd" args="(NSArray *revisions)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) deleteRevisions: </td>
+          <td></td>
+          <td class="paramtype">(NSArray *)&#160;</td>
+          <td class="paramname"><em>revisions</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Deletes the given revisions. </p>
+
+</div>
+</div>
+<a class="anchor" id="a27ad95f653386df188a2a6db822280d2"></a><!-- doxytag: member="CouchDatabase::deleteDocuments:" ref="a27ad95f653386df188a2a6db822280d2" args="(NSArray *documents)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) deleteDocuments: </td>
+          <td></td>
+          <td class="paramtype">(NSArray *)&#160;</td>
+          <td class="paramname"><em>documents</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Deletes the given documents. </p>
 
 </div>
 </div>
@@ -536,7 +584,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>      </li>
-      <li class="footer">Generated on Fri Jul 22 2011 15:42:30 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

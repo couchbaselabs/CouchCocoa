@@ -9,9 +9,11 @@ var NAVTREE =
       [ "CouchDesignDocument", "interfaceCouchDesignDocument.html", null ],
       [ "CouchDocument", "interfaceCouchDocument.html", null ],
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
+      [ "CouchLiveQuery", "interfaceCouchLiveQuery.html", null ],
       [ "CouchQuery", "interfaceCouchQuery.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
+      [ "CouchReplicator", "interfaceCouchReplicator.html", null ],
       [ "CouchResource", "interfaceCouchResource.html", null ],
       [ "CouchRevision", "interfaceCouchRevision.html", null ],
       [ "CouchServer", "interfaceCouchServer.html", null ],
@@ -41,7 +43,10 @@ var NAVTREE =
           [ "CouchDocument", "interfaceCouchDocument.html", [
             [ "CouchDesignDocument", "interfaceCouchDesignDocument.html", null ]
           ] ],
-          [ "CouchQuery", "interfaceCouchQuery.html", null ],
+          [ "CouchQuery", "interfaceCouchQuery.html", [
+            [ "CouchLiveQuery", "interfaceCouchLiveQuery.html", null ]
+          ] ],
+          [ "CouchReplicator", "interfaceCouchReplicator.html", null ],
           [ "CouchRevision", "interfaceCouchRevision.html", null ],
           [ "CouchServer", "interfaceCouchServer.html", null ]
         ] ]
@@ -49,13 +54,14 @@ var NAVTREE =
     ] ],
     [ "Class Members", "functions.html", null ],
     [ "File List", "files.html", [
-      [ "Couch/Couch.h", null, null ],
       [ "Couch/CouchAttachment.h", null, null ],
       [ "Couch/CouchChangeTracker.h", null, null ],
+      [ "Couch/CouchCocoa.h", null, null ],
       [ "Couch/CouchDatabase.h", null, null ],
       [ "Couch/CouchDesignDocument.h", null, null ],
       [ "Couch/CouchDocument.h", null, null ],
       [ "Couch/CouchQuery.h", null, null ],
+      [ "Couch/CouchReplicator.h", null, null ],
       [ "Couch/CouchResource.h", null, null ],
       [ "Couch/CouchRevision.h", null, null ],
       [ "Couch/CouchServer.h", null, null ],

@@ -86,72 +86,88 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00003"></a>00003 <span class="comment">//  CouchCocoa</span>
 <a name="l00004"></a>00004 <span class="comment">//</span>
 <a name="l00005"></a>00005 <span class="comment">//  Created by Jens Alfke on 5/28/11.</span>
-<a name="l00006"></a>00006 <span class="comment">//  Copyright 2011 Couchbase, Inc. All rights reserved.</span>
+<a name="l00006"></a>00006 <span class="comment">//  Copyright 2011 Couchbase, Inc.</span>
 <a name="l00007"></a>00007 <span class="comment">//</span>
-<a name="l00008"></a>00008 
-<a name="l00009"></a>00009 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
-<a name="l00010"></a>00010 <span class="keyword">@class</span> <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>;
-<a name="l00011"></a>00011 
-<a name="l00012"></a>00012 
-<a name="l00015"></a><a class="code" href="interfaceRESTBody.html">00015</a> <span class="keyword">@interface </span><a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a> : NSObject &lt;NSMutableCopying&gt;
-<a name="l00016"></a>00016 {
-<a name="l00017"></a>00017     <span class="keyword">@protected</span>
-<a name="l00018"></a>00018     NSData* _content;
-<a name="l00019"></a>00019     NSDictionary* _headers;
-<a name="l00020"></a>00020     <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* _resource;
-<a name="l00021"></a>00021     <span class="keywordtype">id</span> _fromJSON;
-<a name="l00022"></a>00022 }
-<a name="l00023"></a>00023 
-<a name="l00025"></a>00025 + (NSDictionary*) entityHeadersFrom: (NSDictionary*)headers;
-<a name="l00026"></a>00026 
-<a name="l00028"></a>00028 - (id) initWithContent: (NSData*)content 
-<a name="l00029"></a>00029                headers: (NSDictionary*)headers
-<a name="l00030"></a>00030               resource: (<a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>*)resource;
-<a name="l00031"></a>00031 
-<a name="l00033"></a>00033 - (id) initWithData: (NSData*)content contentType: (NSString*)contentType;
-<a name="l00034"></a>00034 
-<a name="l00036"></a>00036 <span class="keyword">@property</span> (readonly, copy) NSData* content;
-<a name="l00037"></a><a class="code" href="interfaceRESTBody.html#af58236abd5afc708091e93f20607042b">00037</a> 
-<a name="l00039"></a>00039 <span class="keyword">@property</span> (readonly, copy) NSDictionary* headers;
-<a name="l00040"></a><a class="code" href="interfaceRESTBody.html#a1a1b7510c1e054581f9c42ae16b07026">00040</a> 
-<a name="l00042"></a>00042 <span class="keyword">@property</span> (readonly, retain) <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* resource;
-<a name="l00043"></a><a class="code" href="interfaceRESTBody.html#abc683a327bc8296e4ed727ff62d68d61">00043</a> 
-<a name="l00045"></a>00045 <span class="keyword">@property</span> (readonly, copy) NSString* contentType;
-<a name="l00046"></a><a class="code" href="interfaceRESTBody.html#a0c716e75f46ec359ae5b9835058fdd5b">00046</a> 
-<a name="l00048"></a>00048 <span class="keyword">@property</span> (readonly, copy) NSString* eTag;
-<a name="l00049"></a><a class="code" href="interfaceRESTBody.html#a285717aa10a76fc27315ef7439d0a4a5">00049</a> 
-<a name="l00051"></a>00051 <span class="keyword">@property</span> (readonly, copy) NSString* lastModified;
-<a name="l00052"></a><a class="code" href="interfaceRESTBody.html#aba89859b4efd9e2a91a36f32781739f7">00052</a> 
-<a name="l00054"></a>00054 <span class="keyword">@property</span> (readonly) NSString* asString;
-<a name="l00055"></a><a class="code" href="interfaceRESTBody.html#add5142b3376132e0fe212477811ef87d">00055</a> 
-<a name="l00058"></a>00058 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> fromJSON;
-<a name="l00059"></a><a class="code" href="interfaceRESTBody.html#a19a3ca9c449958bea2843856cbeb9665">00059</a> 
-<a name="l00060"></a>00060 <span class="keyword">@end</span>
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062 
-<a name="l00064"></a>00064 <span class="keyword">@interface </span><a class="code" href="interfaceRESTMutableBody.html" title="A mutable subclass of RESTBody that allows the content and headers to be replaced.">RESTMutableBody</a> : <a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a>
-<a name="l00065"></a><a class="code" href="interfaceRESTMutableBody.html">00065</a> 
-<a name="l00066"></a>00066 @property (readwrite, copy) NSData* <a class="code" href="interfaceRESTMutableBody.html#a61b1a3381b6d469d7ac6935eee029761" title="The raw content.">content</a>;
-<a name="l00067"></a><a class="code" href="interfaceRESTMutableBody.html#a61b1a3381b6d469d7ac6935eee029761">00067</a> @property (readwrite, copy) NSDictionary* <a class="code" href="interfaceRESTMutableBody.html#a20fb65551c8442d824ba7dfb34d866eb" title="The HTTP headers, with standard capitalization (first letter of each word capitalized.)">headers</a>;
-<a name="l00068"></a><a class="code" href="interfaceRESTMutableBody.html#a20fb65551c8442d824ba7dfb34d866eb">00068</a> @property (readwrite, copy) NSMutableDictionary* mutableHeaders;
-<a name="l00069"></a>00069 @property (readwrite, copy) NSString* <a class="code" href="interfaceRESTMutableBody.html#a23200055bef6286cebacb668dd211009" title="The value of the Content-Type: header.">contentType</a>;
-<a name="l00070"></a><a class="code" href="interfaceRESTMutableBody.html#a23200055bef6286cebacb668dd211009">00070</a> @property (readwrite, retain) <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* resource;
-<a name="l00071"></a><a class="code" href="interfaceRESTMutableBody.html#add7bbe385d6a81f6adaa12a581914e6b">00071</a> 
-<a name="l00072"></a>00072 @end
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075 @interface <a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a> (JSON)
-<a name="l00076"></a>00076 + (NSData*) dataWithJSONObject: (<span class="keywordtype">id</span>)obj;
-<a name="l00077"></a>00077 + (NSString*) stringWithJSONObject: (<span class="keywordtype">id</span>)obj;
-<a name="l00078"></a>00078 + (id) JSONObjectWithData: (NSData*)data;
-<a name="l00079"></a>00079 + (id) JSONObjectWithString: (NSString*)string;
-<a name="l00080"></a>00080 <span class="keyword">@end</span>
+<a name="l00008"></a>00008 <span class="comment">//  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file</span>
+<a name="l00009"></a>00009 <span class="comment">//  except in compliance with the License. You may obtain a copy of the License at</span>
+<a name="l00010"></a>00010 <span class="comment">//    http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="l00011"></a>00011 <span class="comment">//  Unless required by applicable law or agreed to in writing, software distributed under the</span>
+<a name="l00012"></a>00012 <span class="comment">//  License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,</span>
+<a name="l00013"></a>00013 <span class="comment">//  either express or implied. See the License for the specific language governing permissions</span>
+<a name="l00014"></a>00014 <span class="comment">//  and limitations under the License.</span>
+<a name="l00015"></a>00015 
+<a name="l00016"></a>00016 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
+<a name="l00017"></a>00017 <span class="keyword">@class</span> <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>;
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019 
+<a name="l00022"></a><a class="code" href="interfaceRESTBody.html">00022</a> <span class="keyword">@interface </span><a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a> : NSObject &lt;NSMutableCopying&gt;
+<a name="l00023"></a>00023 {
+<a name="l00024"></a>00024     <span class="keyword">@protected</span>
+<a name="l00025"></a>00025     NSData* _content;
+<a name="l00026"></a>00026     NSDictionary* _headers;
+<a name="l00027"></a>00027     <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* _resource;
+<a name="l00028"></a>00028     <span class="keywordtype">id</span> _fromJSON;
+<a name="l00029"></a>00029 }
+<a name="l00030"></a>00030 
+<a name="l00032"></a>00032 + (NSDictionary*) entityHeadersFrom: (NSDictionary*)headers;
+<a name="l00033"></a>00033 
+<a name="l00035"></a>00035 - (id) initWithContent: (NSData*)content 
+<a name="l00036"></a>00036                headers: (NSDictionary*)headers
+<a name="l00037"></a>00037               resource: (<a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>*)resource;
+<a name="l00038"></a>00038 
+<a name="l00040"></a>00040 - (id) initWithData: (NSData*)content contentType: (NSString*)contentType;
+<a name="l00041"></a>00041 
+<a name="l00043"></a>00043 <span class="keyword">@property</span> (readonly, copy) NSData* content;
+<a name="l00044"></a><a class="code" href="interfaceRESTBody.html#af58236abd5afc708091e93f20607042b">00044</a> 
+<a name="l00046"></a>00046 <span class="keyword">@property</span> (readonly, copy) NSDictionary* headers;
+<a name="l00047"></a><a class="code" href="interfaceRESTBody.html#a1a1b7510c1e054581f9c42ae16b07026">00047</a> 
+<a name="l00049"></a>00049 <span class="keyword">@property</span> (readonly, retain) <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* resource;
+<a name="l00050"></a><a class="code" href="interfaceRESTBody.html#abc683a327bc8296e4ed727ff62d68d61">00050</a> 
+<a name="l00052"></a>00052 <span class="keyword">@property</span> (readonly, copy) NSString* contentType;
+<a name="l00053"></a><a class="code" href="interfaceRESTBody.html#a0c716e75f46ec359ae5b9835058fdd5b">00053</a> 
+<a name="l00055"></a>00055 <span class="keyword">@property</span> (readonly, copy) NSString* eTag;
+<a name="l00056"></a><a class="code" href="interfaceRESTBody.html#a285717aa10a76fc27315ef7439d0a4a5">00056</a> 
+<a name="l00058"></a>00058 <span class="keyword">@property</span> (readonly, copy) NSString* lastModified;
+<a name="l00059"></a><a class="code" href="interfaceRESTBody.html#aba89859b4efd9e2a91a36f32781739f7">00059</a> 
+<a name="l00061"></a>00061 <span class="keyword">@property</span> (readonly) NSString* asString;
+<a name="l00062"></a><a class="code" href="interfaceRESTBody.html#add5142b3376132e0fe212477811ef87d">00062</a> 
+<a name="l00065"></a>00065 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> fromJSON;
+<a name="l00066"></a><a class="code" href="interfaceRESTBody.html#a19a3ca9c449958bea2843856cbeb9665">00066</a> 
+<a name="l00067"></a>00067 <span class="keyword">@end</span>
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069 
+<a name="l00071"></a>00071 <span class="keyword">@interface </span><a class="code" href="interfaceRESTMutableBody.html" title="A mutable subclass of RESTBody that allows the content and headers to be replaced.">RESTMutableBody</a> : <a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a>
+<a name="l00072"></a><a class="code" href="interfaceRESTMutableBody.html">00072</a> 
+<a name="l00073"></a>00073 @property (readwrite, copy) NSData* <a class="code" href="interfaceRESTMutableBody.html#a61b1a3381b6d469d7ac6935eee029761" title="The raw content.">content</a>;
+<a name="l00074"></a><a class="code" href="interfaceRESTMutableBody.html#a61b1a3381b6d469d7ac6935eee029761">00074</a> @property (readwrite, copy) NSDictionary* <a class="code" href="interfaceRESTMutableBody.html#a20fb65551c8442d824ba7dfb34d866eb" title="The HTTP headers, with standard capitalization (first letter of each word capitalized.)">headers</a>;
+<a name="l00075"></a><a class="code" href="interfaceRESTMutableBody.html#a20fb65551c8442d824ba7dfb34d866eb">00075</a> @property (readwrite, copy) NSMutableDictionary* mutableHeaders;
+<a name="l00076"></a>00076 @property (readwrite, copy) NSString* <a class="code" href="interfaceRESTMutableBody.html#a23200055bef6286cebacb668dd211009" title="The value of the Content-Type: header.">contentType</a>;
+<a name="l00077"></a><a class="code" href="interfaceRESTMutableBody.html#a23200055bef6286cebacb668dd211009">00077</a> @property (readwrite, retain) <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* resource;
+<a name="l00078"></a><a class="code" href="interfaceRESTMutableBody.html#add7bbe385d6a81f6adaa12a581914e6b">00078</a> 
+<a name="l00079"></a>00079 @end
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082 @interface <a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a> (JSON)
+<a name="l00085"></a>00085 + (NSData*) dataWithJSONObject: (<span class="keywordtype">id</span>)obj;
+<a name="l00088"></a>00088 + (NSString*) stringWithJSONObject: (<span class="keywordtype">id</span>)obj;
+<a name="l00091"></a>00091 + (id) JSONObjectWithData: (NSData*)data;
+<a name="l00094"></a>00094 + (id) JSONObjectWithString: (NSString*)string;
+<a name="l00095"></a>00095 
+<a name="l00097"></a>00097 + (NSString*) JSONObjectWithDate: (NSDate*)date;
+<a name="l00098"></a>00098 
+<a name="l00101"></a>00101 + (NSDate*) dateWithJSONObject: (<span class="keywordtype">id</span>)jsonObject;
+<a name="l00102"></a>00102 
+<a name="l00104"></a>00104 + (NSString*) base64WithData: (NSData*)data;
+<a name="l00105"></a>00105 
+<a name="l00108"></a>00108 + (NSData*) dataWithBase64: (NSString*)base64;
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>RESTBody.h</b>      </li>
-      <li class="footer">Generated on Fri Jul 22 2011 15:42:30 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

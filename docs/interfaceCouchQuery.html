@@ -98,8 +98,9 @@ Inheritance diagram for CouchQuery:</div>
  <div class="center">
   <img src="interfaceCouchQuery.png" usemap="#CouchQuery_map" alt=""/>
   <map id="CouchQuery_map" name="CouchQuery_map">
-<area href="interfaceCouchResource.html" title="Superclass of CouchDB model classes." alt="CouchResource" shape="rect" coords="0,56,103,80"/>
-<area href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL." alt="RESTResource" shape="rect" coords="0,0,103,24"/>
+<area href="interfaceCouchResource.html" title="Superclass of CouchDB model classes." alt="CouchResource" shape="rect" coords="0,56,109,80"/>
+<area href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL." alt="RESTResource" shape="rect" coords="0,0,109,24"/>
+<area href="interfaceCouchLiveQuery.html" title="A CouchQuery subclass that automatically refreshes the result rows every time the database changes..." alt="CouchLiveQuery" shape="rect" coords="0,168,109,192"/>
 </map>
  </div></div>
 
@@ -107,10 +108,14 @@ Inheritance diagram for CouchQuery:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchQuery.html#ac46be0005c3cdd5f24f44b7246c3d45d">start</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts an asynchronous query of the CouchDB view.  <a href="#ac46be0005c3cdd5f24f44b7246c3d45d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQueryEnumerator.html">CouchQueryEnumerator</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchQuery.html#aaf3ed5e0ca7049ef536178d7cb188217">rows</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the query to the server and returns an enumerator over the result rows.  <a href="#aaf3ed5e0ca7049ef536178d7cb188217"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the query to the server and returns an enumerator over the result rows (Synchronous).  <a href="#aaf3ed5e0ca7049ef536178d7cb188217"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQueryEnumerator.html">CouchQueryEnumerator</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchQuery.html#ac74e26277876c9e718088a3ce60cfaed">rowsIfChanged</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as -rows, except returns nil if the query results have not changed since the last time it was evaluated.  <a href="#ac74e26277876c9e718088a3ce60cfaed"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as -rows, except returns nil if the query results have not changed since the last time it was evaluated (Synchronous).  <a href="#ac74e26277876c9e718088a3ce60cfaed"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchLiveQuery.html">CouchLiveQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchQuery.html#a31a994c8851c91635a53a65767cb87e7">asLiveQuery</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a live query with the same parameters.  <a href="#a31a994c8851c91635a53a65767cb87e7"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceCouchDesignDocument.html">CouchDesignDocument</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQuery.html#a984a3e36cbf8afe490fd021b9f9c1f45">designDocument</a></td></tr>
@@ -135,6 +140,25 @@ Properties</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Represents a CouchDB 'view', or a view-like resource like _all_documents. </p>
 </div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ac46be0005c3cdd5f24f44b7246c3d45d"></a><!-- doxytag: member="CouchQuery::start" ref="ac46be0005c3cdd5f24f44b7246c3d45d" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) start </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Starts an asynchronous query of the CouchDB view. </p>
+<p>When complete, the operation's resultObject will be the <a class="el" href="interfaceCouchQueryEnumerator.html" title="Enumerator on a CouchQuery&#39;s result rows.">CouchQueryEnumerator</a>. </p>
+
+</div>
+</div>
 <a class="anchor" id="aaf3ed5e0ca7049ef536178d7cb188217"></a><!-- doxytag: member="CouchQuery::rows" ref="aaf3ed5e0ca7049ef536178d7cb188217" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -149,8 +173,7 @@ Properties</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Sends the query to the server and returns an enumerator over the result rows. </p>
-<p>This is currently synchronous (blocks until the response is complete) but may not remain so. </p>
+<p>Sends the query to the server and returns an enumerator over the result rows (Synchronous). </p>
 
 </div>
 </div>
@@ -168,8 +191,25 @@ Properties</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Same as -rows, except returns nil if the query results have not changed since the last time it was evaluated. </p>
-<p>(Synchronous) </p>
+<p>Same as -rows, except returns nil if the query results have not changed since the last time it was evaluated (Synchronous). </p>
+
+</div>
+</div>
+<a class="anchor" id="a31a994c8851c91635a53a65767cb87e7"></a><!-- doxytag: member="CouchQuery::asLiveQuery" ref="a31a994c8851c91635a53a65767cb87e7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceCouchLiveQuery.html">CouchLiveQuery</a>*) asLiveQuery </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns a live query with the same parameters. </p>
 
 </div>
 </div>
@@ -320,7 +360,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchQuery.html">CouchQuery</a>      </li>
-      <li class="footer">Generated on Fri Jul 22 2011 15:42:30 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
