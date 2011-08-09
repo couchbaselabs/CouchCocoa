@@ -206,7 +206,7 @@
 		27CDEBF513C67C9B00C979BB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		27CDEBF613C67C9B00C979BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		27CDEBF913C67C9B00C979BB /* CouchCocoa-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CouchCocoa-Info.plist"; sourceTree = "<group>"; };
-		27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "CouchAPITests-Mac.octest"; path = "Mac Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		27CDEC0313C67C9B00C979BB /* Mac Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mac Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27CDEC3913C6806400C979BB /* CouchPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouchPrefix.pch; sourceTree = "<group>"; };
 		27D5997813CE404300694B37 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		27DA430413B659A900BBADB7 /* RESTInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTInternal.h; sourceTree = "<group>"; };
@@ -341,7 +341,7 @@
 				2739BF2B13BCE53B004829CD /* libCouchCocoa.a */,
 				2739BF3613BCE53C004829CD /* iOS Tests.octest */,
 				27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */,
-				27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */,
+				27CDEC0313C67C9B00C979BB /* Mac Tests.octest */,
 				2784E1BC13CE5249009CC5C8 /* Shopping.app */,
 				27EEA59813D602EA00D7ACA4 /* CouchCocoa.framework */,
 			);
@@ -543,7 +543,7 @@
 			buildConfigurationList = 2731759B13CBA57B000FF426 /* Build configuration list for PBXLegacyTarget "Documentation" */;
 			buildPhases = (
 			);
-			buildToolPath = /opt/local/bin/doxygen;
+			buildToolPath = /usr/local/bin/doxygen;
 			buildWorkingDirectory = "";
 			dependencies = (
 			);
@@ -643,7 +643,7 @@
 			);
 			name = "Mac Tests";
 			productName = CouchAPITests;
-			productReference = 27CDEC0313C67C9B00C979BB /* CouchAPITests-Mac.octest */;
+			productReference = 27CDEC0313C67C9B00C979BB /* Mac Tests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		27EEA59713D602EA00D7ACA4 /* iOS Framework */ = {
@@ -1210,7 +1210,6 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1225,7 +1224,6 @@
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};

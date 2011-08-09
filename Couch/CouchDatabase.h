@@ -75,7 +75,8 @@ typedef NSUInteger CouchReplicationOptions;
 - (CouchQuery*) getDocumentsWithIDs: (NSArray*)docIDs;
 
 /** Bulk-writes multiple documents in one HTTP call.
-    @param properties  An array specifying the new properties of each item in revisions. Each item must be an NSDictionary, or an NSNull object which means to delete the corresponding document. */
+    @param properties  An array specifying the new properties of each item in revisions. Each item must be an NSDictionary, or an NSNull object which means to delete the corresponding document.
+    @param revisions  A parallel array to 'properties', containing each CouchRevision to be updated. Can be nil, in which case the method acts as described in the docs for -putChanges:. */
 - (RESTOperation*) putChanges: (NSArray*)properties toRevisions: (NSArray*)revisions;
 
 /** Bulk-writes multiple documents in one HTTP call.
