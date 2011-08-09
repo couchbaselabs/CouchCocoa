@@ -164,7 +164,6 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     _connection = [[NSURLConnection alloc] initWithRequest: _request
                                                   delegate: self
                                           startImmediately: NO];
-    //? Is it worth checking for nil?
     [_connection scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSRunLoopCommonModes];
     [_connection scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: kRESTObjectRunLoopMode];
     [_connection start];
@@ -179,11 +178,15 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         [self start];
     if (_connection && _state == kRESTObjectLoading) {
         CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+        
+        _waiting = YES;
         while (_connection && _state == kRESTObjectLoading) {
             if (![[NSRunLoop currentRunLoop] runMode: kRESTObjectRunLoopMode
                                           beforeDate: [NSDate distantFuture]])
                 break;
         }
+        _waiting = NO;
+
         if (gRESTLogLevel >= kRESTLogRequestURLs)
             NSLog(@"REST: Blocked for %.1f ms", (CFAbsoluteTimeGetCurrent() - start)*1000.0);
     }
@@ -209,6 +212,16 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 
 
 - (void) completedWithError: (NSError*)error {
+    if (!_waiting &&
+            [[[NSRunLoop currentRunLoop] currentMode] isEqualToString: kRESTObjectRunLoopMode]) {
+        // If another RESTOperation is blocked in -wait, don't call out to client code until after
+        // it finishes, because clients won't expect to get invoked re-entrantly.
+        NSLog(@"RESTOperation: Deferring completion till other op finishes waiting");
+        [self performSelector: _cmd withObject: error
+                   afterDelay: 0.0 inModes: [NSArray arrayWithObject: NSRunLoopCommonModes]];
+        return;
+    }
+    
     [_connection release];
     _connection = nil;
     

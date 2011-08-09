@@ -38,6 +38,7 @@ typedef void (^OnCompleteBlock)();
     NSURLRequest* _request;
     NSURLConnection* _connection;
     unsigned _state;
+    BOOL _waiting;
     NSError* _error;
 
     NSHTTPURLResponse* _response;
