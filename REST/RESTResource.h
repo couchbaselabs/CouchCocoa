@@ -27,6 +27,7 @@
     RESTResource* _parent;
     NSString* _relativePath;
     RESTCache* _owningCache;
+    NSMutableSet* _activeOperations;
 
     NSString* _eTag;
     NSString* _lastModified;
@@ -116,7 +117,20 @@
     This URL might not be the same as the receiver's -URL property, because "?"-prefixed parameters to a request are added to the URL's query. */
 @property (retain) NSURL* cachedURL;
 
+#pragma mark TRACKING OPERATIONS:
+
+/** If set to YES, the .activeOperations property is enabled. */
+@property BOOL tracksActiveOperations;
+
+/** All currently active RESTOperations on this resource or its children.
+    This is not tracked (and will return nil) unless the .tracksActiveOperations property is first set to YES. */
+@property (nonatomic, readonly) NSSet* activeOperations;
+
 #pragma mark PROTECTED:
+
+- (void) operationDidStart: (RESTOperation*)op;
+
+- (void) operationDidComplete: (RESTOperation*)op;
 
 /** This is sent by a RESTOperation to its resource when it completes, before its state changes or any other handlers are called.
     @param op  The RESTOperation, created by this object, that just completed.

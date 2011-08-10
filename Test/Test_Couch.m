@@ -20,6 +20,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 
+// Waits for a RESTOperation to complete and raises an assertion failure if it got an error.
 #define AssertWait(OP) ({RESTOperation* i_op = (OP);\
                         STAssertTrue([i_op wait], @"%@ failed: %@", i_op, i_op.error);\
                         i_op = i_op;})
@@ -42,6 +43,7 @@
 
     _server = [[CouchServer alloc] init];  // local server
     STAssertNotNil(_server, @"Couldn't create server object");
+    _server.tracksActiveOperations = YES;
     
     _db = [[_server databaseNamed: @"testdb_temporary"] retain];
     STAssertNotNil(_db, @"Couldn't create database object");
@@ -61,6 +63,7 @@
 - (void) tearDown {
     gRESTLogLevel = kRESTLogNothing;
     AssertWait([_db DELETE]);
+    STAssertEquals(_server.activeOperations.count, (NSUInteger)0, nil);
     [_db release];
     [_server release];
 }

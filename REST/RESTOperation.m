@@ -138,16 +138,6 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 #pragma mark LOADING:
 
 
-- (void) _close {
-    [_connection cancel];
-    [_connection release];
-    _connection = nil;
-
-    [_body release];
-    _body = nil;
-}
-
-
 - (BOOL) start {
     if (_state != kRESTObjectUnloaded)
         return NO;
@@ -169,6 +159,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     [_connection start];
     self.error = nil;
     _state = kRESTObjectLoading;
+    
+    [_resource operationDidStart: self];
     return YES;
 }
 
@@ -185,12 +177,50 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
                                           beforeDate: [NSDate distantFuture]])
                 break;
         }
-        _waiting = NO;
 
         if (gRESTLogLevel >= kRESTLogRequestURLs)
             NSLog(@"REST: Blocked for %.1f ms", (CFAbsoluteTimeGetCurrent() - start)*1000.0);
     }
     return _state == kRESTObjectReady;
+}
+
+
++ (BOOL) wait: (NSSet*)operations {
+    if (operations.count == 0)
+        return YES;
+    operations = [[operations copy] autorelease];   // make sure set doesn't mutate
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+
+    // Mark each active operation as waiting:
+    for (RESTOperation* op in operations)
+        if (op->_state == kRESTObjectLoading)
+            op->_waiting = YES;
+    
+    // Loop till all operations have finished:
+    do {
+        int numWaiting = 0;
+        for (RESTOperation* op in operations) {
+            if (op->_waiting) 
+                ++numWaiting;
+        }
+        if (numWaiting == 0)
+            break;
+        if (gRESTLogLevel >= kRESTLogRequestURLs)
+            NSLog(@"Blocking on %i RESTOperations...", numWaiting);
+    } while ([[NSRunLoop currentRunLoop] runMode: kRESTObjectRunLoopMode
+                                      beforeDate: [NSDate distantFuture]]);
+    
+    if (gRESTLogLevel >= kRESTLogRequestURLs)
+        NSLog(@"REST: Blocked on %u ops for %.1f ms", 
+              (unsigned)operations.count,
+              (CFAbsoluteTimeGetCurrent() - start)*1000.0);
+
+    // Return YES if all operations were successful:
+    for (RESTOperation* op in operations) {
+        if (op->_state != kRESTObjectReady)
+            return NO;
+    }
+    return YES;
 }
 
 
@@ -221,6 +251,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
                    afterDelay: 0.0 inModes: [NSArray arrayWithObject: NSRunLoopCommonModes]];
         return;
     }
+    _waiting = NO;
     
     [_connection release];
     _connection = nil;
@@ -243,6 +274,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     _onCompletes = nil;
     for (OnCompleteBlock onComplete in onCompletes)
         onComplete();
+    
+    [_resource operationDidComplete: self];
 }
 
 

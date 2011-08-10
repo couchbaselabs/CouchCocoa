@@ -95,6 +95,11 @@ typedef void (^OnCompleteBlock)();
     @return  YES on success, NO on error. */
 - (BOOL) wait;
 
+/** Blocks until all of the given operations have finished.
+    @param operations  A set of RESTOperations.
+    @return  YES if all operations succeeded; NO if any of them failed. */
++ (BOOL) wait: (NSSet*)operations;
+
 /** Stops an active operation.
     The operation will immediately complete, with error NSURLErrorCancelled in domain NSURLErrorDomain.
     Has no effect if the operation has already completed. */

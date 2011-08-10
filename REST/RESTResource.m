@@ -56,6 +56,7 @@
 - (void) dealloc
 {
     [_owningCache resourceBeingDealloced: self];
+    [_activeOperations release];
     [_credential release];
     [_eTag release];
     [_lastModified release];
@@ -270,6 +271,29 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 #pragma mark CALLBACKS:
 
 
+@synthesize activeOperations=_activeOperations;
+
+
+- (void) setTracksActiveOperations: (BOOL)tracks {
+    if (tracks && !_activeOperations)
+        _activeOperations = [[NSMutableSet alloc] init];
+    else if (!tracks && _activeOperations) {
+        [_activeOperations release];
+        _activeOperations = nil;
+    }
+}
+
+- (BOOL) tracksActiveOperations {
+    return _activeOperations != nil;
+}
+
+
+- (void) operationDidStart: (RESTOperation*)op {
+    [_activeOperations addObject: op];
+    [_parent operationDidStart: op];
+}
+
+
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     if (op.isGET) {
         if (op.httpStatus == 304) {
@@ -278,6 +302,12 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
     }
 
     return error;
+}
+
+
+- (void) operationDidComplete: (RESTOperation*)op {
+    [_activeOperations removeObject: op];
+    [_parent operationDidComplete: op];
 }
 
 

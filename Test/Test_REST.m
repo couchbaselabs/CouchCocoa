@@ -41,8 +41,6 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
 
 - (void)tearDown
 {
-    // Tear-down code here.
-    
     [super tearDown];
 }
 
@@ -62,11 +60,17 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     STAssertEqualObjects(child.URL, [NSURL URLWithString: kChildURL], nil);
 
     // Test GET:
+    parent.tracksActiveOperations = YES;
+    child.tracksActiveOperations = YES;
     RESTOperation* op = [child GET];
     STAssertNotNil(op, @"Failed to create RESTOperation");
     NSLog(@"Created %@:\n%@", op, op.dump);
     __block BOOL completeBlockCalled = NO;
     [op onCompletion: ^{ completeBlockCalled = YES; NSLog(@"Oncompletion!!"); }];
+    
+    STAssertEqualObjects(parent.activeOperations, [NSSet setWithObject: op], nil);
+    STAssertEqualObjects(child.activeOperations, [NSSet setWithObject: op], nil);
+
     NSLog(@"About to wait...");
     STAssertTrue([op wait], @"Failed to GET: %@", op.error);
     NSLog(@"Got it: %@\n%@", op, op.dump);
@@ -77,6 +81,27 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     NSLog(@"ETag = %@, lastModified = %@", child.eTag, child.lastModified);
     //STAssertNotNil(child.eTag, @"Failed to get eTag");
     STAssertNotNil(child.lastModified, @"Failed to get lastModified");
+
+    STAssertEquals(parent.activeOperations.count, (NSUInteger)0, nil);
+    STAssertEquals(child.activeOperations.count, (NSUInteger)0, nil);
+}
+
+- (void)testMultipleWait {
+    NSURL* url = [NSURL URLWithString: kParentURL];
+    RESTResource* parent = [[[RESTResource alloc] initWithURL: url] autorelease];
+    parent.tracksActiveOperations = YES;
+    for (int i=0; i<5; i++)
+        [[parent GET] start];
+    NSSet* activeOps = [[parent.activeOperations copy] autorelease];
+    STAssertEquals(activeOps.count, (NSUInteger)5, nil);
+    
+    [RESTOperation wait: parent.activeOperations];
+    STAssertEquals(parent.activeOperations.count, (NSUInteger)0, nil);
+    
+    for (RESTOperation* op in activeOps) {
+        STAssertTrue(op.isComplete, nil);
+        STAssertNil(op.error, nil);
+    }
 }
 
 - (void) testEntityHeaders {
