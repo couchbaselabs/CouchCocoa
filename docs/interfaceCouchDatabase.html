@@ -130,10 +130,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the given documents.  <a href="#a27ad95f653386df188a2a6db822280d2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a70dd409ff51d61ebc7d3415c9e7dc2f5">clearDocumentCache</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Empties the cache of recently used <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> objects.  <a href="#a70dd409ff51d61ebc7d3415c9e7dc2f5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQuery.html">CouchQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a5ceeab355248704989d758c4fe0dc216">slowQueryWithViewDefinition:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a query that runs custom map/reduce functions.  <a href="#a5ceeab355248704989d758c4fe0dc216"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQuery.html">CouchQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a2be6aa7da19576f4f3575085f5a0f40e">slowQueryWithMapFunction:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience method that creates a custom query from a JavaScript map function.  <a href="#a2be6aa7da19576f4f3575085f5a0f40e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQuery.html">CouchQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a885f5731cf9285e3979e10d558eb5b27">slowQueryWithMap:reduce:language:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a query that runs custom map/reduce functions.  <a href="#a885f5731cf9285e3979e10d558eb5b27"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQuery.html">CouchQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a7029724505256f6dcbb32ac4527cb4b2">slowQueryWithMap:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience method that creates a custom query from a JavaScript map function.  <a href="#a7029724505256f6dcbb32ac4527cb4b2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDesignDocument.html">CouchDesignDocument</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#ae0ea4103c0658afeb8c34d67ef10d79b">designDocumentWithName:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a <a class="el" href="interfaceCouchDesignDocument.html" title="A Design Document is a special document type that contains things like map/reduce functions...">CouchDesignDocument</a> object with the given ID.  <a href="#ae0ea4103c0658afeb8c34d67ef10d79b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a52180676f2bd43b9084678fb43982aec">pullFromDatabaseAtURL:options:</a></td></tr>
@@ -410,16 +410,32 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5ceeab355248704989d758c4fe0dc216"></a><!-- doxytag: member="CouchDatabase::slowQueryWithViewDefinition:" ref="a5ceeab355248704989d758c4fe0dc216" args="(struct CouchViewDefinition definition)" -->
+<a class="anchor" id="a885f5731cf9285e3979e10d558eb5b27"></a><!-- doxytag: member="CouchDatabase::slowQueryWithMap:reduce:language:" ref="a885f5731cf9285e3979e10d558eb5b27" args="(NSString *map,[reduce] NSString *reduce,[language] NSString *language)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (<a class="el" href="interfaceCouchQuery.html">CouchQuery</a>*) slowQueryWithViewDefinition: </td>
+          <td class="memname">- (<a class="el" href="interfaceCouchQuery.html">CouchQuery</a>*) slowQueryWithMap: </td>
           <td></td>
-          <td class="paramtype">(struct <a class="el" href="structCouchViewDefinition.html">CouchViewDefinition</a>)&#160;</td>
-          <td class="paramname"><em>definition</em></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>map</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">reduce:</td>
           <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>reduce</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">language:</td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>language</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -427,18 +443,26 @@ Properties</h2></td></tr>
 
 <p>Returns a query that runs custom map/reduce functions. </p>
 <p>This is very slow compared to a precompiled view and should only be used for testing. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">map</td><td>The map function source. Must not be nil. </td></tr>
+    <tr><td class="paramname">reduce</td><td>The reduce function source, or nil for none. </td></tr>
+    <tr><td class="paramname">language</td><td>The language of the functions, or nil for JavaScript. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="a2be6aa7da19576f4f3575085f5a0f40e"></a><!-- doxytag: member="CouchDatabase::slowQueryWithMapFunction:" ref="a2be6aa7da19576f4f3575085f5a0f40e" args="(NSString *mapFunctionSource)" -->
+<a class="anchor" id="a7029724505256f6dcbb32ac4527cb4b2"></a><!-- doxytag: member="CouchDatabase::slowQueryWithMap:" ref="a7029724505256f6dcbb32ac4527cb4b2" args="(NSString *map)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (<a class="el" href="interfaceCouchQuery.html">CouchQuery</a>*) slowQueryWithMapFunction: </td>
+          <td class="memname">- (<a class="el" href="interfaceCouchQuery.html">CouchQuery</a>*) slowQueryWithMap: </td>
           <td></td>
           <td class="paramtype">(NSString *)&#160;</td>
-          <td class="paramname"><em>mapFunctionSource</em></td>
+          <td class="paramname"><em>map</em></td>
           <td></td>
         </tr>
       </table>
@@ -584,7 +608,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>      </li>
-      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
+      <li class="footer">Generated on Thu Aug 11 2011 15:25:59 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
@@ -594,7 +618,7 @@ Properties</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

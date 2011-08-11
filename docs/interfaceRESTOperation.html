@@ -82,6 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a>  </div>
   <div class="headertitle">
 <div class="title">RESTOperation Class Reference</div>  </div>
@@ -111,6 +112,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops an active operation.  <a href="#a9c5a363dc442470eb0fa0215fbb638c1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(NSString *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTOperation.html#a0484be705bf8a9db38b5faadeecceafd">dump</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Debugging utility that returns a sort-of log of the HTTP request and response.  <a href="#a0484be705bf8a9db38b5faadeecceafd"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(BOOL)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTOperation.html#abcd3ea9435ddcbb5d452f2b4857d4268">wait:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocks until all of the given operations have finished.  <a href="#abcd3ea9435ddcbb5d452f2b4857d4268"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceRESTResource.html">RESTResource</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceRESTOperation.html#a463b37f028e202030f2a6bb4e1fd08ea">resource</a></td></tr>
@@ -287,6 +292,32 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Blocks till any pending network operation finishes (i.e. </p>
 <p>-isComplete becomes true.) -start will be called if it hasn't yet been. On completion, any pending onCompletion blocks are called first, before this method returns. The synchronous methods below all end up calling this one. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>YES on success, NO on error. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abcd3ea9435ddcbb5d452f2b4857d4268"></a><!-- doxytag: member="RESTOperation::wait:" ref="abcd3ea9435ddcbb5d452f2b4857d4268" args="(NSSet *operations)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (BOOL) wait: </td>
+          <td></td>
+          <td class="paramtype">(NSSet *)&#160;</td>
+          <td class="paramname"><em>operations</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Blocks until all of the given operations have finished. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">operations</td><td>A set of RESTOperations. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>YES if all operations succeeded; NO if any of them failed. </dd></dl>
 
 </div>
 </div>
@@ -476,7 +507,7 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceRESTOperation.html">RESTOperation</a>      </li>
-      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
+      <li class="footer">Generated on Thu Aug 11 2011 15:26:00 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
@@ -486,7 +517,7 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

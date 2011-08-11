@@ -102,41 +102,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00019"></a>00019 
 <a name="l00021"></a>00021 <span class="keyword">extern</span> NSString* <span class="keyword">const</span> kCouchLanguageJavaScript;
 <a name="l00022"></a>00022 
-<a name="l00023"></a>00023 
-<a name="l00026"></a><a class="code" href="structCouchViewDefinition.html">00026</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structCouchViewDefinition.html" title="A C structure used to package up the definition of a view.">CouchViewDefinition</a> {
-<a name="l00027"></a><a class="code" href="structCouchViewDefinition.html#a35ebc92e73ddbb693064bbe4b349c35c">00027</a>     NSString* <a class="code" href="structCouchViewDefinition.html#a35ebc92e73ddbb693064bbe4b349c35c" title="The source code of the map function.">mapFunction</a>;      
-<a name="l00028"></a><a class="code" href="structCouchViewDefinition.html#a041cde0a4867351939d53634bd8550b3">00028</a>     NSString* <a class="code" href="structCouchViewDefinition.html#a041cde0a4867351939d53634bd8550b3" title="The source code of the reduce function, or nil if none.">reduceFunction</a>;   
-<a name="l00029"></a><a class="code" href="structCouchViewDefinition.html#a1469ae36d166df52c3b2aa4a48ee6d20">00029</a>     NSString* <a class="code" href="structCouchViewDefinition.html#a1469ae36d166df52c3b2aa4a48ee6d20" title="Programming language; defaults to kCouchLanguageJavaScript.">language</a>;         
-<a name="l00030"></a>00030 } <a class="code" href="structCouchViewDefinition.html" title="A C structure used to package up the definition of a view.">CouchViewDefinition</a>;
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032 
-<a name="l00034"></a><a class="code" href="interfaceCouchDesignDocument.html">00034</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchDesignDocument.html" title="A Design Document is a special document type that contains things like map/reduce functions...">CouchDesignDocument</a> : <a class="code" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a>
-<a name="l00035"></a>00035 {
-<a name="l00036"></a>00036     <span class="keyword">@private</span>
-<a name="l00037"></a>00037     NSMutableDictionary* _views;
-<a name="l00038"></a>00038     BOOL _changed;
-<a name="l00039"></a>00039 }
-<a name="l00040"></a>00040 
-<a name="l00042"></a>00042 - (<a class="code" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a>*) queryViewNamed: (NSString*)viewName;
+<a name="l00024"></a>00024 <span class="keyword">extern</span> NSString* <span class="keyword">const</span> kCouchLanguageErlang;
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026 
+<a name="l00028"></a><a class="code" href="interfaceCouchDesignDocument.html">00028</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchDesignDocument.html" title="A Design Document is a special document type that contains things like map/reduce functions...">CouchDesignDocument</a> : <a class="code" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a>
+<a name="l00029"></a>00029 {
+<a name="l00030"></a>00030     <span class="keyword">@private</span>
+<a name="l00031"></a>00031     NSMutableDictionary* _views;
+<a name="l00032"></a>00032     NSString* _viewsRevisionID;
+<a name="l00033"></a>00033     BOOL _changed;
+<a name="l00034"></a>00034 }
+<a name="l00035"></a>00035 
+<a name="l00038"></a>00038 - (<a class="code" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a>*) queryViewNamed: (NSString*)viewName;
+<a name="l00039"></a>00039 
+<a name="l00042"></a><a class="code" href="interfaceCouchDesignDocument.html#a4ab9f87cdcd1ee77f06a3e4e4fe73cca">00042</a> <span class="keyword">@property</span> (readonly) NSArray* viewNames;
 <a name="l00043"></a>00043 
-<a name="l00046"></a><a class="code" href="interfaceCouchDesignDocument.html#a4ab9f87cdcd1ee77f06a3e4e4fe73cca">00046</a> <span class="keyword">@property</span> (readonly) NSArray* viewNames;
-<a name="l00047"></a>00047 
-<a name="l00051"></a>00051 - (<a class="code" href="structCouchViewDefinition.html" title="A C structure used to package up the definition of a view.">CouchViewDefinition</a>) getViewNamed: (NSString*)viewName;
+<a name="l00045"></a>00045 - (NSString*) mapFunctionOfViewNamed: (NSString*)viewName;
+<a name="l00046"></a>00046 
+<a name="l00048"></a>00048 - (NSString*) reduceFunctionOfViewNamed: (NSString*)viewName;
+<a name="l00049"></a>00049 
+<a name="l00051"></a>00051 - (NSString*) languageOfViewNamed: (NSString*)viewName;
 <a name="l00052"></a>00052 
-<a name="l00057"></a>00057 - (BOOL) setDefinition: (const <a class="code" href="structCouchViewDefinition.html" title="A C structure used to package up the definition of a view.">CouchViewDefinition</a>*)definition
-<a name="l00058"></a>00058            ofViewNamed: (NSString*)viewName;
-<a name="l00059"></a>00059 
-<a name="l00061"></a><a class="code" href="interfaceCouchDesignDocument.html#ab2dc920adf3987f86020fcccd45f5389">00061</a> <span class="keyword">@property</span> (readonly) BOOL changed;
-<a name="l00062"></a>00062 
-<a name="l00064"></a>00064 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) saveChanges;
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="keyword">@end</span>
+<a name="l00060"></a>00060 - (void) defineViewNamed: (NSString*)viewName
+<a name="l00061"></a>00061                      map: (NSString*)mapFunction
+<a name="l00062"></a>00062                   reduce: (NSString*)reduceFunction
+<a name="l00063"></a>00063                 language: (NSString*)language;
+<a name="l00064"></a>00064 
+<a name="l00070"></a>00070 - (void) defineViewNamed: (NSString*)viewName
+<a name="l00071"></a>00071                      map: (NSString*)mapFunction;
+<a name="l00072"></a>00072 
+<a name="l00074"></a><a class="code" href="interfaceCouchDesignDocument.html#ab2dc920adf3987f86020fcccd45f5389">00074</a> <span class="keyword">@property</span> (readonly) BOOL changed;
+<a name="l00075"></a>00075 
+<a name="l00077"></a>00077 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) saveChanges;
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchDesignDocument.h</b>      </li>
-      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
+      <li class="footer">Generated on Thu Aug 11 2011 15:25:59 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
@@ -146,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

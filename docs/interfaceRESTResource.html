@@ -143,6 +143,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bottleneck for starting a <a class="el" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>.  <a href="#ae1567f2358845cf1979001e7f67f5c41"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(BOOL)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTResource.html#a47b39a7ffa947b247b04db8c850232a3">cacheResponse:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Remembers the cacheable state (eTag and Last-Modified) of a GET response.  <a href="#a47b39a7ffa947b247b04db8c850232a3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adee529af941ac0015be1488ef8fbd033"></a><!-- doxytag: member="RESTResource::operationDidStart:" ref="adee529af941ac0015be1488ef8fbd033" args="(RESTOperation *op)" -->
+(void)&#160;</td><td class="memItemRight" valign="bottom">- <b>operationDidStart:</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a979fa33eb3cc711fbda2a13fb74707f1"></a><!-- doxytag: member="RESTResource::operationDidComplete:" ref="a979fa33eb3cc711fbda2a13fb74707f1" args="(RESTOperation *op)" -->
+(void)&#160;</td><td class="memItemRight" valign="bottom">- <b>operationDidComplete:</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(NSError *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTResource.html#af8c5299aec8ed5e6d0c015678eba96a4">operation:willCompleteWithError:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This is sent by a <a class="el" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a> to its resource when it completes, before its state changes or any other handlers are called.  <a href="#af8c5299aec8ed5e6d0c015678eba96a4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTResource.html#a7b7feb01d0707dbdff894eeb1f6a5a26">createdByPOST:</a></td></tr>
@@ -162,6 +166,10 @@ NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The HTTP Last-Modified timestamp of the last cached response.  <a href="#a92ed3a54ae2b02496db863b23f30b568"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSURL *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceRESTResource.html#ab4719b026a15eb2838cf4d0a0713f881">cachedURL</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The URL of the last cached response.  <a href="#ab4719b026a15eb2838cf4d0a0713f881"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceRESTResource.html#af91e324b25085ad3d7fc16b36663e94b">tracksActiveOperations</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to YES, the .activeOperations property is enabled.  <a href="#af91e324b25085ad3d7fc16b36663e94b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSSet *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceRESTResource.html#a49d9a75af1f175a22b9b36b78731e238">activeOperations</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">All currently active RESTOperations on this resource or its children.  <a href="#a49d9a75af1f175a22b9b36b78731e238"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Represents an HTTP resource identified by a specific URL. </p>
@@ -644,6 +652,37 @@ NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 
 </div>
 </div>
+<a class="anchor" id="af91e324b25085ad3d7fc16b36663e94b"></a><!-- doxytag: member="RESTResource::tracksActiveOperations" ref="af91e324b25085ad3d7fc16b36663e94b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) tracksActiveOperations<code> [read, write, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>If set to YES, the .activeOperations property is enabled. </p>
+
+</div>
+</div>
+<a class="anchor" id="a49d9a75af1f175a22b9b36b78731e238"></a><!-- doxytag: member="RESTResource::activeOperations" ref="a49d9a75af1f175a22b9b36b78731e238" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSSet*) activeOperations<code> [read, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>All currently active RESTOperations on this resource or its children. </p>
+<p>This is not tracked (and will return nil) unless the .tracksActiveOperations property is first set to YES. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>REST/<a class="el" href="RESTResource_8h_source.html">RESTResource.h</a></li>
 </ul>
@@ -652,7 +691,7 @@ NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceRESTResource.html">RESTResource</a>      </li>
-      <li class="footer">Generated on Mon Aug 8 2011 12:46:11 for CouchCocoa by&#160;
+      <li class="footer">Generated on Thu Aug 11 2011 15:26:00 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
@@ -662,7 +701,7 @@ NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

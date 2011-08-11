@@ -17,7 +17,6 @@ var NAVTREE =
       [ "CouchResource", "interfaceCouchResource.html", null ],
       [ "CouchRevision", "interfaceCouchRevision.html", null ],
       [ "CouchServer", "interfaceCouchServer.html", null ],
-      [ "CouchViewDefinition", "structCouchViewDefinition.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", null ],
       [ "RESTCache", "interfaceRESTCache.html", null ],
       [ "RESTMutableBody", "interfaceRESTMutableBody.html", null ],
@@ -30,7 +29,6 @@ var NAVTREE =
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
-      [ "CouchViewDefinition", "structCouchViewDefinition.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", [
         [ "RESTMutableBody", "interfaceRESTMutableBody.html", null ]
       ] ],
