@@ -289,7 +289,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     error = [super operation: op willCompleteWithError: error];
     
-    if (op.httpStatus < 300) {
+    if (!error && op.httpStatus < 300) {
         // On a PUT or DELETE, update my current revision ID:
         if (op.isPUT || op.isDELETE) {
             NSString* rev = [op.responseBody.fromJSON objectForKey: @"rev"];

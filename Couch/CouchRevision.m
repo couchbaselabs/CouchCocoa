@@ -196,7 +196,7 @@
 
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     error = [super operation: op willCompleteWithError: error];
-    if (op.isSuccessful) {
+    if (op.isSuccessful && !error) {
         if (op.isGET) {
             // Cache document properties after GET:
             self.properties = op.responseBody.fromJSON;
