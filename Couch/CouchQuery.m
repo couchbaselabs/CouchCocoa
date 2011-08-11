@@ -146,13 +146,17 @@
 
 
 - (id) initWithDatabase: (CouchDatabase*)db
-         viewDefinition: (struct CouchViewDefinition)definition
+                    map: (NSString*)map
+                 reduce: (NSString*)reduce
+               language: (NSString*)language
 {
+    NSParameterAssert(map);
     self = [super initWithParent: db relativePath: @"_temp_view"];
     if (self != nil) {
         _viewDefinition = [[NSDictionary alloc] initWithObjectsAndKeys:
-                               definition.mapFunction, @"map",
-                               definition.reduceFunction, @"reduce",  // may be nil
+                               (language ?: kCouchLanguageJavaScript), @"language",
+                               map, @"map",
+                               reduce, @"reduce",  // may be nil
                                nil];
     }
     return self;

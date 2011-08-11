@@ -220,15 +220,21 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
-- (CouchQuery*) slowQueryWithViewDefinition:(struct CouchViewDefinition)definition
+- (CouchQuery*) slowQueryWithMap: (NSString*)map
+                          reduce: (NSString*)reduce
+                        language: (NSString*)language
 {
     return [[[CouchFunctionQuery alloc] initWithDatabase: self
-                                          viewDefinition: definition] autorelease];
+                                                     map: map
+                                                  reduce: reduce
+                                                language: language] autorelease];
 }
 
-- (CouchQuery*) slowQueryWithMapFunction: (NSString*)mapFunctionSource {
-    CouchViewDefinition defn = {mapFunctionSource, nil, kCouchLanguageJavaScript};
-    return [self slowQueryWithViewDefinition: defn];
+- (CouchQuery*) slowQueryWithMap: (NSString*)map {
+    return [[[CouchFunctionQuery alloc] initWithDatabase: self
+                                                     map: map
+                                                  reduce: nil
+                                                language: nil] autorelease];
 }
 
 

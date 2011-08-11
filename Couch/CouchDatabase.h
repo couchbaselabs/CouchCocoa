@@ -99,11 +99,16 @@ typedef NSUInteger CouchReplicationOptions;
 #pragma mark QUERIES & DESIGN DOCUMENTS:
 
 /** Returns a query that runs custom map/reduce functions.
-    This is very slow compared to a precompiled view and should only be used for testing. */
-- (CouchQuery*) slowQueryWithViewDefinition:(struct CouchViewDefinition)definition;
+    This is very slow compared to a precompiled view and should only be used for testing.
+    @param map  The map function source. Must not be nil.
+    @param reduce  The reduce function source, or nil for none.
+    @param language  The language of the functions, or nil for JavaScript. */
+- (CouchQuery*) slowQueryWithMap: (NSString*)map
+                          reduce: (NSString*)reduce
+                        language: (NSString*)language;
 
 /** Convenience method that creates a custom query from a JavaScript map function. */
-- (CouchQuery*) slowQueryWithMapFunction: (NSString*)mapFunctionSource;
+- (CouchQuery*) slowQueryWithMap: (NSString*)map;
 
 /** Instantiates a CouchDesignDocument object with the given ID.
     Makes no server calls; a design document with that ID doesn't even need to exist yet.

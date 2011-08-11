@@ -20,14 +20,8 @@
 /** Language parameter for JavaScript map and reduce functions. */
 extern NSString* const kCouchLanguageJavaScript;
 
-
-/** A C structure used to package up the definition of a view.
-    All the fields are autoreleased, so you don't need to retain or release them. */
-typedef struct CouchViewDefinition {
-    NSString* mapFunction;      /**< The source code of the map function. Never nil. */
-    NSString* reduceFunction;   /**< The source code of the reduce function, or nil if none. */
-    NSString* language;         /**< Programming language; defaults to kCouchLanguageJavaScript. */
-} CouchViewDefinition;
+/** Language parameter for Erlang map and reduce functions. */
+extern NSString* const kCouchLanguageErlang;
 
 
 /** A Design Document is a special document type that contains things like map/reduce functions, and the code and static resources for CouchApps. */
@@ -35,27 +29,46 @@ typedef struct CouchViewDefinition {
 {
     @private
     NSMutableDictionary* _views;
+    NSString* _viewsRevisionID;
     BOOL _changed;
 }
 
-/** Creates a query for the given named view. */
+/** Creates a query for the given named view.
+    If view definitions have been modified but not saved yet, they will be saved first. */
 - (CouchQuery*) queryViewNamed: (NSString*)viewName;
 
 /** Fetches and returns the names of all the views defined in this design document.
     The first call fetches the entire design document synchronously; subsequent calls are cached. */
 @property (readonly) NSArray* viewNames;
 
-/** Fetches the map and/or reduce functions defining the given named view.
-    If there is no view by that name, the "mapFunction" field of the result will be nil.
-    The first call fetches the entire design document synchronously; subsequent calls are cached. */
-- (CouchViewDefinition) getViewNamed: (NSString*)viewName;
+/** Returns the map function of the view with the given name. */
+- (NSString*) mapFunctionOfViewNamed: (NSString*)viewName;
 
-/** Creates, updates or deletes a view given map and/or reduce functions.
-    Does not send the changes to the server until you call -saveChanges.
-    @param definition  Pointer to the view definition, or NULL to delete the view.
-    @param viewName  The name of the view. */
-- (BOOL) setDefinition: (const CouchViewDefinition*)definition
-           ofViewNamed: (NSString*)viewName;
+/** Returns the reduce function of the view with the given name. */
+- (NSString*) reduceFunctionOfViewNamed: (NSString*)viewName;
+
+/** Returns the language of the view with the given name. */
+- (NSString*) languageOfViewNamed: (NSString*)viewName;
+
+/** Sets the definition of a view, or deletes it.
+    After making changes to one or more views, you should call -saveChanges to PUT them back to the database.
+    If the new definition is identical to the existing one, the design document will not be marked as changed or saved back to the database.
+    @param viewName  The name of the view, in the scope of this design doc.
+    @param mapFunction  The source code of the map function. If nil, the view will be deleted.
+    @param reduceFunction  The source code of the reduce function. Optional; pass nil for none.
+    @param language  Specifies the language the functions are written in. If nil, defaults to kCouchLanguageJavaScript. */
+- (void) defineViewNamed: (NSString*)viewName
+                     map: (NSString*)mapFunction
+                  reduce: (NSString*)reduceFunction
+                language: (NSString*)language;
+
+/** A shortcut that defines a simple JavaScript view with no reduce function.
+    After making changes to one or more views, you should call -saveChanges to PUT them back to the database.
+    If the new definition is identical to the existing one, the design document will not be marked as changed or saved back to the database.
+    @param viewName  The name of the view, in the scope of this design doc.
+    @param mapFunction  The source code of the map function. If nil, the view will be deleted. */
+- (void) defineViewNamed: (NSString*)viewName
+                     map: (NSString*)mapFunction;
 
 /** Have the contents of the design document been changed in-memory but not yet saved? */
 @property (readonly) BOOL changed;

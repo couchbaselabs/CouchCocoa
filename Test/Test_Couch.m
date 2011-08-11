@@ -14,6 +14,7 @@
 //  and limitations under the License.
 
 #import "CouchInternal.h"
+#import "CouchDesignDocument.h"
 #import "RESTInternal.h"
 
 
@@ -96,6 +97,9 @@
         [self createDocumentWithProperties: properties];
     }
 }
+
+
+#pragma mark - SERVER & DOCUMENTS:
 
 
 - (void) test01_Server {
@@ -288,7 +292,7 @@
     STAssertEquals(rows.totalCount, kNDocs, nil);
 }
 
-#pragma mark HISTORY
+#pragma mark - HISTORY
 
 - (void)test07_History {
     NSMutableDictionary* properties = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -328,7 +332,7 @@
 }
 
 
-#pragma mark ATTACHMENTS
+#pragma mark - ATTACHMENTS
 
 
 - (void) test08_Attachments {
@@ -370,7 +374,7 @@
 }
 
 
-#pragma mark CHANGE TRACKING
+#pragma mark - CHANGE TRACKING
 
 
 - (void) test09_ChangeTracking {
@@ -418,6 +422,100 @@
     STAssertEquals(changeCount, 0, nil);
     
     STAssertEquals(_db.lastSequenceNumber, (NSUInteger)5, nil);
+}
+
+
+#pragma mark - VIEWS:
+
+
+- (void) test12_CreateView {
+    CouchDesignDocument* design = [_db designDocumentWithName: @"mydesign"];
+    STAssertNotNil(design, nil);
+    STAssertFalse(design.changed, nil);
+    STAssertEqualObjects(design.viewNames, [NSArray array], nil);
+    [design defineViewNamed: @"vu" map: @"function(doc){emit(doc.name,null);};"
+                     reduce: @"_count" language: nil];
+    STAssertEqualObjects(design.viewNames, [NSArray arrayWithObject: @"vu"], nil);
+    STAssertEqualObjects([design mapFunctionOfViewNamed: @"vu"],
+                         @"function(doc){emit(doc.name,null);};", nil);
+    STAssertEqualObjects([design reduceFunctionOfViewNamed: @"vu"], @"_count", nil);
+    STAssertEqualObjects([design languageOfViewNamed: @"vu"], kCouchLanguageJavaScript, nil);
+
+    STAssertTrue(design.changed, nil);
+    AssertWait([design saveChanges]);
+    STAssertFalse(design.changed, nil);
+
+    [design defineViewNamed: @"vu" map: @"function(doc){emit(doc.name,null);};"
+                     reduce: @"_count" language: nil];
+    STAssertFalse(design.changed, nil);
+    STAssertNil([design saveChanges], nil);
+
+    [design defineViewNamed: @"vu" map: nil];
+    STAssertEqualObjects(design.viewNames, [NSArray array], nil);
+    
+    STAssertTrue(design.changed, nil);
+    AssertWait([design saveChanges]);
+    STAssertFalse(design.changed, nil);
+}
+
+
+- (void) test13_RunView {
+    static const NSUInteger kNDocs = 50;
+    [self createDocuments: kNDocs];
+    
+    CouchDesignDocument* design = [_db designDocumentWithName: @"mydesign"];
+    [design defineViewNamed: @"vu" map: @"function(doc){emit(doc.sequence,null);};"];
+    AssertWait([design saveChanges]);
+    
+    CouchQuery* query = [design queryViewNamed: @"vu"];
+    query.startKey = [NSNumber numberWithInt: 23];
+    query.endKey = [NSNumber numberWithInt: 33];
+    CouchQueryEnumerator* rows = query.rows;
+    STAssertNotNil(rows, nil);
+    STAssertEquals(rows.count, (NSUInteger)11, nil);
+    STAssertEquals(rows.totalCount, kNDocs, nil);
+    
+    int expectedKey = 23;
+    for (CouchQueryRow* row in rows) {
+        STAssertEquals([row.key intValue], expectedKey, nil);
+        ++expectedKey;
+    }
+}
+
+
+- (void) test14_RunSlowView {
+    static const NSUInteger kNDocs = 50;
+    [self createDocuments: kNDocs];
+    
+    CouchQuery* query = [_db slowQueryWithMap: @"function(doc){emit(doc.sequence,null);};"];
+    query.startKey = [NSNumber numberWithInt: 23];
+    query.endKey = [NSNumber numberWithInt: 33];
+    CouchQueryEnumerator* rows = query.rows;
+    STAssertNotNil(rows, nil);
+    STAssertEquals(rows.count, (NSUInteger)11, nil);
+    STAssertEquals(rows.totalCount, kNDocs, nil);
+    
+    int expectedKey = 23;
+    for (CouchQueryRow* row in rows) {
+        STAssertEquals([row.key intValue], expectedKey, nil);
+        ++expectedKey;
+    }
+}
+
+
+- (void) test15_UncacheViews {
+    CouchDesignDocument* design = [_db designDocumentWithName: @"mydesign"];
+    [design defineViewNamed: @"vu" map: @"function(doc){emit(doc.name,null);};"
+                     reduce: @"_count" language: nil];
+    AssertWait([design saveChanges]);
+
+    // Delete the view without going through the view API:
+    NSMutableDictionary* props = [design.properties mutableCopy];
+    [props removeObjectForKey: @"views"];
+    AssertWait([design putProperties: props]);
+    
+    // Verify that the view API knows it's gone:
+    STAssertEqualObjects(design.viewNames, [NSArray array], nil);
 }
 
 

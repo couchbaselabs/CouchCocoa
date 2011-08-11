@@ -58,6 +58,7 @@
 }
 
 - (id) initWithDatabase: (CouchDatabase*)db
-         viewDefinition: (struct CouchViewDefinition)definition;
-
+                    map: (NSString*)map
+                 reduce: (NSString*)reduce
+               language: (NSString*)language;
 @end

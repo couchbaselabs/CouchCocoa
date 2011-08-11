@@ -18,6 +18,7 @@
 
 
 NSString* const kCouchLanguageJavaScript = @"javascript";
+NSString* const kCouchLanguageErlang = @"erlang";
 
 
 @interface CouchDesignDocument ()
@@ -28,7 +29,15 @@ NSString* const kCouchLanguageJavaScript = @"javascript";
 @implementation CouchDesignDocument
 
 
+- (void)dealloc {
+    [_views release];
+    [_viewsRevisionID release];
+    [super dealloc];
+}
+
+
 - (CouchQuery*) queryViewNamed: (NSString*)viewName {
+    [[self saveChanges] wait];
     NSString* path = [@"_view/" stringByAppendingString: viewName];
     return [[[CouchQuery alloc] initWithParent: self relativePath: path] autorelease];
 }
@@ -37,63 +46,82 @@ NSString* const kCouchLanguageJavaScript = @"javascript";
 /** Returns a dictionary mapping view names to the dictionaries defining them (as in the design document's JSON source.)
     The first call fetches the entire design document; subsequent calls are cached. */
 - (NSDictionary*) views {
-    //FIX: How/when to invalidate the cache?
+    if (_views && !$equal(_viewsRevisionID, self.currentRevisionID)) {
+        // cache is invalid now:
+        [_views release];
+        _views = nil;
+        [_viewsRevisionID release];
+        _viewsRevisionID = nil;
+    }
     if (!_views) {
-        NSDictionary* views = nil;
-        RESTOperation* op = [self GET];
-        if ([op wait]) {
-            views = $castIf(NSDictionary, [self.properties objectForKey: @"views"]);
-        } else {
-            if (op.httpStatus != 404) {
-                Warn(@"Failed to GET designDocument at <%@>: %@", self.URL, op.error);
-                return nil;
-            }
-        }
+        NSDictionary* views = $castIf(NSDictionary, [self.properties objectForKey: @"views"]);
         if (views)
             _views = [views mutableCopy];
         else
             _views = [[NSMutableDictionary alloc] init];
+        _viewsRevisionID = [self.currentRevisionID copy];
     }
     return _views;
 }
+
 
 - (NSArray*) viewNames {
     return [self.views allKeys];
 }
 
-- (CouchViewDefinition) getViewNamed: (NSString*)viewName
-{
-    CouchViewDefinition defn = {nil, nil, nil};
-    NSDictionary* view = $castIf(NSDictionary, [self.views objectForKey: viewName]);
-    if (view) {
-        defn.mapFunction = [view objectForKey: @"map"];
-        defn.reduceFunction = [view objectForKey: @"reduce"];
-        defn.language = [self.properties objectForKey: @"language"];
-        if (!defn.language)
-            defn.language = kCouchLanguageJavaScript;
-    }
-    return defn;
+
+- (NSDictionary*) definitionOfViewNamed: (NSString*)viewName {
+    return $castIf(NSDictionary, [self.views objectForKey: viewName]);
 }
 
-- (BOOL) setDefinition: (const CouchViewDefinition*)definition
-           ofViewNamed: (NSString*)viewName
-{
-    if (!self.views)
-        return NO;
-
-    if (definition) {
-        NSParameterAssert(definition->mapFunction);
-        NSDictionary* viewDefinition = [NSDictionary dictionaryWithObjectsAndKeys:
-                                            definition->mapFunction, @"map",
-                                            definition->reduceFunction, @"reduce", // may be nil
-                                            nil];
-        [_views setObject: viewDefinition forKey: viewName];
-        //TODO: Remember the language
-    } else {
-        [_views removeObjectForKey: viewName];
+- (void) setDefinition: (NSDictionary*)definition ofViewNamed: (NSString*)viewName {
+    NSDictionary* existingDefinition = [self definitionOfViewNamed: viewName];
+    if (definition != existingDefinition && ![definition isEqualToDictionary: existingDefinition]) {
+        [_views setValue: definition forKey: viewName];
+        self.changed = YES;
     }
-    self.changed = YES;
-    return YES;
+}
+
+
+- (NSString*) mapFunctionOfViewNamed: (NSString*)viewName {
+    return [[self definitionOfViewNamed: viewName] objectForKey: @"map"];
+}
+
+
+- (NSString*) reduceFunctionOfViewNamed: (NSString*)viewName {
+    return [[self definitionOfViewNamed: viewName] objectForKey: @"reduce"];
+}
+
+
+- (NSString*) languageOfViewNamed: (NSString*)viewName {
+    NSDictionary* viewDefn = [self definitionOfViewNamed: viewName];
+    if (!viewDefn)
+        return nil;
+    return [viewDefn objectForKey: @"language"] ?: kCouchLanguageJavaScript;
+}
+
+
+- (void) defineViewNamed: (NSString*)viewName
+                     map: (NSString*)mapFunction
+                  reduce: (NSString*)reduceFunction
+                language: (NSString*)language;
+{
+    NSMutableDictionary* view = nil;
+    if (mapFunction) {
+        view = [[[self definitionOfViewNamed: viewName] mutableCopy] autorelease];
+        if (!view)
+            view = [NSMutableDictionary dictionaryWithCapacity: 3];
+        [view setValue: mapFunction forKey: @"map"];
+        [view setValue: reduceFunction forKey: @"reduce"];
+        [view setValue: language forKey: @"language"];
+    }
+    [self setDefinition: view ofViewNamed: viewName];
+}
+
+- (void) defineViewNamed: (NSString*)viewName
+                     map: (NSString*)mapFunction
+{
+    [self defineViewNamed: viewName map: mapFunction reduce: nil language: nil];
 }
 
 
