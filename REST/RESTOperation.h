@@ -37,7 +37,8 @@ typedef void (^OnCompleteBlock)();
     RESTResource* _resource;
     NSURLRequest* _request;
     NSURLConnection* _connection;
-    unsigned _state;
+    SInt8 _state;
+    UInt8 _retryCount;
     BOOL _waiting;
     NSError* _error;
 
@@ -78,9 +79,8 @@ typedef void (^OnCompleteBlock)();
 
 #pragma mark LOADING:
 
-/** Sends the request, asynchronously. Subsequent calls do nothing.
-    @return  YES if the resource is now loading, NO if it's not. */
-- (BOOL) start;
+/** Sends the request, asynchronously. Subsequent calls do nothing. */
+- (void) start;
 
 /** Will call the given block when the request finishes.
     This method may be called multiple times; blocks will be called in the order added.

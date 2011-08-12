@@ -35,6 +35,11 @@ id RESTCastIfArrayOf(Class,id);
 static inline BOOL $equal(id a, id b) {return a==b || [a isEqual: b];}
 
 
+@interface RESTOperation ()
+@property (nonatomic, readonly) UInt8 retryCount;
+@end
+
+
 @interface RESTResource ()
 @property (readwrite, retain) RESTCache* owningCache;
 - (NSURLCredential*) credentialForOperation: (RESTOperation*)op;

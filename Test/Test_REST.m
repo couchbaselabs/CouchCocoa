@@ -37,10 +37,12 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     [super setUp];
     
     gRESTWarnRaisesException = YES;
+    gRESTLogLevel = kRESTLogRequestHeaders;
 }
 
 - (void)tearDown
 {
+    gRESTLogLevel = kRESTLogNothing;
     [super tearDown];
 }
 
@@ -102,6 +104,14 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
         STAssertTrue(op.isComplete, nil);
         STAssertNil(op.error, nil);
     }
+}
+
+- (void) testRetry {
+    NSURL* url = [NSURL URLWithString: @"http://127.0.0.1:3"];
+    RESTResource* resource = [[[RESTResource alloc] initWithURL: url] autorelease];
+    RESTOperation* op = [resource GET];
+    STAssertFalse([op wait], nil);
+    STAssertTrue(op.retryCount > 0, nil);
 }
 
 - (void) testEntityHeaders {
