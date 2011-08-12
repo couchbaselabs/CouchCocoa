@@ -220,17 +220,8 @@
 }
 
 
-- (void) updateRows {
-    if (_op)
-        return;  // TODO: Should probably re-run query after current _op completes, instead
-    if (_rows)
-        self.prefetch = NO;   // (prefetch disables conditional GET shortcut)
-    [self start];
-}
-
-
 - (void) databaseChanged {
-    [self updateRows];
+    [self start];
 }
 
 
@@ -245,6 +236,7 @@
         if (rows && ![rows isEqual: _rows]) {
             NSLog(@"CouchLiveQuery: ...Rows changed! (now %lu)", (unsigned long)rows.count);
             self.rows = rows;   // Triggers KVO notification
+            self.prefetch = NO;   // (prefetch disables conditional GET shortcut on next fetch)
         }
     }
     
