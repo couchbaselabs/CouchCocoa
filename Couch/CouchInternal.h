@@ -50,6 +50,14 @@
 @end
 
 
+@interface CouchReplication ()
+- (id) initWithDatabase: (CouchDatabase*)database
+                 remote: (NSURL*)remote
+                   pull: (BOOL)pull
+                options: (CouchReplicationOptions)options;
+@end
+
+
 /** A query that allows custom map and reduce functions to be supplied at runtime.
     Usually created by calling -[CouchDatabase slowQueryWithMapFunction:]. */
 @interface CouchFunctionQuery : CouchQuery

@@ -241,36 +241,24 @@ static const NSUInteger kDocRetainLimit = 50;
 #pragma mark -
 #pragma mark REPLICATION & SYNCHRONIZATION
 
-- (RESTOperation*) replicateFrom: (NSString*)source 
-                              to: (NSString*)target
-                         options: (CouchReplicationOptions)options
-{
-    // http://wiki.apache.org/couchdb/Replication
-    NSParameterAssert(source);
-    NSParameterAssert(target);
-    NSMutableDictionary* body = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                          source, @"source",
-                          target, @"target",
-                          nil];
-    if (options & kCouchReplicationCreateTarget)
-        [body setObject: (id)kCFBooleanTrue forKey: @"create_target"];
-    if (options & kCouchReplicationContinuous)
-        [body setObject: (id)kCFBooleanTrue forKey: @"continuous"];
-    if (options & kCouchReplicationCancel)
-        [body setObject: (id)kCFBooleanTrue forKey: @"cancel"];
-    RESTResource* replicate = [[[RESTResource alloc] initWithParent: self.server 
-                                                       relativePath: @"_replicate"] autorelease];
-    return [replicate POSTJSON: body parameters: nil];
-}
-
-- (RESTOperation*) pullFromDatabaseAtURL: (NSURL*)sourceURL 
+- (CouchReplication*) pullFromDatabaseAtURL: (NSURL*)sourceURL 
                                  options: (CouchReplicationOptions)options {
-    return [self replicateFrom: sourceURL.absoluteString to: self.relativePath options: options];
+    CouchReplication* rep = [[[CouchReplication alloc] initWithDatabase: self
+                                                                 remote: sourceURL
+                                                                   pull: YES
+                                                                options: options] autorelease];
+    [rep start];
+    return rep;
 }
 
-- (RESTOperation*) pushToDatabaseAtURL: (NSURL*)targetURL
+- (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL
                                options: (CouchReplicationOptions)options {
-    return [self replicateFrom: self.relativePath to: targetURL.absoluteString options: options];
+    CouchReplication* rep = [[[CouchReplication alloc] initWithDatabase: self
+                                                                 remote: targetURL
+                                                                   pull: NO
+                                                                options: options] autorelease];
+    [rep start];
+    return rep;
 }
 
 

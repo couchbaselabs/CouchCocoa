@@ -22,6 +22,9 @@
 {
     @private
     RESTCache* _dbCache;
+    RESTResource* _activityRsrc;
+    NSArray* _activeTasks;
+    NSTimer* _activityPollTimer;
 }
 
 /** Initialize given a server URL. */
@@ -43,5 +46,14 @@
     The database doesn't need to exist (you can call -create on it afterwards to create it.)
     Multiple calls with the same name will return the same CouchDatabase instance. */
 - (CouchDatabase*) databaseNamed: (NSString*)name;
+
+#pragma mark ACTIVITY:
+
+/** The list of active server tasks, as parsed JSON (observable).
+    This is updated asynchronously while the activityPollInterval is nonzero. */
+@property (nonatomic, readonly, retain) NSArray* activeTasks;
+
+/** How often to poll the server's list of active tasks and update .activeTasks. */
+@property NSTimeInterval activityPollInterval;
 
 @end

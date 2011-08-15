@@ -14,21 +14,12 @@
 //  and limitations under the License.
 
 #import "CouchResource.h"
+#import "CouchReplication.h"
 @class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchQuery, CouchServer;
-struct CouchViewDefinition;
 
 
 /** Type of block that's called when the database changes. */
 typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
-
-
-/** Option flags for replication (push/pull). */
-enum {
-    kCouchReplicationCreateTarget = 1,  /**< Create the destination database if it doesn't exist */
-    kCouchReplicationContinuous   = 2,  /**< Continuous mode; remains active till canceled */
-    kCouchReplicationCancel       = 4   /**< Cancel a current replication in progress */
-};
-typedef NSUInteger CouchReplicationOptions;
 
 
 /** A CouchDB database; contains CouchDocuments.
@@ -133,16 +124,16 @@ typedef NSUInteger CouchReplicationOptions;
 /** Triggers replication from a source database, to this database.
     @param sourceURL  The URL of the database to replicate from.
     @param options  Zero or more option flags affecting the replication.
-    @return  A RESTOperation that will complete when the replication finishes. The response body will be a JSON object describing what occurred. */
-- (RESTOperation*) pullFromDatabaseAtURL: (NSURL*)sourceURL 
-                                 options: (CouchReplicationOptions)options;
+    @return  The CouchReplication object managing the replication. It will already have been started. */
+- (CouchReplication*) pullFromDatabaseAtURL: (NSURL*)sourceURL
+                                    options: (CouchReplicationOptions)options;
 
 /** Triggers replication from this database to a target database.
     @param targetURL  The URL of the database to replicate to.
     @param options  Zero or more option flags affecting the replication.
-    @return  A RESTOperation that will complete when the replication finishes. The response body will be a JSON object describing what occurred. */
-- (RESTOperation*) pushToDatabaseAtURL: (NSURL*)targetURL
-                               options: (CouchReplicationOptions)options;
+    @return  The CouchReplication object managing the replication. It will already have been started. */
+- (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL
+                                  options: (CouchReplicationOptions)options;
 
 
 @end
