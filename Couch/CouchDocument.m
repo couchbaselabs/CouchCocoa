@@ -294,6 +294,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         if (op.isPUT || op.isDELETE) {
             NSString* rev = [op.responseBody.fromJSON objectForKey: @"rev"];
             self.currentRevisionID = rev;
+            op.resultObject = self.currentRevision;
             if (op.isDELETE)
                 self.isDeleted = YES;
         }

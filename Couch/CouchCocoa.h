@@ -1,5 +1,5 @@
 //
-//  Couch.h
+//  CouchCocoa.h
 //  CouchCocoa
 //
 //  Created by Jens Alfke on 6/12/11.
@@ -13,13 +13,14 @@
 //  either express or implied. See the License for the specific language governing permissions
 //  and limitations under the License.
 
-#import "CouchServer.h"
-#import "CouchDatabase.h"
-#import "CouchQuery.h"
-#import "CouchDocument.h"
-#import "CouchRevision.h"
+#import "REST.h"
 #import "CouchAttachment.h"
-#import "RESTOperation.h"
+#import "CouchDatabase.h"
+#import "CouchDesignDocument.h"
+#import "CouchDocument.h"
+#import "CouchQuery.h"
+#import "CouchRevision.h"
+#import "CouchServer.h"
 
 
 /** @mainpage About CouchCocoa
