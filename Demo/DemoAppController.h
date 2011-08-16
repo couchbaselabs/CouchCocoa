@@ -14,7 +14,7 @@
 //  and limitations under the License.
 
 #import <Cocoa/Cocoa.h>
-@class CouchDatabase, DemoQuery;
+@class CouchDatabase, CouchReplication, DemoQuery;
 
 
 /** Generic application delegate for simple Mac OS CouchDB demo apps.
@@ -28,6 +28,7 @@
     
     CouchDatabase* _database;
     DemoQuery* _query;
+    CouchReplication *_pull, *_push;
     BOOL _glowing;
 }
 

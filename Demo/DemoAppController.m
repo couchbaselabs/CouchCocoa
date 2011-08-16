@@ -16,7 +16,7 @@
 #import "DemoAppController.h"
 #import "DemoItem.h"
 #import "DemoQuery.h"
-#import "CouchCocoa.h"  // in a separate project you would use <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchCocoa.h>
 
 
 #define kChangeGlowDuration 3.0
@@ -64,19 +64,10 @@ int main (int argc, const char * argv[]) {
 
 
 - (void) startContinuousSyncWith: (NSURL*)otherDbURL {
-    RESTOperation *pull = [_database pullFromDatabaseAtURL: otherDbURL
-                                                  options: kCouchReplicationContinuous];
-    [pull onCompletion:^() {
-		NSLog(@"Pull ended, error=%@", pull.error);
-	}];
-    [pull start];
-    
-    RESTOperation *push = [_database pushToDatabaseAtURL: otherDbURL
-                                                options: kCouchReplicationContinuous];
-    [push onCompletion:^() {
-		NSLog(@"Push ended, error=%@", pull.error);
-	}];
-    [push start];
+    _pull = [[_database pullFromDatabaseAtURL: otherDbURL
+                                      options: kCouchReplicationContinuous] retain];
+    _push = [[_database pushToDatabaseAtURL: otherDbURL
+                                    options: kCouchReplicationContinuous] retain];
 }
 
 

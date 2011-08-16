@@ -14,7 +14,7 @@
 //  and limitations under the License.
 
 #import "DemoItem.h"
-#import "CouchCocoa.h"  // in a separate project you would use <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchCocoa.h>
 
 
 @interface DemoItem ()
