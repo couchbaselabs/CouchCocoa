@@ -14,20 +14,20 @@ This API is not the only way to access CouchDB on iOS and Mac OS. There are othe
 
 ### Join Us
 
-* You can discuss this API or ask questions at the [Mobile Couchbase Google Group][3].
+* You can discuss this API or ask questions at the [Couchbase Mobile Google Group][3].
 * You might also want to look at the [issue tracker][5] to see known problems and feature requests.
 
 ## Build Instructions
 
 ### One-Time Repository Setup
 
-After cloning the CouchCocoa repo, you'll need to initialize Git "submodules". This will clone the dependency JSONKit into the "vendor" subfolder:
+If you cloned the CouchCocoa Git repository, aso opposed to downloading a precompiled framework, then you'll next need to initialize Git "submodules". This will clone the dependency JSONKit into the "vendor" subfolder:
 
     cd CouchCocoa
     git submodule init
     git submodule update
 
-### Running The Demo Apps
+### Running The Mac OS Demo Apps
 
 There are two simple Mac demo apps included in the Demo/ subfolder. One lets you edit a simple list of names and email addresses, the other is a shopping list. (They actually share the same source code; all the differences are in their .xib files, thanks to the magic of Cocoa bindings.) To run them:
 
@@ -71,7 +71,7 @@ The framework will be located at:
 4. Drag the copied framework into the project window's file list.
 5. Add the framework to your target (if you weren't already prompted to in the previous step.)
 
-You'll probably want to run a local database server on your iOS device, since it'll allow your app to work offline (and improves performance.) CouchCocoa.framework doesn't contain CouchDB itself, so you should also add the Couchbase.framework to your app. Using the two together is very simple: when CouchbaseEmbeddedServer calls your delegate method to tell you the server's up and running, just use the URL it gives you to instantiate a CouchServer object.
+You'll probably want to run a local database server on your iOS device, since it'll allow your app to work offline (and improves performance.) CouchCocoa.framework doesn't contain CouchDB itself, so you should also add the [Couchbase Mobile][9] framework to your app. Using the two together is very simple: when the CouchbaseMobile object calls your delegate method to tell you the server's up and running, just use the URL it gives you to instantiate a CouchServer object.
 
 ## License
 
@@ -91,3 +91,4 @@ Copyright 2011, Couchbase, Inc.
 [6]: http://www.apache.org/licenses/LICENSE-2.0.html
 [7]: https://github.com/couchbaselabs/CouchCocoa/wiki/Example-Snippets
 [8]: http://couchbaselabs.github.com/CouchCocoa/docs/
+[9]: http://www.couchbase.org/get/couchbase-mobile-for-ios/current
