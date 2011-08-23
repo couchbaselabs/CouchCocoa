@@ -13,7 +13,7 @@ var NAVTREE =
       [ "CouchQuery", "interfaceCouchQuery.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
-      [ "CouchReplicator", "interfaceCouchReplicator.html", null ],
+      [ "CouchReplication", "interfaceCouchReplication.html", null ],
       [ "CouchResource", "interfaceCouchResource.html", null ],
       [ "CouchRevision", "interfaceCouchRevision.html", null ],
       [ "CouchServer", "interfaceCouchServer.html", null ],
@@ -29,6 +29,7 @@ var NAVTREE =
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
+      [ "CouchReplication", "interfaceCouchReplication.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", [
         [ "RESTMutableBody", "interfaceRESTMutableBody.html", null ]
       ] ],
@@ -44,7 +45,6 @@ var NAVTREE =
           [ "CouchQuery", "interfaceCouchQuery.html", [
             [ "CouchLiveQuery", "interfaceCouchLiveQuery.html", null ]
           ] ],
-          [ "CouchReplicator", "interfaceCouchReplicator.html", null ],
           [ "CouchRevision", "interfaceCouchRevision.html", null ],
           [ "CouchServer", "interfaceCouchServer.html", null ]
         ] ]
@@ -59,7 +59,7 @@ var NAVTREE =
       [ "Couch/CouchDesignDocument.h", null, null ],
       [ "Couch/CouchDocument.h", null, null ],
       [ "Couch/CouchQuery.h", null, null ],
-      [ "Couch/CouchReplicator.h", null, null ],
+      [ "Couch/CouchReplication.h", null, null ],
       [ "Couch/CouchResource.h", null, null ],
       [ "Couch/CouchRevision.h", null, null ],
       [ "Couch/CouchServer.h", null, null ],

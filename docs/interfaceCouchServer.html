@@ -81,7 +81,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a>  </div>
   <div class="headertitle">
 <div class="title">CouchServer Class Reference</div>  </div>
 </div>
@@ -118,6 +119,12 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns array of <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> objects representing all the databases on the server.  <a href="#a81b88f294eb1fa5e60a1ddaf11a37d59"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchServer.html#ac32e45ec1035052b0341888fb4dd91a6">databaseNamed:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Just creates a <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> object; makes no calls to the server.  <a href="#ac32e45ec1035052b0341888fb4dd91a6"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="properties"></a>
+Properties</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchServer.html#a1095a833583d30a70d2f75124a9e7f10">activeTasks</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of active server tasks, as parsed JSON (observable).  <a href="#a1095a833583d30a70d2f75124a9e7f10"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSTimeInterval&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchServer.html#a1766f0f99f943a4d0959a6f67354ae3b">activityPollInterval</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">How often to poll the server's list of active tasks and update .activeTasks.  <a href="#a1766f0f99f943a4d0959a6f67354ae3b"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>The top level of a CouchDB server. </p>
@@ -241,6 +248,38 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<hr/><h2>Property Documentation</h2>
+<a class="anchor" id="a1095a833583d30a70d2f75124a9e7f10"></a><!-- doxytag: member="CouchServer::activeTasks" ref="a1095a833583d30a70d2f75124a9e7f10" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSArray*) activeTasks<code> [read, retain]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The list of active server tasks, as parsed JSON (observable). </p>
+<p>This is updated asynchronously while the activityPollInterval is nonzero. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1766f0f99f943a4d0959a6f67354ae3b"></a><!-- doxytag: member="CouchServer::activityPollInterval" ref="a1766f0f99f943a4d0959a6f67354ae3b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSTimeInterval) activityPollInterval<code> [read, write, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>How often to poll the server's list of active tasks and update .activeTasks. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Couch/<a class="el" href="CouchServer_8h_source.html">CouchServer.h</a></li>
 </ul>
@@ -249,7 +288,7 @@ Public Member Functions</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchServer.html">CouchServer</a>      </li>
-      <li class="footer">Generated on Thu Aug 11 2011 15:26:00 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Aug 23 2011 16:39:54 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

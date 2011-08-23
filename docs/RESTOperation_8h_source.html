@@ -112,37 +112,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00037"></a>00037     RESTResource* _resource;
 <a name="l00038"></a>00038     NSURLRequest* _request;
 <a name="l00039"></a>00039     NSURLConnection* _connection;
-<a name="l00040"></a>00040     <span class="keywordtype">unsigned</span> _state;
-<a name="l00041"></a>00041     BOOL _waiting;
-<a name="l00042"></a>00042     NSError* _error;
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044     NSHTTPURLResponse* _response;
-<a name="l00045"></a>00045     NSMutableData* _body;
-<a name="l00046"></a>00046     <span class="keywordtype">id</span> _resultObject;
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048     NSMutableArray* _onCompletes;
-<a name="l00049"></a>00049 }
-<a name="l00050"></a>00050 
-<a name="l00053"></a>00053 - (id) initWithResource: (RESTResource*)resource request: (NSURLRequest*)request;
-<a name="l00054"></a>00054 
-<a name="l00056"></a><a class="code" href="interfaceRESTOperation.html#a463b37f028e202030f2a6bb4e1fd08ea">00056</a> <span class="keyword">@property</span> (readonly) RESTResource* resource;
-<a name="l00059"></a><a class="code" href="interfaceRESTOperation.html#ac12be50a1edd07daed29ff7f5e656b2b">00059</a> <span class="keyword">@property</span> (readonly) NSURL* URL;
-<a name="l00061"></a><a class="code" href="interfaceRESTOperation.html#abb80754b0e2c2405192ab0df0b7f5715">00061</a> <span class="keyword">@property</span> (readonly) NSString* name;
-<a name="l00063"></a><a class="code" href="interfaceRESTOperation.html#af76aa9f5db2d448ffb8c2f3ba91a3cb9">00063</a> <span class="keyword">@property</span> (readonly) NSString* method;
-<a name="l00065"></a><a class="code" href="interfaceRESTOperation.html#ab1b7472e372a8975ce00cb17a5a01d37">00065</a> <span class="keyword">@property</span> (readonly) NSURLRequest* request;
-<a name="l00066"></a>00066 
-<a name="l00067"></a><a class="code" href="interfaceRESTOperation.html#a3f927fdd43e7be27dee24b85e78d8cab">00067</a> <span class="keyword">@property</span> (readonly) BOOL isReadOnly;   
-<a name="l00068"></a><a class="code" href="interfaceRESTOperation.html#ac7ed862752d2c8c3563c507c93e70ab1">00068</a> <span class="keyword">@property</span> (readonly) BOOL isGET;        
-<a name="l00069"></a><a class="code" href="interfaceRESTOperation.html#aa85f1c7b32c34ecdc39daff64b0d1a1a">00069</a> <span class="keyword">@property</span> (readonly) BOOL isPUT;        
-<a name="l00070"></a><a class="code" href="interfaceRESTOperation.html#a14ab112d6324fc4bfc99105a7112c7b7">00070</a> <span class="keyword">@property</span> (readonly) BOOL isPOST;       
-<a name="l00071"></a><a class="code" href="interfaceRESTOperation.html#ad2ec4df3d34e2b63e3caf747161c866f">00071</a> <span class="keyword">@property</span> (readonly) BOOL isDELETE;     
-<a name="l00074"></a>00074 - (void) setValue: (NSString*)value forHeader: (NSString*)headerName;
-<a name="l00075"></a>00075 
-<a name="l00077"></a><a class="code" href="interfaceRESTOperation.html#a0bc43e05e6659acd2876f6e82587c7ae">00077</a> <span class="keyword">@property</span> (copy) NSData* requestBody;
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079 <span class="preprocessor">#pragma mark LOADING:</span>
-<a name="l00080"></a>00080 <span class="preprocessor"></span>
-<a name="l00083"></a>00083 - (BOOL) start;
+<a name="l00040"></a>00040     SInt8 _state;
+<a name="l00041"></a>00041     UInt8 _retryCount;
+<a name="l00042"></a>00042     BOOL _waiting;
+<a name="l00043"></a>00043     NSError* _error;
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045     NSHTTPURLResponse* _response;
+<a name="l00046"></a>00046     NSMutableData* _body;
+<a name="l00047"></a>00047     <span class="keywordtype">id</span> _resultObject;
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049     NSMutableArray* _onCompletes;
+<a name="l00050"></a>00050 }
+<a name="l00051"></a>00051 
+<a name="l00054"></a>00054 - (id) initWithResource: (RESTResource*)resource request: (NSURLRequest*)request;
+<a name="l00055"></a>00055 
+<a name="l00057"></a><a class="code" href="interfaceRESTOperation.html#a463b37f028e202030f2a6bb4e1fd08ea">00057</a> <span class="keyword">@property</span> (readonly) RESTResource* resource;
+<a name="l00060"></a><a class="code" href="interfaceRESTOperation.html#ac12be50a1edd07daed29ff7f5e656b2b">00060</a> <span class="keyword">@property</span> (readonly) NSURL* URL;
+<a name="l00062"></a><a class="code" href="interfaceRESTOperation.html#abb80754b0e2c2405192ab0df0b7f5715">00062</a> <span class="keyword">@property</span> (readonly) NSString* name;
+<a name="l00064"></a><a class="code" href="interfaceRESTOperation.html#af76aa9f5db2d448ffb8c2f3ba91a3cb9">00064</a> <span class="keyword">@property</span> (readonly) NSString* method;
+<a name="l00066"></a><a class="code" href="interfaceRESTOperation.html#ab1b7472e372a8975ce00cb17a5a01d37">00066</a> <span class="keyword">@property</span> (readonly) NSURLRequest* request;
+<a name="l00067"></a>00067 
+<a name="l00068"></a><a class="code" href="interfaceRESTOperation.html#a3f927fdd43e7be27dee24b85e78d8cab">00068</a> <span class="keyword">@property</span> (readonly) BOOL isReadOnly;   
+<a name="l00069"></a><a class="code" href="interfaceRESTOperation.html#ac7ed862752d2c8c3563c507c93e70ab1">00069</a> <span class="keyword">@property</span> (readonly) BOOL isGET;        
+<a name="l00070"></a><a class="code" href="interfaceRESTOperation.html#aa85f1c7b32c34ecdc39daff64b0d1a1a">00070</a> <span class="keyword">@property</span> (readonly) BOOL isPUT;        
+<a name="l00071"></a><a class="code" href="interfaceRESTOperation.html#a14ab112d6324fc4bfc99105a7112c7b7">00071</a> <span class="keyword">@property</span> (readonly) BOOL isPOST;       
+<a name="l00072"></a><a class="code" href="interfaceRESTOperation.html#ad2ec4df3d34e2b63e3caf747161c866f">00072</a> <span class="keyword">@property</span> (readonly) BOOL isDELETE;     
+<a name="l00075"></a>00075 - (void) setValue: (NSString*)value forHeader: (NSString*)headerName;
+<a name="l00076"></a>00076 
+<a name="l00078"></a><a class="code" href="interfaceRESTOperation.html#a0bc43e05e6659acd2876f6e82587c7ae">00078</a> <span class="keyword">@property</span> (copy) NSData* requestBody;
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080 <span class="preprocessor">#pragma mark LOADING:</span>
+<a name="l00081"></a>00081 <span class="preprocessor"></span>
+<a name="l00083"></a>00083 - (void) start;
 <a name="l00084"></a>00084 
 <a name="l00089"></a>00089 - (BOOL) onCompletion: (OnCompleteBlock)onComplete;
 <a name="l00090"></a>00090 
@@ -188,7 +189,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>RESTOperation.h</b>      </li>
-      <li class="footer">Generated on Thu Aug 11 2011 15:25:59 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Aug 23 2011 16:39:54 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
