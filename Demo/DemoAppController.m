@@ -35,6 +35,7 @@ int main (int argc, const char * argv[]) {
 
 - (void) applicationDidFinishLaunching: (NSNotification*)n {
     gRESTLogLevel = kRESTLogRequestURLs;
+    gCouchLogLevel = 1;
     
     NSDictionary* bundleInfo = [[NSBundle mainBundle] infoDictionary];
     NSString* dbName = [bundleInfo objectForKey: @"DemoDatabase"];

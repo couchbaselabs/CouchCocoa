@@ -17,6 +17,11 @@
 #import "RESTInternal.h"
 
 
+#define COUCHLOG  if(gCouchLogLevel < 1) ; else NSLog
+#define COUCHLOG2 if(gCouchLogLevel < 2) ; else NSLog
+#define COUCHLOG3 if(gCouchLogLevel < 3) ; else NSLog
+
+
 @interface CouchAttachment ()
 - (id) initWithRevision: (CouchRevision*)revision 
                    name: (NSString*)name

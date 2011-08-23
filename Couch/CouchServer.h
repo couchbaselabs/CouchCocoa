@@ -57,3 +57,10 @@
 @property NSTimeInterval activityPollInterval;
 
 @end
+
+
+/** The current level of logging used by CouchCocoa.
+    Default value is 0, which disables logging.
+    Set to 1 for some logging, or 2 or 3 for more.
+    See also: gRESTLogLevel, which logs HTTP requests/responses. */
+extern int gCouchLogLevel;

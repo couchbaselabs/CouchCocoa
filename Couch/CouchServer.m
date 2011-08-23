@@ -22,6 +22,9 @@
 static NSString* const kLocalServerURL = @"http://127.0.0.1:5984/";
 
 
+int gCouchLogLevel = 0;
+
+
 @interface CouchServer ()
 @property (nonatomic, readwrite, retain) NSArray* activeTasks;
 @end
@@ -108,7 +111,7 @@ static NSString* const kLocalServerURL = @"http://127.0.0.1:5984/";
         [_activityRsrc cacheResponse: op];
         NSArray* tasks = $castIf(NSArray, op.responseBody.fromJSON);
         if (tasks && ![tasks isEqual: _activeTasks]) {
-            NSLog(@"CouchServer: activeTasks = %@", tasks);
+            COUCHLOG(@"CouchServer: activeTasks = %@", tasks);
             self.activeTasks = tasks;    // Triggers KVO notification
         }
     }];

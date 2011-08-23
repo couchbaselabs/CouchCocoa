@@ -29,11 +29,6 @@ enum {
 };
 
 
-// Extra logging for debugging
-#define kLoggingEnabled NO
-#define LOG if(!kLoggingEnabled) ; else NSLog
-
-
 @implementation CouchChangeTracker
 
 
@@ -56,7 +51,7 @@ enum {
                          @"Host: %@\r\n"
                          @"\r\n",
                          _database.relativePath, _lastSequenceNo, url.host] copy];
-    LOG(@"CouchChangeTracker: Starting with request:\n%@", _trackingRequest);
+    COUCHLOG2(@"CouchChangeTracker: Starting with request:\n%@", _trackingRequest);
     
     /* Why are we using raw TCP streams rather than NSURLConnection? Good question.
         NSURLConnection seems to have some kind of but with reading the output of _changes, maybe
@@ -98,7 +93,7 @@ enum {
 
 
 - (void) stop {
-    LOG(@"CouchChangeTracker: stop");
+    COUCHLOG2(@"CouchChangeTracker: stop");
     [_trackingInput close];
     [_trackingInput release];
     _trackingInput = nil;
@@ -121,7 +116,7 @@ enum {
     NSString* line = [[[NSString alloc] initWithBytes: start
                                                length: lineLength
                                              encoding: NSUTF8StringEncoding] autorelease];
-    LOG(@"CouchChangeTracker: LINE: \"%@\"", line);
+    COUCHLOG2(@"CouchChangeTracker: LINE: \"%@\"", line);
     if (line) {
         switch (_state) {
             case kStateStatus: {
@@ -173,7 +168,7 @@ enum {
 - (void)stream: (NSInputStream*)stream handleEvent: (NSStreamEvent)eventCode {
     switch (eventCode) {
         case NSStreamEventHasSpaceAvailable: {
-            LOG(@"CouchChangeTracker: HasSpaceAvailable %@", stream);
+            COUCHLOG3(@"CouchChangeTracker: HasSpaceAvailable %@", stream);
             if (_trackingRequest) {
                 const char* buffer = [_trackingRequest UTF8String];
                 NSUInteger written = [(NSOutputStream*)stream write: (void*)buffer maxLength: strlen(buffer)];
@@ -186,13 +181,13 @@ enum {
             break;
         }
         case NSStreamEventHasBytesAvailable: {
-            LOG(@"CouchChangeTracker: HasBytesAvailable %@", stream);
+            COUCHLOG3(@"CouchChangeTracker: HasBytesAvailable %@", stream);
             while ([stream hasBytesAvailable]) {
                 uint8_t buffer[1024];
                 NSInteger bytesRead = [stream read: buffer maxLength: sizeof(buffer)];
                 if (bytesRead > 0) {
                     [_inputBuffer appendBytes: buffer length: bytesRead];
-                    LOG(@"CouchChangeTracker: read %ld bytes", (long)bytesRead);
+                    COUCHLOG3(@"CouchChangeTracker: read %ld bytes", (long)bytesRead);
                 }
             }
             while (_inputBuffer && [self readLine])
@@ -200,18 +195,18 @@ enum {
             break;
         }
         case NSStreamEventEndEncountered:
-            LOG(@"CouchChangeTracker: EndEncountered %@", stream);
+            COUCHLOG3(@"CouchChangeTracker: EndEncountered %@", stream);
             if (_inputBuffer.length > 0)
                 Warn(@"CouchChangeTracker connection closed with unparsed data in buffer");
             [self stop];
             break;
         case NSStreamEventErrorOccurred:
-            LOG(@"CouchChangeTracker: ErrorEncountered %@", stream);
+            COUCHLOG3(@"CouchChangeTracker: ErrorEncountered %@", stream);
             [self stop];
             break;
             
         default:
-            LOG(@"CouchChangeTracker: Event %lx on %@", (long)eventCode, stream);
+            COUCHLOG3(@"CouchChangeTracker: Event %lx on %@", (long)eventCode, stream);
             break;
     }
 }

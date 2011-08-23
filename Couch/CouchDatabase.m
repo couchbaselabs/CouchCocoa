@@ -188,14 +188,14 @@ static const NSUInteger kDocRetainLimit = 50;
     if (!_busyDocuments)
         _busyDocuments = [[NSCountedSet alloc] init];
     [_busyDocuments addObject: resource];
-    NSLog(@">>>>>> %lu docs being updated", (unsigned long)_busyDocuments.count);
+    COUCHLOG(@">>>>>> %lu docs being updated", (unsigned long)_busyDocuments.count);
 }
 
 
 - (void) endDocumentOperation: (CouchResource*)resource {
     NSAssert([_busyDocuments containsObject: resource], @"unbalanced endDocumentOperation call: %p %@", resource, resource);
     [_busyDocuments removeObject: resource];
-    NSLog(@"<<<<<< %lu docs being updated", (unsigned long)_busyDocuments.count);
+    COUCHLOG(@"<<<<<< %lu docs being updated", (unsigned long)_busyDocuments.count);
     if (_busyDocuments.count == 0)
         [self processDeferredChanges];
 }
@@ -309,7 +309,7 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
     if (_busyDocuments.count) {
         // Don't process changes while I have pending PUT/POST/DELETEs out. Wait till they finish,
         // so I don't think the change is external.
-        NSLog(@"CouchDatabase deferring change (seq %lu) till operations finish", 
+        COUCHLOG(@"CouchDatabase deferring change (seq %lu) till operations finish", 
               (unsigned long)sequence);
         if (!_deferredChanges)
             _deferredChanges = [[NSMutableArray alloc] init];
@@ -334,7 +334,7 @@ static NSString* const kTrackingPath = @"_changes?feed=continuous";
                                                    coalesceMask: NSNotificationCoalescingOnSender
                                                        forModes: modes];
     } else {
-        NSLog(@"CouchDatabase change with seq=%lu already known", (unsigned long)sequence);
+        COUCHLOG(@"CouchDatabase change with seq=%lu already known", (unsigned long)sequence);
     }
     
     _lastSequenceNumber = sequence;
