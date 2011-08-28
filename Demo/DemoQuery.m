@@ -14,7 +14,7 @@
 //  and limitations under the License.
 
 #import "DemoQuery.h"
-#import "DemoItem.h"
+#import "CouchModel.h"
 
 #import <CouchCocoa/CouchCocoa.h>
 
@@ -32,7 +32,7 @@
     NSParameterAssert(query);
     self = [super init];
     if (self != nil) {
-        _modelClass = [DemoItem class];
+        _modelClass = [CouchModel class];
         _query = [[query asLiveQuery] retain];
 
         _query.prefetch = YES;        // for efficiency, include docs on first load
@@ -63,7 +63,7 @@
     NSMutableArray* entries = [NSMutableArray array];
 
     for (CouchQueryRow* row in rows) {
-        DemoItem* item = [_modelClass itemForDocument: row.document];
+        CouchModel* item = [_modelClass modelForDocument: row.document];
         [entries addObject: item];
         // If this item isn't in the prior _entries, it's an external insertion:
         if (_entries && [_entries indexOfObjectIdenticalTo: item] == NSNotFound)
@@ -99,19 +99,19 @@
 }
 
 
-- (DemoItem*)objectInEntriesAtIndex: (NSUInteger)index {
+- (CouchModel*)objectInEntriesAtIndex: (NSUInteger)index {
     return [_entries objectAtIndex: index];
 }
 
 
-- (void) insertObject: (DemoItem*)object inEntriesAtIndex: (NSUInteger)index {
+- (void) insertObject: (CouchModel*)object inEntriesAtIndex: (NSUInteger)index {
     [_entries insertObject: object atIndex: index];
     object.database = _query.database;
 }
 
 
 - (void) removeObjectFromEntriesAtIndex: (NSUInteger)index {
-    DemoItem* item = [_entries objectAtIndex: index];
+    CouchModel* item = [_entries objectAtIndex: index];
     item.database = nil;
     [_entries removeObjectAtIndex: index];
 }

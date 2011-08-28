@@ -1,33 +1,27 @@
 //
-//  DemoItem.m
+//  CouchModel.m
 //  CouchCocoa
 //
-//  Created by Jens Alfke on 6/1/11.
-//  Copyright 2011 Couchbase, Inc.
+//  Created by Jens Alfke on 8/26/11.
+//  Copyright (c) 2011 Couchbase, Inc. All rights reserved.
 //
-//  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-//  except in compliance with the License. You may obtain a copy of the License at
-//    http://www.apache.org/licenses/LICENSE-2.0
-//  Unless required by applicable law or agreed to in writing, software distributed under the
-//  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-//  either express or implied. See the License for the specific language governing permissions
-//  and limitations under the License.
 
-#import "DemoItem.h"
-#import <CouchCocoa/CouchCocoa.h>
+#import "CouchModel.h"
+#import "CouchInternal.h"
 
 
-@interface DemoItem ()
+@interface CouchModel ()
 @property (readwrite, retain) CouchDocument* document;
 @end
 
 
-@implementation DemoItem
+@implementation CouchModel
+
 
 - (id)init {
     self = [super init];
     if (self) {
-        NSLog(@"DEMOITEM: <%p> init", self);
+        COUCHLOG2(@"COUCHMODEL: <%p> init", self);
     }
     return self;
 }
@@ -36,30 +30,36 @@
 {
     self = [super init];
     if (self) {
-        NSLog(@"DEMOITEM: <%p> initWithDocument: %@ @%p", self, document, document);
+        COUCHLOG2(@"COUCHMODEL: <%p> initWithDocument: %@ @%p", self, document, document);
         self.document = document;
     }
     return self;
 }
 
 
-+ (DemoItem*) itemForDocument: (CouchDocument*)document {
-    DemoItem* item = document.modelObject;
-    if (!item)
-        item = [[[self alloc] initWithDocument: document] autorelease];
-    return item;
++ (CouchModel*) modelForDocument: (CouchDocument*)document {
+    CouchModel* model = document.modelObject;
+    if (model)
+        NSAssert([model isKindOfClass: self], @"%@ already has model of incompatible class %@",
+                 document, [model class]);
+    else
+        model = [[[self alloc] initWithDocument: document] autorelease];
+    return model;
 }
 
 
 - (void) dealloc
 {
-    NSLog(@"DEMOITEM: <%p> dealloc; doc = %@", self, _document);
+    COUCHLOG2(@"COUCHMODEL: <%p> dealloc; doc = %@", self, _document);
     _document.modelObject = nil;
     [_document release];
     [_properties release];
     [_changedProperties release];
     [super dealloc];
 }
+
+
+#pragma mark - DOCUMENT / DATABASE:
 
 
 - (CouchDocument*) document {
@@ -84,29 +84,30 @@
     if (db) {
         // On setting database, create a new untitled/unsaved CouchDocument:
         self.document = [db untitledDocument];
-        NSLog(@"DEMOITEM: <%p> create %@ @%p", self, _document, _document);
+        COUCHLOG2(@"COUCHMODEL: <%p> create %@ @%p", self, _document, _document);
     } else if (_document) {
         // On clearing database, delete the document:
-        NSLog(@"DEMOITEM: <%p> Deleting %@", self, _document);
+        COUCHLOG2(@"COUCHMODEL: <%p> Deleting %@", self, _document);
         [[_document DELETE] start];
         _document.modelObject = nil;
         [_document release];
         _document = nil;
-        [_changedProperties release];
-        _changedProperties = nil;
     }
 }
 
 
-// Respond to an external change (likely from sync)
+// Respond to an external change (likely from sync). This is called by my CouchDocument.
 - (void) couchDocumentChanged: (CouchDocument*)doc {
     NSAssert(doc == _document, @"Notified for wrong document");
-    NSLog(@"DEMOITEM: <%p> External change to %@", self, _document);
+    COUCHLOG2(@"COUCHMODEL: <%p> External change to %@", self, _document);
     [self markExternallyChanged];
+    
     if (_properties || _changedProperties) {
+        // Send KVO notifications about all my properties in case they changed:
         NSArray* keys = [(_changedProperties ?: _properties) allKeys];
         for (id key in keys)
             [self willChangeValueForKey: key];
+        // Update _properties:
         [_properties release];
         _properties = nil;
         [_changedProperties release];
@@ -117,20 +118,26 @@
 }
 
 
+- (NSTimeInterval) timeSinceExternallyChanged {
+    return CFAbsoluteTimeGetCurrent() - _changedTime;
+}
+
 - (void) markExternallyChanged {
     _changedTime = CFAbsoluteTimeGetCurrent();
 }
 
 
-- (NSTimeInterval) timeSinceExternallyChanged {
-    return CFAbsoluteTimeGetCurrent() - _changedTime;
-}
+#pragma mark - SAVING:
+
+
+@synthesize autosaves=_autosaves, needsSave=_needsSave;
 
 
 - (void) saveCompleted: (RESTOperation*)op {
     if (op.error) {
+        // TODO: Need a way to inform the app (and user) of the error, and not just revert
         [self couchDocumentChanged: _document];     // reset to contents from server
-        [NSApp presentError: op.error];
+        //[NSApp presentError: op.error];
     } else {
         [_properties release];
         _properties = nil;
@@ -141,8 +148,9 @@
 
 
 - (void) save {
-    if (_changedProperties) {
-        NSLog(@"DEMOITEM: <%p> Saving %@", self, _document);
+    if (_needsSave && _changedProperties) {
+        COUCHLOG2(@"COUCHMODEL: <%p> Saving %@", self, _document);
+        _needsSave = NO;
         RESTOperation* op = [_document putProperties:_changedProperties];
         [op onCompletion: ^{[self saveCompleted: op];}];
         [op start];
@@ -150,37 +158,39 @@
 }
 
 
-- (NSDictionary*) properties {
+#pragma mark - PROPERTIES:
+
+
+- (NSDictionary*) propertyDictionary {
     if (_changedProperties)
         return _changedProperties;
     if (!_properties)
-        _properties = [_document.properties copy];
+        _properties = [_document.properties copy];      // Synchronous!
     return _properties;
 }
 
 
-// Key-value coding: delegate to _properties (or _changedProperties, if it exists)
-
-- (id) valueForKey: (id)key {
-    return [self.properties objectForKey: key];
+- (id) getValueOfProperty: (NSString*)property {
+    return [self.propertyDictionary objectForKey: property];
 }
 
-
-- (void) setValue: (id)value forKey: (id)key {
+- (BOOL) setValue: (id)value ofProperty: (NSString*)property {
     NSParameterAssert(_document);
-    id curValue = [self.properties objectForKey: key];
+    id curValue = [self.propertyDictionary objectForKey: property];
     if (![value isEqual: curValue]) {
-        NSLog(@"DEMOITEM: <%p> .%@ := \"%@\"", self, key, value);
-        [self willChangeValueForKey: key];
+        COUCHLOG2(@"COUCHMODEL: <%p> .%@ := \"%@\"", self, property, value);
         if (!_changedProperties) {
             _changedProperties = _properties ? [_properties mutableCopy] 
                                              : [[NSMutableDictionary alloc] init];
         }
-        [_changedProperties setObject: value forKey: key];
-        [self didChangeValueForKey: key];
-
-        [self performSelector: @selector(save) withObject: nil afterDelay: 0.0];
+        [_changedProperties setValue: value forKey: property];
+        
+        if (_autosaves && !_needsSave)
+            [self performSelector: @selector(save) withObject: nil afterDelay: 0.0];
+        _needsSave = YES;
     }
+    return YES;
 }
+
 
 @end

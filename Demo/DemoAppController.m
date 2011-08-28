@@ -14,8 +14,8 @@
 //  and limitations under the License.
 
 #import "DemoAppController.h"
-#import "DemoItem.h"
 #import "DemoQuery.h"
+#import "CouchModel.h"
 #import <CouchCocoa/CouchCocoa.h>
 
 
@@ -56,6 +56,7 @@ int main (int argc, const char * argv[]) {
     CouchQuery* q = [_database getAllDocuments];
     q.descending = YES;
     self.query = [[[DemoQuery alloc] initWithQuery: q] autorelease];
+    self.query.modelClass =_tableController.objectClass;
     
     // Enable continuous sync:
     NSString* otherDbURL = [bundleInfo objectForKey: @"SyncDatabaseURL"];
@@ -91,7 +92,7 @@ int main (int argc, const char * argv[]) {
     NSArray* items = _tableController.arrangedObjects;
     if (row >= items.count)
         return;                 // Don't know why I get called on illegal rows, but it happens...
-    DemoItem* item = [items objectAtIndex: row];
+    CouchModel* item = [items objectAtIndex: row];
     NSTimeInterval changedFor = item.timeSinceExternallyChanged;
     if (changedFor > 0 && changedFor < kChangeGlowDuration) {
         float fraction = 1.0 - changedFor / kChangeGlowDuration;

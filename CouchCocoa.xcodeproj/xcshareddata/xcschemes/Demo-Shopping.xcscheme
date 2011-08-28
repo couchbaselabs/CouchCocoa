@@ -28,6 +28,15 @@
       buildConfiguration = "Debug">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2784E1AE13CE5249009CC5C8"
+            BuildableName = "Shopping.app"
+            BlueprintName = "Demo-Shopping"
+            ReferencedContainer = "container:CouchCocoa.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
@@ -50,6 +59,11 @@
          <AdditionalOption
             key = "MallocScribble"
             value = ""
+            isEnabled = "YES">
+         </AdditionalOption>
+         <AdditionalOption
+            key = "OBJC_PRINT_EXCEPTIONS"
+            value = "YES"
             isEnabled = "YES">
          </AdditionalOption>
          <AdditionalOption
