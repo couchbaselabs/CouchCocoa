@@ -367,8 +367,11 @@
     // Get the revision id from either the embedded document contents,
     // or the 'rev' value key:
     NSString* rev = [[_result objectForKey: @"doc"] objectForKey: @"_rev"];
-    if (!rev)
-        rev = [$castIf(NSDictionary, self.value) objectForKey: @"rev"];
+    if (!rev) {
+        id value = self.value;
+        if ([value isKindOfClass: [NSDictionary class]])    // $castIf would log a warning
+            rev = [value objectForKey: @"rev"];
+    }
     return rev;
 }
 
