@@ -30,6 +30,8 @@ NSString* const kCouchLanguageErlang = @"erlang";
 
 
 - (void)dealloc {
+    [_validation release];
+    [_language release];
     [_views release];
     [_viewsRevisionID release];
     [super dealloc];
@@ -40,6 +42,23 @@ NSString* const kCouchLanguageErlang = @"erlang";
     [[self saveChanges] wait];
     NSString* path = [@"_view/" stringByAppendingString: viewName];
     return [[[CouchQuery alloc] initWithParent: self relativePath: path] autorelease];
+}
+
+
+- (NSString*) language {
+    if (_language)
+        return _language;
+    NSString* language = [self.properties objectForKey: @"language"];
+    return language ? language : kCouchLanguageJavaScript;
+}
+
+- (void) setLanguage:(NSString *)language {
+    NSParameterAssert(language != nil);
+    if (![language isEqualToString: self.language]) {
+        [_language autorelease];
+        _language = [language copy];
+        _changed = YES;
+    }
 }
 
 
@@ -93,18 +112,9 @@ NSString* const kCouchLanguageErlang = @"erlang";
 }
 
 
-- (NSString*) languageOfViewNamed: (NSString*)viewName {
-    NSDictionary* viewDefn = [self definitionOfViewNamed: viewName];
-    if (!viewDefn)
-        return nil;
-    return [viewDefn objectForKey: @"language"] ?: kCouchLanguageJavaScript;
-}
-
-
 - (void) defineViewNamed: (NSString*)viewName
                      map: (NSString*)mapFunction
                   reduce: (NSString*)reduceFunction
-                language: (NSString*)language;
 {
     NSMutableDictionary* view = nil;
     if (mapFunction) {
@@ -113,7 +123,6 @@ NSString* const kCouchLanguageErlang = @"erlang";
             view = [NSMutableDictionary dictionaryWithCapacity: 3];
         [view setValue: mapFunction forKey: @"map"];
         [view setValue: reduceFunction forKey: @"reduce"];
-        [view setValue: language forKey: @"language"];
     }
     [self setDefinition: view ofViewNamed: viewName];
 }
@@ -121,7 +130,23 @@ NSString* const kCouchLanguageErlang = @"erlang";
 - (void) defineViewNamed: (NSString*)viewName
                      map: (NSString*)mapFunction
 {
-    [self defineViewNamed: viewName map: mapFunction reduce: nil language: nil];
+    [self defineViewNamed: viewName map: mapFunction reduce: nil];
+}
+
+
+- (NSString*) validation {
+    if (_changedValidation)
+        return _validation;
+    return $castIf(NSString, [self.properties objectForKey: @"validate_doc_update"]);
+}
+
+- (void) setValidation:(NSString *)validation {
+    if (!$equal(validation, self.validation)) {
+        [_validation autorelease];
+        _validation = [validation copy];
+        _changedValidation = YES;
+        _changed = YES;
+    }
 }
 
 
@@ -129,16 +154,33 @@ NSString* const kCouchLanguageErlang = @"erlang";
 
 
 - (RESTOperation*) saveChanges {
+    if (_savingOp)
+        return _savingOp;
     if (!_changed)
         return nil;
 
     NSMutableDictionary* newProps = [[self.properties mutableCopy] autorelease];
     if (!newProps)
         newProps = [NSMutableDictionary dictionary];
-    [newProps setObject: _views forKey: @"views"];
-    self.changed = NO;
-    return [self putProperties: newProps];
-    // TODO: What about conflicts?
+    if (_views)
+        [newProps setObject: _views forKey: @"views"];
+    if (_language)
+        [newProps setValue: _language forKey: @"language"];
+    if (_changedValidation)
+        [newProps setValue: _validation forKey: @"validate_doc_update"];
+    
+    _savingOp = [self putProperties: newProps];
+    [_savingOp onCompletion: ^{
+        if (_savingOp.error)
+            Warn(@"Failed to save %@: %@", self, _savingOp.error);
+        // TODO: What about conflicts?
+        _savingOp = nil;
+        _changedValidation = NO;
+        [_language release];
+        _language = nil;
+        self.changed = NO;
+    }];
+    return _savingOp;
 }
 
 

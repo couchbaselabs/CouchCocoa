@@ -434,19 +434,19 @@
     STAssertFalse(design.changed, nil);
     STAssertEqualObjects(design.viewNames, [NSArray array], nil);
     [design defineViewNamed: @"vu" map: @"function(doc){emit(doc.name,null);};"
-                     reduce: @"_count" language: nil];
+                     reduce: @"_count"];
     STAssertEqualObjects(design.viewNames, [NSArray arrayWithObject: @"vu"], nil);
     STAssertEqualObjects([design mapFunctionOfViewNamed: @"vu"],
                          @"function(doc){emit(doc.name,null);};", nil);
     STAssertEqualObjects([design reduceFunctionOfViewNamed: @"vu"], @"_count", nil);
-    STAssertEqualObjects([design languageOfViewNamed: @"vu"], kCouchLanguageJavaScript, nil);
+    STAssertEqualObjects(design.language, kCouchLanguageJavaScript, nil);
 
     STAssertTrue(design.changed, nil);
     AssertWait([design saveChanges]);
     STAssertFalse(design.changed, nil);
 
     [design defineViewNamed: @"vu" map: @"function(doc){emit(doc.name,null);};"
-                     reduce: @"_count" language: nil];
+                     reduce: @"_count"];
     STAssertFalse(design.changed, nil);
     STAssertNil([design saveChanges], nil);
 
@@ -506,7 +506,7 @@
 - (void) test15_UncacheViews {
     CouchDesignDocument* design = [_db designDocumentWithName: @"mydesign"];
     [design defineViewNamed: @"vu" map: @"function(doc){emit(doc.name,null);};"
-                     reduce: @"_count" language: nil];
+                     reduce: @"_count"];
     AssertWait([design saveChanges]);
 
     // Delete the view without going through the view API:
@@ -516,6 +516,26 @@
     
     // Verify that the view API knows it's gone:
     STAssertEqualObjects(design.viewNames, [NSArray array], nil);
+}
+
+
+- (void) test13_Validation {
+    CouchDesignDocument* design = [_db designDocumentWithName: @"mydesign"];
+    design.validation = @"function(doc,oldDoc,user){if(!doc.groovy) throw({forbidden:'uncool'});}";
+    AssertWait([design saveChanges]);
+    
+    NSMutableDictionary* properties = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       @"right on", @"groovy",
+                                       @"bar", @"foo", nil];
+    CouchDocument* doc = [_db untitledDocument];
+    AssertWait([doc putProperties: properties]);
+    
+    [properties removeObjectForKey: @"groovy"];
+    doc = [_db untitledDocument];
+    RESTOperation* op = [doc putProperties: properties];
+    STAssertFalse([op wait], nil);
+    STAssertEquals(op.error.code, 403, nil);
+    STAssertEqualObjects(op.error.localizedDescription, @"forbidden: uncool", nil);
 }
 
 
