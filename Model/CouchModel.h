@@ -7,6 +7,10 @@
 //
 
 #import "CouchDynamicObject.h"
+
+/** Type of block that's called when a save completes (see -onSave:). */
+typedef void (^OnSaveBlock)();
+
 @class CouchDatabase, CouchDocument;
 
 
@@ -42,7 +46,7 @@
 
 /** Writes any changes to a new revision of the document.
     Does nothing if no changes have been made. */
-- (void) save;
+- (void) save:(OnSaveBlock)saveBlock;
 
 /** Should changes be saved back to the database automatically?
     Defaults to NO, requiring you to call -save manually. */

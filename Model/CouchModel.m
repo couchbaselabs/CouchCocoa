@@ -147,12 +147,15 @@
 }
 
 
-- (void) save {
+- (void) save:(OnSaveBlock)saveBlock {
     if (_needsSave && _changedProperties) {
         COUCHLOG2(@"COUCHMODEL: <%p> Saving %@", self, _document);
         _needsSave = NO;
         RESTOperation* op = [_document putProperties:_changedProperties];
-        [op onCompletion: ^{[self saveCompleted: op];}];
+        [op onCompletion: ^{
+          [self saveCompleted: op];
+          saveBlock();
+        }];
         [op start];
     }
 }
