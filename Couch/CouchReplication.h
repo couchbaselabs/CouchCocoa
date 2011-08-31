@@ -32,7 +32,7 @@ typedef NSUInteger CouchReplicationOptions;
     CouchDatabase* _database;
     NSURL* _remote;
     BOOL _pull;
-    CouchReplicationOptions _options;
+    NSDictionary* _options;
     BOOL _started;
     NSString* _taskID;
     NSString* _status;
