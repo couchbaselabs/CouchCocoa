@@ -126,14 +126,14 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
     @param options  Zero or more option flags affecting the replication.
     @return  The CouchReplication object managing the replication. It will already have been started. */
 - (CouchReplication*) pullFromDatabaseAtURL: (NSURL*)sourceURL
-                                    options: (CouchReplicationOptions)options;
+                                    options: (NSDictionary *)options;
 
 /** Triggers replication from this database to a target database.
     @param targetURL  The URL of the database to replicate to.
     @param options  Zero or more option flags affecting the replication.
     @return  The CouchReplication object managing the replication. It will already have been started. */
 - (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL
-                                  options: (CouchReplicationOptions)options;
+                                  options: (NSDictionary *)options;
 
 
 @end
