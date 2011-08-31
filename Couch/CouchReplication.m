@@ -26,6 +26,7 @@
 
 @interface CouchReplication ()
 @property (nonatomic, readwrite, copy) NSString* status;
+@property (nonatomic, readwrite, copy) NSDictionary* options;
 @property (nonatomic, readwrite) unsigned completed, total;
 @end
 
@@ -36,14 +37,14 @@
 - (id) initWithDatabase: (CouchDatabase*)database
                  remote: (NSURL*)remote
                    pull: (BOOL)pull
-                options: (CouchReplicationOptions)options
+                options: (NSDictionary *)options
 {
     self = [super init];
     if (self) {
         _database = [database retain];
         _remote = [remote retain];
         _pull = pull;
-        _options = options;
+        _options = [options retain];
 
     }
     return self;
@@ -52,6 +53,7 @@
 
 - (void)dealloc {
     [self stop];
+    [_options release];
     [_remote release];
     [_database release];
     [super dealloc];
@@ -71,10 +73,9 @@
                                  source, @"source",
                                  target, @"target",
                                  nil];
-    if (_options & kCouchReplicationCreateTarget)
-        [body setObject: (id)kCFBooleanTrue forKey: @"create_target"];
-    if (_options & kCouchReplicationContinuous)
-        [body setObject: (id)kCFBooleanTrue forKey: @"continuous"];
+                                 
+    [body addEntriesFromDictionary:_options];
+
     if (!start)
         [body setObject: (id)kCFBooleanTrue forKey: @"cancel"];
     RESTResource* replicate = [[[RESTResource alloc] initWithParent: _database.server 
