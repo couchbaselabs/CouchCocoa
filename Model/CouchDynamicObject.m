@@ -184,7 +184,10 @@ static BOOL getPropertyInfo(Class cls,
                     accessor = (IMP)setIdProperty;
                     break;
                 case _C_INT:
+                case _C_SHT:
+                case _C_USHT:
                 case _C_CHR:            // Note that "BOOL" is a typedef so it compiles to 'char'
+                case _C_UCHR:
                     accessor = (IMP)setIntProperty;
                     break;
                 case _C_BOOL:           // This is the true native C99/C++ "bool" type
@@ -206,7 +209,10 @@ static BOOL getPropertyInfo(Class cls,
                     accessor = (IMP)getIdProperty;
                     break;
                 case _C_INT:
+                case _C_SHT:
+                case _C_USHT:
                 case _C_CHR:
+                case _C_UCHR:
                     accessor = (IMP)getIntProperty;
                     break;
                 case _C_BOOL:

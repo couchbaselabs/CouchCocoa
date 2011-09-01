@@ -12,6 +12,7 @@
 
 @interface CouchModel ()
 @property (readwrite, retain) CouchDocument* document;
+@property (readwrite) bool needsSave;
 @end
 
 
@@ -19,25 +20,27 @@
 
 
 - (id)init {
-    self = [super init];
-    if (self) {
-        COUCHLOG2(@"COUCHMODEL: <%p> init", self);
-    }
-    return self;
+    return [self initWithDocument: nil];
 }
 
 - (id) initWithDocument: (CouchDocument*)document
 {
     self = [super init];
     if (self) {
-        COUCHLOG2(@"COUCHMODEL: <%p> initWithDocument: %@ @%p", self, document, document);
-        self.document = document;
+        if (document) {
+            COUCHLOG2(@"COUCHMODEL: <%p> initWithDocument: %@ @%p", self, document, document);
+            self.document = document;
+            [self didLoadFromDocument];
+        } else {
+            _isNew = true;
+            COUCHLOG2(@"COUCHMODEL: <%p> init", self);
+        }
     }
     return self;
 }
 
 
-+ (CouchModel*) modelForDocument: (CouchDocument*)document {
++ (id) modelForDocument: (CouchDocument*)document {
     CouchModel* model = document.modelObject;
     if (model)
         NSAssert([model isKindOfClass: self], @"%@ already has model of incompatible class %@",
@@ -75,6 +78,11 @@
 }
 
 
+- (NSString*) idForNewDocument {
+    return nil;  // subclasses can override this to customize the doc ID
+}
+
+
 - (CouchDatabase*) database {
     return _document.database;
 }
@@ -83,16 +91,28 @@
 - (void) setDatabase: (CouchDatabase*)db {
     if (db) {
         // On setting database, create a new untitled/unsaved CouchDocument:
-        self.document = [db untitledDocument];
+        NSString* docID = [self idForNewDocument];
+        self.document = docID ? [db documentWithID: docID] : [db untitledDocument];
         COUCHLOG2(@"COUCHMODEL: <%p> create %@ @%p", self, _document, _document);
-    } else if (_document) {
-        // On clearing database, delete the document:
+    } else {
+        [self deleteDocument];
+    }
+}
+
+
+- (void) deleteDocument {
+    if (_document) {
         COUCHLOG2(@"COUCHMODEL: <%p> Deleting %@", self, _document);
         [[_document DELETE] start];
         _document.modelObject = nil;
         [_document release];
         _document = nil;
     }
+}
+
+
+- (void) didLoadFromDocument {
+    // subclasses can override this
 }
 
 
@@ -112,6 +132,7 @@
         _properties = nil;
         [_changedProperties release];
         _changedProperties = nil;
+        [self didLoadFromDocument];
         for (id key in keys)
             [self didChangeValueForKey: key];
     }
@@ -130,7 +151,7 @@
 #pragma mark - SAVING:
 
 
-@synthesize autosaves=_autosaves, needsSave=_needsSave;
+@synthesize isNew=_isNew, autosaves=_autosaves, needsSave=_needsSave;
 
 
 - (void) saveCompleted: (RESTOperation*)op {
@@ -139,6 +160,7 @@
         [self couchDocumentChanged: _document];     // reset to contents from server
         //[NSApp presentError: op.error];
     } else {
+        _isNew = NO;
         [_properties release];
         _properties = nil;
         [_changedProperties release];
@@ -150,7 +172,7 @@
 - (void) save {
     if (_needsSave && _changedProperties) {
         COUCHLOG2(@"COUCHMODEL: <%p> Saving %@", self, _document);
-        _needsSave = NO;
+        self.needsSave = NO;
         RESTOperation* op = [_document putProperties:_changedProperties];
         [op onCompletion: ^{[self saveCompleted: op];}];
         [op start];
@@ -187,7 +209,7 @@
         
         if (_autosaves && !_needsSave)
             [self performSelector: @selector(save) withObject: nil afterDelay: 0.0];
-        _needsSave = YES;
+        self.needsSave = YES;
     }
     return YES;
 }

@@ -15,17 +15,19 @@
     The property value will automatically be fetched from or stored to the document, using the same name. */
 @interface CouchModel : CouchDynamicObject
 {
+    @private
     CouchDocument* _document;
     NSDictionary* _properties;
     NSMutableDictionary* _changedProperties;
     CFAbsoluteTime _changedTime;
     bool _autosaves :1;
+    bool _isNew     :1;
     bool _needsSave :1;
 }
 
 /** Returns the CouchModel associated with a CouchDocument, or creates & assigns one if necessary.
-    Don't call this on CouchModel itself, rather on the subclass you want to instantiate for that document, e.g. [MyWidgetModel modelForDocument: doc]. */
-+ (CouchModel*) modelForDocument: (CouchDocument*)document;
+    Don't call this on CouchModel itself, rather on the subclass you want to instantiate for that document, e.g. [MyWidgetModel modelForDocument: doc]. It always returns an instance of the class it's called on. */
++ (id) modelForDocument: (CouchDocument*)document;
 
 /** Creates a new "untitled" model object with no document yet.
     Setting its -database property will cause it to create and save a CouchDocument. */
@@ -38,6 +40,11 @@
     Setting this property will assign the item to a database, creating a document.
     Setting it to nil will delete its document from its database. */
 @property (retain) CouchDatabase* database;
+
+/** Is this model new, never before saved? */
+@property (readonly) bool isNew;
+
+@property (readonly) NSDictionary* propertyDictionary;
 
 
 /** Writes any changes to a new revision of the document.
@@ -52,10 +59,28 @@
 @property (readonly) bool needsSave;
 
 
+- (void) deleteDocument;
+
+
 /** The time interval since the document was last changed externally (e.g. by a "pull" replication.
     This value can be used to highlight recently-changed objects in the UI. */
 @property (readonly) NSTimeInterval timeSinceExternallyChanged;
 
 - (void) markExternallyChanged;
+
+
+// PROTECTED (SUBCLASSES ONLY):
+
+/** Designated initializer. Do not call directly except from subclass initializers; to create a new instance call +modelForDocument: instead.
+    @param document  The document. Nil if this is created new (-init was called). */
+- (id) initWithDocument: (CouchDocument*)document;
+
+/** The document ID to use when creating a new document.
+    Default is nil, which means to assign no ID (the server will assign one). */
+- (NSString*) idForNewDocument;
+
+/** Called when the model's properties are reloaded from the document.
+    This happens both when initialized from a document, and after an external change. */
+- (void) didLoadFromDocument;
 
 @end

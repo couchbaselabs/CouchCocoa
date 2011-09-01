@@ -19,6 +19,7 @@
 - (id) initWithDictionary: (NSDictionary*)dict;
 @property (readwrite,copy) NSString *stringy;
 @property (readonly) int intey;
+@property (readwrite) short shorty;
 @property (readwrite) double doubley;
 @property (readwrite) bool booley;
 @end
@@ -45,7 +46,7 @@
     return YES;
 }
 
-@dynamic stringy, intey, doubley, booley;
+@dynamic stringy, intey, shorty, doubley, booley;
 
 @end
 
@@ -129,6 +130,20 @@
                               [NSNumber numberWithInt: -6789], @"intey", nil];
     STAssertEqualObjects(test->_dict, expected, nil);
     [test release];
+}
+
+
+- (void) test3_intTypes {
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                          [NSNumber numberWithShort: -6789], @"shorty", nil];
+    TestDynamicObject *test = [[TestDynamicObject alloc] initWithDictionary: dict];
+    STAssertEquals(test.shorty, (short)-6789, nil);
+    test.shorty = 32767;
+    STAssertEquals(test.shorty, (short)32767, nil);
+    STAssertEqualObjects([test->_dict objectForKey: @"shorty"], [NSNumber numberWithShort: 32767], nil);
+    test.shorty = -32768;
+    STAssertEquals(test.shorty, (short)-32768, nil);
+    STAssertEqualObjects([test->_dict objectForKey: @"shorty"], [NSNumber numberWithShort: -32768], nil);
 }
 
 

@@ -70,6 +70,11 @@
             [item markExternallyChanged];
     }
 
+    for (CouchModel* item in _entries) {
+        if ([item isNew])
+            [entries addObject: item];
+    }
+    
     if (![entries isEqual:_entries]) {
         NSLog(@"    ...entries changed! (was %u, now %u)", 
               (unsigned)_entries.count, (unsigned)entries.count);
