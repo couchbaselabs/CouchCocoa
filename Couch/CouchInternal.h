@@ -59,7 +59,7 @@
 - (id) initWithDatabase: (CouchDatabase*)database
                  remote: (NSURL*)remote
                    pull: (BOOL)pull
-                options: (CouchReplicationOptions)options;
+                options: (NSDictionary *)options;
 @end
 
 
