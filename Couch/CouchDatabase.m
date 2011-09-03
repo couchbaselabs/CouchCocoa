@@ -287,9 +287,6 @@ static const NSUInteger kDocRetainLimit = 50;
 // <http://wiki.apache.org/couchdb/HTTP_database_API#Changes>
 
 
-static NSString* const kTrackingPath = @"_changes?feed=continuous";
-
-
 - (void) onChange: (OnDatabaseChangeBlock)block {
     NSAssert(!_onChange, @"Sorry, only one onChange handler at a time"); // TODO: Allow multiple onChange blocks!
     _onChange = [block copy];

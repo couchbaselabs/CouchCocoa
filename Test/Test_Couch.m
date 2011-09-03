@@ -16,58 +16,14 @@
 #import "CouchInternal.h"
 #import "CouchDesignDocument.h"
 #import "RESTInternal.h"
+#import "CouchTestCase.h"
 
 
-#import <SenTestingKit/SenTestingKit.h>
-
-
-// Waits for a RESTOperation to complete and raises an assertion failure if it got an error.
-#define AssertWait(OP) ({RESTOperation* i_op = (OP);\
-                        STAssertTrue([i_op wait], @"%@ failed: %@", i_op, i_op.error);\
-                        i_op = i_op;})
-
-
-@interface Test_Couch : SenTestCase
-{
-    CouchServer* _server;
-    CouchDatabase* _db;
-}
+@interface Test_Couch : CouchTestCase
 @end
 
 
 @implementation Test_Couch
-
-
-- (void) setUp {
-    gRESTWarnRaisesException = YES;
-    [self raiseAfterFailure];
-
-    _server = [[CouchServer alloc] init];  // local server
-    STAssertNotNil(_server, @"Couldn't create server object");
-    _server.tracksActiveOperations = YES;
-    
-    _db = [[_server databaseNamed: @"testdb_temporary"] retain];
-    STAssertNotNil(_db, @"Couldn't create database object");
-    RESTOperation* op = [_db create];
-    if (![op wait]) {
-        NSLog(@"NOTE: DB '%@' exists; deleting and re-creating it for tests", _db.relativePath);
-        STAssertEquals(op.httpStatus, 412,
-                       @"Unexpected error creating db: %@", op.error);
-        AssertWait([_db DELETE]);
-        AssertWait([_db create]);
-    }
-
-    gRESTLogLevel = kRESTLogRequestHeaders; // kRESTLogNothing;
-}
-
-
-- (void) tearDown {
-    gRESTLogLevel = kRESTLogNothing;
-    AssertWait([_db DELETE]);
-    STAssertEquals(_server.activeOperations.count, (NSUInteger)0, nil);
-    [_db release];
-    [_server release];
-}
 
 
 - (CouchDocument*) createDocumentWithProperties: (NSDictionary*)properties {
@@ -534,7 +490,7 @@
     doc = [_db untitledDocument];
     RESTOperation* op = [doc putProperties: properties];
     STAssertFalse([op wait], nil);
-    STAssertEquals(op.error.code, 403, nil);
+    STAssertEquals(op.error.code, (NSInteger)403, nil);
     STAssertEqualObjects(op.error.localizedDescription, @"forbidden: uncool", nil);
 }
 

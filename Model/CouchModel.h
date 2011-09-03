@@ -7,7 +7,7 @@
 //
 
 #import "CouchDynamicObject.h"
-@class CouchDatabase, CouchDocument;
+@class CouchDatabase, CouchDocument, RESTOperation;
 
 
 /** Generic model class for Couch documents.
@@ -17,12 +17,13 @@
 {
     @private
     CouchDocument* _document;
-    NSDictionary* _properties;
-    NSMutableDictionary* _changedProperties;
     CFAbsoluteTime _changedTime;
     bool _autosaves :1;
     bool _isNew     :1;
     bool _needsSave :1;
+
+    NSMutableDictionary* _properties;
+    NSMutableSet* _changedNames;
 }
 
 /** Returns the CouchModel associated with a CouchDocument, or creates & assigns one if necessary.
@@ -44,12 +45,10 @@
 /** Is this model new, never before saved? */
 @property (readonly) bool isNew;
 
-@property (readonly) NSDictionary* propertyDictionary;
 
-
-/** Writes any changes to a new revision of the document.
-    Does nothing if no changes have been made. */
-- (void) save;
+/** Writes any changes to a new revision of the document, asynchronously.
+    Does nothing and returns nil if no changes have been made. */
+- (RESTOperation*) save;
 
 /** Should changes be saved back to the database automatically?
     Defaults to NO, requiring you to call -save manually. */
@@ -57,6 +56,9 @@
 
 /** Does this model have unsaved changes? */
 @property (readonly) bool needsSave;
+
+/** The document's current properties, in externalized JSON format. */
+- (NSDictionary*) propertiesToSave;
 
 
 - (void) deleteDocument;

@@ -37,6 +37,10 @@
 		2784E1C313CE52FE009CC5C8 /* ShoppingDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */; };
 		2784E1C513CE5559009CC5C8 /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577A713970959002776DB /* DemoQuery.m */; };
 		27853EF513DF6F5E00478EBB /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27853EF413DF6F5E00478EBB /* libcrypto.dylib */; };
+		27911B711411A7C100ABD31B /* Test_DynamicObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B701411A7C100ABD31B /* Test_DynamicObject.m */; };
+		27911B721411A7C100ABD31B /* Test_DynamicObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B701411A7C100ABD31B /* Test_DynamicObject.m */; };
+		27911B751411A8C700ABD31B /* CouchTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B741411A8C700ABD31B /* CouchTestCase.m */; };
+		27911B761411A8C700ABD31B /* CouchTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B741411A8C700ABD31B /* CouchTestCase.m */; };
 		27938C61140C01D200117675 /* CouchDynamicObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 27DB82201408202E00E57444 /* CouchDynamicObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27938C63140C01DC00117675 /* CouchModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 27DB82231408225300E57444 /* CouchModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2795994F140A02DB001C168A /* Test_Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2795994E140A02DB001C168A /* Test_Model.m */; };
@@ -207,6 +211,9 @@
 		278B24CB1392EE3600DDD950 /* CouchResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchResource.m; sourceTree = "<group>"; };
 		278B275E1394225600DDD950 /* CouchQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchQuery.h; sourceTree = "<group>"; };
 		278B275F1394225600DDD950 /* CouchQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CouchQuery.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		27911B701411A7C100ABD31B /* Test_DynamicObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test_DynamicObject.m; sourceTree = "<group>"; };
+		27911B731411A8C700ABD31B /* CouchTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchTestCase.h; sourceTree = "<group>"; };
+		27911B741411A8C700ABD31B /* CouchTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchTestCase.m; sourceTree = "<group>"; };
 		2795994E140A02DB001C168A /* Test_Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test_Model.m; sourceTree = "<group>"; };
 		279CCBF013F9823F00C38C82 /* CouchReplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchReplication.h; sourceTree = "<group>"; };
 		279CCBF113F9823F00C38C82 /* CouchReplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchReplication.m; sourceTree = "<group>"; };
@@ -398,7 +405,10 @@
 			children = (
 				272E9D9313A2EBE0009F18E9 /* Test_REST.m */,
 				270A663A13A5B36900791F4A /* Test_Couch.m */,
+				27911B701411A7C100ABD31B /* Test_DynamicObject.m */,
 				2795994E140A02DB001C168A /* Test_Model.m */,
+				27911B731411A8C700ABD31B /* CouchTestCase.h */,
+				27911B741411A8C700ABD31B /* CouchTestCase.m */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -908,6 +918,8 @@
 				27CDEBEA13C675C900C979BB /* Test_REST.m in Sources */,
 				27CDEBEB13C675CD00C979BB /* Test_Couch.m in Sources */,
 				27959950140A02DB001C168A /* Test_Model.m in Sources */,
+				27911B721411A7C100ABD31B /* Test_DynamicObject.m in Sources */,
+				27911B761411A8C700ABD31B /* CouchTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -953,6 +965,8 @@
 				27CDEC3713C67E1600C979BB /* Test_REST.m in Sources */,
 				27CDEC3813C67E1A00C979BB /* Test_Couch.m in Sources */,
 				2795994F140A02DB001C168A /* Test_Model.m in Sources */,
+				27911B711411A7C100ABD31B /* Test_DynamicObject.m in Sources */,
+				27911B751411A8C700ABD31B /* CouchTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

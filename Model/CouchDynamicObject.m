@@ -161,6 +161,65 @@ static BOOL getPropertyInfo(Class cls,
 }
 
 
+static Class classFromType(const char* propertyType) {
+    size_t len = strlen(propertyType);
+    if (propertyType[0] != _C_ID || propertyType[1] != '"' || propertyType[len-1] != '"')
+        return NULL;
+    char className[len - 2];
+    strlcpy(className, propertyType + 2, len - 2);
+    return objc_getClass(className);
+}
+
+
++ (IMP) impForGetterOfClass: (Class)propertyClass {
+    return (IMP)getIdProperty;
+}
+
++ (IMP) impForSetterOfClass: (Class)propertyClass {
+    return (IMP)setIdProperty;
+}
+
+
++ (IMP) impForGetterOfType: (const char*)propertyType {
+    switch (propertyType[0]) {
+        case _C_ID:
+            return [self impForGetterOfClass: classFromType(propertyType)];
+        case _C_INT:
+        case _C_SHT:
+        case _C_USHT:
+        case _C_CHR:
+        case _C_UCHR:
+            return (IMP)getIntProperty;
+        case _C_BOOL:
+            return (IMP)getBoolProperty;
+        case _C_DBL:
+            return (IMP)getDoubleProperty;
+        default:
+            // TODO: handle more scalar property types.
+            return NULL;
+    }
+}
+
++ (IMP) impForSetterOfType: (const char*)propertyType {
+    switch (propertyType[0]) {
+        case _C_ID:
+            return [self impForSetterOfClass: classFromType(propertyType)];
+        case _C_INT:
+        case _C_SHT:
+        case _C_USHT:
+        case _C_CHR:            // Note that "BOOL" is a typedef so it compiles to 'char'
+        case _C_UCHR:
+            return (IMP)setIntProperty;
+        case _C_BOOL:           // This is the true native C99/C++ "bool" type
+            return (IMP)setBoolProperty;
+        case _C_DBL:
+            return (IMP)setDoubleProperty;
+        default:
+            // TODO: handle more scalar property types.
+            return NULL;
+    }
+}
+
 // The Objective-C runtime calls this method when it's asked about a method that isn't natively
 // implemented by this class. The implementation should either call class_addMethod and return YES,
 // or return NO.
@@ -178,25 +237,7 @@ static BOOL getPropertyInfo(Class cls,
         if (getPropertyInfo(self, key, YES, &declaredInClass, &propertyType)) {
             strcpy(signature, "v@: ");
             signature[3] = propertyType[0];
-            // TODO: handle more scalar property types.
-            switch (propertyType[0]) {
-                case _C_ID:
-                    accessor = (IMP)setIdProperty;
-                    break;
-                case _C_INT:
-                case _C_SHT:
-                case _C_USHT:
-                case _C_CHR:            // Note that "BOOL" is a typedef so it compiles to 'char'
-                case _C_UCHR:
-                    accessor = (IMP)setIntProperty;
-                    break;
-                case _C_BOOL:           // This is the true native C99/C++ "bool" type
-                    accessor = (IMP)setBoolProperty;
-                    break;
-                case _C_DBL:
-                    accessor = (IMP)setDoubleProperty;
-                    break;
-            }
+            accessor = [self impForSetterOfType: propertyType];
         }
     } else if (isGetter(name)) {
         // choose an appropriately typed getter function.
@@ -204,24 +245,7 @@ static BOOL getPropertyInfo(Class cls,
         if (getPropertyInfo(self, key, NO, &declaredInClass, &propertyType)) {
             strcpy(signature, " @:");
             signature[0] = propertyType[0];
-            switch (propertyType[0]) {
-                case _C_ID:
-                    accessor = (IMP)getIdProperty;
-                    break;
-                case _C_INT:
-                case _C_SHT:
-                case _C_USHT:
-                case _C_CHR:
-                case _C_UCHR:
-                    accessor = (IMP)getIntProperty;
-                    break;
-                case _C_BOOL:
-                    accessor = (IMP)getBoolProperty;
-                    break;
-                case _C_DBL:
-                    accessor = (IMP)getDoubleProperty;
-                    break;
-            }
+            accessor = [self impForGetterOfType: propertyType];
         }
     } else {
         // Not a getter or setter name.
@@ -235,8 +259,8 @@ static BOOL getPropertyInfo(Class cls,
     }
     
     if (propertyType) {
-        Warn(@"Dynamic property %@.%@ has type '%s' unsupported by CouchDynamicObject", 
-             self, key, propertyType);
+        Warn(@"Dynamic property %@.%@ has type '%s' unsupported by %@", 
+             self, key, propertyType, self);
     }
     return NO;
 }

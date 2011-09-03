@@ -26,4 +26,12 @@
     Default implementation returns NO. */
 - (BOOL) setValue: (id)value ofProperty: (NSString*)property;
 
+
+// ADVANCED STUFF FOR SUBCLASSES TO OVERRIDE:
+
++ (IMP) impForGetterOfClass: (Class)propertyClass;
++ (IMP) impForSetterOfClass: (Class)propertyClass;
++ (IMP) impForGetterOfType: (const char*)propertyType;
++ (IMP) impForSetterOfType: (const char*)propertyType;
+
 @end
