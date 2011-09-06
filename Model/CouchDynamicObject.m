@@ -13,6 +13,36 @@
 
 @implementation CouchDynamicObject
 
++ (NSSet*) propertyNames {
+    return [self propertyNamesForClass:self];
+}
+
++ (NSSet*) propertyNamesForClass: (Class)currentClass {
+    static NSMutableDictionary* classToNames;
+    if (!classToNames)
+        classToNames = [[NSMutableDictionary alloc] init];
+    
+    if (currentClass == [CouchDynamicObject class])
+        return [NSSet set];
+    
+    NSSet* cachedPropertyNames = [classToNames objectForKey:currentClass];
+    if (cachedPropertyNames)
+        return cachedPropertyNames;
+    
+    NSMutableSet* propertyNames = [NSMutableSet set];
+    objc_property_t* propertiesExcludingSuperclass = class_copyPropertyList(currentClass, NULL);
+    if (propertiesExcludingSuperclass) {
+        objc_property_t* propertyPtr = propertiesExcludingSuperclass;
+        while (*propertyPtr)
+            [propertyNames addObject:[NSString stringWithUTF8String:property_getName(*propertyPtr++)]];
+        free(propertiesExcludingSuperclass);
+    }
+    [propertyNames unionSet:[self propertyNamesForClass:[currentClass superclass]]];
+    [classToNames setObject:propertyNames forKey:currentClass];
+    return propertyNames;
+}
+
+
 // Abstract implementations for subclasses to override:
 
 - (id) getValueOfProperty: (NSString*)property {

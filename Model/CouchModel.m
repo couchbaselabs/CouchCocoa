@@ -183,6 +183,11 @@
 
 #pragma mark - PROPERTIES:
 
++ (NSSet*) propertyNamesForClass: (Class)currentClass {
+    if (currentClass == [CouchModel class])
+        return [NSSet set]; // Ignore non-persisted properties declared on base CouchModel
+    return [super propertyNamesForClass:currentClass];
+}
 
 - (id) externalizePropertyValue: (id)value {
     if ([value isKindOfClass: [NSData class]])
