@@ -242,13 +242,12 @@ BIO *BIO_new_mem_buf(void *buf, int len);
 // Conditional compilation for JSONKit and/or NSJSONSerialization.
 // If the app supports OS versions prior to NSJSONSerialization, we'll do a runtime
 // test for it and use it if present, otherwise fall back to JSONKit.
-#define USE_JSONKIT (MAC_OS_X_VERSION_MIN_REQUIRED < 1070 || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_5_0)
+#define USE_JSONKIT ((__MAC_OS_X_VERSION_MIN_REQUIRED > 0 && __MAC_OS_X_VERSION_MIN_REQUIRED < 1070) || \
+                     (__IPHONE_OS_VERSION_MIN_REQUIRED > 0 && __IPHONE_OS_VERSION_MIN_REQUIRED < 50000))
 
 #if USE_JSONKIT
 #import "JSONKit.h"
-#endif
 
-#if (MAC_OS_X_VERSION_MAX_ALLOWED < 1070 || __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_5_0)
 // Building against earlier SDK that doesn't contain NSJSONSerialization.h.
 // So declare the necessary bits here (copied from the 10.7 SDK):
 enum {
@@ -358,6 +357,10 @@ static Class sJSONSerialization;
 }
 
 
+// OpenSSL system-wide library is deprecated on 10.7, but ignore this for now
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
+
 + (NSString*) base64WithData: (NSData*)data {
     if (!data)
         return nil;
@@ -398,5 +401,6 @@ static Class sJSONSerialization;
     return [NSData dataWithBytesNoCopy: dst length: length freeWhenDone: YES];
 }
 
+#pragma clang diagnostic pop
 
 @end
