@@ -64,6 +64,7 @@
 
     for (CouchQueryRow* row in rows) {
         CouchModel* item = [_modelClass modelForDocument: row.document];
+        item.autosaves = YES;
         [entries addObject: item];
         // If this item isn't in the prior _entries, it's an external insertion:
         if (_entries && [_entries indexOfObjectIdenticalTo: item] == NSNotFound)
@@ -111,6 +112,7 @@
 
 - (void) insertObject: (CouchModel*)object inEntriesAtIndex: (NSUInteger)index {
     [_entries insertObject: object atIndex: index];
+    object.autosaves = YES;
     object.database = _query.database;
 }
 
