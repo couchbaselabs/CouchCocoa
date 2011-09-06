@@ -262,6 +262,11 @@
 
 #pragma mark - PROPERTIES:
 
++ (NSSet*) propertyNames {
+    if (self == [CouchModel class])
+        return [NSSet set]; // Ignore non-persisted properties declared on base CouchModel
+    return [super propertyNames];
+}
 
 // Transforms cached property values back into JSON-compatible objects
 - (id) externalizePropertyValue: (id)value {
