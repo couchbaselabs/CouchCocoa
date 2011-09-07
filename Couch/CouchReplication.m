@@ -117,6 +117,7 @@
             _taskID = nil;
             [_database.server removeObserver: self forKeyPath: @"activeTasks"];
         }
+        _started = NO;
     }
 }
 
