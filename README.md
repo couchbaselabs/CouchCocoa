@@ -19,6 +19,10 @@ This API is not the only way to access CouchDB on iOS and Mac OS. There are othe
 
 ## Build Instructions
 
+### Prerequisite
+
+Xcode 4.1 or later, with the SDK for iOS 4 or later. (It's possible the project might still work with Xcode 3, but we're not testing or supporting this.)
+
 ### One-Time Repository Setup
 
 If you cloned the CouchCocoa Git repository, aso opposed to downloading a precompiled framework, then you'll next need to initialize Git "submodules". This will clone the dependency JSONKit into the "vendor" subfolder:
@@ -29,7 +33,7 @@ If you cloned the CouchCocoa Git repository, aso opposed to downloading a precom
 
 ### Running The Mac OS Demo Apps
 
-There are two simple Mac demo apps included in the Demo/ subfolder. One lets you edit a simple list of names and email addresses, the other is a shopping list. (They actually share the same source code; all the differences are in their .xib files, thanks to the magic of Cocoa bindings.) To run them:
+There are two simple Mac demo apps included in the Demo/ subfolder. One lets you edit a simple list of names and email addresses, the other is a shopping list. (They actually share most of the same source code; all the differences are in their model classes and .xib files, thanks to the magic of Cocoa bindings.) To run them:
 
 0. Start a CouchDB server (such as [Couchbase Server][4]) on localhost.
 1. Open CouchDemo.xcodeproj (in Xcode 4.0.2 or later)
