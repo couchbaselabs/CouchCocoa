@@ -40,6 +40,16 @@
 }
 
 
+- (id) initWithNewDocumentInDatabase: (CouchDatabase*)database {
+    NSParameterAssert(database);
+    self = [self initWithDocument: nil];
+    if (self) {
+        self.database = database;
+    }
+    return self;
+}
+
+
 + (id) modelForDocument: (CouchDocument*)document {
     CouchModel* model = document.modelObject;
     if (model)
