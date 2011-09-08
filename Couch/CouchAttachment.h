@@ -37,6 +37,10 @@
 /** The MIME type of the contents. */
 @property (readonly, copy) NSString* contentType;
 
+/** Synchronous accessors for the body data.
+    These are convenient, but have no means of error handling. */
+@property (copy) NSData* body;
+
 /** The attachment's URL without the revision ID.
     This URL will always resolve to the current revision of the attachment. */
 @property (readonly) NSURL* unversionedURL;
