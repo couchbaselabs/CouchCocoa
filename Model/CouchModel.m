@@ -122,20 +122,25 @@
     COUCHLOG2(@"COUCHMODEL: <%p> External change to %@", self, _document);
     [self markExternallyChanged];
     
-    if (_properties) {
-        // Send KVO notifications about all my properties in case they changed:
-        NSArray* keys = [_properties allKeys];
-        for (id key in keys)
-            [self willChangeValueForKey: key];
-        // Reset _properties:
+    // Send KVO notifications about all my properties in case they changed:
+    // TODO: This is not 100% accurate: won't notify on keys that got removed in new rev
+    NSArray* keys = self.document.userProperties.allKeys;
+    for (id key in keys)
+        [self willChangeValueForKey: key];
+    
+    // Remove unchanged cached values in _properties:
+    if (_changedNames && _properties) {
+        NSMutableSet* removeKeys = [NSMutableSet setWithArray: [_properties allKeys]];
+        [removeKeys minusSet: _changedNames];
+        [_properties removeObjectsForKeys: removeKeys.allObjects];
+    } else {
         [_properties release];
         _properties = nil;
-        [_changedNames release];
-        _changedNames = nil;
-        [self didLoadFromDocument];
-        for (id key in keys)
-            [self didChangeValueForKey: key];
     }
+    
+    [self didLoadFromDocument];
+    for (id key in keys)
+        [self didChangeValueForKey: key];
 }
 
 
