@@ -46,6 +46,13 @@
 @end
 
 
+@interface CouchPersistentReplication ()
++ (CouchPersistentReplication*) createWithReplicatorDatabase: (CouchDatabase*)replicatorDB
+                                                      source: (NSString*)source
+                                                      target: (NSString*)target;
+@end
+
+
 @interface CouchRevision ()
 - (id) initWithDocument: (CouchDocument*)document revisionID: (NSString*)revisionID;
 - (id) initWithDocument: (CouchDocument*)document properties: (NSDictionary*)contents;
@@ -60,6 +67,12 @@
                  remote: (NSURL*)remote
                    pull: (BOOL)pull
                 options: (CouchReplicationOptions)options;
+@end
+
+
+@interface CouchServer ()
+- (CouchPersistentReplication*) replicationWithSource: (NSString*)source
+                                               target: (NSString*)target;
 @end
 
 

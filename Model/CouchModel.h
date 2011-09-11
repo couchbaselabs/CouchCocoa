@@ -69,13 +69,23 @@
 
 /** Deletes the document from the database. 
     You can still use the model object afterwards, but it will refer to the deleted revision. */
-- (void) deleteDocument;
+- (RESTOperation*) deleteDocument;
 
 /** The time interval since the document was last changed externally (e.g. by a "pull" replication.
     This value can be used to highlight recently-changed objects in the UI. */
 @property (readonly) NSTimeInterval timeSinceExternallyChanged;
 
 - (void) markExternallyChanged;
+
+
+/** Gets a property by name.
+    You can use this for document properties that you haven't added @property declarations for. */
+- (id) getValueOfProperty: (NSString*)property;
+
+/** Sets a property by name.
+    You can use this for document properties that you haven't added @property declarations for. */
+- (BOOL) setValue: (id)value ofProperty: (NSString*)property;
+
 
 
 // PROTECTED (SUBCLASSES ONLY):

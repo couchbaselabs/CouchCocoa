@@ -28,12 +28,12 @@
     self = [super init];
     if (self) {
         if (document) {
-            COUCHLOG2(@"COUCHMODEL: <%p> initWithDocument: %@ @%p", self, document, document);
+            COUCHLOG2(@"%@ initWithDocument: %@ @%p", self, document, document);
             self.document = document;
             [self didLoadFromDocument];
         } else {
             _isNew = true;
-            COUCHLOG2(@"COUCHMODEL: <%p> init", self);
+            COUCHLOG2(@"%@ init", self);
         }
     }
     return self;
@@ -53,8 +53,8 @@
 + (id) modelForDocument: (CouchDocument*)document {
     CouchModel* model = document.modelObject;
     if (model)
-        NSAssert([model isKindOfClass: self], @"%@ already has model of incompatible class %@",
-                 document, [model class]);
+        NSAssert([model isKindOfClass: self], @"%@: %@ already has incompatible model %@",
+                 self, document, model);
     else
         model = [[[self alloc] initWithDocument: document] autorelease];
     return model;
@@ -63,12 +63,17 @@
 
 - (void) dealloc
 {
-    COUCHLOG2(@"COUCHMODEL: <%p> dealloc; doc = %@", self, _document);
+    COUCHLOG2(@"%@ dealloc", self);
     _document.modelObject = nil;
     [_document release];
     [_properties release];
     [_changedNames release];
     [super dealloc];
+}
+
+
+- (NSString*) description {
+    return [NSString stringWithFormat: @"%@[%@]", self.class, self.document.abbreviatedID];
 }
 
 
@@ -88,6 +93,13 @@
 }
 
 
+- (void) detachFromDocument {
+    _document.modelObject = nil;
+    [_document release];
+    _document = nil;
+}
+
+
 - (NSString*) idForNewDocument {
     return nil;  // subclasses can override this to customize the doc ID
 }
@@ -103,21 +115,25 @@
         // On setting database, create a new untitled/unsaved CouchDocument:
         NSString* docID = [self idForNewDocument];
         self.document = docID ? [db documentWithID: docID] : [db untitledDocument];
-        COUCHLOG2(@"COUCHMODEL: <%p> create %@ @%p", self, _document, _document);
+        COUCHLOG2(@"%@ made new document", self);
     } else {
         [self deleteDocument];
+        [self detachFromDocument];  // detach immediately w/o waiting for success
     }
 }
 
 
-- (void) deleteDocument {
-    if (_document) {
-        COUCHLOG2(@"COUCHMODEL: <%p> Deleting %@", self, _document);
-        [[_document DELETE] start];
-        _document.modelObject = nil;
-        [_document release];
-        _document = nil;
-    }
+- (RESTOperation*) deleteDocument {
+    if (!_document)
+        return nil;
+    COUCHLOG2(@"%@ Deleting document", self);
+    _needsSave = NO;        // prevent any pending saves
+    RESTOperation* op = [_document DELETE];
+    [op onCompletion:^{
+        if (op.isSuccessful) 
+            [self detachFromDocument];
+    }];
+    return op;
 }
 
 
@@ -129,7 +145,7 @@
 // Respond to an external change (likely from sync). This is called by my CouchDocument.
 - (void) couchDocumentChanged: (CouchDocument*)doc {
     NSAssert(doc == _document, @"Notified for wrong document");
-    COUCHLOG2(@"COUCHMODEL: <%p> External change to %@", self, _document);
+    COUCHLOG2(@"%@ External change (rev=%@)", self, _document.currentRevisionID);
     [self markExternallyChanged];
     
     // Send KVO notifications about all my properties in case they changed:
@@ -172,6 +188,7 @@
 - (void) saveCompleted: (RESTOperation*)op {
     if (op.error) {
         // TODO: Need a way to inform the app (and user) of the error, and not just revert
+        Warn(@"%@: Save failed: %@", self, op.error);
         [self couchDocumentChanged: _document];     // reset to contents from server
         //[NSApp presentError: op.error];
     } else {
@@ -187,9 +204,10 @@
 - (RESTOperation*) save {
     if (!_needsSave || !_changedNames)
         return nil;
-    COUCHLOG2(@"COUCHMODEL: <%p> Saving %@", self, _document);
+    NSDictionary* properties = self.propertiesToSave;
+    COUCHLOG2(@"%@ Saving <- %@", self, properties);
     self.needsSave = NO;
-    RESTOperation* op = [_document putProperties: self.propertiesToSave];
+    RESTOperation* op = [_document putProperties: properties];
     [op onCompletion: ^{[self saveCompleted: op];}];
     [op start];
     return op;
@@ -245,7 +263,7 @@
     NSParameterAssert(_document);
     id curValue = [self getValueOfProperty: property];
     if (!$equal(value, curValue)) {
-        COUCHLOG2(@"COUCHMODEL: <%p> .%@ := \"%@\"", self, property, value);
+        COUCHLOG2(@"%@ .%@ := \"%@\"", self, property, value);
         [self cacheValue: value ofProperty: property changed: YES];
         if (_autosaves && !_needsSave)
             [self performSelector: @selector(save) withObject: nil afterDelay: 0.0];

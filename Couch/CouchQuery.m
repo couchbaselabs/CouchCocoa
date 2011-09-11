@@ -220,6 +220,11 @@
 }
 
 
+- (BOOL) wait {
+    return self.rows != nil || [_op wait];
+}
+
+
 - (void) databaseChanged {
     [self start];
 }

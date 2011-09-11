@@ -89,6 +89,9 @@
 /** In CouchLiveQuery the -rows accessor is now a non-blocking property that can be observed using KVO. Its value will be nil until the initial query finishes. */
 @property (readonly, retain) CouchQueryEnumerator* rows;
 
+/** When the live query first starts, .rows will return nil until the initial results come back.
+    This call will block until the results are ready. Subsequent calls do nothing. */
+- (BOOL) wait;
 @end
 
 

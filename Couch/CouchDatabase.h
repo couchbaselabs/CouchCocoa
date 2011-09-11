@@ -15,7 +15,7 @@
 
 #import "CouchResource.h"
 #import "CouchReplication.h"
-@class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchQuery, CouchServer;
+@class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchPersistentReplication, CouchQuery, CouchServer;
 
 
 /** Type of block that's called when the database changes. */
@@ -135,6 +135,22 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
 - (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL
                                   options: (CouchReplicationOptions)options;
 
+/** Configures this database to replicate bidirectionally (sync to and from) a database at the given URL.
+    @param targetURL  The URL of the other database, or nil to indicate no replication.
+    @param exclusively  If YES, any existing replications to or from other URLs will be removed.
+    @return  A two-element NSArray whose values are the CouchPersistentReplications from and to the other URL, respectively. Returns nil if no target URL was given, or on failure. */
+- (NSArray*) replicateWithURL: (NSURL*)otherURL exclusively: (BOOL)exclusively;
+
+/** Creates a persistent replication from a database (a pull).
+    Returns an object representing this replication. If a replication from this URL already exists, the configuration is unchanged. */
+- (CouchPersistentReplication*) replicationFromDatabaseAtURL: (NSURL*)sourceURL;
+
+/** Creates a persistent replication to a database (a push).
+    Returns an object representing this replication. If a replication from this URL already exists, the configuration is unchanged. */
+- (CouchPersistentReplication*) replicationToDatabaseAtURL: (NSURL*)targetURL;
+
+/** All currently configured persistent replications involving this database, as CouchPersistentReplication objects. */
+@property (readonly) NSArray* replications;
 
 @end
 

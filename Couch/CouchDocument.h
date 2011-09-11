@@ -31,6 +31,10 @@
 /** The unique ID of this document; its key in the database. */
 @property (readonly) NSString* documentID;
 
+/** The document ID abbreviated to a maximum of 10 characters including ".." in the middle.
+    Useful for logging or debugging. */
+@property (readonly) NSString* abbreviatedID;
+
 /** YES if the document has been deleted from the database. */
 @property (readonly) BOOL isDeleted;
 

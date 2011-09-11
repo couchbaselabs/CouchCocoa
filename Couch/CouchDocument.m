@@ -42,6 +42,19 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 }
 
 
+- (NSString*) abbreviatedID {
+    NSMutableString* abbrev = [[self.documentID mutableCopy] autorelease];
+    if (abbrev.length > 10)
+        [abbrev replaceCharactersInRange: NSMakeRange(4, abbrev.length - 8) withString: @".."];
+    return abbrev;
+}
+
+
+- (NSString*) description {
+    return [NSString stringWithFormat: @"%@[%@]", [self class], self.abbreviatedID];
+}
+
+
 #pragma mark REVISIONS:
 
 

@@ -116,7 +116,7 @@ enum {
     NSString* line = [[[NSString alloc] initWithBytes: start
                                                length: lineLength
                                              encoding: NSUTF8StringEncoding] autorelease];
-    COUCHLOG2(@"CouchChangeTracker: LINE: \"%@\"", line);
+    COUCHLOG3(@"CouchChangeTracker: LINE: \"%@\"", line);
     if (line) {
         switch (_state) {
             case kStateStatus: {

@@ -14,7 +14,7 @@
 //  and limitations under the License.
 
 #import "CouchResource.h"
-@class CouchDatabase, RESTCache;
+@class CouchDatabase, CouchLiveQuery, CouchPersistentReplication, RESTCache;
 
 
 /** The top level of a CouchDB server. Contains CouchDatabases. */
@@ -25,6 +25,7 @@
     RESTResource* _activityRsrc;
     NSArray* _activeTasks;
     NSTimer* _activityPollTimer;
+    CouchLiveQuery* _replicationsQuery;
 }
 
 /** Initialize given a server URL. */
@@ -47,7 +48,7 @@
     Multiple calls with the same name will return the same CouchDatabase instance. */
 - (CouchDatabase*) databaseNamed: (NSString*)name;
 
-#pragma mark ACTIVITY:
+#pragma mark - ACTIVITY:
 
 /** The list of active server tasks, as parsed JSON (observable).
     This is updated asynchronously while the activityPollInterval is nonzero. */
@@ -55,6 +56,12 @@
 
 /** How often to poll the server's list of active tasks and update .activeTasks. */
 @property NSTimeInterval activityPollInterval;
+
+#pragma mark - REPLICATION:
+
+/** All currently defined CouchPersistentReplications (as stored in the replicator database.)
+    To create a replication, use the methods on CouchDatabase. */
+@property (readonly) NSArray* replications;
 
 @end
 

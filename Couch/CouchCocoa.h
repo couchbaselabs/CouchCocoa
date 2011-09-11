@@ -19,6 +19,7 @@
 #import "CouchDesignDocument.h"
 #import "CouchDocument.h"
 #import "CouchModel.h"
+#import "CouchPersistentReplication.h"
 #import "CouchQuery.h"
 #import "CouchRevision.h"
 #import "CouchServer.h"

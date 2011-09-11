@@ -47,6 +47,7 @@ int gCouchLogLevel = 0;
 - (void)dealloc {
     [_activeTasks release];
     [_activityRsrc release];
+    [_replicationsQuery release];
     [_dbCache release];
     [super dealloc];
 }
@@ -54,6 +55,11 @@ int gCouchLogLevel = 0;
 
 - (RESTResource*) childWithPath: (NSString*)name {
     return [[[CouchResource alloc] initWithParent: self relativePath: name] autorelease];
+}
+
+
+- (CouchDatabase*) database {    // Overridden from CouchResource.
+    return nil;
 }
 
 
@@ -97,6 +103,50 @@ int gCouchLogLevel = 0;
     }
     return db;
 }
+
+
+#pragma mark - REPLICATOR DATABASE:
+
+
+- (CouchDatabase*) replicatorDatabase {
+    return [self databaseNamed: @"_replicator"];
+}
+
+
+- (CouchLiveQuery*) replicationsQuery {
+    if (!_replicationsQuery) {
+        CouchDatabase* replicatorDB = [self replicatorDatabase];
+        replicatorDB.tracksChanges = YES;
+        _replicationsQuery = [[replicatorDB getAllDocuments] asLiveQuery];
+        [_replicationsQuery wait];
+    }
+    return _replicationsQuery;
+}
+
+
+- (NSArray*) replications {
+    return [self.replicationsQuery.rows.allObjects rest_map: ^(id row) {
+        NSString* docID = [row documentID];
+        if ([docID hasPrefix: @"_design/"] || [docID hasPrefix: @"_local/"])
+            return (id)nil;
+        return [CouchPersistentReplication modelForDocument: [row document]];
+    }];
+}
+
+
+- (CouchPersistentReplication*) replicationWithSource: (NSString*)source
+                                               target: (NSString*)target
+{
+    for (CouchPersistentReplication* repl in self.replications) {
+        if ($equal(repl.source, source) && $equal(repl.target, target))
+            return repl;
+    }
+    return [CouchPersistentReplication createWithReplicatorDatabase: self.replicatorDatabase
+                                                             source: source target: target];
+}
+
+
+#pragma mark - ACTIVITY MONITOR:
 
 
 @synthesize activeTasks=_activeTasks;
