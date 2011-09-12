@@ -152,6 +152,24 @@ int gCouchLogLevel = 0;
 @synthesize activeTasks=_activeTasks;
 
 
+- (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath 
+            options:(NSKeyValueObservingOptions)options context:(void *)context {
+    if ([keyPath isEqualToString: @"activeTasks"]) {
+        if (_activeTasksObserverCount++ == 0)
+            [self setActivityPollInterval: 0.5];
+    }
+    [super addObserver: observer forKeyPath: keyPath options: options context: context];
+}
+
+- (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath {
+    if ([keyPath isEqualToString: @"activeTasks"]) {
+        if (--_activeTasksObserverCount == 0)
+            [self setActivityPollInterval: 0.0];
+    }
+    [super removeObserver: observer forKeyPath: keyPath];
+}
+
+
 - (void) pollActivity {
     if (!_activityRsrc) {
         _activityRsrc = [[RESTResource alloc] initWithParent:self relativePath:@"_active_tasks"];
@@ -161,7 +179,7 @@ int gCouchLogLevel = 0;
         [_activityRsrc cacheResponse: op];
         NSArray* tasks = $castIf(NSArray, op.responseBody.fromJSON);
         if (tasks && ![tasks isEqual: _activeTasks]) {
-            COUCHLOG(@"CouchServer: activeTasks = %@", tasks);
+            COUCHLOG2(@"CouchServer: activeTasks = %@", tasks);
             self.activeTasks = tasks;    // Triggers KVO notification
         }
     }];

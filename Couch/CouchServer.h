@@ -23,6 +23,7 @@
     @private
     RESTCache* _dbCache;
     RESTResource* _activityRsrc;
+    int _activeTasksObserverCount;
     NSArray* _activeTasks;
     NSTimer* _activityPollTimer;
     CouchLiveQuery* _replicationsQuery;
