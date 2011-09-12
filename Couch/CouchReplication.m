@@ -94,7 +94,6 @@
             _taskID = [[response objectForKey: @"_local_id"] copy];
             if (_taskID) {
                 // Successfully started:
-                _database.server.activityPollInterval = kProgressPollInterval;
                 [_database.server addObserver: self forKeyPath: @"activeTasks"
                                       options:0 context: NULL];
             }

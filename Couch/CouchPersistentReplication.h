@@ -23,8 +23,10 @@ typedef enum {
     Instances are created by the -replicate... factory methods on CouchDatabase. */
 @interface CouchPersistentReplication : CouchModel
 {
+    @private
     CouchReplicationState _state;
     unsigned _completed, _total;
+    NSString* _statusString;
 }
 
 /** The source URL for the replication.
