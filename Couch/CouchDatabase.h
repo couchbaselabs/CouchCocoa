@@ -46,6 +46,11 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
     Fails with an HTTP status 412 (Conflict) if a database with this name already exists. */
 - (RESTOperation*) create;
 
+/** Compacts the database, freeing up disk space by deleting old revisions of documents.
+    This should be run periodically, especially after making a lot of changes.
+    Note: The REST operation completes as soon as the server starts compacting, but the actual compaction will run asynchronously and may take a while. */
+- (RESTOperation*) compact;
+
 /** Gets the current total number of documents. (Synchronous) */
 - (NSInteger) getDocumentCount;
 

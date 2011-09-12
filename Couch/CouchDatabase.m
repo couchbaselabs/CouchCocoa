@@ -60,7 +60,17 @@ static const NSUInteger kDocRetainLimit = 50;
 
 
 - (RESTOperation*) create {
-    return [self PUT: nil parameters: nil];
+    return [[self PUT: nil parameters: nil] start];
+}
+
+
+- (RESTOperation*) compact {
+    // http://wiki.apache.org/couchdb/Compaction
+    CouchResource* rsrc = [[[CouchResource alloc] initWithParent: self relativePath: @"_compact"]
+                           autorelease];
+    NSDictionary* params = [NSDictionary dictionaryWithObject: @"application/json"
+                                                       forKey: @"Content-Type"];
+    return [[rsrc POST: nil parameters: params] start];
 }
 
 

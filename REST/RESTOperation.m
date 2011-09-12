@@ -144,9 +144,9 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 #pragma mark LOADING:
 
 
-- (void) start {
+- (RESTOperation*) start {
     if (_state != kRESTObjectUnloaded)
-        return;
+        return self;
 
     if (gRESTLogLevel >= kRESTLogRequestURLs) {
         NSMutableString* message = [NSMutableString stringWithFormat: @"%@ %@", 
@@ -171,6 +171,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     _state = kRESTObjectLoading;
     
     [_resource operationDidStart: self];
+    return self;
 }
 
 

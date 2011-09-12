@@ -79,8 +79,9 @@ typedef void (^OnCompleteBlock)();
 
 #pragma mark LOADING:
 
-/** Sends the request, asynchronously. Subsequent calls do nothing. */
-- (void) start;
+/** Sends the request, asynchronously. Subsequent calls do nothing.
+    @return  The receiver (self), to make it easy to say "return [op start];". */
+- (RESTOperation*) start;
 
 /** Will call the given block when the request finishes.
     This method may be called multiple times; blocks will be called in the order added.
