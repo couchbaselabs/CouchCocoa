@@ -89,8 +89,10 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         if (_currentRevisionID)
             _currentRevision = [[CouchRevision alloc] initWithDocument: self
                                                             revisionID: _currentRevisionID];
-        else if (self.relativePath)
+        else if (self.relativePath) {
             _currentRevision = [[CouchRevision alloc] initWithOperation: [self GET]];
+            _currentRevisionID = [_currentRevision.revisionID copy];
+        }
     }
     return _currentRevision;
 }
