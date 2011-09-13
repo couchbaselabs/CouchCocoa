@@ -150,8 +150,9 @@
 {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier: @"CouchUITableDelegate"];
     if (!cell)
-        cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
-                                      reuseIdentifier: @"CouchUITableDelegate"];
+        cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
+                                      reuseIdentifier: @"CouchUITableDelegate"]
+                    autorelease];
     
     CouchQueryRow* row = [self rowAtIndex: indexPath.row];
     cell.textLabel.text = [self labelForRow: row];

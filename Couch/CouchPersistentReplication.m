@@ -38,7 +38,7 @@
     rep.autosaves = YES;
     [rep setValue: source ofProperty: @"source"];
     [rep setValue: target ofProperty: @"target"];
-    return rep;
+    return [rep autorelease];
 }
 
 

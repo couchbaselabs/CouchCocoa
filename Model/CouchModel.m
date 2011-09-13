@@ -234,7 +234,7 @@
         id value = [_properties objectForKey: key];
         [properties setValue: [self externalizePropertyValue: value] forKey: key];
     }
-    return properties;
+    return [properties autorelease];
 }
 
 
