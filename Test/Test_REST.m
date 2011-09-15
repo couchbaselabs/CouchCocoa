@@ -172,7 +172,8 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     
     NSData* output = [RESTBody dataWithBase64: base64];
     STAssertEqualObjects(output, input, @"Base64 decoding failed");
-    
+    STAssertNil([RESTBody dataWithBase64: @"dGhpc"], nil);
+    STAssertNil([RESTBody dataWithBase64: @"dGhpcyBpc&B0aGUgb3JpZ2luYWwgc3RyaW5n"], nil);
     STAssertNil([RESTBody base64WithData: nil], @"Base64 encoding failed on nil input");
     STAssertNil([RESTBody dataWithBase64: nil], @"Base64 decoding failed on nil input");
 }

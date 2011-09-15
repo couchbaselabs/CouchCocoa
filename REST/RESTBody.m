@@ -16,29 +16,7 @@
 #import "RESTBody.h"
 
 #import "RESTInternal.h"
-
-#if !TARGET_OS_IPHONE
-#include <openssl/evp.h>
-#else
-// declarations swiped from <openssl/evp.h>
-typedef struct bio_st BIO;
-typedef struct bio_method_st BIO_METHOD;
-BIO_METHOD *BIO_f_base64(void);
-BIO_METHOD *BIO_s_mem(void);
-BIO *	BIO_new(BIO_METHOD *type);
-void BIO_set_flags(BIO *b, int flags);
-BIO *	BIO_push(BIO *b,BIO *append);
-int	BIO_write(BIO *b, const void *data, int len);
-#define BIO_FLAGS_BASE64_NO_NL	0x100
-long	BIO_ctrl(BIO *bp,int cmd,long larg,void *parg);
-#define BIO_CTRL_INFO		3
-#define BIO_CTRL_FLUSH		11
-#define BIO_flush(b)		(int)BIO_ctrl(b,BIO_CTRL_FLUSH,0,NULL)
-#define BIO_get_mem_data(b,pp)	BIO_ctrl(b,BIO_CTRL_INFO,0,(char *)pp)
-void	BIO_free_all(BIO *a);
-int	BIO_read(BIO *b, void *data, int len);
-BIO *BIO_new_mem_buf(void *buf, int len);
-#endif
+#import "RESTBase64.h"
 
 
 @implementation RESTBody
@@ -359,43 +337,12 @@ static Class sJSONSerialization;
 
 
 + (NSString*) base64WithData: (NSData*)data {
-    if (!data)
-        return nil;
-    BIO* b64 = BIO_new(BIO_f_base64());
-    BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
-    BIO* bio = BIO_new(BIO_s_mem());
-    bio = BIO_push(b64, bio);
-    BIO_write(bio, data.bytes, (int)data.length);
-    (void)BIO_flush(bio);
-    
-    char *encoded;
-    long encodedLength = BIO_get_mem_data(bio, &encoded);
-    NSString* base64 = [[[NSString alloc] initWithBytes: encoded
-                                                 length: encodedLength
-                                               encoding:NSASCIIStringEncoding] autorelease];
-    BIO_free_all(bio);
-    return base64;
+    return [RESTBase64 encode: data];
 }
 
 
 + (NSData*) dataWithBase64: (NSString*)base64 {
-    NSData* ascii = [$castIf(NSString, base64) dataUsingEncoding: NSASCIIStringEncoding];
-    if (!ascii)
-        return nil;
-    
-    size_t dstSize = ascii.length;
-    void* dst = malloc(dstSize);
-    if (!dst)
-        return nil;
-
-    BIO* b64 = BIO_new(BIO_f_base64());
-    BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
-    BIO* bio = BIO_new_mem_buf((void*)ascii.bytes, (int)ascii.length);
-    bio = BIO_push(b64, bio);
-    long length = BIO_read(bio, dst, (int)dstSize);
-    BIO_free_all(bio);
-    
-    return [NSData dataWithBytesNoCopy: dst length: length freeWhenDone: YES];
+    return [RESTBase64 decode: base64];
 }
 
 
