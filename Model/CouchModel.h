@@ -96,7 +96,7 @@
 
 /** The document ID to use when creating a new document.
     Default is nil, which means to assign no ID (the server will assign one). */
-- (NSString*) idForNewDocument;
+- (NSString*) idForNewDocumentInDatabase: (CouchDatabase*)db;
 
 /** Called when the model's properties are reloaded from the document.
     This happens both when initialized from a document, and after an external change. */

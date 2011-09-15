@@ -100,7 +100,7 @@
 }
 
 
-- (NSString*) idForNewDocument {
+- (NSString*) idForNewDocumentInDatabase: (CouchDatabase*)db {
     return nil;  // subclasses can override this to customize the doc ID
 }
 
@@ -113,7 +113,7 @@
 - (void) setDatabase: (CouchDatabase*)db {
     if (db) {
         // On setting database, create a new untitled/unsaved CouchDocument:
-        NSString* docID = [self idForNewDocument];
+        NSString* docID = [self idForNewDocumentInDatabase: db];
         self.document = docID ? [db documentWithID: docID] : [db untitledDocument];
         COUCHLOG2(@"%@ made new document", self);
     } else {
