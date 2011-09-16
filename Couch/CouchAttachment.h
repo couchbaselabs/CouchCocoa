@@ -22,7 +22,7 @@
 @interface CouchAttachment : CouchResource
 {
     @private
-    NSString* _contentType;
+    NSDictionary* _metadata;
 }
 
 /** The owning document revision. */
@@ -35,7 +35,13 @@
 @property (readonly) NSString* name;
 
 /** The MIME type of the contents. */
-@property (readonly, copy) NSString* contentType;
+@property (readonly) NSString* contentType;
+
+/** The length in bytes of the contents. */
+@property (readonly) UInt64 length;
+
+/** The CouchDB metadata about the attachment, that lives in the document. */
+@property (readonly) NSDictionary* metadata;
 
 /** Synchronous accessors for the body data.
     These are convenient, but have no means of error handling. */

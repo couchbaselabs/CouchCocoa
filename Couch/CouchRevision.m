@@ -236,15 +236,16 @@
 
 - (CouchAttachment*) attachmentNamed: (NSString*)name {
     NSDictionary* metadata = [self attachmentMetadataFor: name];
-    NSString* type = $castIf(NSString, [metadata objectForKey: @"content_type"]);
-    if (!type)
+    if (!metadata)
         return nil;
-    return [[[CouchAttachment alloc] initWithRevision: self name: name type: type] autorelease];
+    return [[[CouchAttachment alloc] initWithRevision: self name: name metadata: metadata] autorelease];
 }
 
 
 - (CouchAttachment*) createAttachmentWithName: (NSString*)name type: (NSString*)contentType {
-    return [[[CouchAttachment alloc] initWithRevision: self name: name type: contentType]
+    NSDictionary* metadata = [NSDictionary dictionaryWithObject: contentType
+                                                         forKey: @"content_type"];
+    return [[[CouchAttachment alloc] initWithRevision: self name: name metadata: metadata]
                 autorelease];
 }
 

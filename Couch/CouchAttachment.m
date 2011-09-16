@@ -17,34 +17,29 @@
 #import "CouchInternal.h"
 
 
-@interface CouchAttachment ()
-@property (readwrite, copy) NSString* contentType;
-@end
-
-
 @implementation CouchAttachment
 
 
 - (id) initWithRevision: (CouchRevision*)revision 
                    name: (NSString*)name
-                   type: (NSString*)contentType
+               metadata: (NSDictionary*)metadata
 {
-    NSParameterAssert(contentType);
+    NSParameterAssert(metadata);
     self = [super initWithParent: revision relativePath: name];
     if (self) {
-        _contentType = [contentType copy];
+        _metadata = [metadata copy];
     }
     return self;
 }
 
 
 - (void)dealloc {
-    [_contentType release];
+    [_metadata release];
     [super dealloc];
 }
 
 
-@synthesize contentType = _contentType;
+@synthesize metadata=_metadata;
 
 
 - (NSString*) name {
@@ -67,15 +62,22 @@
 }
 
 
+- (NSString*) contentType {
+    return $castIf(NSString, [_metadata objectForKey: @"content_type"]);
+}
+
+
+- (UInt64) length {
+    NSNumber* lengthObj = $castIf(NSNumber, [_metadata objectForKey: @"length"]);
+    return lengthObj ? [lengthObj longLongValue] : 0;
+}
+
+
 #pragma mark -
 #pragma mark BODY
 
 
 - (RESTOperation*) PUT: (NSData*)body contentType: (NSString*)contentType {
-    if (!contentType) {
-        contentType = _contentType;
-        NSParameterAssert(contentType != nil);
-    }
     NSDictionary* params = [NSDictionary dictionaryWithObject: contentType
                                                        forKey: @"Content-Type"];
     return [self PUT: body parameters: params];
@@ -83,11 +85,15 @@
 
 
 - (RESTOperation*) PUT: (NSData*)body {
-    return [self PUT: body contentType: _contentType];
+    return [self PUT: body contentType: self.contentType];
 }
 
 
 - (NSData*) body {
+    NSData* body = [RESTBody dataWithBase64: $castIf(NSString, [_metadata objectForKey: @"data"])];
+    if (body)
+        return body;
+    
     RESTOperation* op = [self GET];
     if ([op wait])
         return op.responseBody.content;
@@ -126,11 +132,7 @@
     error = [super operation: op willCompleteWithError: error];
     
     if (!error && op.isSuccessful) {
-        // Capture changes to the contentType made by GETs and PUTs:
-        if (op.isGET)
-            self.contentType = [op.responseHeaders objectForKey: @"Content-Type"];
-        else if (op.isPUT) {
-            self.contentType = [op.request valueForHTTPHeaderField: @"Content-Type"];
+        if (op.isPUT) {
             NSString* revisionID = $castIf(NSString, [op.responseBody.fromJSON objectForKey: @"rev"]);
             if (revisionID)
                 self.document.currentRevisionID = revisionID;

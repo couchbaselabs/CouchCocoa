@@ -25,7 +25,7 @@
 @interface CouchAttachment ()
 - (id) initWithRevision: (CouchRevision*)revision 
                    name: (NSString*)name
-                   type: (NSString*)contentType;
+               metadata: (NSDictionary*)metadata;
 @end
 
 

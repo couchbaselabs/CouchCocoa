@@ -323,6 +323,9 @@
     AssertWait(op);
     STAssertEqualObjects(op.responseBody.contentType, @"text/plain; charset=utf-8", nil);
     STAssertEqualObjects(op.responseBody.content, body, nil);
+    STAssertEqualObjects(attach.body, body, nil);
+    STAssertEqualObjects(attach.contentType, @"text/plain; charset=utf-8", nil);
+    STAssertEquals(attach.length, (UInt64)body.length, nil);
     
     AssertWait([doc GET]);
 

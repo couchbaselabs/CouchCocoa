@@ -7,7 +7,7 @@
 //
 
 #import "CouchDynamicObject.h"
-@class CouchDatabase, CouchDocument, RESTOperation;
+@class CouchAttachment, CouchDatabase, CouchDocument, RESTOperation;
 
 
 /** Generic model class for Couch documents.
@@ -26,6 +26,7 @@
 
     NSMutableDictionary* _properties;   // Cached property values, including changed values
     NSMutableSet* _changedNames;        // Names of properties that have been changed but not saved
+    NSMutableDictionary* _changedAttachments;
 }
 
 /** Returns the CouchModel associated with a CouchDocument, or creates & assigns one if necessary.
@@ -52,6 +53,7 @@
 /** Is this model new, never before saved? */
 @property (readonly) bool isNew;
 
+#pragma mark - SAVING:
 
 /** Writes any changes to a new revision of the document, asynchronously.
     Does nothing and returns nil if no changes have been made. */
@@ -77,6 +79,7 @@
 
 - (void) markExternallyChanged;
 
+#pragma mark - PROPERTIES & ATTACHMENTS:
 
 /** Gets a property by name.
     You can use this for document properties that you haven't added @property declarations for. */
@@ -87,8 +90,29 @@
 - (BOOL) setValue: (id)value ofProperty: (NSString*)property;
 
 
+/** The names of all attachments (array of strings).
+    This reflects unsaved changes made by creating or deleting attachments. */
+@property (readonly) NSArray* attachmentNames;
 
-// PROTECTED (SUBCLASSES ONLY):
+/** Looks up the attachment with the given name (without fetching its contents). */
+- (CouchAttachment*) attachmentNamed: (NSString*)name;
+
+/** Creates or updates an attachment (in memory).
+    The attachment data will be written to the database at the same time as property changes are saved.
+    @param name  The attachment name.
+    @param contentType  The MIME type of the body.
+    @param body  The raw attachment data, or nil to delete the attachment. */
+- (CouchAttachment*) createAttachmentWithName: (NSString*)name
+                                         type: (NSString*)contentType
+                                         body: (NSData*)body;
+
+/** Deletes (in memory) any existing attachment with the given name.
+    The attachment will be deleted from the database at the same time as property changes are saved. */
+- (void) removeAttachmentNamed: (NSString*)name;
+
+
+
+#pragma mark - PROTECTED (FOR SUBCLASSES TO OVERRIDE)
 
 /** Designated initializer. Do not call directly except from subclass initializers; to create a new instance call +modelForDocument: instead.
     @param document  The document. Nil if this is created new (-init was called). */
