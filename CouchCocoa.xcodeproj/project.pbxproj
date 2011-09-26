@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2725993913D8B43F006E391E /* CouchCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		2725993A13D8CEB7006E391E /* CouchCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
-		2730940E13C68E080093857D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2730940C13C68E080093857D /* InfoPlist.strings */; };
 		2739BF2D13BCE53B004829CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2C13BCE53B004829CD /* Foundation.framework */; };
 		2739BF3713BCE53C004829CD /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */; };
 		2739BF3913BCE53C004829CD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF3813BCE53C004829CD /* UIKit.framework */; };
@@ -183,7 +182,6 @@
 		270A664413A5BA4600791F4A /* REST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REST.h; sourceTree = "<group>"; };
 		272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		272E9D9313A2EBE0009F18E9 /* Test_REST.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Test_REST.m; sourceTree = "<group>"; };
-		2730940D13C68E080093857D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		273175A313CBA6B7000FF426 /* Doxyfile */ = {isa = PBXFileReference; explicitFileType = text.script; path = Doxyfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.sh; };
 		27333BCA13B7E61700EF5A10 /* CouchInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchInternal.h; sourceTree = "<group>"; };
 		2739BF2013BAB411004829CD /* CouchRevision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchRevision.h; sourceTree = "<group>"; };
@@ -514,7 +512,6 @@
 			isa = PBXGroup;
 			children = (
 				27CDEBF913C67C9B00C979BB /* CouchCocoa-Info.plist */,
-				2730940C13C68E080093857D /* InfoPlist.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -818,7 +815,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2730940E13C68E080093857D /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1031,22 +1027,12 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		2730940C13C68E080093857D /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2730940D13C68E080093857D /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		1DEB927908733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CURRENT_PROJECT_VERSION = 10;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1060,6 +1046,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx10.6;
+				VERSIONING_SYSTEM = "apple-generic";
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -1068,6 +1055,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CURRENT_PROJECT_VERSION = 10;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Couch/CouchPrefix.pch;
@@ -1080,6 +1068,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx10.6;
+				VERSIONING_SYSTEM = "apple-generic";
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
@@ -1345,6 +1334,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CouchCocoa;
@@ -1366,6 +1356,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Couch.frameworik/Couch.frameworik-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_NAME = CouchCocoa;
 				SDKROOT = iphoneos;
