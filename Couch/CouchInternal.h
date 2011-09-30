@@ -22,6 +22,10 @@
 #define COUCHLOG3 if(gCouchLogLevel < 3) ; else NSLog
 
 
+/** Type of block that's called when the database changes. */
+typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
+
+
 @interface CouchAttachment ()
 - (id) initWithRevision: (CouchRevision*)revision 
                    name: (NSString*)name

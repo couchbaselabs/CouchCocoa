@@ -45,6 +45,7 @@ static const NSUInteger kDocRetainLimit = 50;
     self.tracksChanges = NO;
     [_busyDocuments release];
     [_deferredChanges release];
+    [_onChangeBlock release];
     [super dealloc];
 }
 
@@ -340,9 +341,10 @@ static const NSUInteger kDocRetainLimit = 50;
 // <http://wiki.apache.org/couchdb/HTTP_database_API#Changes>
 
 
+// This is just for unit tests to use.
 - (void) onChange: (OnDatabaseChangeBlock)block {
-    NSAssert(!_onChange, @"Sorry, only one onChange handler at a time"); // TODO: Allow multiple onChange blocks!
-    _onChange = [block copy];
+    NSAssert(!_onChangeBlock, @"Sorry, only one onChange handler at a time");
+    _onChangeBlock = [block copy];
 }
 
 
@@ -372,20 +374,29 @@ static const NSUInteger kDocRetainLimit = 50;
     CouchDocument* document = [self documentWithID: docID];
     
     // Notify!
-    if ([document notifyChanged: change]) {
-        if (_onChange)
-            _onChange(document);
-        
-        NSNotification* n = [NSNotification notificationWithName: kCouchDatabaseChangeNotification
-                                                          object: self];
-        NSArray* modes = [NSArray arrayWithObject: NSRunLoopCommonModes];
-        [[NSNotificationQueue defaultQueue] enqueueNotification: n
-                                                   postingStyle: NSPostASAP 
-                                                   coalesceMask: NSNotificationCoalescingOnSender
-                                                       forModes: modes];
-    } else {
-        COUCHLOG(@"CouchDatabase change with seq=%lu already known", (unsigned long)sequence);
+    NSDictionary* userInfo = nil;
+    BOOL isExternalChange = [document notifyChanged: change];
+    if (isExternalChange) {
+        COUCHLOG(@"CouchDatabase: External change with seq=%lu", (unsigned long)sequence);
+        userInfo = [NSDictionary dictionaryWithObject: (id)kCFBooleanTrue forKey: @"external"];
     }
+
+    if (_onChangeBlock)
+        ((OnDatabaseChangeBlock)_onChangeBlock)(document, isExternalChange);
+    
+    // Post a database-changed notification, but only post one per runloop cycle by using
+    // a notification queue. If the current notification has the "external" flag, make sure it
+    // gets posted by clearing any pending instance of the notification that doesn't have the flag.
+    NSNotification* n = [NSNotification notificationWithName: kCouchDatabaseChangeNotification
+                                                      object: self
+                                                    userInfo: userInfo];
+    NSNotificationQueue* queue = [NSNotificationQueue defaultQueue];
+    if (isExternalChange)
+        [queue dequeueNotificationsMatching: n coalesceMask: NSNotificationCoalescingOnSender];
+    [queue enqueueNotification: n
+                  postingStyle: NSPostASAP 
+                  coalesceMask: NSNotificationCoalescingOnSender
+                      forModes: [NSArray arrayWithObject: NSRunLoopCommonModes]];
     
     _lastSequenceNumber = sequence;
 }

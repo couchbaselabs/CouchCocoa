@@ -18,10 +18,6 @@
 @class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchPersistentReplication, CouchQuery, CouchServer;
 
 
-/** Type of block that's called when the database changes. */
-typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
-
-
 /** A CouchDB database; contains CouchDocuments.
     The CouchServer is the factory object for CouchDatabases. */
 @interface CouchDatabase : CouchResource
@@ -32,7 +28,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
     CouchChangeTracker* _tracker;
     NSUInteger _lastSequenceNumber;
     BOOL _lastSequenceNumberKnown;
-    OnDatabaseChangeBlock _onChange;
+    id _onChangeBlock;
     NSMutableArray* _deferredChanges;
 }
 
@@ -160,7 +156,10 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*);
 @end
 
 
-/** This notification is posted by a CouchDatabase in response to an external change (as reported by the _changes feed.)
-    It is not sent in response to 'local' changes made by its child objects.
-    It will not be sent unless tracksChanges is enabled. */
+/** This notification is posted by a CouchDatabase in response to document changes.
+    It will not be sent unless tracksChanges is enabled.
+    Only one notification is posted per runloop cycle, no matter how many documents changed.
+    If a change was not made by a CouchDocument belonging to this CouchDatabase (i.e. it came
+    from another process or from a "pull" replication), the notification's userInfo dictionary will
+    contain an "external" key with a value of YES. */
 extern NSString* const kCouchDatabaseChangeNotification;

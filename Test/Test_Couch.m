@@ -339,7 +339,7 @@
 - (void) test09_ChangeTracking {
     CouchDatabase* userDB = [_server databaseNamed: @"_users"];
     __block int changeCount = 0;
-    [userDB onChange: ^(CouchDocument* doc){ ++changeCount; }];
+    [userDB onChange: ^(CouchDocument* doc, BOOL external){ ++changeCount; }];
     userDB.lastSequenceNumber = 0;
     userDB.tracksChanges = YES;
 
@@ -351,16 +351,19 @@
 
 
 - (void) test10_ChangeTrackingNoEchoes {
-    __block int changeCount = 0;
-    [_db onChange: ^(CouchDocument* doc){ ++changeCount; }];
+    __block int changeCount = 0, externalChangeCount = 0;
+    [_db onChange: ^(CouchDocument* doc, BOOL external) {
+        ++changeCount;
+        if (external) ++externalChangeCount;
+    }];
     _db.tracksChanges = YES;
     
     [self createDocuments: 2];
     
     [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1.0]];
-    // We expect that the changes reported by the server won't be notified, because those revisions
-    // are already cached in memory.
-    STAssertEquals(changeCount, 0, nil);
+    // We expect that my changes echoed by the server won't be counted as external.
+    STAssertEquals(changeCount, 2, nil);
+    STAssertEquals(externalChangeCount, 0, nil);
     
     STAssertEquals(_db.lastSequenceNumber, (NSUInteger)2, nil);
 }
@@ -368,7 +371,7 @@
 
 - (void) test11_ChangeTrackingNoEchoesAfterTheFact {
     __block int changeCount = 0;
-    [_db onChange: ^(CouchDocument* doc){ ++changeCount; }];
+    [_db onChange: ^(CouchDocument* doc, BOOL external){ ++changeCount; }];
     
     [self createDocuments: 5];
 
