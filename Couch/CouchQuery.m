@@ -242,6 +242,11 @@
             COUCHLOG(@"CouchLiveQuery: ...Rows changed! (now %lu)", (unsigned long)rows.count);
             self.rows = rows;   // Triggers KVO notification
             self.prefetch = NO;   // (prefetch disables conditional GET shortcut on next fetch)
+        
+            // If this query isn't up-to-date (race condition where the db updated again after sending
+            // the response), start another fetch.
+            if (rows.sequenceNumber > 0 && rows.sequenceNumber < self.database.lastSequenceNumber)
+                [self start];
         }
     }
     

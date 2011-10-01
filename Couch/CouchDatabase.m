@@ -369,6 +369,8 @@ static const NSUInteger kDocRetainLimit = 50;
         return;
     }
     
+    _lastSequenceNumber = sequence;
+    
     // Get document:
     NSString* docID = [change objectForKey: @"id"];
     CouchDocument* document = [self documentWithID: docID];
@@ -397,8 +399,6 @@ static const NSUInteger kDocRetainLimit = 50;
                   postingStyle: NSPostASAP 
                   coalesceMask: NSNotificationCoalescingOnSender
                       forModes: [NSArray arrayWithObject: NSRunLoopCommonModes]];
-    
-    _lastSequenceNumber = sequence;
 }
 
 
