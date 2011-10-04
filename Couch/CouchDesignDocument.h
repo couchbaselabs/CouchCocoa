@@ -41,6 +41,9 @@ extern NSString* const kCouchLanguageErlang;
     If view definitions have been modified but not saved yet, they will be saved first. */
 - (CouchQuery*) queryViewNamed: (NSString*)viewName;
 
+/** Indicates whether a given language is available for writing functions in, in this database. */
+- (BOOL) isLanguageAvailable: (NSString*)language;
+
 /** The language that the functions in this design document are written in.
     Defaults to kCouchLanguageJavaScript. */
 @property (copy) NSString* language;

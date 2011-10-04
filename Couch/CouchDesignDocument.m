@@ -14,6 +14,7 @@
 //  and limitations under the License.
 
 #import "CouchDesignDocument.h"
+#import "CouchDesignDocument_Embedded.h"
 #import "CouchInternal.h"
 
 
@@ -42,6 +43,23 @@ NSString* const kCouchLanguageErlang = @"erlang";
     [[self saveChanges] wait];
     NSString* path = [@"_view/" stringByAppendingString: viewName];
     return [[[CouchQuery alloc] initWithParent: self relativePath: path] autorelease];
+}
+
+
+- (BOOL) isLanguageAvailable: (NSString*)language {
+    // FIX: This should be determined by querying the server (somehow)
+    if ([language isEqualToString: kCouchLanguageJavaScript])
+        return YES;
+    else if ([language isEqualToString: kCouchLanguageErlang])
+        return YES;
+    else if ([language isEqualToString: kCouchLanguageObjectiveC]) {
+        // FIX: This isn't a reliable test for an embedded db.
+        if (![self.URL.host isEqualToString: @"127.0.0.1"])
+            return NO;
+        return [[self class] respondsToSelector: @selector(objCViewRegistry)]
+            && [[self class] performSelector: @selector(objCViewRegistry)] != nil;
+    } else
+        return NO;
 }
 
 
