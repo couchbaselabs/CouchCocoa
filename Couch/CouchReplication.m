@@ -25,8 +25,10 @@
 
 
 @interface CouchReplication ()
+@property (nonatomic, readwrite) BOOL running;
 @property (nonatomic, readwrite, copy) NSString* status;
 @property (nonatomic, readwrite) unsigned completed, total;
+@property (nonatomic, readwrite, retain) NSError* error;
 @end
 
 
@@ -54,6 +56,7 @@
     [self stop];
     [_remote release];
     [_database release];
+    [_error release];
     [super dealloc];
 }
 
@@ -84,44 +87,65 @@
 
 
 - (RESTOperation*) start {
-    if (_started)
+    if (_running)
         return nil;
-    _started = YES;
+    self.error = nil;
+    self.running = YES;
     RESTOperation* op = [self operationToStart: YES];
     [op onCompletion: ^{
         NSDictionary* response = op.responseBody.fromJSON;
-        if (op.isSuccessful) {
-            _taskID = [[response objectForKey: @"_local_id"] copy];
+        if (!op.isSuccessful) {
+            Warn(@"%@ couldn't start: %@", self, op.error);
+            self.error = op.error;
+            self.running = NO;
+        } else if ([response objectForKey: @"no_changes"]) {
+            // Nothing to replicate:
+            COUCHLOG(@"%@: no_changes", self);
+            self.running = NO;
+        } else {
+            // Get the activity/task ID from the response:
+            _taskID = [[response objectForKey: @"session_id"] copy];     // CouchDB 1.2+
+            if (!_taskID)
+                _taskID = [[response objectForKey: @"_local_id"] copy];  // Earlier versions
+            
             if (_taskID) {
                 // Successfully started:
+                COUCHLOG(@"%@: task ID = '%@'", self, _taskID);
                 [_database.server addObserver: self forKeyPath: @"activeTasks"
-                                      options:0 context: NULL];
+                                      options: 0 context: NULL];
+            } else  {
+                // Huh, something's wrong.
+                Warn(@"%@ couldn't find _local_id in response: %@", self, response);
+                self.running = NO;
+                self.error = [NSError errorWithDomain: CouchHTTPErrorDomain
+                                                 code: 599 userInfo: nil]; // TODO: Real err
             }
-        }
-        if (!_taskID) {
-            Warn(@"Couldn't start %@: %@", self, op.error);
-            _started = NO;
         }
     }];
     return op;
 }
 
 
+- (void) stopped {
+    self.status = nil;
+    if (_taskID) {
+        [_taskID release];
+        _taskID = nil;
+        [_database.server removeObserver: self forKeyPath: @"activeTasks"];
+    }
+    self.running = NO;
+}
+
+
 - (void) stop {
-    if (_started) {
+    if (_running) {
         [[self operationToStart: NO] start];
-        self.status = nil;
-        if (_taskID) {
-            [_taskID release];
-            _taskID = nil;
-            [_database.server removeObserver: self forKeyPath: @"activeTasks"];
-        }
-        _started = NO;
+        [self stopped];
     }
 }
 
 
-@synthesize status=_status, completed=_completed, total=_total;
+@synthesize running = _running, status=_status, completed=_completed, total=_total, error = _error;
 
 
 - (NSString*) status {
@@ -147,6 +171,7 @@
             Warn(@"CouchReplication: Unable to parse status string \"%@\"", _status);
         }
     }
+    
     if (completed != _completed || total != _total) {
         [self willChangeValueForKey: @"completed"];
         [self willChangeValueForKey: @"total"];
@@ -173,8 +198,13 @@
             }
         }
     }
-    if (!$equal(status, _status))
+    
+    if (!status) {
+        COUCHLOG(@"%@: No longer an active task", self);
+        [self stopped];
+    } else if (!$equal(status, _status)) {
         self.status = status;
+    }
 }
 
 

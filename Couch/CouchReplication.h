@@ -33,10 +33,11 @@ typedef NSUInteger CouchReplicationOptions;
     NSURL* _remote;
     BOOL _pull;
     CouchReplicationOptions _options;
-    BOOL _started;
+    BOOL _running;
     NSString* _taskID;
     NSString* _status;
     unsigned _completed, _total;
+    NSError* _error;
 }
 
 /** Starts the replication, asynchronously.
@@ -45,6 +46,8 @@ typedef NSUInteger CouchReplicationOptions;
 
 /** Stops replication, asynchronously. */
 - (void) stop;
+
+@property (nonatomic, readonly) BOOL running;
 
 /** The current status string from the server, if active, else nil (observable).
     Usually of the form "Processed 123 / 123 changes". */
@@ -55,5 +58,7 @@ typedef NSUInteger CouchReplicationOptions;
 
 /** The total number of changes to be processed, if the task is active, else 0 (observable). */
 @property (nonatomic, readonly) unsigned total;
+
+@property (nonatomic, readonly, retain) NSError* error;
 
 @end
