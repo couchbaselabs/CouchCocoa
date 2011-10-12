@@ -36,11 +36,20 @@
     Unlike CouchServer's -databaseNamed: method, if you call this twice with the same URL you _will_ get two distinct CouchDatabase objects (with two distinct CouchServers as parents.) */
 + (CouchDatabase*) databaseWithURL: (NSURL*)databaseURL;
 
+/** A convenience to instantiate a CouchDatabase directly from a name and a server URL, without having to first instantiate a CouchServer.
+    Unlike CouchServer's -databaseNamed: method, if you call this twice with the same URL/name you _will_ get two distinct CouchDatabase objects (with two distinct CouchServers as parents.) */
++ (CouchDatabase*) databaseNamed: (NSString*)databaseName
+                 onServerWithURL: (NSURL*)serverURL;
+
 @property (readonly) CouchServer* server;
 
 /** Creates the database on the server.
     Fails with an HTTP status 412 (Conflict) if a database with this name already exists. */
 - (RESTOperation*) create;
+
+/** Creates the database on the server, if it doesn't already exist (Synchronous).
+    This calls -create and waits for completion, but ignores HTTP status 412. */
+- (BOOL) ensureCreated: (NSError**)outError;
 
 /** Compacts the database, freeing up disk space by deleting old revisions of documents.
     This should be run periodically, especially after making a lot of changes.

@@ -34,10 +34,17 @@ static const NSUInteger kDocRetainLimit = 50;
 @implementation CouchDatabase
 
 
-+ (CouchDatabase*) databaseWithURL: (NSURL*)databaseURL {
-    NSURL* serverURL = [databaseURL URLByDeletingLastPathComponent];
++ (CouchDatabase*) databaseNamed: (NSString*)databaseName
+                 onServerWithURL: (NSURL*)serverURL
+{
     CouchServer* server = [[[CouchServer alloc] initWithURL: serverURL] autorelease];
-    return [server databaseNamed: [databaseURL lastPathComponent]];
+    return [server databaseNamed: databaseName];
+}
+
+
++ (CouchDatabase*) databaseWithURL: (NSURL*)databaseURL {
+    return [self databaseNamed: [databaseURL lastPathComponent]
+               onServerWithURL: [databaseURL URLByDeletingLastPathComponent]];
 }
 
 
@@ -62,6 +69,16 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (RESTOperation*) create {
     return [[self PUT: nil parameters: nil] start];
+}
+
+
+- (BOOL) ensureCreated: (NSError**)outError {
+    RESTOperation* op = [self create];
+    if (![op wait] && op.httpStatus != 412) {
+        if (outError) *outError = op.error;
+        return NO;
+    }
+    return YES;
 }
 
 

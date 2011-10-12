@@ -54,7 +54,7 @@ enum {
     COUCHLOG2(@"CouchChangeTracker: Starting with request:\n%@", _trackingRequest);
     
     /* Why are we using raw TCP streams rather than NSURLConnection? Good question.
-        NSURLConnection seems to have some kind of but with reading the output of _changes, maybe
+        NSURLConnection seems to have some kind of bug with reading the output of _changes, maybe
         because it's chunked and the stream doesn't close afterwards. At any rate, at least on
         OS X 10.6.7, the delegate never receives any notification of a response. The workaround
         is to act as a dumb HTTP parser and do the job ourselves. */
