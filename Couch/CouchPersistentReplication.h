@@ -43,6 +43,15 @@ typedef enum {
 /** Should the replication operate continuously, copying changes as soon as the source database is modified? (Defaults to NO). */
 @property bool continuous;
 
+/** Path of an optional filter function to run on the source server.
+    Only documents for which the function returns true are sent to the destination.
+    The path looks like "designdocname/filtername". */
+@property (copy) NSString* filter;
+
+/** Parameters to pass to the filter function.
+    Should be a JSON-compatible dictionary. */
+@property (copy) NSDictionary* query_params;
+
 /** The current state of replication activity. */
 @property (readonly) CouchReplicationState state;
 

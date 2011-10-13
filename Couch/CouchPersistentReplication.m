@@ -26,7 +26,7 @@
 @implementation CouchPersistentReplication
 
 
-@dynamic source, target, create_target, continuous;
+@dynamic source, target, create_target, continuous, filter, query_params;
 @synthesize state=_state, completed=_completed, total=_total;
 
 
