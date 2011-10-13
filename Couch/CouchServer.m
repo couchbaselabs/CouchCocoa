@@ -209,4 +209,19 @@ int gCouchLogLevel = 0;
 }
 
 
+- (void) registerActiveTask: (NSDictionary*)activeTask {
+    // Adds an item to .activeTasks. Using this avoids a nasty race condition in classes (like
+    // CouchReplication) that manage tasks and observe .activeTasks. If a task has a very short
+    // lifespan, it might be already finished by the next time I poll _active_tasks, so it'll never
+    // show up in the list. And since .activeTasks doesn't change, the observers won't be notified
+    // and won't find out that the task is gone. By changing .activeTasks now to account for the
+    // new task, we know it'll change again if the task is gone on the next poll, so the observer
+    // will find out.
+    NSMutableArray* tasks = _activeTasks ? [[_activeTasks mutableCopy] autorelease]
+                                         : [NSMutableArray array];
+    [tasks addObject: activeTask];
+    self.activeTasks = tasks;
+}
+
+
 @end

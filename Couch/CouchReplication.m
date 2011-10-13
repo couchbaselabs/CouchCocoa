@@ -111,6 +111,9 @@
             if (_taskID) {
                 // Successfully started:
                 COUCHLOG(@"%@: task ID = '%@'", self, _taskID);
+                [_database.server registerActiveTask: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                       @"Replication", @"type",
+                                                       _taskID, @"task", nil]];
                 [_database.server addObserver: self forKeyPath: @"activeTasks"
                                       options: 0 context: NULL];
             } else  {
