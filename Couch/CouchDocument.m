@@ -198,11 +198,22 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 
 - (NSDictionary*) properties {
-    return self.currentRevision.properties;
+    CouchRevision* rev = self.currentRevision;
+    if (rev)
+        return rev.properties;
+    NSString* docID = self.documentID;
+    if (docID)
+        return [NSDictionary dictionaryWithObject: docID forKey: @"_id"];
+    else
+        return [NSDictionary dictionary];
 }
 
 - (NSDictionary*) userProperties {
-    return self.currentRevision.userProperties;
+    CouchRevision* rev = self.currentRevision;
+    if (rev)
+        return rev.userProperties;
+    else
+        return [NSDictionary dictionary];
 }
 
 - (id) propertyForKey: (NSString*)key {
