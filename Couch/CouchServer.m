@@ -63,6 +63,11 @@ int gCouchLogLevel = 0;
 }
 
 
+- (BOOL) isEmbeddedServer {
+    return NO;  // CouchEmbeddedServer overrides this
+}
+
+
 - (NSString*) getVersion: (NSError**)outError {
     RESTOperation* op = [self GET];
     [op wait];
@@ -176,11 +181,16 @@ int gCouchLogLevel = 0;
     }
     RESTOperation* op = [_activityRsrc GET];
     [op onCompletion: ^{
-        [_activityRsrc cacheResponse: op];
-        NSArray* tasks = $castIf(NSArray, op.responseBody.fromJSON);
-        if (tasks && ![tasks isEqual: _activeTasks]) {
-            COUCHLOG2(@"CouchServer: activeTasks = %@", tasks);
-            self.activeTasks = tasks;    // Triggers KVO notification
+        if (op.isSuccessful) {
+            [_activityRsrc cacheResponse: op];
+            NSArray* tasks = $castIf(NSArray, op.responseBody.fromJSON);
+            if (tasks && ![tasks isEqual: _activeTasks]) {
+                COUCHLOG2(@"CouchServer: activeTasks = %@", tasks);
+                self.activeTasks = tasks;    // Triggers KVO notification
+            }
+        } else {
+            Warn(@"CouchServer: pollActivity failed with %@", op.error);
+            self.activityPollInterval = 0.0; // turn off polling
         }
     }];
 }

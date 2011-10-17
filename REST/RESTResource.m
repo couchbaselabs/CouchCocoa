@@ -93,6 +93,14 @@
 }
 
 
+- (void) setURL: (NSURL*)url {
+    NSParameterAssert(url);
+    NSAssert(!_parent, @"Can only change URL of root");
+    [_url autorelease];
+    _url = [url retain];
+}
+
+
 #pragma mark -
 #pragma mark HTTP METHODS:
 

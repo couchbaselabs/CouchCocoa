@@ -23,6 +23,7 @@
 #import "CouchQuery.h"
 #import "CouchRevision.h"
 #import "CouchServer.h"
+#import "CouchEmbeddedServer.h"
 
 
 /** @mainpage About CouchCocoa

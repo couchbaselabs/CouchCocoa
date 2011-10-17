@@ -75,6 +75,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 
 
 @interface CouchServer ()
+@property (readonly) BOOL isEmbeddedServer;
 - (CouchPersistentReplication*) replicationWithSource: (NSString*)source
                                                target: (NSString*)target;
 - (void) registerActiveTask: (NSDictionary*)activeTask;

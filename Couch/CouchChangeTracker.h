@@ -23,7 +23,7 @@
 {
     @private
     CouchDatabase* _database;
-    NSUInteger _lastSequenceNo;
+    NSUInteger _lastSequenceNumber;
     NSInputStream* _trackingInput;
     NSOutputStream* _trackingOutput;
     NSString* _trackingRequest;
@@ -32,7 +32,10 @@
     int _state;
 }
 
-- (id)initWithDatabase: (CouchDatabase*)database sequenceNumber: (NSUInteger)lastSequenceNo;
+- (id)initWithDatabase: (CouchDatabase*)database;
+
+@property (nonatomic) NSUInteger lastSequenceNumber;
+
 - (BOOL) start;
 - (void) stop;
 

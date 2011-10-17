@@ -41,6 +41,7 @@ static inline BOOL $equal(id a, id b) {return a==b || [a isEqual: b];}
 
 
 @interface RESTResource ()
+- (void) setURL: (NSURL*)url;
 @property (readwrite, retain) RESTCache* owningCache;
 - (NSURLCredential*) credentialForOperation: (RESTOperation*)op;
 @end

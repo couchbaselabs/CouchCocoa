@@ -352,6 +352,7 @@ static const NSUInteger kDocRetainLimit = 50;
 - (void) setLastSequenceNumber:(NSUInteger)lastSequenceNumber {
     _lastSequenceNumber = lastSequenceNumber;
     _lastSequenceNumberKnown = YES;
+    _tracker.lastSequenceNumber = _lastSequenceNumber;
 }
 
 
@@ -386,7 +387,7 @@ static const NSUInteger kDocRetainLimit = 50;
         return;
     }
     
-    _lastSequenceNumber = sequence;
+    self.lastSequenceNumber = sequence;
     
     // Get document:
     NSString* docID = [change objectForKey: @"id"];
@@ -454,8 +455,8 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) setTracksChanges: (BOOL)track {
     if (track && !_tracker) {
-        _tracker = [[CouchChangeTracker alloc] initWithDatabase: self
-                                                 sequenceNumber: self.lastSequenceNumber];
+        _tracker = [[CouchChangeTracker alloc] initWithDatabase: self];
+        _tracker.lastSequenceNumber = self.lastSequenceNumber;
         [_tracker start];
     } else if (!track && _tracker) {
         [_tracker stop];

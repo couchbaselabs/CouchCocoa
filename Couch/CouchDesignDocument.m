@@ -54,10 +54,9 @@ NSString* const kCouchLanguageErlang = @"erlang";
         return YES;
     else if ([language isEqualToString: kCouchLanguageObjectiveC]) {
         // FIX: This isn't a reliable test for an embedded db.
-        if (![self.URL.host isEqualToString: @"127.0.0.1"])
-            return NO;
-        return [[self class] respondsToSelector: @selector(objCViewRegistry)]
-            && [[self class] performSelector: @selector(objCViewRegistry)] != nil;
+        return [self.URL.host isEqualToString: @"127.0.0.1"]
+            && [[self class] respondsToSelector: @selector(objCCallbacks)]
+            && [[self class] performSelector: @selector(objCCallbacks)] != nil;
     } else
         return NO;
 }

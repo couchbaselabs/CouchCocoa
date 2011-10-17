@@ -16,8 +16,12 @@
 #import "CouchChangeTracker.h"
 
 #import "CouchDatabase.h"
+#import "CouchEmbeddedServer.h"
 #import "CouchInternal.h"
 
+#if TARGET_OS_IPHONE
+#import <UIKit/UIApplication.h>
+#endif
 
 // <http://wiki.apache.org/couchdb/HTTP_database_API#Changes>
 
@@ -32,26 +36,54 @@ enum {
 @implementation CouchChangeTracker
 
 
-- (id)initWithDatabase: (CouchDatabase*)database sequenceNumber: (NSUInteger)lastSequenceNo {
+@synthesize lastSequenceNumber = _lastSequenceNumber;
+
+
+- (id)initWithDatabase: (CouchDatabase*)database {
     NSParameterAssert(database);
     self = [super init];
     if (self) {
         _database = [database retain];
-        _lastSequenceNo = lastSequenceNo;
+
+#if TARGET_OS_IPHONE
+        NSNotificationCenter* nctr = [NSNotificationCenter defaultCenter];
+        UIApplication* app = [UIApplication sharedApplication];
+        [nctr addObserver: self selector: @selector(suspend:)
+                     name: UIApplicationDidEnterBackgroundNotification object: app];
+        
+        CouchServer* server = database.server;
+        if (server.isEmbeddedServer) {
+            [nctr addObserver: self selector: @selector(suspend:)
+                         name: CouchEmbeddedServerWillSuspendNotification object: server];
+            [nctr addObserver: self selector: @selector(resume:)
+                         name: CouchEmbeddedServerDidRestartNotification object: server];
+        } else {
+            [nctr addObserver: self selector: @selector(suspend:)
+                         name: UIApplicationDidEnterBackgroundNotification object: app];
+            [nctr addObserver: self selector: @selector(resume:)
+                         name: UIApplicationWillEnterForegroundNotification object: app];
+        }
+#endif
     }
-    
     return self;
 }
 
 
+- (NSString*) description {
+    return [NSString stringWithFormat: @"%@[%@]", [self class], _database.relativePath];
+}
+
+
 - (BOOL) start {
+    NSAssert(!_trackingInput, @"Already started");
+    
     NSURL* url = _database.URL;
     _trackingRequest = [[NSString stringWithFormat:
                          @"GET /%@/_changes?feed=continuous&heartbeat=300000&since=%u HTTP/1.1\r\n"
                          @"Host: %@\r\n"
                          @"\r\n",
-                         _database.relativePath, _lastSequenceNo, url.host] copy];
-    COUCHLOG2(@"CouchChangeTracker: Starting with request:\n%@", _trackingRequest);
+                         _database.relativePath, _lastSequenceNumber, url.host] copy];
+    COUCHLOG2(@"%@: Starting with request:\n%@", self, _trackingRequest);
     
     /* Why are we using raw TCP streams rather than NSURLConnection? Good question.
         NSURLConnection seems to have some kind of bug with reading the output of _changes, maybe
@@ -93,7 +125,7 @@ enum {
 
 
 - (void) stop {
-    COUCHLOG2(@"CouchChangeTracker: stop");
+    COUCHLOG2(@"%@: stop", self);
     [_trackingInput close];
     [_trackingInput release];
     _trackingInput = nil;
@@ -107,6 +139,19 @@ enum {
 }
 
 
+#if TARGET_OS_IPHONE
+- (void) suspend: (NSNotification*)n {
+    if (_trackingInput)
+        [self stop];
+}
+
+- (void) resume: (NSNotification*)n {
+    if (!_trackingInput)
+        [self start];
+}
+#endif
+
+
 - (BOOL) readLine {
     const char* start = _inputBuffer.bytes;
     const char* crlf = strnstr(start, "\r\n", _inputBuffer.length);
@@ -116,7 +161,7 @@ enum {
     NSString* line = [[[NSString alloc] initWithBytes: start
                                                length: lineLength
                                              encoding: NSUTF8StringEncoding] autorelease];
-    COUCHLOG3(@"CouchChangeTracker: LINE: \"%@\"", line);
+    COUCHLOG3(@"%@: LINE: \"%@\"", self, line);
     if (line) {
         switch (_state) {
             case kStateStatus: {
@@ -168,7 +213,7 @@ enum {
 - (void)stream: (NSInputStream*)stream handleEvent: (NSStreamEvent)eventCode {
     switch (eventCode) {
         case NSStreamEventHasSpaceAvailable: {
-            COUCHLOG3(@"CouchChangeTracker: HasSpaceAvailable %@", stream);
+            COUCHLOG3(@"%@: HasSpaceAvailable %@", self, stream);
             if (_trackingRequest) {
                 const char* buffer = [_trackingRequest UTF8String];
                 NSUInteger written = [(NSOutputStream*)stream write: (void*)buffer maxLength: strlen(buffer)];
@@ -181,13 +226,13 @@ enum {
             break;
         }
         case NSStreamEventHasBytesAvailable: {
-            COUCHLOG3(@"CouchChangeTracker: HasBytesAvailable %@", stream);
+            COUCHLOG3(@"%@: HasBytesAvailable %@", self, stream);
             while ([stream hasBytesAvailable]) {
                 uint8_t buffer[1024];
                 NSInteger bytesRead = [stream read: buffer maxLength: sizeof(buffer)];
                 if (bytesRead > 0) {
                     [_inputBuffer appendBytes: buffer length: bytesRead];
-                    COUCHLOG3(@"CouchChangeTracker: read %ld bytes", (long)bytesRead);
+                    COUCHLOG3(@"%@: read %ld bytes", self, (long)bytesRead);
                 }
             }
             while (_inputBuffer && [self readLine])
@@ -195,18 +240,18 @@ enum {
             break;
         }
         case NSStreamEventEndEncountered:
-            COUCHLOG3(@"CouchChangeTracker: EndEncountered %@", stream);
+            COUCHLOG3(@"%@: EndEncountered %@", self, stream);
             if (_inputBuffer.length > 0)
-                Warn(@"CouchChangeTracker connection closed with unparsed data in buffer");
+                Warn(@"%@ connection closed with unparsed data in buffer", self);
             [self stop];
             break;
         case NSStreamEventErrorOccurred:
-            COUCHLOG3(@"CouchChangeTracker: ErrorEncountered %@", stream);
+            COUCHLOG3(@"%@: ErrorEncountered %@", self, stream);
             [self stop];
             break;
             
         default:
-            COUCHLOG3(@"CouchChangeTracker: Event %lx on %@", (long)eventCode, stream);
+            COUCHLOG3(@"%@: Event %lx on %@", self, (long)eventCode, stream);
             break;
     }
 }
