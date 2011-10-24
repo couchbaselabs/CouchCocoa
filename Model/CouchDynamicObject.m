@@ -138,7 +138,8 @@ static BOOL getPropertyInfo(Class cls,
     const char *name = [propertyName UTF8String];
     objc_property_t property = class_getProperty(cls, name);
     if (!property) {
-        COUCHLOG(@"%@ has no dynamic property named '%@' -- failure likely", cls, propertyName);
+        if (![propertyName hasPrefix: @"primitive"])    // Ignore "primitiveXXX" KVC accessors
+            COUCHLOG(@"%@ has no dynamic property named '%@' -- failure likely", cls, propertyName);
         *propertyType = NULL;
         return NO;
     }
