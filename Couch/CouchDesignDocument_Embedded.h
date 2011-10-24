@@ -9,8 +9,10 @@
 #import "CouchDesignDocument.h"
 #ifdef COUCHCOCOA_IMPL
 #import "CouchbaseCallbacks.h"
-#else
+#elif TARGET_OS_IPHONE
 #import <Couchbase/CouchbaseCallbacks.h>
+#else
+#import <CouchbaseMac/CouchbaseCallbacks.h>
 #endif
 
 

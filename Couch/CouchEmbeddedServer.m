@@ -46,7 +46,11 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
     self = [super initWithURL: [NSURL URLWithString: @"http://127.0.0.1:0"]];
     if (self) {
         // Look up class at runtime to avoid having to link against Couchbase.framework:
+#if TARGET_OS_IPHONE
         Class couchbaseClass = NSClassFromString(@"CouchbaseMobile");
+#else
+        Class couchbaseClass = NSClassFromString(@"Couchbase");
+#endif
         NSAssert(couchbaseClass!=nil, @"Not linked with Couchbase framework");
         _couchbase = [[couchbaseClass alloc] init];
         _couchbase.delegate = self;
@@ -132,6 +136,13 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
 -(void)couchbaseMobile:(CouchbaseMobile*)couchbase failedToStart:(NSError*)error {
     self.error = error;
     _onStartBlock();
+}
+
+-(void)couchbase:(CouchbaseMobile*)couchbase didStart:(NSURL*)serverURL {
+    [self couchbaseMobile: couchbase didStart: serverURL];
+}
+-(void)couchbase:(CouchbaseMobile*)couchbase failedToStart:(NSError*)error {
+    [self couchbaseMobile: couchbase failedToStart: error];
 }
 
 
