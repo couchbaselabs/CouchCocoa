@@ -119,34 +119,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00039"></a>00039 
 <a name="l00042"></a>00042 - (<a class="code" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a>*) queryViewNamed: (NSString*)viewName;
 <a name="l00043"></a>00043 
-<a name="l00046"></a><a class="code" href="interfaceCouchDesignDocument.html#a0994b466827b310412a2265966de2974">00046</a> <span class="keyword">@property</span> (copy) NSString* language;
-<a name="l00047"></a>00047 
-<a name="l00050"></a><a class="code" href="interfaceCouchDesignDocument.html#a4ab9f87cdcd1ee77f06a3e4e4fe73cca">00050</a> <span class="keyword">@property</span> (readonly) NSArray* viewNames;
-<a name="l00051"></a>00051 
-<a name="l00053"></a>00053 - (NSString*) mapFunctionOfViewNamed: (NSString*)viewName;
+<a name="l00045"></a>00045 - (BOOL) isLanguageAvailable: (NSString*)language;
+<a name="l00046"></a>00046 
+<a name="l00049"></a><a class="code" href="interfaceCouchDesignDocument.html#a0994b466827b310412a2265966de2974">00049</a> <span class="keyword">@property</span> (copy) NSString* language;
+<a name="l00050"></a>00050 
+<a name="l00053"></a><a class="code" href="interfaceCouchDesignDocument.html#a4ab9f87cdcd1ee77f06a3e4e4fe73cca">00053</a> <span class="keyword">@property</span> (readonly) NSArray* viewNames;
 <a name="l00054"></a>00054 
-<a name="l00056"></a>00056 - (NSString*) reduceFunctionOfViewNamed: (NSString*)viewName;
+<a name="l00056"></a>00056 - (NSString*) mapFunctionOfViewNamed: (NSString*)viewName;
 <a name="l00057"></a>00057 
-<a name="l00064"></a>00064 - (void) defineViewNamed: (NSString*)viewName
-<a name="l00065"></a>00065                      map: (NSString*)mapFunction
-<a name="l00066"></a>00066                   reduce: (NSString*)reduceFunction;
-<a name="l00067"></a>00067 
-<a name="l00073"></a>00073 - (void) defineViewNamed: (NSString*)viewName
-<a name="l00074"></a>00074                      map: (NSString*)mapFunction;
-<a name="l00075"></a>00075 
-<a name="l00077"></a><a class="code" href="interfaceCouchDesignDocument.html#ab89eaefef43717bf722760b75cf38680">00077</a> <span class="keyword">@property</span> (copy) NSString* validation;
+<a name="l00059"></a>00059 - (NSString*) reduceFunctionOfViewNamed: (NSString*)viewName;
+<a name="l00060"></a>00060 
+<a name="l00067"></a>00067 - (void) defineViewNamed: (NSString*)viewName
+<a name="l00068"></a>00068                      map: (NSString*)mapFunction
+<a name="l00069"></a>00069                   reduce: (NSString*)reduceFunction;
+<a name="l00070"></a>00070 
+<a name="l00076"></a>00076 - (void) defineViewNamed: (NSString*)viewName
+<a name="l00077"></a>00077                      map: (NSString*)mapFunction;
 <a name="l00078"></a>00078 
-<a name="l00080"></a><a class="code" href="interfaceCouchDesignDocument.html#ab2dc920adf3987f86020fcccd45f5389">00080</a> <span class="keyword">@property</span> (readonly) BOOL changed;
+<a name="l00080"></a><a class="code" href="interfaceCouchDesignDocument.html#ab89eaefef43717bf722760b75cf38680">00080</a> <span class="keyword">@property</span> (copy) NSString* validation;
 <a name="l00081"></a>00081 
-<a name="l00083"></a>00083 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) saveChanges;
+<a name="l00083"></a><a class="code" href="interfaceCouchDesignDocument.html#ab2dc920adf3987f86020fcccd45f5389">00083</a> <span class="keyword">@property</span> (readonly) BOOL changed;
 <a name="l00084"></a>00084 
-<a name="l00085"></a>00085 <span class="keyword">@end</span>
+<a name="l00086"></a>00086 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) saveChanges;
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchDesignDocument.h</b>      </li>
-      <li class="footer">Generated on Wed Aug 31 2011 17:35:31 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Oct 25 2011 14:09:13 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

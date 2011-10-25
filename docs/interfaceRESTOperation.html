@@ -102,8 +102,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a <a class="el" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>, but doesn't start loading it yet.  <a href="#a5bf06f0cb752a85b2f6ed50664e3e3bf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTOperation.html#a549bc6529018af8bb8eddab14e45c4ac">setValue:forHeader:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an HTTP request header.  <a href="#a549bc6529018af8bb8eddab14e45c4ac"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTOperation.html#a5577e5d6cec6dcb8ee71ddac79efd3de">start</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the request, asynchronously.  <a href="#a5577e5d6cec6dcb8ee71ddac79efd3de"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTOperation.html#ad80f8abe72f31a1d8192ccefd3f00a84">start</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the request, asynchronously.  <a href="#ad80f8abe72f31a1d8192ccefd3f00a84"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(BOOL)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTOperation.html#a1a0bc199e782fb8acb98cbe8b2d6f643">onCompletion:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Will call the given block when the request finishes.  <a href="#a1a0bc199e782fb8acb98cbe8b2d6f643"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(BOOL)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTOperation.html#a13e2754a503111dee6aadc1f9c987028">wait</a></td></tr>
@@ -228,12 +228,12 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a class="anchor" id="a5577e5d6cec6dcb8ee71ddac79efd3de"></a><!-- doxytag: member="RESTOperation::start" ref="a5577e5d6cec6dcb8ee71ddac79efd3de" args="()" -->
+<a class="anchor" id="ad80f8abe72f31a1d8192ccefd3f00a84"></a><!-- doxytag: member="RESTOperation::start" ref="ad80f8abe72f31a1d8192ccefd3f00a84" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (void) start </td>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) start </td>
           <td></td>
           <td class="paramname"></td>
           <td></td>
@@ -244,6 +244,7 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 <p>Sends the request, asynchronously. </p>
 <p>Subsequent calls do nothing. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The receiver (self), to make it easy to say "return [op start];". </dd></dl>
 
 </div>
 </div>
@@ -506,7 +507,7 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceRESTOperation.html">RESTOperation</a>      </li>
-      <li class="footer">Generated on Wed Aug 31 2011 17:35:31 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Oct 25 2011 14:09:13 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

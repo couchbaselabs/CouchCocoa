@@ -103,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00022"></a><a class="code" href="interfaceCouchAttachment.html">00022</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a> : <a class="code" href="interfaceCouchResource.html" title="Superclass of CouchDB model classes.">CouchResource</a>
 <a name="l00023"></a>00023 {
 <a name="l00024"></a>00024     <span class="keyword">@private</span>
-<a name="l00025"></a>00025     NSString* _contentType;
+<a name="l00025"></a>00025     NSDictionary* _metadata;
 <a name="l00026"></a>00026 }
 <a name="l00027"></a>00027 
 <a name="l00029"></a><a class="code" href="interfaceCouchAttachment.html#a9359166426768bdba213e03c134c56ca">00029</a> <span class="keyword">@property</span> (readonly) CouchRevision* revision;
@@ -112,21 +112,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00033"></a>00033 
 <a name="l00035"></a><a class="code" href="interfaceCouchAttachment.html#af6a7fdec8a51b7ddd7d92d47a8324d26">00035</a> <span class="keyword">@property</span> (readonly) NSString* name;
 <a name="l00036"></a>00036 
-<a name="l00038"></a><a class="code" href="interfaceCouchAttachment.html#a10cb82e3d8f8852c70357b7dba9748c0">00038</a> <span class="keyword">@property</span> (readonly, copy) NSString* contentType;
+<a name="l00038"></a><a class="code" href="interfaceCouchAttachment.html#a10cb82e3d8f8852c70357b7dba9748c0">00038</a> <span class="keyword">@property</span> (readonly) NSString* contentType;
 <a name="l00039"></a>00039 
-<a name="l00042"></a><a class="code" href="interfaceCouchAttachment.html#a838d1e0555fd0e33f8582a2e279ecb2c">00042</a> <span class="keyword">@property</span> (readonly) NSURL* unversionedURL;
-<a name="l00043"></a>00043 
-<a name="l00045"></a>00045 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) PUT: (NSData*)body contentType: (NSString*)contentType;
-<a name="l00046"></a>00046 
-<a name="l00048"></a>00048 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) PUT: (NSData*)body;
+<a name="l00041"></a><a class="code" href="interfaceCouchAttachment.html#a2f88604ad9ca4d4807ef120d77a93fac">00041</a> <span class="keyword">@property</span> (readonly) UInt64 length;
+<a name="l00042"></a>00042 
+<a name="l00044"></a><a class="code" href="interfaceCouchAttachment.html#ab8d50a268536f4b4f607600eb2019f9b">00044</a> <span class="keyword">@property</span> (readonly) NSDictionary* metadata;
+<a name="l00045"></a>00045 
+<a name="l00048"></a><a class="code" href="interfaceCouchAttachment.html#a7bdabf54e99dbf39d660cf1786f8a691">00048</a> <span class="keyword">@property</span> (copy) NSData* body;
 <a name="l00049"></a>00049 
-<a name="l00050"></a>00050 <span class="keyword">@end</span>
+<a name="l00052"></a><a class="code" href="interfaceCouchAttachment.html#a838d1e0555fd0e33f8582a2e279ecb2c">00052</a> <span class="keyword">@property</span> (readonly) NSURL* unversionedURL;
+<a name="l00053"></a>00053 
+<a name="l00055"></a>00055 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) PUT: (NSData*)body contentType: (NSString*)contentType;
+<a name="l00056"></a>00056 
+<a name="l00058"></a>00058 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) PUT: (NSData*)body;
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchAttachment.h</b>      </li>
-      <li class="footer">Generated on Wed Aug 31 2011 17:35:31 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Oct 25 2011 14:09:13 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

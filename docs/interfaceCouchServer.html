@@ -98,8 +98,9 @@ Inheritance diagram for CouchServer:</div>
  <div class="center">
   <img src="interfaceCouchServer.png" usemap="#CouchServer_map" alt=""/>
   <map id="CouchServer_map" name="CouchServer_map">
-<area href="interfaceCouchResource.html" title="Superclass of CouchDB model classes." alt="CouchResource" shape="rect" coords="0,56,103,80"/>
-<area href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL." alt="RESTResource" shape="rect" coords="0,0,103,24"/>
+<area href="interfaceCouchResource.html" title="Superclass of CouchDB model classes." alt="CouchResource" shape="rect" coords="0,56,147,80"/>
+<area href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL." alt="RESTResource" shape="rect" coords="0,0,147,24"/>
+<area href="interfaceCouchEmbeddedServer.html" title="A convenience class that glues Couchbase Mobile into CouchCocoa." alt="CouchEmbeddedServer" shape="rect" coords="0,168,147,192"/>
 </map>
  </div></div>
 
@@ -125,6 +126,8 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of active server tasks, as parsed JSON (observable).  <a href="#a1095a833583d30a70d2f75124a9e7f10"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSTimeInterval&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchServer.html#a1766f0f99f943a4d0959a6f67354ae3b">activityPollInterval</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">How often to poll the server's list of active tasks and update .activeTasks.  <a href="#a1766f0f99f943a4d0959a6f67354ae3b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchServer.html#a8b520483c5ebc816fc486cbbab0ad75f">replications</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">All currently defined CouchPersistentReplications (as stored in the replicator database.) To create a replication, use the methods on <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>.  <a href="#a8b520483c5ebc816fc486cbbab0ad75f"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>The top level of a CouchDB server. </p>
@@ -149,6 +152,8 @@ Properties</h2></td></tr>
 
 <p>Implements <a class="el" href="interfaceRESTResource.html#a7f48a64185114282343f2067d9939619">RESTResource</a>.</p>
 
+<p>Implemented in <a class="el" href="interfaceCouchEmbeddedServer.html#a809b413f038d2aed21bed5f8cdd09f44">CouchEmbeddedServer</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a2265ce32dc22e859fc66db11e36a7aa1"></a><!-- doxytag: member="CouchServer::init" ref="a2265ce32dc22e859fc66db11e36a7aa1" args="()" -->
@@ -166,6 +171,8 @@ Properties</h2></td></tr>
 <div class="memdoc">
 
 <p>Without a URL, connects to localhost on default port 5984. </p>
+
+<p>Implemented in <a class="el" href="interfaceCouchEmbeddedServer.html#a395af1ec6a8f9b692b8b84bc3b68e767">CouchEmbeddedServer</a>.</p>
 
 </div>
 </div>
@@ -280,6 +287,21 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a8b520483c5ebc816fc486cbbab0ad75f"></a><!-- doxytag: member="CouchServer::replications" ref="a8b520483c5ebc816fc486cbbab0ad75f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSArray*) replications<code> [read, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>All currently defined CouchPersistentReplications (as stored in the replicator database.) To create a replication, use the methods on <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Couch/<a class="el" href="CouchServer_8h_source.html">CouchServer.h</a></li>
 </ul>
@@ -288,7 +310,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchServer.html">CouchServer</a>      </li>
-      <li class="footer">Generated on Wed Aug 31 2011 17:35:31 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Oct 25 2011 14:09:13 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

@@ -114,29 +114,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00033"></a>00033     NSURL* _remote;
 <a name="l00034"></a>00034     BOOL _pull;
 <a name="l00035"></a>00035     CouchReplicationOptions _options;
-<a name="l00036"></a>00036     BOOL _started;
+<a name="l00036"></a>00036     BOOL _running;
 <a name="l00037"></a>00037     NSString* _taskID;
 <a name="l00038"></a>00038     NSString* _status;
 <a name="l00039"></a>00039     <span class="keywordtype">unsigned</span> _completed, _total;
-<a name="l00040"></a>00040 }
-<a name="l00041"></a>00041 
-<a name="l00044"></a>00044 - (RESTOperation*) start;
-<a name="l00045"></a>00045 
-<a name="l00047"></a>00047 - (void) stop;
-<a name="l00048"></a>00048 
-<a name="l00051"></a><a class="code" href="interfaceCouchReplication.html#ad8539ef404692f2c1e05f39b1a278176">00051</a> <span class="keyword">@property</span> (nonatomic, readonly, copy) NSString* status;
-<a name="l00052"></a>00052 
-<a name="l00054"></a><a class="code" href="interfaceCouchReplication.html#a42854483e5f6c8fc40f08431a3a358d2">00054</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
+<a name="l00040"></a>00040     NSError* _error;
+<a name="l00041"></a>00041 }
+<a name="l00042"></a>00042 
+<a name="l00045"></a>00045 - (RESTOperation*) start;
+<a name="l00046"></a>00046 
+<a name="l00048"></a>00048 - (void) stop;
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="keyword">@property</span> (nonatomic, readonly) BOOL running;
+<a name="l00051"></a>00051 
+<a name="l00054"></a><a class="code" href="interfaceCouchReplication.html#ad8539ef404692f2c1e05f39b1a278176">00054</a> <span class="keyword">@property</span> (nonatomic, readonly, copy) NSString* status;
 <a name="l00055"></a>00055 
-<a name="l00057"></a><a class="code" href="interfaceCouchReplication.html#a8a764ea121c757fee8eef4e303e77d1e">00057</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
+<a name="l00057"></a><a class="code" href="interfaceCouchReplication.html#a42854483e5f6c8fc40f08431a3a358d2">00057</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
 <a name="l00058"></a>00058 
-<a name="l00059"></a>00059 <span class="keyword">@end</span>
+<a name="l00060"></a><a class="code" href="interfaceCouchReplication.html#a8a764ea121c757fee8eef4e303e77d1e">00060</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062 <span class="keyword">@property</span> (nonatomic, readonly, retain) NSError* error;
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchReplication.h</b>      </li>
-      <li class="footer">Generated on Wed Aug 31 2011 17:35:31 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Oct 25 2011 14:09:13 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

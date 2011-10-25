@@ -142,6 +142,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>clearDocumentCache
 : <a class="el" href="interfaceCouchDatabase.html#a70dd409ff51d61ebc7d3415c9e7dc2f5">CouchDatabase</a>
 </li>
+<li>compact
+: <a class="el" href="interfaceCouchDatabase.html#a395a1cf628c26bcb06ebc331991ffd77">CouchDatabase</a>
+</li>
+<li>couchbaseMobile:didStart:
+: <a class="el" href="protocolCouchbaseDelegate-p.html#a4ad43d84e7459750955d3da4414c3187">&lt;CouchbaseDelegate&gt;</a>
+</li>
+<li>couchbaseMobile:failedToStart:
+: <a class="el" href="protocolCouchbaseDelegate-p.html#aff201de876b8f673335df3570c0fbdde">&lt;CouchbaseDelegate&gt;</a>
+</li>
 <li>couchDocumentChanged:
 : <a class="el" href="protocolCouchDocumentModel-p.html#ab9b34f8ada06a12348f987c0fc9cf392">&lt;CouchDocumentModel&gt;</a>
 </li>
@@ -164,6 +173,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>databaseNamed:
 : <a class="el" href="interfaceCouchServer.html#ac32e45ec1035052b0341888fb4dd91a6">CouchServer</a>
 </li>
+<li>databaseNamed:onServerWithURL:
+: <a class="el" href="interfaceCouchDatabase.html#a93cb0bb2625ea21ae1a281c77a2473e5">CouchDatabase</a>
+</li>
 <li>databaseWithURL:
 : <a class="el" href="interfaceCouchDatabase.html#a66f68e93735588dfb3b57293de2c4959">CouchDatabase</a>
 </li>
@@ -181,6 +193,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>defineViewNamed:map:reduce:
 : <a class="el" href="interfaceCouchDesignDocument.html#aea25955362191613cf3315f006049a8c">CouchDesignDocument</a>
+</li>
+<li>defineViewNamed:mapBlock:
+: <a class="el" href="interfaceCouchDesignDocument.html#a78d06c3d01c5aff6bb727d2e4839a51c">CouchDesignDocument</a>
+</li>
+<li>defineViewNamed:mapBlock:reduceBlock:
+: <a class="el" href="interfaceCouchDesignDocument.html#af6d34b0d360747a65ace210c787c3582">CouchDesignDocument</a>
 </li>
 <li>DELETE
 : <a class="el" href="interfaceRESTResource.html#ae591764ae69c32f8f30ecf8ed5d04532">RESTResource</a>
@@ -204,6 +222,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>ensureCreated:
+: <a class="el" href="interfaceCouchDatabase.html#ac7211ab2af08f60d17e2ff5f4486d5b2">CouchDatabase</a>
+</li>
 <li>entityHeadersFrom:
 : <a class="el" href="interfaceRESTBody.html#a468d9e20a5ea7fdc814c18f7a05d187b">RESTBody</a>
 </li>
@@ -253,10 +274,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
 <li>init
-: <a class="el" href="interfaceCouchServer.html#a2265ce32dc22e859fc66db11e36a7aa1">CouchServer</a>
+: <a class="el" href="interfaceCouchbaseMobile.html#aeb94718c65d9620cc188fc0ca7efb40d">CouchbaseMobile</a>
+, <a class="el" href="interfaceCouchEmbeddedServer.html#a395af1ec6a8f9b692b8b84bc3b68e767">CouchEmbeddedServer</a>
+, <a class="el" href="interfaceCouchServer.html#a2265ce32dc22e859fc66db11e36a7aa1">CouchServer</a>
 </li>
 <li>initUntitledWithParent:
 : <a class="el" href="interfaceRESTResource.html#a0f3ad4a9d5d25715ff94edbabdef7ffa">RESTResource</a>
+</li>
+<li>initWithBundlePath:
+: <a class="el" href="interfaceCouchbaseMobile.html#a81a44cce515519d48025f86b84a3664a">CouchbaseMobile</a>
 </li>
 <li>initWithContent:headers:resource:
 : <a class="el" href="interfaceRESTBody.html#a563250a271dae3c349df2722864c88f6">RESTBody</a>
@@ -272,7 +298,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>initWithURL:
 : <a class="el" href="interfaceRESTResource.html#a7f48a64185114282343f2067d9939619">RESTResource</a>
+, <a class="el" href="interfaceCouchEmbeddedServer.html#a809b413f038d2aed21bed5f8cdd09f44">CouchEmbeddedServer</a>
 , <a class="el" href="interfaceCouchServer.html#ab16e6429b8132ae19d8b72226e3b4703">CouchServer</a>
+</li>
+<li>installDefaultDatabase:
+: <a class="el" href="interfaceCouchbaseMobile.html#af240b9012827c35f0a679bc7919c053f">CouchbaseMobile</a>
+</li>
+<li>isLanguageAvailable:
+: <a class="el" href="interfaceCouchDesignDocument.html#a1888f01c297c17293cd5fcd9163606f4">CouchDesignDocument</a>
 </li>
 </ul>
 
@@ -374,6 +407,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>reduceFunctionOfViewNamed:
 : <a class="el" href="interfaceCouchDesignDocument.html#af8e765b6c87b54bdc9107379a83f4f38">CouchDesignDocument</a>
 </li>
+<li>replicateWithURL:exclusively:
+: <a class="el" href="interfaceCouchDatabase.html#a9ceb30e194df080959ec4a9dde91d945">CouchDatabase</a>
+</li>
+<li>replicationFromDatabaseAtURL:
+: <a class="el" href="interfaceCouchDatabase.html#a76969effe69959e9ebd3f883ef05297e">CouchDatabase</a>
+</li>
+<li>replicationToDatabaseAtURL:
+: <a class="el" href="interfaceCouchDatabase.html#a2b6cfd3a7912a235fa7062789faa0bde">CouchDatabase</a>
+</li>
 <li>requestWithMethod:parameters:
 : <a class="el" href="interfaceRESTResource.html#a778e04b4d973e3fde07c431804f0bafc">RESTResource</a>
 </li>
@@ -385,6 +427,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>resourceWithRelativePath:
 : <a class="el" href="interfaceRESTCache.html#adcdcbedc699143892cca603f5f580d20">RESTCache</a>
+</li>
+<li>restart
+: <a class="el" href="interfaceCouchbaseMobile.html#a1a9ca4ba77170f2d758962479f7e3e39">CouchbaseMobile</a>
 </li>
 <li>revisionWithID:
 : <a class="el" href="interfaceCouchDocument.html#a511a8b00f2affff1fec9601b0d56eae2">CouchDocument</a>
@@ -417,6 +462,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>setValue:forHeader:
 : <a class="el" href="interfaceRESTOperation.html#a549bc6529018af8bb8eddab14e45c4ac">RESTOperation</a>
 </li>
+<li>sharedInstance
+: <a class="el" href="interfaceCouchEmbeddedServer.html#a466b357eb373534c786626a00c03c8d7">CouchEmbeddedServer</a>
+</li>
 <li>slowQueryWithMap:
 : <a class="el" href="interfaceCouchDatabase.html#a7029724505256f6dcbb32ac4527cb4b2">CouchDatabase</a>
 </li>
@@ -424,9 +472,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="interfaceCouchDatabase.html#a885f5731cf9285e3979e10d558eb5b27">CouchDatabase</a>
 </li>
 <li>start
-: <a class="el" href="interfaceCouchReplication.html#adc5ff0fc26fc4a0eba7010713e485b8d">CouchReplication</a>
-, <a class="el" href="interfaceRESTOperation.html#a5577e5d6cec6dcb8ee71ddac79efd3de">RESTOperation</a>
+: <a class="el" href="interfaceCouchbaseMobile.html#a870675954f299e5fb9dd53de7ac176ee">CouchbaseMobile</a>
 , <a class="el" href="interfaceCouchQuery.html#ac46be0005c3cdd5f24f44b7246c3d45d">CouchQuery</a>
+, <a class="el" href="interfaceCouchReplication.html#adc5ff0fc26fc4a0eba7010713e485b8d">CouchReplication</a>
+, <a class="el" href="interfaceRESTOperation.html#ad80f8abe72f31a1d8192ccefd3f00a84">RESTOperation</a>
+</li>
+<li>start:
+: <a class="el" href="interfaceCouchEmbeddedServer.html#af00ec75cef84cd551dc5c406d32e73ad">CouchEmbeddedServer</a>
+</li>
+<li>startCouchbase:
+: <a class="el" href="interfaceCouchbaseMobile.html#a1dbb1699b8c25981fc2fdacdcd1e7744">CouchbaseMobile</a>
 </li>
 <li>stop
 : <a class="el" href="interfaceCouchReplication.html#a6b2b66c69ab3c1ee40db51a5ba94d163">CouchReplication</a>
@@ -446,7 +501,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
 <li>wait
-: <a class="el" href="interfaceRESTOperation.html#a13e2754a503111dee6aadc1f9c987028">RESTOperation</a>
+: <a class="el" href="interfaceCouchLiveQuery.html#a28323f4eee256b95279a1747dc4da5de">CouchLiveQuery</a>
+, <a class="el" href="interfaceRESTOperation.html#a13e2754a503111dee6aadc1f9c987028">RESTOperation</a>
 </li>
 <li>wait:
 : <a class="el" href="interfaceRESTOperation.html#abcd3ea9435ddcbb5d452f2b4857d4268">RESTOperation</a>
@@ -456,7 +512,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Wed Aug 31 2011 17:35:31 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Oct 25 2011 14:09:13 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

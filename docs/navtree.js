@@ -4,12 +4,18 @@ var NAVTREE =
     [ "About CouchCocoa", "index.html", null ],
     [ "Class List", "annotated.html", [
       [ "CouchAttachment", "interfaceCouchAttachment.html", null ],
+      [ "CouchbaseCallbacks", "interfaceCouchbaseCallbacks.html", null ],
+      [ "<CouchbaseDelegate>", "protocolCouchbaseDelegate-p.html", null ],
+      [ "CouchbaseMobile", "interfaceCouchbaseMobile.html", null ],
+      [ "<CouchbaseValidationContext>", "protocolCouchbaseValidationContext-p.html", null ],
       [ "CouchChangeTracker", "interfaceCouchChangeTracker.html", null ],
       [ "CouchDatabase", "interfaceCouchDatabase.html", null ],
       [ "CouchDesignDocument", "interfaceCouchDesignDocument.html", null ],
       [ "CouchDocument", "interfaceCouchDocument.html", null ],
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
+      [ "CouchEmbeddedServer", "interfaceCouchEmbeddedServer.html", null ],
       [ "CouchLiveQuery", "interfaceCouchLiveQuery.html", null ],
+      [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ],
       [ "CouchQuery", "interfaceCouchQuery.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
@@ -17,6 +23,7 @@ var NAVTREE =
       [ "CouchResource", "interfaceCouchResource.html", null ],
       [ "CouchRevision", "interfaceCouchRevision.html", null ],
       [ "CouchServer", "interfaceCouchServer.html", null ],
+      [ "RESTBase64", "interfaceRESTBase64.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", null ],
       [ "RESTCache", "interfaceRESTCache.html", null ],
       [ "RESTMutableBody", "interfaceRESTMutableBody.html", null ],
@@ -25,11 +32,17 @@ var NAVTREE =
     ] ],
     [ "Class Index", "classes.html", null ],
     [ "Class Hierarchy", "hierarchy.html", [
+      [ "CouchbaseCallbacks", "interfaceCouchbaseCallbacks.html", null ],
+      [ "<CouchbaseDelegate>", "protocolCouchbaseDelegate-p.html", null ],
+      [ "CouchbaseMobile", "interfaceCouchbaseMobile.html", null ],
+      [ "<CouchbaseValidationContext>", "protocolCouchbaseValidationContext-p.html", null ],
       [ "CouchChangeTracker", "interfaceCouchChangeTracker.html", null ],
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
+      [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
       [ "CouchReplication", "interfaceCouchReplication.html", null ],
+      [ "RESTBase64", "interfaceRESTBase64.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", [
         [ "RESTMutableBody", "interfaceRESTMutableBody.html", null ]
       ] ],
@@ -46,24 +59,32 @@ var NAVTREE =
             [ "CouchLiveQuery", "interfaceCouchLiveQuery.html", null ]
           ] ],
           [ "CouchRevision", "interfaceCouchRevision.html", null ],
-          [ "CouchServer", "interfaceCouchServer.html", null ]
+          [ "CouchServer", "interfaceCouchServer.html", [
+            [ "CouchEmbeddedServer", "interfaceCouchEmbeddedServer.html", null ]
+          ] ]
         ] ]
       ] ]
     ] ],
     [ "Class Members", "functions.html", null ],
     [ "File List", "files.html", [
       [ "Couch/CouchAttachment.h", null, null ],
+      [ "Couch/CouchbaseCallbacks.h", null, null ],
+      [ "Couch/CouchbaseMobile.h", null, null ],
       [ "Couch/CouchChangeTracker.h", null, null ],
       [ "Couch/CouchCocoa.h", null, null ],
       [ "Couch/CouchDatabase.h", null, null ],
       [ "Couch/CouchDesignDocument.h", null, null ],
+      [ "Couch/CouchDesignDocument_Embedded.h", null, null ],
       [ "Couch/CouchDocument.h", null, null ],
+      [ "Couch/CouchEmbeddedServer.h", null, null ],
+      [ "Couch/CouchPersistentReplication.h", null, null ],
       [ "Couch/CouchQuery.h", null, null ],
       [ "Couch/CouchReplication.h", null, null ],
       [ "Couch/CouchResource.h", null, null ],
       [ "Couch/CouchRevision.h", null, null ],
       [ "Couch/CouchServer.h", null, null ],
       [ "REST/REST.h", null, null ],
+      [ "REST/RESTBase64.h", null, null ],
       [ "REST/RESTBody.h", null, null ],
       [ "REST/RESTCache.h", null, null ],
       [ "REST/RESTOperation.h", null, null ],

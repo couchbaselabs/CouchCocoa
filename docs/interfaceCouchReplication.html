@@ -112,8 +112,8 @@ NSURL *&#160;</td><td class="memItemRight" valign="bottom"><b>_remote</b></td></
 BOOL&#160;</td><td class="memItemRight" valign="bottom"><b>_pull</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb902930b8cb20ddac6bff60f26f4e69"></a><!-- doxytag: member="CouchReplication::_options" ref="acb902930b8cb20ddac6bff60f26f4e69" args="" -->
 CouchReplicationOptions&#160;</td><td class="memItemRight" valign="bottom"><b>_options</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9c9494a7013ce9b465cacddf1b0a9c5"></a><!-- doxytag: member="CouchReplication::_started" ref="ab9c9494a7013ce9b465cacddf1b0a9c5" args="" -->
-BOOL&#160;</td><td class="memItemRight" valign="bottom"><b>_started</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8bce2bb4fd2fe46472d4d5296371284"></a><!-- doxytag: member="CouchReplication::_running" ref="ad8bce2bb4fd2fe46472d4d5296371284" args="" -->
+BOOL&#160;</td><td class="memItemRight" valign="bottom"><b>_running</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52812e4f682cea5d03cb9803001810d2"></a><!-- doxytag: member="CouchReplication::_taskID" ref="a52812e4f682cea5d03cb9803001810d2" args="" -->
 NSString *&#160;</td><td class="memItemRight" valign="bottom"><b>_taskID</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a881af579cf67d436429e4f22ff9ae87c"></a><!-- doxytag: member="CouchReplication::_status" ref="a881af579cf67d436429e4f22ff9ae87c" args="" -->
@@ -122,14 +122,20 @@ NSString *&#160;</td><td class="memItemRight" valign="bottom"><b>_status</b></td
 unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>_completed</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0f009ab394e26b56e8fdb4a9433709b"></a><!-- doxytag: member="CouchReplication::_total" ref="ad0f009ab394e26b56e8fdb4a9433709b" args="" -->
 unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>_total</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a485dfbace27ae2ef721191cdc6cc37d0"></a><!-- doxytag: member="CouchReplication::_error" ref="a485dfbace27ae2ef721191cdc6cc37d0" args="" -->
+NSError *&#160;</td><td class="memItemRight" valign="bottom"><b>_error</b></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40675a0efcb3897b64438b47c732b73f"></a><!-- doxytag: member="CouchReplication::running" ref="a40675a0efcb3897b64438b47c732b73f" args="" -->
+BOOL&#160;</td><td class="memItemRight" valign="bottom"><b>running</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#ad8539ef404692f2c1e05f39b1a278176">status</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The current status string from the server, if active, else nil (observable).  <a href="#ad8539ef404692f2c1e05f39b1a278176"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a42854483e5f6c8fc40f08431a3a358d2">completed</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of completed changes processed, if the task is active, else 0 (observable).  <a href="#a42854483e5f6c8fc40f08431a3a358d2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a8a764ea121c757fee8eef4e303e77d1e">total</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of changes to be processed, if the task is active, else 0 (observable).  <a href="#a8a764ea121c757fee8eef4e303e77d1e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f3082e2d836867d1b400b88b81b1a85"></a><!-- doxytag: member="CouchReplication::error" ref="a6f3082e2d836867d1b400b88b81b1a85" args="" -->
+NSError *&#160;</td><td class="memItemRight" valign="bottom"><b>error</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Tracks a CouchDB replication. </p>
@@ -227,7 +233,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchReplication.html">CouchReplication</a>      </li>
-      <li class="footer">Generated on Wed Aug 31 2011 17:35:31 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Oct 25 2011 14:09:13 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

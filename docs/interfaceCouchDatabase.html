@@ -110,6 +110,10 @@ Inheritance diagram for CouchDatabase:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a4a0e3ca1a80076ad540ac8c2e73523db">create</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the database on the server.  <a href="#a4a0e3ca1a80076ad540ac8c2e73523db"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(BOOL)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#ac7211ab2af08f60d17e2ff5f4486d5b2">ensureCreated:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the database on the server, if it doesn't already exist (Synchronous).  <a href="#ac7211ab2af08f60d17e2ff5f4486d5b2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a395a1cf628c26bcb06ebc331991ffd77">compact</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Compacts the database, freeing up disk space by deleting old revisions of documents.  <a href="#a395a1cf628c26bcb06ebc331991ffd77"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(NSInteger)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a79dd2fef9621694cdc81c3977aec37ff">getDocumentCount</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current total number of documents.  <a href="#a79dd2fef9621694cdc81c3977aec37ff"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDocument.html">CouchDocument</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#ac5064dabc1447136a83528f61c5e2708">documentWithID:</a></td></tr>
@@ -140,10 +144,18 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from a source database, to this database.  <a href="#a0d807197b9c72cf81b840949cba3c655"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchReplication.html">CouchReplication</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a9876ed16610544ac71b46d986a806259">pushToDatabaseAtURL:options:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from this database to a target database.  <a href="#a9876ed16610544ac71b46d986a806259"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSArray *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a9ceb30e194df080959ec4a9dde91d945">replicateWithURL:exclusively:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures this database to replicate bidirectionally (sync to and from) a database at the given URL.  <a href="#a9ceb30e194df080959ec4a9dde91d945"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a76969effe69959e9ebd3f883ef05297e">replicationFromDatabaseAtURL:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a persistent replication from a database (a pull).  <a href="#a76969effe69959e9ebd3f883ef05297e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a2b6cfd3a7912a235fa7062789faa0bde">replicationToDatabaseAtURL:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a persistent replication to a database (a push).  <a href="#a2b6cfd3a7912a235fa7062789faa0bde"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a> *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceCouchDatabase.html#a66f68e93735588dfb3b57293de2c4959">databaseWithURL:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenience to instantiate a <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> directly from a URL, without having to first instantiate a <a class="el" href="interfaceCouchServer.html" title="The top level of a CouchDB server.">CouchServer</a>.  <a href="#a66f68e93735588dfb3b57293de2c4959"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a> *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceCouchDatabase.html#a93cb0bb2625ea21ae1a281c77a2473e5">databaseNamed:onServerWithURL:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenience to instantiate a <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> directly from a name and a server URL, without having to first instantiate a <a class="el" href="interfaceCouchServer.html" title="The top level of a CouchDB server.">CouchServer</a>.  <a href="#a93cb0bb2625ea21ae1a281c77a2473e5"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99d523b7cd3821a2cb48c70b0836553b"></a><!-- doxytag: member="CouchDatabase::server" ref="a99d523b7cd3821a2cb48c70b0836553b" args="" -->
@@ -152,6 +164,8 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls whether document change-tracking is enabled.  <a href="#adb7a1b1c5b1083dd3de18b8ad3c55704"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSUInteger&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDatabase.html#a64d23366955ed65b5928526249cb05da">lastSequenceNumber</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The last change sequence number received from the database.  <a href="#a64d23366955ed65b5928526249cb05da"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDatabase.html#aa5aca135f28d601fd5ac38ae88eb69c8">replications</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">All currently configured persistent replications involving this database, as <a class="el" href="interfaceCouchPersistentReplication.html" title="A model object representing a persistent replication to or from another database.">CouchPersistentReplication</a> objects.  <a href="#aa5aca135f28d601fd5ac38ae88eb69c8"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A CouchDB database; contains CouchDocuments. </p>
@@ -177,6 +191,36 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a93cb0bb2625ea21ae1a281c77a2473e5"></a><!-- doxytag: member="CouchDatabase::databaseNamed:onServerWithURL:" ref="a93cb0bb2625ea21ae1a281c77a2473e5" args="(NSString *databaseName,[onServerWithURL] NSURL *serverURL)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>*) databaseNamed: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>databaseName</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">onServerWithURL:</td>
+          <td></td>
+          <td class="paramtype">(NSURL *)&#160;</td>
+          <td class="paramname"><em>serverURL</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>A convenience to instantiate a <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> directly from a name and a server URL, without having to first instantiate a <a class="el" href="interfaceCouchServer.html" title="The top level of a CouchDB server.">CouchServer</a>. </p>
+<p>Unlike CouchServer's -databaseNamed: method, if you call this twice with the same URL/name you _will_ get two distinct <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> objects (with two distinct CouchServers as parents.) </p>
+
+</div>
+</div>
 <a class="anchor" id="a4a0e3ca1a80076ad540ac8c2e73523db"></a><!-- doxytag: member="CouchDatabase::create" ref="a4a0e3ca1a80076ad540ac8c2e73523db" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -193,6 +237,45 @@ Properties</h2></td></tr>
 
 <p>Creates the database on the server. </p>
 <p>Fails with an HTTP status 412 (Conflict) if a database with this name already exists. </p>
+
+</div>
+</div>
+<a class="anchor" id="ac7211ab2af08f60d17e2ff5f4486d5b2"></a><!-- doxytag: member="CouchDatabase::ensureCreated:" ref="ac7211ab2af08f60d17e2ff5f4486d5b2" args="(NSError **outError)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) ensureCreated: </td>
+          <td></td>
+          <td class="paramtype">(NSError **)&#160;</td>
+          <td class="paramname"><em>outError</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Creates the database on the server, if it doesn't already exist (Synchronous). </p>
+<p>This calls -create and waits for completion, but ignores HTTP status 412. </p>
+
+</div>
+</div>
+<a class="anchor" id="a395a1cf628c26bcb06ebc331991ffd77"></a><!-- doxytag: member="CouchDatabase::compact" ref="a395a1cf628c26bcb06ebc331991ffd77" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) compact </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Compacts the database, freeing up disk space by deleting old revisions of documents. </p>
+<p>This should be run periodically, especially after making a lot of changes. Note: The REST operation completes as soon as the server starts compacting, but the actual compaction will run asynchronously and may take a while. </p>
 
 </div>
 </div>
@@ -567,6 +650,83 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9ceb30e194df080959ec4a9dde91d945"></a><!-- doxytag: member="CouchDatabase::replicateWithURL:exclusively:" ref="a9ceb30e194df080959ec4a9dde91d945" args="(NSURL *otherURL,[exclusively] BOOL exclusively)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSArray*) replicateWithURL: </td>
+          <td></td>
+          <td class="paramtype">(NSURL *)&#160;</td>
+          <td class="paramname"><em>otherURL</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">exclusively:</td>
+          <td></td>
+          <td class="paramtype">(BOOL)&#160;</td>
+          <td class="paramname"><em>exclusively</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Configures this database to replicate bidirectionally (sync to and from) a database at the given URL. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">otherURL</td><td>The URL of the other database, or nil to indicate no replication. </td></tr>
+    <tr><td class="paramname">exclusively</td><td>If YES, any existing replications to or from other URLs will be removed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A two-element NSArray whose values are the CouchPersistentReplications from and to the other URL, respectively. Returns nil if no target URL was given, or on failure. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a76969effe69959e9ebd3f883ef05297e"></a><!-- doxytag: member="CouchDatabase::replicationFromDatabaseAtURL:" ref="a76969effe69959e9ebd3f883ef05297e" args="(NSURL *sourceURL)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a>*) replicationFromDatabaseAtURL: </td>
+          <td></td>
+          <td class="paramtype">(NSURL *)&#160;</td>
+          <td class="paramname"><em>sourceURL</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Creates a persistent replication from a database (a pull). </p>
+<p>Returns an object representing this replication. If a replication from this URL already exists, the configuration is unchanged. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2b6cfd3a7912a235fa7062789faa0bde"></a><!-- doxytag: member="CouchDatabase::replicationToDatabaseAtURL:" ref="a2b6cfd3a7912a235fa7062789faa0bde" args="(NSURL *targetURL)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a>*) replicationToDatabaseAtURL: </td>
+          <td></td>
+          <td class="paramtype">(NSURL *)&#160;</td>
+          <td class="paramname"><em>targetURL</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Creates a persistent replication to a database (a push). </p>
+<p>Returns an object representing this replication. If a replication from this URL already exists, the configuration is unchanged. </p>
+
+</div>
+</div>
 <hr/><h2>Property Documentation</h2>
 <a class="anchor" id="adb7a1b1c5b1083dd3de18b8ad3c55704"></a><!-- doxytag: member="CouchDatabase::tracksChanges" ref="adb7a1b1c5b1083dd3de18b8ad3c55704" args="" -->
 <div class="memitem">
@@ -600,6 +760,21 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aa5aca135f28d601fd5ac38ae88eb69c8"></a><!-- doxytag: member="CouchDatabase::replications" ref="aa5aca135f28d601fd5ac38ae88eb69c8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSArray*) replications<code> [read, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>All currently configured persistent replications involving this database, as <a class="el" href="interfaceCouchPersistentReplication.html" title="A model object representing a persistent replication to or from another database.">CouchPersistentReplication</a> objects. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Couch/<a class="el" href="CouchDatabase_8h_source.html">CouchDatabase.h</a></li>
 </ul>
@@ -608,7 +783,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>      </li>
-      <li class="footer">Generated on Wed Aug 31 2011 17:35:31 for CouchCocoa by&#160;
+      <li class="footer">Generated on Tue Oct 25 2011 14:09:13 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
