@@ -146,7 +146,7 @@
                                   options: (CouchReplicationOptions)options;
 
 /** Configures this database to replicate bidirectionally (sync to and from) a database at the given URL.
-    @param targetURL  The URL of the other database, or nil to indicate no replication.
+    @param otherURL  The URL of the other database, or nil to indicate no replication.
     @param exclusively  If YES, any existing replications to or from other URLs will be removed.
     @return  A two-element NSArray whose values are the CouchPersistentReplications from and to the other URL, respectively. Returns nil if no target URL was given, or on failure. */
 - (NSArray*) replicateWithURL: (NSURL*)otherURL exclusively: (BOOL)exclusively;

@@ -313,7 +313,8 @@ static Class sJSONSerialization;
 
 + (NSDateFormatter*) ISO8601Formatter {
     static NSDateFormatter* sFormatter;
-    if (!sFormatter) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         // Thanks to DenNukem's answer in http://stackoverflow.com/questions/399527/
         sFormatter = [[NSDateFormatter alloc] init];
         sFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
@@ -321,7 +322,7 @@ static Class sJSONSerialization;
         sFormatter.calendar = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]
                                     autorelease];
         sFormatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
-    }
+    });
     return sFormatter;
 }
 
