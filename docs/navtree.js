@@ -13,8 +13,10 @@ var NAVTREE =
       [ "CouchDesignDocument", "interfaceCouchDesignDocument.html", null ],
       [ "CouchDocument", "interfaceCouchDocument.html", null ],
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
+      [ "CouchDynamicObject", "interfaceCouchDynamicObject.html", null ],
       [ "CouchEmbeddedServer", "interfaceCouchEmbeddedServer.html", null ],
       [ "CouchLiveQuery", "interfaceCouchLiveQuery.html", null ],
+      [ "CouchModel", "interfaceCouchModel.html", null ],
       [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ],
       [ "CouchQuery", "interfaceCouchQuery.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
@@ -23,6 +25,8 @@ var NAVTREE =
       [ "CouchResource", "interfaceCouchResource.html", null ],
       [ "CouchRevision", "interfaceCouchRevision.html", null ],
       [ "CouchServer", "interfaceCouchServer.html", null ],
+      [ "<CouchUITableDelegate>", "protocolCouchUITableDelegate-p.html", null ],
+      [ "CouchUITableSource", "interfaceCouchUITableSource.html", null ],
       [ "RESTBase64", "interfaceRESTBase64.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", null ],
       [ "RESTCache", "interfaceRESTCache.html", null ],
@@ -38,10 +42,16 @@ var NAVTREE =
       [ "<CouchbaseValidationContext>", "protocolCouchbaseValidationContext-p.html", null ],
       [ "CouchChangeTracker", "interfaceCouchChangeTracker.html", null ],
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
-      [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ],
+      [ "CouchDynamicObject", "interfaceCouchDynamicObject.html", [
+        [ "CouchModel", "interfaceCouchModel.html", [
+          [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ]
+        ] ]
+      ] ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
       [ "CouchReplication", "interfaceCouchReplication.html", null ],
+      [ "<CouchUITableDelegate>", "protocolCouchUITableDelegate-p.html", null ],
+      [ "CouchUITableSource", "interfaceCouchUITableSource.html", null ],
       [ "RESTBase64", "interfaceRESTBase64.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", [
         [ "RESTMutableBody", "interfaceRESTMutableBody.html", null ]
@@ -83,12 +93,15 @@ var NAVTREE =
       [ "Couch/CouchResource.h", null, null ],
       [ "Couch/CouchRevision.h", null, null ],
       [ "Couch/CouchServer.h", null, null ],
+      [ "Model/CouchDynamicObject.h", null, null ],
+      [ "Model/CouchModel.h", null, null ],
       [ "REST/REST.h", null, null ],
       [ "REST/RESTBase64.h", null, null ],
       [ "REST/RESTBody.h", null, null ],
       [ "REST/RESTCache.h", null, null ],
       [ "REST/RESTOperation.h", null, null ],
-      [ "REST/RESTResource.h", null, null ]
+      [ "REST/RESTResource.h", null, null ],
+      [ "UI/iOS/CouchUITableSource.h", null, null ]
     ] ]
   ] ]
 ];

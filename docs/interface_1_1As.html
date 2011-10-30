@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>CouchCocoa: Member List</title>
+<title>CouchCocoa: As Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -76,23 +76,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-  initNavTree('structCouchViewDefinition.html','');
+  initNavTree('interface_1_1As.html','');
 </script>
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<div class="title">CouchViewDefinition Member List</div>  </div>
+<div class="title">As Class Reference</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="structCouchViewDefinition.html">CouchViewDefinition</a>, including all inherited members.<table>
-  <tr class="memlist"><td></td><td><a class="el" href="structCouchViewDefinition.html#a1469ae36d166df52c3b2aa4a48ee6d20">language</a></td><td><a class="el" href="structCouchViewDefinition.html">CouchViewDefinition</a></td><td><code> [protected]</code></td></tr>
-  <tr class="memlist"><td></td><td><a class="el" href="structCouchViewDefinition.html#a35ebc92e73ddbb693064bbe4b349c35c">mapFunction</a></td><td><a class="el" href="structCouchViewDefinition.html">CouchViewDefinition</a></td><td><code> [protected]</code></td></tr>
-  <tr class="memlist"><td></td><td><a class="el" href="structCouchViewDefinition.html#a041cde0a4867351939d53634bd8550b3">reduceFunction</a></td><td><a class="el" href="structCouchViewDefinition.html">CouchViewDefinition</a></td><td><code> [protected]</code></td></tr>
-</table></div>
+<!-- doxytag: class="::As" -->
+<p>Generic model class for Couch documents.  
+ <a href="interface_1_1As.html#details">More...</a></p>
+<table class="memberdecls">
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Generic model class for Couch documents. </p>
+<p>There's a 1::1 mapping between these and CouchDocuments; call +modelForDocument: to get (or create) a model object for a document, and .document to get the document of a model. You should subclass this and declare properties in the subclass's, you don't need to implement their accessor methods or declare instance variables; simply note them as '' in the . The property value will automatically be fetched from or stored to the document, using the same name. Supported scalar types are bool, char, short, int, double. These map to JSON numbers, except 'bool' which maps to JSON 'true' and 'false'. (Use bool instead of BOOL.) Supported object types are NSString, NSNumber, NSData, NSDate, NSArray, NSDictionary. (NSData and NSDate are not native JSON; they will be automatically converted to/from strings in base64 and ISO date formats, respectively.) </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
+<li>Model/<a class="el" href="CouchModel_8h_source.html">CouchModel.h</a></li>
+</ul>
+</div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Aug 8 2011 17:19:52 for CouchCocoa by&#160;
+      <li class="navelem"><a class="el" href="interface_1_1As.html">As</a>      </li>
+      <li class="footer">Generated on Sun Oct 30 2011 13:01:56 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
@@ -102,7 +110,7 @@ This is the complete list of members for <a class="el" href="structCouchViewDefi
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
