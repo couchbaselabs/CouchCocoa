@@ -311,10 +311,11 @@ static Class sJSONSerialization;
 }
 
 
-+ (NSDateFormatter*) ISO8601Formatter {
+// This function is not thread-safe, nor is the NSDateFormatter instance it returns.
+// Make sure that this function and the formatter are called on only one thread at a time.
+static NSDateFormatter* getISO8601Formatter() {
     static NSDateFormatter* sFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (!sFormatter) {
         // Thanks to DenNukem's answer in http://stackoverflow.com/questions/399527/
         sFormatter = [[NSDateFormatter alloc] init];
         sFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
@@ -322,18 +323,26 @@ static Class sJSONSerialization;
         sFormatter.calendar = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]
                                     autorelease];
         sFormatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
-    });
+    }
     return sFormatter;
 }
 
 
 + (NSString*) JSONObjectWithDate: (NSDate*)date {
-    return date ? [[self ISO8601Formatter] stringFromDate: date] : nil;
+    if (!date)
+        return nil;
+    @synchronized(self) {
+        return [getISO8601Formatter() stringFromDate: date];
+    }
 }
 
 + (NSDate*) dateWithJSONObject: (id)jsonObject {
     NSString* string = $castIf(NSString, jsonObject);
-    return string ? [[self ISO8601Formatter] dateFromString: string] : nil;
+    if (!string)
+        return nil;
+    @synchronized(self) {
+        return [getISO8601Formatter() dateFromString: string];
+    }
 }
 
 
