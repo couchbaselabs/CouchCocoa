@@ -45,14 +45,14 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
     // We don't know the real port that the server will be assigned, so default to 0 for now.
     self = [super initWithURL: [NSURL URLWithString: @"http://127.0.0.1:0"]];
     if (self) {
-        // Look up class at runtime to avoid having to link against Couchbase.framework:
 #if TARGET_OS_IPHONE
-        Class couchbaseClass = NSClassFromString(@"CouchbaseMobile");
+        _couchbase = [[CouchbaseMobile alloc] init];
 #else
+        // On Mac, look up class at runtime to avoid dependency on Couchbase.framework:
         Class couchbaseClass = NSClassFromString(@"Couchbase");
-#endif
         NSAssert(couchbaseClass!=nil, @"Not linked with Couchbase framework");
         _couchbase = [[couchbaseClass alloc] init];
+#endif
         _couchbase.delegate = self;
     }
     return self;
