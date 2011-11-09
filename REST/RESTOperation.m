@@ -466,6 +466,15 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     return nil;
 }
 
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
+{
+    NSURLProtectionSpace* acceptableProtectionSpace = [_resource protectionSpaceForOperation:self];
+    if(acceptableProtectionSpace) {
+        return [protectionSpace isEqual:acceptableProtectionSpace];
+    }
+    // Default Cocoa behavior when connection:canAuthenticateAgainstProtectionSpace: is not implemented
+    return protectionSpace.serverTrust == nil && protectionSpace.distinguishedNames == nil;
+}
 
 - (void)connection:(NSURLConnection *)connection 
     didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
