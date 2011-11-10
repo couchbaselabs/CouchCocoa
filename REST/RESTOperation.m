@@ -482,6 +482,12 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     if (challenge.previousFailureCount == 0) {
         NSURLCredential* credential = [_resource credentialForOperation: self];
         NSLog(@"REST: Authentication challenge! credential=%@", credential);
+        if(!credential) {
+            NSURLProtectionSpace* acceptableProtectionSpace = [_resource protectionSpaceForOperation:self];
+            if(acceptableProtectionSpace) {
+                credential = [[NSURLCredential alloc] initWithTrust:acceptableProtectionSpace.serverTrust];
+            }
+        }
         if (credential) {
             [challenge.sender useCredential: credential forAuthenticationChallenge: challenge];
             return;
