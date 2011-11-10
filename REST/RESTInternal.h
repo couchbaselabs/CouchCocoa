@@ -44,6 +44,7 @@ static inline BOOL $equal(id a, id b) {return a==b || [a isEqual: b];}
 - (void) setURL: (NSURL*)url;
 @property (readwrite, retain) RESTCache* owningCache;
 - (NSURLCredential*) credentialForOperation: (RESTOperation*)op;
+- (NSURLProtectionSpace*) protectionSpaceForOperation: (RESTOperation*)op;
 @end
 
 

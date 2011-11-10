@@ -58,6 +58,7 @@
     [_owningCache resourceBeingDealloced: self];
     [_activeOperations release];
     [_credential release];
+    [_protectionSpace release];
     [_eTag release];
     [_lastModified release];
     [_url release];
@@ -331,6 +332,15 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 
 - (NSURLCredential*) credentialForOperation: (RESTOperation*)op {
     return _credential ? _credential : [_parent credentialForOperation: op];
+}
+
+- (void) setProtectionSpace: (NSURLProtectionSpace*)protectionSpace {
+    [_protectionSpace autorelease];
+    _protectionSpace = [protectionSpace retain];
+}
+
+- (NSURLProtectionSpace*) protectionSpaceForOperation: (RESTOperation*)op {
+    return _protectionSpace ? _protectionSpace : [_parent protectionSpaceForOperation: op];
 }
 
 
