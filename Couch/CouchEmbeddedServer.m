@@ -75,6 +75,9 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
 }
 
 
+@synthesize couchbase = _couchbase;
+
+
 - (NSURL*)URL {
     NSURL* url = [super URL];
     NSAssert(url.port != 0, @"Can't use CouchEmbeddedServer till it's started up");
@@ -113,6 +116,8 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
     NSNotificationCenter* nctr = [NSNotificationCenter defaultCenter];
     NSString* notificationToPost;
     if (firstStart) {
+        if ([couchbase respondsToSelector: @selector(adminCredential)])
+            self.credential = couchbase.adminCredential;
         self.tracksActiveOperations = YES;
 #if TARGET_OS_IPHONE
         UIApplication* app = [UIApplication sharedApplication];

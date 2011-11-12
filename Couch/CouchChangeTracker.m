@@ -78,12 +78,20 @@ enum {
     NSAssert(!_trackingInput, @"Already started");
     
     NSURL* url = _database.URL;
-    _trackingRequest = [[NSString stringWithFormat:
+    NSMutableString* request = [NSMutableString stringWithFormat:
                          @"GET /%@/_changes?feed=continuous&heartbeat=300000&since=%u HTTP/1.1\r\n"
-                         @"Host: %@\r\n"
-                         @"\r\n",
-                         _database.relativePath, _lastSequenceNumber, url.host] copy];
-    COUCHLOG2(@"%@: Starting with request:\n%@", self, _trackingRequest);
+                         @"Host: %@\r\n",
+                                _database.relativePath, _lastSequenceNumber, url.host];
+    NSURLCredential* credential = [_database credentialForOperation: nil];
+    if (credential) {
+        NSString* auth = [NSString stringWithFormat: @"%@:%@",
+                          credential.user, credential.password];
+        auth = [RESTBody base64WithData: [auth dataUsingEncoding: NSUTF8StringEncoding]];
+        [request appendFormat: @"Authorization: Basic %@", auth];
+    }
+    COUCHLOG2(@"%@: Starting with request:\n%@", self, request);
+    [request appendString: @"\r\n"];
+    _trackingRequest = [request copy];
     
     /* Why are we using raw TCP streams rather than NSURLConnection? Good question.
         NSURLConnection seems to have some kind of bug with reading the output of _changes, maybe

@@ -31,6 +31,9 @@
     (If you call -start:, the block will still be called.) */
 - (id) initWithURL:(NSURL *)url;
 
+/** The underlying CouchbaseMobile object that manages the embedded server. */
+@property (readonly) CouchbaseMobile* couchbase;
+
 /** Starts the server, asynchronously.
     @param onStartBlock  A block to be called when the server finishes starting up (or fails to). At that point you can start to access databases, etc.
     @return  YES if startup began, NO if a fatal error occurred. */

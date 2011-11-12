@@ -42,11 +42,12 @@
     @private
     id<CouchbaseDelegate> _delegate;
     CFAbsoluteTime _timeStarted;
-    NSString* _documentsDirectory;
+    NSString* _rootDirectory;
     NSString* _bundlePath;
     NSString* _iniFilePath;
     NSURL* _serverURL;
     NSError* _error;
+    uint8_t _logLevel;
     BOOL _autoRestart;
     BOOL _started;
 }
@@ -80,12 +81,21 @@
 /** Defaults to YES, set to NO to prevent auto-restart behavior when app returns from background */
 @property (assign) BOOL autoRestart;
 
+/** A credential containing the admin username and password of the server.
+    These are required in any requests sent to the server. The password is generated randomly on first launch. */
+@property (readonly) NSURLCredential* adminCredential;
+
 #pragma mark CONFIGURATION:
 
 /** Initializes the instance with a nonstandard location for the runtime resources.
     (The default location is Resources/CouchbaseResources, but some application frameworks
     require resources to go elsewhere, so in that case you might need to use a custom path.) */
 - (id) initWithBundlePath: (NSString*)bundlePath;
+
+/** The root directory where Couchbase Mobile will store data files.
+    This defaults to ~/CouchbaseMobile.
+    You may NOT change this after starting the server. */
+@property (copy) NSString* rootDirectory;
 
 /** The directory where CouchDB writes its log files. */
 @property (readonly) NSString* logDirectory;
@@ -104,6 +114,11 @@
     _config URI. The app can restore the default configuration at launch by deleting or
     emptying the file at this path before calling -start.*/
 @property (readonly) NSString* localIniFilePath;
+
+/** Controls the amount of logging by Erlang and CouchDB.
+    Defaults to 0, meaning none.
+    1 logs errors only, 2 also logs CouchDB info (like HTTP requests), 3 logs Erlang 'progress'. */
+@property uint8_t logLevel;
 
 /** Copies a database file into the databaseDirectory if no such file exists there already.
     Call this before -start, to set up initial contents of one or more databases on first run. */
