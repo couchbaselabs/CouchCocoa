@@ -117,7 +117,7 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
     NSString* notificationToPost;
     if (firstStart) {
         if ([couchbase respondsToSelector: @selector(adminCredential)])
-            self.credential = couchbase.adminCredential;
+            [self setCredential: couchbase.adminCredential];
         self.tracksActiveOperations = YES;
 #if TARGET_OS_IPHONE
         UIApplication* app = [UIApplication sharedApplication];
