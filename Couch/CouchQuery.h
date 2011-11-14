@@ -137,7 +137,14 @@
 @property (readonly) id key;
 @property (readonly) id value;
 
+/** The ID of the document described by this view row.
+    (This is not necessarily the same as the document that caused this row to be emitted; see the discussion of the .sourceDocumentID property for details.) */
 @property (readonly) NSString* documentID;
+
+/** The ID of the document that caused this view row to be emitted.
+    This is the value of the "id" property of the JSON view row.
+    It will be the same as the .documentID property, unless the map function caused a related document to be linked by adding an "_id" key to the emitted value; in this case .documentID will refer to the linked document, while sourceDocumentID always refers to the original document. */
+@property (readonly) NSString* sourceDocumentID;
 
 /** The revision ID of the document this row was mapped from. */
 @property (readonly) NSString* documentRevision;

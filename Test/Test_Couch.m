@@ -501,4 +501,40 @@
 }
 
 
+- (void) test14_ViewWithLinkedDocs {
+    static const NSUInteger kNDocs = 50;
+    NSMutableArray* docs = [NSMutableArray array];
+    NSString* lastDocID = nil;
+    for (int i=0; i<kNDocs; i++) {
+        NSDictionary* properties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithInt: i], @"sequence",
+                                    lastDocID, @"prev",   // each doc refers to previous one
+                                    nil];
+        CouchDocument* doc = [self createDocumentWithProperties: properties];
+        [docs addObject: doc];
+        lastDocID = doc.documentID;
+    }
+    
+    // The map function will emit the ID of the previous document, causing that document to be
+    // included when include_docs (aka prefetch) is enabled.
+    CouchQuery* query = [_db slowQueryWithMap: @"function(doc){emit(doc.sequence,{_id:doc.prev});};"];
+    query.startKey = [NSNumber numberWithInt: 23];
+    query.endKey = [NSNumber numberWithInt: 33];
+    query.prefetch = YES;
+    CouchQueryEnumerator* rows = query.rows;
+    STAssertNotNil(rows, nil);
+    STAssertEquals(rows.count, (NSUInteger)11, nil);
+    STAssertEquals(rows.totalCount, kNDocs, nil);
+    
+    int rowNumber = 23;
+    for (CouchQueryRow* row in rows) {
+        STAssertEquals([row.key intValue], rowNumber, nil);
+        CouchDocument* prevDoc = [docs objectAtIndex: rowNumber-1];
+        STAssertEqualObjects(row.documentID, prevDoc.documentID, nil);
+        STAssertEquals(row.document, prevDoc, nil);
+        ++rowNumber;
+    }
+}
+
+
 @end

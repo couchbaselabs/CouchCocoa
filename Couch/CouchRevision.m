@@ -137,6 +137,8 @@
 
 - (void) setProperties: (NSDictionary*)properties {
     if (properties != _properties) {
+        NSAssert([[properties objectForKey: @"_id"] isEqual: self.documentID],
+                 @"properties have wrong ID %@ for %@", [properties objectForKey: @"_id"], self);
         [_properties release];
         _properties = [properties copy];
         _isDeleted = [$castIf(NSNumber, [properties objectForKey: @"_deleted"]) boolValue];

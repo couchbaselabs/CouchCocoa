@@ -14,6 +14,7 @@
 //  and limitations under the License.
 
 // <http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options>
+// <http://wiki.apache.org/couchdb/Introduction_to_CouchDB_views>
 
 
 #import "CouchQuery.h"
@@ -368,10 +369,17 @@
 
 @synthesize query=_query;
 
-- (id) key                          {return [_result objectForKey: @"key"];}
-- (id) value                        {return [_result objectForKey: @"value"];}
-- (NSString*) documentID            {return [_result objectForKey: @"id"];}
-- (NSDictionary*) documentProperties  {return [_result objectForKey: @"doc"];}
+- (id) key                              {return [_result objectForKey: @"key"];}
+- (id) value                            {return [_result objectForKey: @"value"];}
+- (NSString*) sourceDocumentID          {return [_result objectForKey: @"id"];}
+- (NSDictionary*) documentProperties    {return [_result objectForKey: @"doc"];}
+
+- (NSString*) documentID {
+    NSString* docID = [[_result objectForKey: @"doc"] objectForKey: @"_id"];
+    if (!docID)
+        docID = [_result objectForKey: @"id"];
+    return docID;
+}
 
 - (NSString*) documentRevision {
     // Get the revision id from either the embedded document contents,
@@ -407,7 +415,7 @@
 
 
 - (CouchDocument*) document {
-    NSString* docID = [_result objectForKey: @"id"];
+    NSString* docID = self.documentID;
     if (!docID)
         return nil;
     CouchDocument* doc = [_query.database documentWithID: docID];
