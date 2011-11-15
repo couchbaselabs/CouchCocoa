@@ -18,7 +18,7 @@
 
 
 /** A binary attachment to a document.
-    Actually a CouchAttachment is a child of a CouchRevision, since attachments (like all document contents) are versioned. This means that each instance represents an attachment immutably as it appeared in one revision of its document. So if you PUT a change to an attachment, the updated attachment will have a new CouchAttachment object. */
+    Actually a CouchAttachment may be a child of either a CouchDocument or a CouchRevision. The latter represents an attachment immutably as it appeared in one revision of its document. So if you PUT a change to an attachment, the updated attachment will have a new CouchAttachment object. */
 @interface CouchAttachment : CouchResource
 {
     @private

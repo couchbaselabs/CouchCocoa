@@ -20,12 +20,12 @@
 @implementation CouchAttachment
 
 
-- (id) initWithRevision: (CouchRevision*)revision 
-                   name: (NSString*)name
-               metadata: (NSDictionary*)metadata
+- (id) initWithParent: (CouchResource*)parent 
+                 name: (NSString*)name
+             metadata: (NSDictionary*)metadata
 {
     NSParameterAssert(metadata);
-    self = [super initWithParent: revision relativePath: name];
+    self = [super initWithParent: parent relativePath: name];
     if (self) {
         _metadata = [metadata copy];
     }
@@ -48,12 +48,19 @@
 
 
 - (CouchRevision*) revision {
-    return (CouchRevision*)self.parent;
+    id parent = self.parent;
+    if ([parent isKindOfClass: [CouchRevision class]])
+        return parent;
+    else
+        return nil;
 }
 
 
 - (CouchDocument*) document {
-    return (CouchDocument*)self.parent.parent;
+    RESTResource* parent = self.parent;
+    if ([parent isKindOfClass: [CouchRevision class]])
+        parent = [parent parent];
+    return (CouchDocument*)parent;
 }
 
 

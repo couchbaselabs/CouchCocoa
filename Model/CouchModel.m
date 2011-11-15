@@ -385,9 +385,9 @@ static id getDateProperty(CouchModel *self, SEL _cmd) {
                                   [NSNumber numberWithUnsignedLong: body.length], @"length",
                                   contentType, @"content_type",
                                   nil];
-        attach = [[[CouchAttachment alloc] initWithRevision: _document.currentRevision
-                                                       name: name
-                                                   metadata: metadata] autorelease];
+        attach = [[[CouchAttachment alloc] initWithParent: (_document.currentRevision ?: _document)
+                                                     name: name
+                                                 metadata: metadata] autorelease];
     } else if (![self attachmentNamed: name]) {
         return nil;
     }

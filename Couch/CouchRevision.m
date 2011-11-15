@@ -240,14 +240,14 @@
     NSDictionary* metadata = [self attachmentMetadataFor: name];
     if (!metadata)
         return nil;
-    return [[[CouchAttachment alloc] initWithRevision: self name: name metadata: metadata] autorelease];
+    return [[[CouchAttachment alloc] initWithParent: self name: name metadata: metadata] autorelease];
 }
 
 
 - (CouchAttachment*) createAttachmentWithName: (NSString*)name type: (NSString*)contentType {
     NSDictionary* metadata = [NSDictionary dictionaryWithObject: contentType
                                                          forKey: @"content_type"];
-    return [[[CouchAttachment alloc] initWithRevision: self name: name metadata: metadata]
+    return [[[CouchAttachment alloc] initWithParent: self name: name metadata: metadata]
                 autorelease];
 }
 

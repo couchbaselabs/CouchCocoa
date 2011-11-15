@@ -27,9 +27,9 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 
 
 @interface CouchAttachment ()
-- (id) initWithRevision: (CouchRevision*)revision 
-                   name: (NSString*)name
-               metadata: (NSDictionary*)metadata;
+- (id) initWithParent: (CouchResource*)parent       // must be CouchDocument or CouchRevision
+                 name: (NSString*)name
+             metadata: (NSDictionary*)metadata;
 @end
 
 
