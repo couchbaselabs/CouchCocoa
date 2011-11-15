@@ -396,6 +396,7 @@ static id getDateProperty(CouchModel *self, SEL _cmd) {
         _changedAttachments = [[NSMutableDictionary alloc] init];
     [_changedAttachments setObject: (attach ? attach : [NSNull null])
                             forKey: name];
+    [self markNeedsSave];
     return attach;
 }
 
