@@ -87,7 +87,7 @@ enum {
         NSString* auth = [NSString stringWithFormat: @"%@:%@",
                           credential.user, credential.password];
         auth = [RESTBody base64WithData: [auth dataUsingEncoding: NSUTF8StringEncoding]];
-        [request appendFormat: @"Authorization: Basic %@", auth];
+        [request appendFormat: @"Authorization: Basic %@\r\n", auth];
     }
     COUCHLOG2(@"%@: Starting with request:\n%@", self, request);
     [request appendString: @"\r\n"];
@@ -248,13 +248,13 @@ enum {
             break;
         }
         case NSStreamEventEndEncountered:
-            COUCHLOG3(@"%@: EndEncountered %@", self, stream);
+            COUCHLOG(@"%@: EndEncountered %@", self, stream);
             if (_inputBuffer.length > 0)
                 Warn(@"%@ connection closed with unparsed data in buffer", self);
             [self stop];
             break;
         case NSStreamEventErrorOccurred:
-            COUCHLOG3(@"%@: ErrorEncountered %@", self, stream);
+            COUCHLOG(@"%@: ErrorOccurred %@: %@", self, stream, stream.streamError);
             [self stop];
             break;
             
