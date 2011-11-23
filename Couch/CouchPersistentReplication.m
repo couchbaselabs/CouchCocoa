@@ -49,6 +49,22 @@
 }
 
 
+- (void) actAsUser: (NSString*)username withRoles: (NSArray*)roles {
+    // See https://gist.github.com/832610 (Section 8)
+    NSMutableDictionary *userCtx = nil;
+    if (username || roles) {
+        userCtx = [NSMutableDictionary dictionary];
+        [userCtx setValue: username forKey: @"name"];
+        [userCtx setValue: roles forKey: @"roles"];
+    }
+    [self setValue: userCtx ofProperty: @"user_ctx"];
+}
+
+- (void) actAsAdmin {
+    [self actAsUser: nil withRoles: [NSArray arrayWithObject: @"_admin"]];
+}
+
+
 - (CouchReplicationState) state {
     return _state;
 }
