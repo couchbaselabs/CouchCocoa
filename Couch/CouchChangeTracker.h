@@ -27,6 +27,7 @@
     NSInputStream* _trackingInput;
     NSOutputStream* _trackingOutput;
     NSString* _trackingRequest;
+    int _retryCount;
     
     NSMutableData* _inputBuffer;
     int _state;

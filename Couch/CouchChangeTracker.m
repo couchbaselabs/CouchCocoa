@@ -16,7 +16,6 @@
 #import "CouchChangeTracker.h"
 
 #import "CouchDatabase.h"
-#import "CouchEmbeddedServer.h"
 #import "CouchInternal.h"
 
 #if TARGET_OS_IPHONE
@@ -32,6 +31,8 @@ enum {
     kStateChunks
 };
 
+#define kMaxRetries 7
+
 
 @implementation CouchChangeTracker
 
@@ -44,26 +45,6 @@ enum {
     self = [super init];
     if (self) {
         _database = [database retain];
-
-#if TARGET_OS_IPHONE
-        NSNotificationCenter* nctr = [NSNotificationCenter defaultCenter];
-        UIApplication* app = [UIApplication sharedApplication];
-        [nctr addObserver: self selector: @selector(suspend:)
-                     name: UIApplicationDidEnterBackgroundNotification object: app];
-        
-        CouchServer* server = database.server;
-        if (server.isEmbeddedServer) {
-            [nctr addObserver: self selector: @selector(suspend:)
-                         name: CouchEmbeddedServerWillSuspendNotification object: server];
-            [nctr addObserver: self selector: @selector(resume:)
-                         name: CouchEmbeddedServerDidRestartNotification object: server];
-        } else {
-            [nctr addObserver: self selector: @selector(suspend:)
-                         name: UIApplicationDidEnterBackgroundNotification object: app];
-            [nctr addObserver: self selector: @selector(resume:)
-                         name: UIApplicationWillEnterForegroundNotification object: app];
-        }
-#endif
     }
     return self;
 }
@@ -147,19 +128,6 @@ enum {
 }
 
 
-#if TARGET_OS_IPHONE
-- (void) suspend: (NSNotification*)n {
-    if (_trackingInput)
-        [self stop];
-}
-
-- (void) resume: (NSNotification*)n {
-    if (!_trackingInput)
-        [self start];
-}
-#endif
-
-
 - (BOOL) readLine {
     const char* start = _inputBuffer.bytes;
     const char* crlf = strnstr(start, "\r\n", _inputBuffer.length);
@@ -183,8 +151,10 @@ enum {
                 break;
             }
             case kStateHeaders:
-                if (line.length == 0)
+                if (line.length == 0) {
                     _state = kStateChunks;
+                    _retryCount = 0;  // successful connection
+                }
                 break;
             case kStateChunks: {
                 if (line.length == 0)
@@ -218,7 +188,18 @@ enum {
 }
 
 
-- (void)stream: (NSInputStream*)stream handleEvent: (NSStreamEvent)eventCode {
+- (void) errorOccurred: (NSError*)error {
+    [self stop];
+    if (++_retryCount <= kMaxRetries) {
+        NSTimeInterval retryDelay = 0.2 * (1 << (_retryCount-1));
+        [self performSelector: @selector(start) withObject: nil afterDelay: retryDelay];
+    } else {
+        Warn(@"%@: Can't connect, giving up: %@", error);
+    }
+}
+
+
+- (void) stream: (NSInputStream*)stream handleEvent: (NSStreamEvent)eventCode {
     switch (eventCode) {
         case NSStreamEventHasSpaceAvailable: {
             COUCHLOG3(@"%@: HasSpaceAvailable %@", self, stream);
@@ -255,7 +236,7 @@ enum {
             break;
         case NSStreamEventErrorOccurred:
             COUCHLOG(@"%@: ErrorOccurred %@: %@", self, stream, stream.streamError);
-            [self stop];
+            [self errorOccurred: stream.streamError];
             break;
             
         default:

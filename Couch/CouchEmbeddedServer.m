@@ -18,7 +18,6 @@
 #endif
 
 
-NSString* const CouchEmbeddedServerWillSuspendNotification = @"CouchEmbeddedServerWillSuspend";
 NSString* const CouchEmbeddedServerDidStartNotification = @"CouchEmbeddedServerDidRestart";
 NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServerDidRestart";
 
@@ -167,13 +166,6 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
 - (void) finishActiveOperations {
     COUCHLOG(@"CouchEmbeddedServer: Finishing active operations");
     [RESTOperation wait: self.activeOperations];
-}
-
-
-- (void) serverWillSuspend {
-    [self finishActiveOperations];
-    [[NSNotificationCenter defaultCenter] 
-                    postNotificationName: CouchEmbeddedServerWillSuspendNotification object: self];
 }
 
 

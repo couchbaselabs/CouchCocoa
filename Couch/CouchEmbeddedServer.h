@@ -48,6 +48,5 @@
 @end
 
 
-extern NSString* const CouchEmbeddedServerWillSuspendNotification;
 extern NSString* const CouchEmbeddedServerDidStartNotification;
 extern NSString* const CouchEmbeddedServerDidRestartNotification;
