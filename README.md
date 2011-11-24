@@ -91,7 +91,7 @@ Copyright 2011, Couchbase, Inc.
 [2]: https://github.com/schwa/trundle
 [3]: https://groups.google.com/group/mobile-couchbase
 [4]: http://www.couchbase.com/downloads/couchbase-single-server/community
-[5]: https://github.com/couchbaselabs/CouchCocoa/issues
+[5]: http://www.couchbase.org/issues/secure/IssueNavigator.jspa
 [6]: http://www.apache.org/licenses/LICENSE-2.0.html
 [7]: https://github.com/couchbaselabs/CouchCocoa/wiki/Example-Snippets
 [8]: http://couchbaselabs.github.com/CouchCocoa/docs/
