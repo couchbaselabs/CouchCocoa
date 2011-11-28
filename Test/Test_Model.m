@@ -16,10 +16,11 @@
 @property (readwrite) int grade;
 @property (readwrite, retain) NSData* permanentRecord;
 @property (readwrite, retain) NSDate* birthday;
+@property (readwrite, retain) TestModel* buddy;
 @end
 
 @implementation TestModel
-@dynamic name, grade, permanentRecord, birthday;
+@dynamic name, grade, permanentRecord, birthday, buddy;
 @end
 
 
@@ -53,6 +54,7 @@
     STAssertEquals(student.grade, 6, nil);
     STAssertEqualObjects(student.permanentRecord, permanentRecord, nil);
     STAssertEqualObjects(student.birthday, birthday, nil);
+    STAssertEqualObjects(student.buddy, nil, nil);
 }
 
 
@@ -152,6 +154,44 @@
     STAssertEqualObjects(attach.name, @"mugshot", nil);
     STAssertEqualObjects(attach.contentType, @"image/png", nil);
     STAssertEqualObjects(attach.body, self.attachmentData, nil);
+}
+
+
+- (void) test5_relationships {
+    {
+        CouchDocument* doc1 = [_db documentWithID: @"0001"];
+        TestModel* tweedledum = [TestModel modelForDocument: doc1];
+        tweedledum.name = @"Tweedledum";
+        tweedledum.grade = 2;
+
+        CouchDocument* doc2 = [_db documentWithID: @"0002"];
+        TestModel* tweedledee = [TestModel modelForDocument: doc2];
+        tweedledee.name = @"Tweedledee";
+        tweedledee.grade = 2;
+        
+        tweedledum.buddy = tweedledee;
+        STAssertEquals(tweedledum.buddy, tweedledee, nil);
+        tweedledee.buddy = tweedledum;
+        STAssertEquals(tweedledee.buddy, tweedledum, nil);
+        
+        AssertWait([tweedledum save]);
+        AssertWait([tweedledee save]);
+    }
+    
+    // Forget all CouchDocuments!
+    [_db clearDocumentCache];
+
+    {
+        CouchDocument* doc1 = [_db documentWithID: @"0001"];
+        TestModel* tweedledum = [TestModel modelForDocument: doc1];
+        STAssertEqualObjects(tweedledum.name, @"Tweedledum", nil);
+        
+        TestModel* tweedledee = tweedledum.buddy;
+        STAssertNotNil(tweedledee, nil);
+        STAssertEqualObjects(tweedledee.document.documentID, @"0002", nil);
+        STAssertEqualObjects(tweedledee.name, @"Tweedledee", nil);
+        STAssertEquals(tweedledee.buddy, tweedledum, nil);
+    }
 }
 
 

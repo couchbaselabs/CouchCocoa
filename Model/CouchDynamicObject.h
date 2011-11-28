@@ -27,6 +27,15 @@
 - (BOOL) setValue: (id)value ofProperty: (NSString*)property;
 
 
+// FOR SUBCLASSES TO CALL:
+
+/** Given the name of an object-valued property, returns the class of the property's value.
+    Returns nil if the property doesn't exist, or if its type isn't an object pointer or is 'id'. */
++ (Class) classOfProperty: (NSString*)propertyName;
+
++ (NSString*) getterKey: (SEL)sel;
++ (NSString*) setterKey: (SEL)sel;
+
 // ADVANCED STUFF FOR SUBCLASSES TO OVERRIDE:
 
 + (IMP) impForGetterOfClass: (Class)propertyClass;

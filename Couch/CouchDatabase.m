@@ -101,6 +101,8 @@ static const NSUInteger kDocRetainLimit = 50;
 - (CouchDocument*) documentWithID: (NSString*)docID {
     CouchDocument* doc = (CouchDocument*) [_docCache resourceWithRelativePath: docID];
     if (!doc) {
+        if (docID.length == 0)
+            return nil;
         if ([docID hasPrefix: @"_design/"])     // Create a design doc when appropriate
             doc = [[CouchDesignDocument alloc] initWithParent: self relativePath: docID];
         else
