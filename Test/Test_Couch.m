@@ -208,6 +208,7 @@
     CouchQuery* query = [_db getAllDocuments];
     //query.prefetch = YES;
     NSLog(@"Getting all documents: %@", query);
+    STAssertEquals((CouchDesignDocument*)nil, query.designDocument, nil);
     
     CouchQueryEnumerator* rows = query.rows;
     STAssertEquals(rows.count, kNDocs, nil);
@@ -430,6 +431,7 @@
     AssertWait([design saveChanges]);
     
     CouchQuery* query = [design queryViewNamed: @"vu"];
+    STAssertEquals(design, query.designDocument, nil);
     query.startKey = [NSNumber numberWithInt: 23];
     query.endKey = [NSNumber numberWithInt: 33];
     CouchQueryEnumerator* rows = query.rows;

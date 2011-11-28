@@ -57,12 +57,11 @@
 
 
 - (CouchDesignDocument*) designDocument {
-    // The relativePath to a view URL will look like "_design/DOCNAME/_view/VIEWNAME"
-    NSArray* path = [self.relativePath componentsSeparatedByString: @"/"];
-    if (path.count >= 4 && [[path objectAtIndex: 0] isEqualToString: @"_design"])
-        return [self.database designDocumentWithName: [path objectAtIndex: 1]];
-    else
-        return nil;
+    // A CouchQuery could be a direct child of a CouchDatabase if it's _all_docs or _temp_view.
+    id parent = self.parent;
+    if (![parent isKindOfClass: [CouchDesignDocument class]])
+        parent = nil;
+    return parent;
 }
 
 
