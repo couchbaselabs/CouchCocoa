@@ -78,6 +78,14 @@
     This value can be used to highlight recently-changed objects in the UI. */
 @property (readonly) NSTimeInterval timeSinceExternallyChanged;
 
+/** Bulk-saves changes to multiple model objects (which must all be in the same database).
+    This invokes -[CouchDatabase putChanges:], which sends a single request to _bulk_docs.
+    Any unchanged models in the array are ignored.
+    @param models  An array of CouchModel objects, which must all be in the same database.
+    @return  A RESTOperation that saves all changes, or nil if none of the models need saving. */
++ (RESTOperation*) saveModels: (NSArray*)models;
+
+/** Resets the timeSinceExternallyChanged property to zero. */
 - (void) markExternallyChanged;
 
 #pragma mark - PROPERTIES & ATTACHMENTS:

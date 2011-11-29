@@ -53,6 +53,7 @@
 
 
 + (id) modelForDocument: (CouchDocument*)document {
+    NSParameterAssert(document);
     CouchModel* model = document.modelObject;
     if (model)
         NSAssert([model isKindOfClass: self], @"%@: %@ already has incompatible model %@",
@@ -222,6 +223,39 @@
     RESTOperation* op = [_document putProperties: properties];
     [op onCompletion: ^{[self saveCompleted: op];}];
     [op start];
+    return op;
+}
+
+
++ (RESTOperation*) saveModels: (NSArray*)models {
+    CouchDatabase* db = nil;
+    NSUInteger n = models.count;
+    NSMutableArray* changes = [NSMutableArray arrayWithCapacity: n];
+    NSMutableArray* changedModels = [NSMutableArray arrayWithCapacity: n];
+    NSMutableArray* changedDocs = [NSMutableArray arrayWithCapacity: n];
+    
+    for (CouchModel* model in models) {
+        if (!db)
+            db = model.database;
+        else
+            NSAssert(model.database == db, @"Models must share a common db");
+        if (!model.needsSave)
+            continue;
+        [changes addObject: model.propertiesToSave];
+        [changedModels addObject: model];
+        [changedDocs addObject: model.document];
+        model.needsSave = NO;
+    }
+    if (changes.count == 0)
+        return nil;
+       
+    RESTOperation* op = [db putChanges: changes toRevisions: changedDocs];
+    [op onCompletion: ^{
+        for (CouchModel* model in changedModels) {
+            [model saveCompleted: op];
+            // TODO: This doesn't handle the case where op succeeded but an individual doc failed
+        }
+    }];
     return op;
 }
 

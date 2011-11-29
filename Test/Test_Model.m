@@ -195,6 +195,31 @@
 }
 
 
+- (void) test6_bulkSave {
+    NSString* id1;
+    {
+        TestModel* m1 = [self createModelWithName: @"Alice" grade: 9];
+        TestModel* m2 = [self createModelWithName: @"Bartholomew" grade: 10];
+        TestModel* m3 = [self createModelWithName: @"Claire" grade: 11];
+        
+        RESTOperation* op = [CouchModel saveModels: [NSArray arrayWithObjects: m1, m2, m3, nil]];
+        AssertWait(op);
+        
+        STAssertFalse(m1.needsSave, nil);
+        STAssertFalse(m2.needsSave, nil);
+        STAssertFalse(m3.needsSave, nil);
+        
+        id1 = m1.document.documentID;
+        STAssertNotNil(id1, nil);
+        STAssertTrue([m1.document.currentRevisionID hasPrefix: @"1-"], nil);
+    }
+    [_db clearDocumentCache];
+    
+    TestModel* m1 = [TestModel modelForDocument: [_db documentWithID: id1]];
+    STAssertEqualObjects(m1.name, @"Alice", nil);
+}
+
+
 #pragma mark - UTILITIES:
 
 - (TestModel*) createModelWithName: (NSString*)name grade: (int)grade {
