@@ -61,6 +61,11 @@
 @protocol CouchUITableDelegate <UITableViewDelegate>
 @optional
 
+/** Allows delegate to return its own custom cell, just like -tableView:cellForRowAtIndexPath:.
+    If this returns nil the table source will create its own cell, as if this method were not implemented. */
+- (UITableViewCell *)couchTableSource:(CouchUITableSource*)source
+                cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+
 /** Called after the query's results change, before the table view is reloaded. */
 - (void)couchTableSource:(CouchUITableSource*)source
      willUpdateFromQuery:(CouchLiveQuery*)query;
