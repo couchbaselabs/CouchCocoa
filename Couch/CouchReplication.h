@@ -47,6 +47,8 @@ typedef NSUInteger CouchReplicationOptions;
 /** Stops replication, asynchronously. */
 - (void) stop;
 
+@property (nonatomic, readonly) NSURL* remoteURL;
+
 @property (nonatomic, readonly) BOOL running;
 
 /** The current status string from the server, if active, else nil (observable).
