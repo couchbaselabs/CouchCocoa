@@ -55,6 +55,14 @@
 		27938C63140C01DC00117675 /* CouchModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 27DB82231408225300E57444 /* CouchModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2795994F140A02DB001C168A /* Test_Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2795994E140A02DB001C168A /* Test_Model.m */; };
 		27959950140A02DB001C168A /* Test_Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2795994E140A02DB001C168A /* Test_Model.m */; };
+		279906D2149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906CE149930DA003D4338 /* CouchConnectionChangeTracker.h */; };
+		279906D3149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906CE149930DA003D4338 /* CouchConnectionChangeTracker.h */; };
+		279906D4149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */; };
+		279906D5149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */; };
+		279906D6149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */; };
+		279906D7149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */; };
+		279906D8149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */; };
+		279906D9149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */; };
 		279CCBF213F9823F00C38C82 /* CouchReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CCBF013F9823F00C38C82 /* CouchReplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		279CCBF313F9823F00C38C82 /* CouchReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CCBF013F9823F00C38C82 /* CouchReplication.h */; };
 		279CCBF413F9823F00C38C82 /* CouchReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 279CCBF113F9823F00C38C82 /* CouchReplication.m */; };
@@ -242,6 +250,10 @@
 		279276EC14215D5600002958 /* RESTBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTBase64.h; sourceTree = "<group>"; };
 		279276ED14215D5600002958 /* RESTBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTBase64.m; sourceTree = "<group>"; };
 		2795994E140A02DB001C168A /* Test_Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test_Model.m; sourceTree = "<group>"; };
+		279906CE149930DA003D4338 /* CouchConnectionChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchConnectionChangeTracker.h; sourceTree = "<group>"; };
+		279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchConnectionChangeTracker.m; sourceTree = "<group>"; };
+		279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchSocketChangeTracker.h; sourceTree = "<group>"; };
+		279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchSocketChangeTracker.m; sourceTree = "<group>"; };
 		279CCBF013F9823F00C38C82 /* CouchReplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchReplication.h; sourceTree = "<group>"; };
 		279CCBF113F9823F00C38C82 /* CouchReplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchReplication.m; sourceTree = "<group>"; };
 		27A577A613970959002776DB /* DemoQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoQuery.h; sourceTree = "<group>"; };
@@ -403,6 +415,7 @@
 				27E4DD0A141921E000A3D8F6 /* CouchPersistentReplication.h */,
 				27E4DD0B141921E000A3D8F6 /* CouchPersistentReplication.m */,
 				270A663C13A5B3DF00791F4A /* CouchCocoa.h */,
+				279906DB149930E3003D4338 /* ChangeTracker */,
 				27333BCB13B7E70100EF5A10 /* Internal */,
 			);
 			path = Couch;
@@ -456,8 +469,6 @@
 			isa = PBXGroup;
 			children = (
 				27333BCA13B7E61700EF5A10 /* CouchInternal.h */,
-				2781244413AFA6CD0051A99D /* CouchChangeTracker.h */,
-				2781244513AFA6CD0051A99D /* CouchChangeTracker.m */,
 				274EB8AA14479E7B001B7DD0 /* CouchbaseMobile.h */,
 				27D083B7143FBEEA0067702F /* CouchbaseCallbacks.h */,
 				27CDEC3913C6806400C979BB /* CouchPrefix.pch */,
@@ -491,6 +502,19 @@
 				27333BCC13B7EB0000EF5A10 /* Internal */,
 			);
 			path = REST;
+			sourceTree = "<group>";
+		};
+		279906DB149930E3003D4338 /* ChangeTracker */ = {
+			isa = PBXGroup;
+			children = (
+				2781244413AFA6CD0051A99D /* CouchChangeTracker.h */,
+				2781244513AFA6CD0051A99D /* CouchChangeTracker.m */,
+				279906CE149930DA003D4338 /* CouchConnectionChangeTracker.h */,
+				279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */,
+				279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */,
+				279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */,
+			);
+			name = ChangeTracker;
 			sourceTree = "<group>";
 		};
 		27A57A51139751B2002776DB /* JSONKit */ = {
@@ -591,6 +615,8 @@
 				27CB654D143A746700EEA1F2 /* CouchDesignDocument_Embedded.h in Headers */,
 				27D083B9143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */,
 				274EB8A514479D72001B7DD0 /* CouchEmbeddedServer.h in Headers */,
+				279906D3149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */,
+				279906D7149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -620,6 +646,8 @@
 				27CDEC3613C67D3500C979BB /* CouchCocoa.h in Headers */,
 				279276EE14215D5600002958 /* RESTBase64.h in Headers */,
 				27D083B8143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */,
+				279906D2149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */,
+				279906D6149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -968,6 +996,8 @@
 				279276F114215D5600002958 /* RESTBase64.m in Sources */,
 				27CB654F143A746700EEA1F2 /* CouchDesignDocument_Embedded.m in Sources */,
 				274EB8A714479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */,
+				279906D5149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */,
+				279906D9149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1019,6 +1049,8 @@
 				279276F014215D5600002958 /* RESTBase64.m in Sources */,
 				27CB654E143A746700EEA1F2 /* CouchDesignDocument_Embedded.m in Sources */,
 				274EB8A614479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */,
+				279906D4149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */,
+				279906D8149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

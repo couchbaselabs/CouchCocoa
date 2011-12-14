@@ -35,7 +35,6 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 
 @interface CouchDatabase ()
 - (void) documentAssignedID: (CouchDocument*)document;
-- (void) receivedChangeLine: (NSData*)chunk;
 - (void) beginDocumentOperation: (CouchResource*)resource;
 - (void) endDocumentOperation: (CouchResource*)resource;
 - (void) onChange: (OnDatabaseChangeBlock)block;  // convenience for unit tests
