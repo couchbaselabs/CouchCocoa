@@ -41,6 +41,7 @@
                    pull: (BOOL)pull
                 options: (CouchReplicationOptions)options
 {
+    NSParameterAssert(remote);
     self = [super init];
     if (self) {
         _database = [database retain];
@@ -94,6 +95,8 @@
     self.running = YES;
     RESTOperation* op = [self operationToStart: YES];
     [op onCompletion: ^{
+        if (!_running)
+            return;  // already stopped
         NSDictionary* response = op.responseBody.fromJSON;
         if (!op.isSuccessful) {
             Warn(@"%@ couldn't start: %@", self, op.error);
