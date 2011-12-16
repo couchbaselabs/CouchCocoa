@@ -25,6 +25,7 @@
     RESTResource* _activityRsrc;
     int _activeTasksObserverCount;
     NSArray* _activeTasks;
+    RESTOperation* _activeTasksOp;
     NSTimer* _activityPollTimer;
     CouchLiveQuery* _replicationsQuery;
 }
@@ -54,6 +55,8 @@
 /** The list of active server tasks, as parsed JSON (observable).
     This is updated asynchronously while the activityPollInterval is nonzero. */
 @property (nonatomic, readonly, retain) NSArray* activeTasks;
+
+- (void) checkActiveTasks;
 
 /** How often to poll the server's list of active tasks and update .activeTasks. */
 @property NSTimeInterval activityPollInterval;

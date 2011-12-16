@@ -194,19 +194,21 @@
                          change: (NSDictionary*)change context: (void*)context
 {
     // Server's activeTasks changed:
+    BOOL active = NO;
     NSString* status = nil;
     for (NSDictionary* task in _database.server.activeTasks) {
         if ([[task objectForKey:@"type"] isEqualToString:@"Replication"]) {
             // Can't look up the task ID directly because it's part of a longer string like
             // "`6390525ac52bd8b5437ab0a118993d0a+continuous`: ..."
             if ([[task objectForKey: @"task"] rangeOfString: _taskID].length > 0) {
+                active = YES;
                 status = [task objectForKey: @"status"];
                 break;
             }
         }
     }
     
-    if (!status) {
+    if (!active) {
         COUCHLOG(@"%@: No longer an active task", self);
         [self stopped];
     } else if (!$equal(status, _status)) {

@@ -175,12 +175,16 @@ int gCouchLogLevel = 0;
 }
 
 
-- (void) pollActivity {
+- (void) checkActiveTasks {
+    if (_activeTasksOp)
+        return;  // already checking
     if (!_activityRsrc) {
         _activityRsrc = [[RESTResource alloc] initWithParent:self relativePath:@"_active_tasks"];
     }
     RESTOperation* op = [_activityRsrc GET];
+    _activeTasksOp = op;
     [op onCompletion: ^{
+        _activeTasksOp = nil;
         if (op.isSuccessful) {
             [_activityRsrc cacheResponse: op];
             NSArray* tasks = $castIf(NSArray, op.responseBody.fromJSON);
@@ -203,10 +207,10 @@ int gCouchLogLevel = 0;
         if (interval > 0) {
             _activityPollTimer = [[NSTimer scheduledTimerWithTimeInterval: interval
                                                                    target: self 
-                                                                 selector: @selector(pollActivity)
+                                                                 selector: @selector(checkActiveTasks)
                                                                  userInfo: NULL
                                                                   repeats: YES] retain];
-            [self pollActivity];
+            [self checkActiveTasks];
         } else {
             _activityPollTimer = nil;
         }
