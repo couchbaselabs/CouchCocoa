@@ -40,6 +40,8 @@ typedef NSUInteger CouchReplicationOptions;
     NSError* _error;
 }
 
+@property (readonly) NSURL* remoteURL;
+
 /** Starts the replication, asynchronously.
     @return  The operation to start replication, or nil if replication is already started. */
 - (RESTOperation*) start;

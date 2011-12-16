@@ -23,7 +23,7 @@
 
 
 @interface CouchQueryEnumerator ()
-- (id) initWithQuery: (CouchQuery*)query op: (RESTOperation*)op;
+- (id) initWithQuery: (CouchQuery*)query result: (NSDictionary*)result;
 @end
 
 
@@ -118,11 +118,12 @@
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     error = [super operation: op willCompleteWithError: error];
     if (!error && op.httpStatus == 200) {
-        NSArray* rows = $castIf(NSArray, [op.responseBody.fromJSON objectForKey: @"rows"]);
+        NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
+        NSArray* rows = $castIf(NSArray, [result objectForKey: @"rows"]);
         if (rows) {
             [self cacheResponse: op];
             op.resultObject = [[[CouchQueryEnumerator alloc] initWithQuery: self
-                                                                        op: op] autorelease];
+                                                                    result: result] autorelease];
         } else {
             Warn(@"Couldn't parse rows from CouchDB view response");
             error = [NSError errorWithDomain: CouchHTTPErrorDomain code: 500 userInfo:nil];
@@ -184,6 +185,7 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [_op release];
+    [_rows release];
     [super dealloc];
 }
 
@@ -285,8 +287,7 @@
     return self;
 }
 
-- (id) initWithQuery: (CouchQuery*)query op: (RESTOperation*)op {
-    NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
+- (id) initWithQuery: (CouchQuery*)query result: (NSDictionary*)result {
     return [self initWithQuery: query
                           rows: $castIf(NSArray, [result objectForKey: @"rows"])
                     totalCount: [[result objectForKey: @"total_rows"] intValue]
