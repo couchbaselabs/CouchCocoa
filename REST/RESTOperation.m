@@ -485,7 +485,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         if(!credential) {
             NSURLProtectionSpace* acceptableProtectionSpace = [_resource protectionSpaceForOperation:self];
             if(acceptableProtectionSpace) {
-                credential = [[NSURLCredential alloc] initWithTrust:acceptableProtectionSpace.serverTrust];
+                credential = [[[NSURLCredential alloc] initWithTrust:
+                                            acceptableProtectionSpace.serverTrust] autorelease];
             }
         }
         if (credential) {
