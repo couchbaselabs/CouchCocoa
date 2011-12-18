@@ -375,9 +375,14 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 
 - (void) createdByPOST: (RESTOperation*)op {
-    [super createdByPOST: op];    //FIX: Should update relativePath directly from 'id' instead
-    [self updateFromSaveResponse: $castIf(NSDictionary, op.responseBody.fromJSON)
-                  withProperties: nil];
+    NSDictionary* response = $castIf(NSDictionary, op.responseBody.fromJSON);
+    NSString* docID = [response objectForKey: @"id"];
+    if (docID)
+        [self assignedRelativePath: docID];
+    else
+        [super createdByPOST: op];
+    [self updateFromSaveResponse: response withProperties: nil];
+    
     [self.database documentAssignedID: self];
     [self.database endDocumentOperation: self];   // I was created via a POST
 }

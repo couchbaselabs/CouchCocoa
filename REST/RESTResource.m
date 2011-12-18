@@ -102,6 +102,13 @@
 }
 
 
+- (void) assignedRelativePath: (NSString*)relativePath {
+    NSParameterAssert(relativePath);
+    NSAssert(!_relativePath, @"Already has relativePath %@", _relativePath);
+    _relativePath = [relativePath copy];
+}
+
+
 #pragma mark -
 #pragma mark HTTP METHODS:
 
@@ -189,7 +196,7 @@
     if (location) {
         NSURL* locationURL = [NSURL URLWithString: location relativeToURL: _parent.URL];
         if (locationURL) {
-            _relativePath = [[locationURL lastPathComponent] copy];
+            [self assignedRelativePath: [locationURL lastPathComponent]];
             if (![self.URL isEqual: locationURL])
                 _url = [locationURL retain];
         }
