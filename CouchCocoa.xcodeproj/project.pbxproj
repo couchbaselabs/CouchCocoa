@@ -133,6 +133,11 @@
 		27E4DD0E141921E000A3D8F6 /* CouchPersistentReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E4DD0B141921E000A3D8F6 /* CouchPersistentReplication.m */; };
 		27E4DD0F141921E000A3D8F6 /* CouchPersistentReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E4DD0B141921E000A3D8F6 /* CouchPersistentReplication.m */; };
 		27E4DD14141959EB00A3D8F6 /* CouchPersistentReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 27E4DD0A141921E000A3D8F6 /* CouchPersistentReplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27E9C61914A0EECC00F67966 /* CouchTouchDBServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27E9C61A14A0EECC00F67966 /* CouchTouchDBServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */; };
+		27E9C61B14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */; };
+		27E9C61C14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */; };
+		27E9C61E14A0F6A300F67966 /* CouchTouchDBServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EEA59A13D602EA00D7ACA4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */; };
 		27EEA5A913D604F500D7ACA4 /* RESTResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B231A13916F1400DDD950 /* RESTResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EEA5AA13D604F800D7ACA4 /* RESTOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22FD138F32CB00DDD950 /* RESTOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -288,6 +293,8 @@
 		27DB823114084F1800E57444 /* ShoppingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingItem.m; sourceTree = "<group>"; };
 		27E4DD0A141921E000A3D8F6 /* CouchPersistentReplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchPersistentReplication.h; sourceTree = "<group>"; };
 		27E4DD0B141921E000A3D8F6 /* CouchPersistentReplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchPersistentReplication.m; sourceTree = "<group>"; };
+		27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchTouchDBServer.h; sourceTree = "<group>"; };
+		27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchTouchDBServer.m; sourceTree = "<group>"; };
 		27EEA59813D602EA00D7ACA4 /* CouchCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CouchCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		27EF14771396D7BA0052913E /* Addresses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Addresses.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -394,6 +401,8 @@
 				278B22F2138F1F5F00DDD950 /* CouchServer.m */,
 				274EB8A214479D71001B7DD0 /* CouchEmbeddedServer.h */,
 				274EB8A314479D71001B7DD0 /* CouchEmbeddedServer.m */,
+				27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */,
+				27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */,
 				278B22F4138F269200DDD950 /* CouchDatabase.h */,
 				278B22F5138F269200DDD950 /* CouchDatabase.m */,
 				278B22F7138F2AA600DDD950 /* CouchDocument.h */,
@@ -617,6 +626,7 @@
 				274EB8A514479D72001B7DD0 /* CouchEmbeddedServer.h in Headers */,
 				279906D3149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */,
 				279906D7149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */,
+				27E9C61A14A0EECC00F67966 /* CouchTouchDBServer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,6 +641,7 @@
 				27CDEC2D13C67D3500C979BB /* REST.h in Headers */,
 				27CDEC2E13C67D3500C979BB /* CouchServer.h in Headers */,
 				274EB8A414479D72001B7DD0 /* CouchEmbeddedServer.h in Headers */,
+				27E9C61914A0EECC00F67966 /* CouchTouchDBServer.h in Headers */,
 				27CDEC2F13C67D3500C979BB /* CouchDatabase.h in Headers */,
 				27CDEC3013C67D3500C979BB /* CouchDocument.h in Headers */,
 				27CDEC3113C67D3500C979BB /* CouchRevision.h in Headers */,
@@ -670,6 +681,7 @@
 				27EEA5B413D6051B00D7ACA4 /* CouchResource.h in Headers */,
 				27EEA5AD13D6050600D7ACA4 /* CouchServer.h in Headers */,
 				27003411144CBB150029C4BA /* CouchEmbeddedServer.h in Headers */,
+				27E9C61E14A0F6A300F67966 /* CouchTouchDBServer.h in Headers */,
 				27EEA5AE13D6050C00D7ACA4 /* CouchDatabase.h in Headers */,
 				279CCBF613F9955900C38C82 /* CouchReplication.h in Headers */,
 				27E4DD14141959EB00A3D8F6 /* CouchPersistentReplication.h in Headers */,
@@ -998,6 +1010,7 @@
 				274EB8A714479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */,
 				279906D5149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */,
 				279906D9149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */,
+				27E9C61C14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1051,6 +1064,7 @@
 				274EB8A614479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */,
 				279906D4149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */,
 				279906D8149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */,
+				27E9C61B14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
