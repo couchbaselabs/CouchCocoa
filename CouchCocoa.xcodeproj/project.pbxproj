@@ -1131,7 +1131,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
 				WARNING_CFLAGS = "-Wall";
 			};
@@ -1153,7 +1153,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
 				WARNING_CFLAGS = "-Wall";
 			};
