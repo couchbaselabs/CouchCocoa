@@ -122,8 +122,11 @@
     }
     if (line.length == 0 || [line isEqualToString: @"\n"])
         return;
-    if (![self receivedChange: [RESTBody JSONObjectWithString: line]])
+    id change = [RESTBody JSONObjectWithString: line];
+    if (!change)
         Warn(@"Received unparseable change line from server: %@", line);
+    else if (![self receivedChange: change])
+        COUCHLOG(@"%@: Couldn't interpret change line %@", self, line);
 }
 
 - (BOOL) receivedPollResponse: (NSData*)body {
