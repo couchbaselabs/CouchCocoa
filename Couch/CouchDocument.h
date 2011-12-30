@@ -26,7 +26,13 @@
     BOOL _isDeleted;
     NSString* _currentRevisionID;
     CouchRevision* _currentRevision;
+    NSString *_documentID;
 }
+
+/** Initialize a CouchDocument using a relativePath which is different from the documentID. This is useful for
+    update handlers, rewrites, and other Couch functions. The relativePath is used directly and thus must
+    include the documentID if it must be part of the relativePath. */
+- (id) initWithParent: (RESTResource*)parent relativePath: (NSString*)path documentID:(NSString *)documentID;
 
 /** The unique ID of this document; its key in the database. */
 @property (readonly) NSString* documentID;
