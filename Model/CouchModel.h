@@ -14,7 +14,8 @@
     There's a 1::1 mapping between these and CouchDocuments; call +modelForDocument: to get (or create) a model object for a document, and .document to get the document of a model.
     You should subclass this and declare properties in the subclass's @interface. As with NSManagedObject, you don't need to implement their accessor methods or declare instance variables; simply note them as '@dynamic' in the @implementation. The property value will automatically be fetched from or stored to the document, using the same name.
     Supported scalar types are bool, char, short, int, double. These map to JSON numbers, except 'bool' which maps to JSON 'true' and 'false'. (Use bool instead of BOOL.)
-    Supported object types are NSString, NSNumber, NSData, NSDate, NSArray, NSDictionary. (NSData and NSDate are not native JSON; they will be automatically converted to/from strings in base64 and ISO date formats, respectively.) */
+    Supported object types are NSString, NSNumber, NSData, NSDate, NSArray, NSDictionary. (NSData and NSDate are not native JSON; they will be automatically converted to/from strings in base64 and ISO date formats, respectively.)
+    Additionally, a property's type can be a pointer to a CouchModel subclass. This provides references between model objects. The raw property value in the document must be a string whose value is interpreted as a document ID. */
 @interface CouchModel : CouchDynamicObject
 {
     @private
@@ -77,6 +78,14 @@
     This value can be used to highlight recently-changed objects in the UI. */
 @property (readonly) NSTimeInterval timeSinceExternallyChanged;
 
+/** Bulk-saves changes to multiple model objects (which must all be in the same database).
+    This invokes -[CouchDatabase putChanges:], which sends a single request to _bulk_docs.
+    Any unchanged models in the array are ignored.
+    @param models  An array of CouchModel objects, which must all be in the same database.
+    @return  A RESTOperation that saves all changes, or nil if none of the models need saving. */
++ (RESTOperation*) saveModels: (NSArray*)models;
+
+/** Resets the timeSinceExternallyChanged property to zero. */
 - (void) markExternallyChanged;
 
 #pragma mark - PROPERTIES & ATTACHMENTS:

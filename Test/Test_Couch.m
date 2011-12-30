@@ -165,6 +165,29 @@
 }
 
 
+- (void) test03_SaveMultipleUnsavedDocuments {
+    NSMutableArray* docs = [NSMutableArray array];
+    NSMutableArray* docProperties = [NSMutableArray array];
+    
+    for (int i=0; i<5; i++) {
+        CouchDocument* doc = [_db untitledDocument];
+        [docs addObject: doc];
+        [docProperties addObject: [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: i]
+                                                              forKey: @"order"]];
+    }
+    
+    AssertWait([_db putChanges: docProperties toRevisions: docs]);
+    
+    for (int i=0; i<5; i++) {
+        CouchDocument* doc = [docs objectAtIndex: i];
+        STAssertTrue([doc.currentRevisionID hasPrefix: @"1-"],
+                     @"Expected 2nd revision: %@ in %@", doc.currentRevisionID, doc);
+        STAssertEqualObjects([doc.currentRevision.properties objectForKey: @"order"],
+                             [NSNumber numberWithInt: i], nil);
+    }
+}
+
+
 - (void) test03_DeleteMultipleDocuments {
     NSMutableArray* docs = [NSMutableArray array];
     for (int i=0; i<5; i++) {

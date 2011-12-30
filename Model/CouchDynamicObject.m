@@ -58,6 +58,10 @@ NS_INLINE NSString *setterKey(SEL sel) {
     return [NSString stringWithUTF8String:buffer];
 }
 
++ (NSString*) getterKey: (SEL)sel   {return getterKey(sel);}
++ (NSString*) setterKey: (SEL)sel   {return setterKey(sel);}
+
+
 
 #pragma mark - GENERIC ACCESSOR METHOD IMPS:
 
@@ -170,6 +174,18 @@ static Class classFromType(const char* propertyType) {
     strlcpy(className, propertyType + 2, len - 2);
     return objc_getClass(className);
 }
+
+
++ (Class) classOfProperty: (NSString*)propertyName {
+    Class declaredInClass;
+    const char* propertyType;
+    if (!getPropertyInfo(self, propertyName, NO, &declaredInClass, &propertyType))
+        return Nil;
+    return classFromType(propertyType);
+}
+
+
+// IDEA: Would be awesome to use imp_implementationWithBlock() on OS X 10.7+ and iOS 4.3+.
 
 
 + (IMP) impForGetterOfClass: (Class)propertyClass {

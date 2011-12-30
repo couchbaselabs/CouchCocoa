@@ -7,6 +7,7 @@
 //
 
 #import "CouchModel.h"
+#import "CouchModelFactory.h"
 #import "CouchInternal.h"
 
 
@@ -52,6 +53,7 @@
 
 
 + (id) modelForDocument: (CouchDocument*)document {
+    NSParameterAssert(document);
     CouchModel* model = document.modelObject;
     if (model)
         NSAssert([model isKindOfClass: self], @"%@: %@ already has incompatible model %@",
@@ -225,9 +227,43 @@
 }
 
 
++ (RESTOperation*) saveModels: (NSArray*)models {
+    CouchDatabase* db = nil;
+    NSUInteger n = models.count;
+    NSMutableArray* changes = [NSMutableArray arrayWithCapacity: n];
+    NSMutableArray* changedModels = [NSMutableArray arrayWithCapacity: n];
+    NSMutableArray* changedDocs = [NSMutableArray arrayWithCapacity: n];
+    
+    for (CouchModel* model in models) {
+        if (!db)
+            db = model.database;
+        else
+            NSAssert(model.database == db, @"Models must share a common db");
+        if (!model.needsSave)
+            continue;
+        [changes addObject: model.propertiesToSave];
+        [changedModels addObject: model];
+        [changedDocs addObject: model.document];
+        model.needsSave = NO;
+    }
+    if (changes.count == 0)
+        return nil;
+       
+    RESTOperation* op = [db putChanges: changes toRevisions: changedDocs];
+    [op onCompletion: ^{
+        for (CouchModel* model in changedModels) {
+            [model saveCompleted: op];
+            // TODO: This doesn't handle the case where op succeeded but an individual doc failed
+        }
+    }];
+    return op;
+}
+
+
 #pragma mark - PROPERTIES:
 
 
+// Transforms cached property values back into JSON-compatible objects
 - (id) externalizePropertyValue: (id)value {
     if ([value isKindOfClass: [NSData class]])
         value = [RESTBody base64WithData: value];
@@ -314,6 +350,49 @@
     return value;
 }
 
+- (CouchModel*) getModelProperty: (NSString*)property {
+    // Model-valued properties are kept in raw form as document IDs, not mapped to CouchModel
+    // references, to avoid reference loops.
+    
+    // First get the target document ID:
+    NSString* rawValue = [self getValueOfProperty: property];
+    if (!rawValue)
+        return nil;
+    
+    // Look up the CouchDocument:
+    if (![rawValue isKindOfClass: [NSString class]]) {
+        Warn(@"Model-valued property %@ of %@ is not a string", property, _document);
+        return nil;
+    }
+    CouchDocument* doc = [_document.database documentWithID: rawValue];
+    if (!doc) {
+        Warn(@"Unable to get document from property %@ of %@ (value='%@')",
+             property, _document, rawValue);
+        return nil;
+    }
+    
+    // Ask factory to get/create model; if it doesn't know, use the declared class:
+    CouchModel* value = [[CouchModelFactory sharedInstance] modelForDocument: doc];
+    if (!value) {
+        Class declaredClass = [[self class] classOfProperty: property];
+        value = [declaredClass modelForDocument: doc];
+    }
+    if (!value) 
+        Warn(@"Unable to decode model from property %@ of %@", property, _document);
+    return value;
+}
+
+- (void) setModel: (CouchModel*)model forProperty: (NSString*)property {
+    // Don't store the target CouchModel in the _properties dictionary, because this could create
+    // a reference loop. Instead, just store the raw document ID. getModelProperty will map to the
+    // model object when called.
+    NSString* docID = model.document.documentID;
+    NSAssert(docID || !model, 
+             @"Cannot assign untitled %@ as the value of model property %@.%@",
+             model.document, [self class], property);
+    [self setValue: docID ofProperty: property];
+}
+
 NS_INLINE NSString *getterKey(SEL sel) {
     return [NSString stringWithUTF8String:sel_getName(sel)];
 }
@@ -326,6 +405,14 @@ static id getDateProperty(CouchModel *self, SEL _cmd) {
     return [self getDateProperty: getterKey(_cmd)];
 }
 
+static id getModelProperty(CouchModel *self, SEL _cmd) {
+    return [self getModelProperty: getterKey(_cmd)];
+}
+
+static void setModelProperty(CouchModel *self, SEL _cmd, id value) {
+    return [self setModel: value forProperty: [CouchDynamicObject setterKey: _cmd]];
+}
+
 
 + (IMP) impForGetterOfClass: (Class)propertyClass {
     if (propertyClass == Nil || propertyClass == [NSString class]
@@ -336,8 +423,17 @@ static id getDateProperty(CouchModel *self, SEL _cmd) {
         return (IMP)getDataProperty;
     else if (propertyClass == [NSDate class])
         return (IMP)getDateProperty;
+    else if ([propertyClass isSubclassOfClass: [CouchModel class]])
+        return (IMP)getModelProperty;
     else 
         return NULL;  // Unsupported
+}
+
++ (IMP) impForSetterOfClass: (Class)propertyClass {
+    if ([propertyClass isSubclassOfClass: [CouchModel class]])
+        return (IMP)setModelProperty;
+    else 
+        return [super impForSetterOfClass: propertyClass];
 }
 
 

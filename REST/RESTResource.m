@@ -102,6 +102,14 @@
 }
 
 
+// Internal method used after an untitled resource acquires a URL (e.g. after it's POSTed).
+- (void) createdWithRelativePath: (NSString*)relativePath {
+    NSParameterAssert(relativePath);
+    NSAssert(!_relativePath, @"Resource already has a relativePath");
+    _relativePath = [relativePath copy];
+}
+
+
 #pragma mark -
 #pragma mark HTTP METHODS:
 
@@ -189,7 +197,7 @@
     if (location) {
         NSURL* locationURL = [NSURL URLWithString: location relativeToURL: _parent.URL];
         if (locationURL) {
-            _relativePath = [[locationURL lastPathComponent] copy];
+            [self createdWithRelativePath: [locationURL lastPathComponent]];
             if (![self.URL isEqual: locationURL])
                 _url = [locationURL retain];
         }

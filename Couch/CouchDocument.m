@@ -375,9 +375,9 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 
 - (void) createdByPOST: (RESTOperation*)op {
-    [super createdByPOST: op];    //FIX: Should update relativePath directly from 'id' instead
-    [self updateFromSaveResponse: $castIf(NSDictionary, op.responseBody.fromJSON)
-                  withProperties: nil];
+    NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
+    [self createdWithRelativePath: [result objectForKey: @"id"]];
+    [self updateFromSaveResponse: result withProperties: nil];
     [self.database documentAssignedID: self];
     [self.database endDocumentOperation: self];   // I was created via a POST
 }
@@ -385,8 +385,20 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 // Called by -[CouchDatabase putChanges:toRevisions:] after a successful save.
 - (void) bulkSaveCompleted: (NSDictionary*) result forProperties: (NSDictionary*)properties {
-    if (![result objectForKey: @"error"])
+    if (![result objectForKey: @"error"]) {
+        NSString* docID = self.documentID;
+        if (!docID) {
+            docID = [result objectForKey: @"id"];
+            [self createdWithRelativePath: docID];
+            [self.database documentAssignedID: self];
+        }
+        if (![properties objectForKey: @"_id"]) {
+            NSMutableDictionary* nuProperties = [[properties mutableCopy] autorelease];
+            [nuProperties setObject: docID forKey: @"_id"];
+            properties = nuProperties;
+        }
         [self updateFromSaveResponse: result withProperties: properties];
+    }
 }
 
 
