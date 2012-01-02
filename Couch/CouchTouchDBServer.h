@@ -18,6 +18,7 @@
     @private
     TDServer* _touchServer;
     NSError* _error;
+    BOOL _observing;
 }
 
 /** A shared per-process instance. Remember that CouchCocoa is not thread-safe so you can't

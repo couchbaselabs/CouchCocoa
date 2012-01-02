@@ -157,7 +157,7 @@
 }
 
 - (void) setStatus: (NSString*)status {
-    COUCHLOG(@"%@ = %@", self, status);
+    COUCHLOG(@"%@ status line = %@", self, status);
     [_status autorelease];
     _status = [status copy];
     

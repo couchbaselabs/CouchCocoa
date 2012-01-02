@@ -10,6 +10,14 @@
 #import "CouchInternal.h"
 
 
+#if TARGET_OS_IPHONE
+extern NSString* const TDReplicatorProgressChangedNotification;
+#else
+// Copied from TouchDB's TDReplicator.m.
+static NSString* TDReplicatorProgressChangedNotification = @"TDReplicatorProgressChanged";
+#endif
+
+
 // Declare essential bits of TDServer and TDURLProtocol to avoid having to #import TouchDB:
 @interface TDServer : NSObject
 - (id) initWithDirectory: (NSString*)dirPath error: (NSError**)outError;
@@ -88,6 +96,42 @@
 
 
 @synthesize touchServer=_touchServer, error=_error;
+
+
+#pragma mark - ACTIVITY:
+
+// I don't have to resort to polling the /_activity URL; I can listen for direct notifications
+// from TDReplication.
+
+- (void) setActivityPollInterval: (NSTimeInterval)interval {
+    BOOL observe = (interval > 0.0);
+    if (observe == _observing)
+        return;
+    if (observe) {
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(replicationProgressChanged:)
+                                                     name: TDReplicatorProgressChangedNotification
+                                                   object: nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:TDReplicatorProgressChangedNotification
+                                                      object:nil];
+    }
+    _observing = observe;
+}
+
+- (NSTimeInterval) activityPollInterval {
+    return _observing ? 1.0 : 0.0;
+}
+
+
+- (void) replicationProgressChanged: (NSNotification*)n {
+    // This is called on the background TouchDB thread, so dispatch to main thread
+    [self performSelectorOnMainThread: @selector(checkActiveTasks) withObject: nil
+                        waitUntilDone: NO];
+}
+
+
 
 
 @end
