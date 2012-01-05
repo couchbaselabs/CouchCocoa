@@ -7,80 +7,86 @@
 //
 
 #import "CouchDesignDocument_Embedded.h"
+#import "CouchTouchDBServer.h"
+#import "CouchDatabase.h"
 
 
-NSString* const kCouchLanguageObjectiveC = @"objc";
+// Redeclare API from TouchDB to avoid having to #include external headers:
+@class TDDatabase, TDView;
+
+@interface TDServer : NSObject
+- (TDDatabase*) databaseNamed: (NSString*)name;
+@end
+
+@interface TDDatabase : NSObject
+- (TDView*) viewNamed: (NSString*)name;
+- (TDView*) existingViewNamed: (NSString*)name;
+- (void) defineFilter: (NSString*)filterName asBlock: (TDFilterBlock)filterBlock;
+- (void) defineValidation: (NSString*)validationName asBlock: (TDValidationBlock)validationBlock;
+- (TDValidationBlock) validationNamed: (NSString*)validationName;
+@end
+
+@interface TDView : NSObject
+- (BOOL) setMapBlock: (TDMapBlock)mapBlock
+         reduceBlock: (TDReduceBlock)reduceBlock
+             version: (NSString*)version;
+- (void) deleteView;
+@end
+
 
 
 @implementation CouchDesignDocument (Embedded)
 
 
-+ (CouchbaseCallbacks*) objCCallbacks {
-    // Look up the callbacks without creating a link-time dependency on the class:
-    static CouchbaseCallbacks* sCallbacks;
-    if (!sCallbacks) {
-        Class regClass = NSClassFromString(@"CouchbaseCallbacks");
-        sCallbacks = [regClass performSelector: @selector(sharedInstance)];
-        if (!sCallbacks)
-            [NSException raise: NSGenericException format: @"No Objective-C views available"];
-    }
-    return sCallbacks;
+- (TDDatabase*) touchDatabase {
+    TDServer* touchServer = [(CouchTouchDBServer*)self.database.server touchServer];
+    return [touchServer databaseNamed: self.database.relativePath];
+}
+
+
+- (NSString*) qualifiedName: (NSString*)name {
+    return [NSString stringWithFormat: @"%@/%@", self.relativePath.lastPathComponent, name];
 }
 
 
 - (void) defineViewNamed: (NSString*)viewName
-                mapBlock: (CouchMapBlock)mapBlock
+                mapBlock: (TDMapBlock)mapBlock
+                 version: (NSString*)version
 {
-    [self defineViewNamed: viewName mapBlock: mapBlock reduceBlock: NULL];
+    [self defineViewNamed: viewName mapBlock: mapBlock reduceBlock: NULL version: version];
 }
 
 
 - (void) defineViewNamed: (NSString*)viewName
-                mapBlock: (CouchMapBlock)mapBlock
-             reduceBlock: (CouchReduceBlock)reduceBlock
+                mapBlock: (TDMapBlock)mapBlock
+             reduceBlock: (TDReduceBlock)reduceBlock
+                 version: (NSString*)version
 {
-    NSString* mapKey = nil, *reduceKey = nil;
+    viewName = [self qualifiedName: viewName];
     if (mapBlock) {
-        CouchbaseCallbacks* callbacks = [[self class] objCCallbacks];
-        mapKey = [self mapFunctionOfViewNamed: viewName];
-        if (!mapKey)
-            mapKey = [callbacks generateKey];
-        [callbacks registerMapBlock: mapBlock forKey: mapKey];
-        reduceKey = [self reduceFunctionOfViewNamed: viewName];
-        if (reduceBlock) {
-            if (!reduceKey)
-                reduceKey = [callbacks generateKey];
-        }
-        if (reduceKey)
-            [callbacks registerReduceBlock: reduceBlock forKey: reduceKey];
-        self.language = kCouchLanguageObjectiveC;
+        TDView* view = [self.touchDatabase viewNamed: viewName];
+        [view setMapBlock: mapBlock reduceBlock: reduceBlock version: version];
+    } else {
+        NSAssert(!reduceBlock, @"Can't set a reduce block without a map block");
+        [[self.touchDatabase existingViewNamed: viewName] deleteView];
     }
-    [self defineViewNamed: viewName map: mapKey reduce: reduceKey];
 }
 
 
-- (CouchValidateUpdateBlock) validationBlock {
-    if (![self.language isEqualToString: kCouchLanguageObjectiveC])
-        return nil;
-    NSString* validateKey = self.validation;
-    if (!validateKey)
-        return nil;
-    return [[[self class] objCCallbacks] validateUpdateBlockForKey: validateKey];
+- (void) defineFilterNamed: (NSString*)filterName
+                     block: (TDFilterBlock)filterBlock
+{
+    filterName = [self qualifiedName: filterName];
+    [self.touchDatabase defineFilter: filterName asBlock: filterBlock];
 }
 
-- (void) setValidationBlock: (CouchValidateUpdateBlock)validateBlock {
-    CouchbaseCallbacks* callbacks = [[self class] objCCallbacks];
-    NSString* validateKey = self.validation;
-    if (validateBlock) {
-        if (!validateKey)
-            validateKey = [callbacks generateKey];
-        [callbacks registerValidateUpdateBlock: validateBlock forKey: validateKey];
-        self.language = kCouchLanguageObjectiveC;
-    } else if (validateKey) {
-        [callbacks registerValidateUpdateBlock: nil forKey: validateKey];
-        validateKey = nil;
-    }
-    self.validation = validateKey;
+
+- (TDValidationBlock) validationBlock {
+    return [self.touchDatabase validationNamed: self.relativePath];
+}
+
+- (void) setValidationBlock: (TDValidationBlock)validateBlock {
+    [self.touchDatabase defineValidation: self.relativePath asBlock: validateBlock];
 }
 
 

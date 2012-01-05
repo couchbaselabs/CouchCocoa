@@ -14,7 +14,6 @@
 //  and limitations under the License.
 
 #import "CouchDesignDocument.h"
-#import "CouchDesignDocument_Embedded.h"
 #import "CouchInternal.h"
 
 
@@ -52,12 +51,7 @@ NSString* const kCouchLanguageErlang = @"erlang";
         return YES;
     else if ([language isEqualToString: kCouchLanguageErlang])
         return YES;
-    else if ([language isEqualToString: kCouchLanguageObjectiveC]) {
-        // FIX: This isn't a reliable test for an embedded db.
-        return [self.URL.host isEqualToString: @"127.0.0.1"]
-            && [[self class] respondsToSelector: @selector(objCCallbacks)]
-            && [[self class] performSelector: @selector(objCCallbacks)] != nil;
-    } else
+    else
         return NO;
 }
 
