@@ -29,6 +29,7 @@
 @property (nonatomic, readwrite, copy) NSString* status;
 @property (nonatomic, readwrite) unsigned completed, total;
 @property (nonatomic, readwrite, retain) NSError* error;
+- (void) stopped;
 @end
 
 
@@ -53,7 +54,7 @@
 
 
 - (void)dealloc {
-    [self stop];
+    [self stopped];
     [_remote release];
     [_database release];
     [_error release];
