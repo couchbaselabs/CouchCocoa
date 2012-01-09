@@ -46,6 +46,24 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     [super tearDown];
 }
 
+- (void) testQueryEncoding {
+    NSURL* url = [NSURL URLWithString: kParentURL];
+    RESTResource* parent = [[[RESTResource alloc] initWithURL: url] autorelease];
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"value1", @"?key1",
+                            @"/%@value2*?", @"?key2",
+                            @"value&/(3", @"?key3",
+                            nil];
+    NSURLRequest* request = [parent requestWithMethod: @"GET" parameters: params];
+    NSArray* queries = [request.URL.query componentsSeparatedByString: @"&"];
+    queries = [queries rest_map: ^(id str) {
+        return [str stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+    }];
+    NSArray* expected = [NSArray arrayWithObjects:
+                         @"key1=value1", @"key2=/%@value2*?", @"key3=value&/(3", nil];
+    STAssertEqualObjects(queries, expected, @"URL queries not encoded correctly");
+}
+
 - (void)testBasicGet
 {
     // Test a root resource:

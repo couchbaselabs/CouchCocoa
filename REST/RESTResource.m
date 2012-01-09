@@ -141,8 +141,12 @@
                 [queries appendString: [key substringFromIndex: 1]];
             }
             [queries appendString: @"="];
-            value = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            [queries appendString: value];
+            CFStringRef escaped = CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                          (CFStringRef)value,
+                                                                          NULL, (CFStringRef)@"&",
+                                                                          kCFStringEncodingUTF8);
+            [queries appendString: (id)escaped];
+            CFRelease(escaped);
         } else {
             [request setValue: value forHTTPHeaderField: key];
         }
