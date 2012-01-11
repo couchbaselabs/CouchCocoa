@@ -31,9 +31,11 @@ extern NSString* const kCouchLanguageErlang;
     NSString* _language;
     NSMutableDictionary* _views;
     NSString* _validation;
+    NSMutableDictionary* _viewOptions;
     NSString* _viewsRevisionID;
     BOOL _changed;
     BOOL _changedValidation;
+    BOOL _changedViewOptions;
     RESTOperation* _savingOp;
 }
 
@@ -78,6 +80,11 @@ extern NSString* const kCouchLanguageErlang;
 
 /** The validation function, a JavaScript function that validates document contents. */
 @property (copy) NSString* validation;
+
+/** Should view query results include the document local sequence number in the index?
+    Setting this to YES sets the 'local_seq' property of the design document's 'options' property to 'true'.
+    This affects every view in this design document. */
+@property (nonatomic, assign) BOOL includeLocalSequence;
 
 /** Have the contents of the design document been changed in-memory but not yet saved? */
 @property (readonly) BOOL changed;
