@@ -591,13 +591,22 @@
         return [NSString stringWithFormat:@"%@/_show/%@/%@", designDocumentId, showFunctionName, docId];
     };
     
+    NSMutableDictionary *expectedProperties = [properties mutableCopy];
+    [expectedProperties setObject:@"show" forKey:@"showValue"];
+
     doc = [self.db documentWithID:docID];
     
     RESTOperation* op = AssertWait([doc GET]);
     STAssertEquals(op.httpStatus, 200, @"GET failed");
     
-    NSMutableDictionary *expectedProperties = [properties mutableCopy];
-    [expectedProperties setObject:@"show" forKey:@"showValue"];
+    STAssertEqualObjects(doc.userProperties, expectedProperties, @"Couldn't get doc properties after GET");
+
+    // Try it again
+    doc = [self.db documentWithID:docID];
+    
+    op = AssertWait([doc GET]);
+    STAssertEquals(op.httpStatus, 200, @"GET failed");
+    
     STAssertEqualObjects(doc.userProperties, expectedProperties, @"Couldn't get doc properties after GET");
 }
 
