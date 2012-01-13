@@ -33,6 +33,8 @@ static const NSUInteger kDocRetainLimit = 50;
 
 @implementation CouchDatabase
 
+@dynamic documentPathMap;
+
 
 + (CouchDatabase*) databaseNamed: (NSString*)databaseName
                  onServerWithURL: (NSURL*)serverURL
@@ -71,6 +73,17 @@ static const NSUInteger kDocRetainLimit = 50;
     return [[self PUT: nil parameters: nil] start];
 }
 
+- (void)setDocumentPathMap:(CouchDocumentPathMap)documentPathMap
+{
+    _documentPathMap = [documentPathMap copy];
+    [_docCache forgetAllResources];
+}
+
+- (CouchDocumentPathMap)documentPathMap
+{
+    return _documentPathMap;
+}
+
 
 - (BOOL) ensureCreated: (NSError**)outError {
     RESTOperation* op = [self create];
@@ -105,8 +118,13 @@ static const NSUInteger kDocRetainLimit = 50;
             return nil;
         if ([docID hasPrefix: @"_design/"])     // Create a design doc when appropriate
             doc = [[CouchDesignDocument alloc] initWithParent: self relativePath: docID];
-        else
-            doc = [[CouchDocument alloc] initWithParent: self relativePath: docID];
+        else {
+            if(_documentPathMap != nil) {
+                doc = [[CouchDocument alloc] initWithParent:self relativePath:_documentPathMap(docID) documentID:docID];
+            } else {
+                doc = [[CouchDocument alloc] initWithParent: self relativePath: docID];
+            }
+        }
         if (!doc)
             return nil;
         if (!_docCache)

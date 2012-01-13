@@ -43,6 +43,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 
 
 @interface CouchDocument ()
+- (id) initWithParent: (RESTResource*)parent relativePath: (NSString*)path documentID:(NSString *)documentID;
 @property (readwrite, copy) NSString* currentRevisionID;
 - (void) loadCurrentRevisionFrom: (CouchQueryRow*)row;
 - (void) bulkSaveCompleted: (NSDictionary*) result forProperties: (NSDictionary*)properties;

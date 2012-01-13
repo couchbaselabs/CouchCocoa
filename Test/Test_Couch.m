@@ -17,6 +17,7 @@
 #import "CouchDesignDocument.h"
 #import "RESTInternal.h"
 #import "CouchTestCase.h"
+#import "CouchDatabase.h"
 
 
 @interface Test_Couch : CouchTestCase
@@ -560,6 +561,46 @@
         ++rowNumber;
     }
 }
+
+#pragma mark - Custom Path Maps
+
+- (void) test_GetDocument_using_a_custom_path_map {
+    NSDictionary* properties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                @"testCreateDocument", @"testName",
+                                [NSNumber numberWithInt:1337], @"tag",
+                                nil];
+    CouchDocument* doc = [self createDocumentWithProperties: properties];
+    
+    NSString* docID = doc.documentID;
+    STAssertTrue(docID.length > 10, @"Invalid doc ID: '%@'", docID);
+    NSString* currentRevisionID = doc.currentRevisionID;
+    STAssertTrue(currentRevisionID.length > 10, @"Invalid doc revision: '%@'", currentRevisionID);
+    
+    STAssertEqualObjects(doc.userProperties, properties, @"Couldn't get doc properties");
+
+    // Use a show function for testing the GET. A show function would not normally work well because it is read-only.
+    NSString *showFunction = @"function(doc, req) { doc.showValue = 'show'; return JSON.stringify(doc);}";
+    NSString *showFunctionName = @"myshow";
+    NSDictionary *showsJson = [NSDictionary dictionaryWithObject:showFunction forKey:showFunctionName];
+    NSString *designDocumentId = @"_design/testPathMap";
+    NSDictionary *designDocumentProperties = [NSDictionary dictionaryWithObject:showsJson forKey:@"shows"];
+    CouchDocument *designDocument = [self.db documentWithID:designDocumentId];
+    [[designDocument putProperties:designDocumentProperties] wait];
+    
+    self.db.documentPathMap = ^(NSString *docId) {
+        return [NSString stringWithFormat:@"%@/_show/%@/%@", designDocumentId, showFunctionName, docId];
+    };
+    
+    doc = [self.db documentWithID:docID];
+    
+    RESTOperation* op = AssertWait([doc GET]);
+    STAssertEquals(op.httpStatus, 200, @"GET failed");
+    
+    NSMutableDictionary *expectedProperties = [properties mutableCopy];
+    [expectedProperties setObject:@"show" forKey:@"showValue"];
+    STAssertEqualObjects(doc.userProperties, expectedProperties, @"Couldn't get doc properties after GET");
+}
+
 
 
 @end
