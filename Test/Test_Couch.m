@@ -603,4 +603,28 @@
 
 
 
+- (void) test16_ViewOptions {
+    [self createDocuments: 5];
+    
+    CouchDesignDocument* design = [_db designDocumentWithName: @"mydesign"];
+    [design defineViewNamed: @"vu" map: @"function(doc){emit(doc._id,doc._local_seq);};"];
+    AssertWait([design saveChanges]);
+    
+    CouchQuery* query = [design queryViewNamed: @"vu"];
+    CouchQueryEnumerator* rows = query.rows;
+    for (CouchQueryRow* row in rows) {
+        STAssertEqualObjects(row.value, [NSNull null], nil);
+        NSLog(@"row _id = %@, local_seq = %@", row.key, row.value);
+    }
+    
+    design.includeLocalSequence = YES;
+    AssertWait([design saveChanges]);
+    rows = query.rows;
+    for (CouchQueryRow* row in rows) {
+        STAssertTrue([row.value isKindOfClass: [NSNumber class]], @"Unexpected value: %@", row.value);
+        NSLog(@"row _id = %@, local_seq = %@", row.key, row.value);
+    }
+}
+
+
 @end
