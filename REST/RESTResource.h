@@ -55,7 +55,8 @@
 /** The relative path from the parent (as given in the initializer.) */
 @property (readonly) NSString* relativePath;
 
-/** Sets the login credential (e.g. username/password) to be used for authentication by this resource and its children. */
+/** Sets the login credential (e.g. username/password) to be used for authentication by this resource and its children.
+    IMPORTANT: CouchDB's default configuration unfortunately doesn't support this type of programmatic auth. To make it work, you'll need to add a "WWW-Authenticate" property to the server's [httpd] configuration section, as described at <https://groups.google.com/d/msg/mobile-couchbase/GiSnos0Hx54/q5JGepLaQBgJ>. */
 - (void) setCredential: (NSURLCredential*)credential;
 
 /** Sets a protection space for operations on this resource. */
