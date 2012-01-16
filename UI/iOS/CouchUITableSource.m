@@ -148,21 +148,25 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  id<UITableViewDelegate> delegate = _tableView.delegate;
+  if ([delegate respondsToSelector: @selector(tableView:cellForRowAtIndexPath:)]) {
+    return [(id<CouchUITableDelegate>)delegate tableView:tableView cellForRowAtIndexPath:indexPath];
+  } else {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier: @"CouchUITableDelegate"];
-    if (!cell)
-        cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
-                                      reuseIdentifier: @"CouchUITableDelegate"]
-                    autorelease];
-    
-    CouchQueryRow* row = [self rowAtIndex: indexPath.row];
-    cell.textLabel.text = [self labelForRow: row];
-    
-    // Allow the delegate to customize the cell:
-    id<UITableViewDelegate> delegate = _tableView.delegate;
-    if ([delegate respondsToSelector: @selector(couchTableSource:willUseCell:forRow:)])
-        [(id<CouchUITableDelegate>)delegate couchTableSource: self willUseCell: cell forRow: row];
+      if (!cell)
+          cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
+                                        reuseIdentifier: @"CouchUITableDelegate"]
+                      autorelease];
+      
+      CouchQueryRow* row = [self rowAtIndex: indexPath.row];
+      cell.textLabel.text = [self labelForRow: row];
+      
+      // Allow the delegate to customize the cell:
+      if ([delegate respondsToSelector: @selector(couchTableSource:willUseCell:forRow:)])
+          [(id<CouchUITableDelegate>)delegate couchTableSource: self willUseCell: cell forRow: row];
     
     return cell;
+  }
 }
 
 

@@ -61,6 +61,10 @@
 @protocol CouchUITableDelegate <UITableViewDelegate>
 @optional
 
+/** Override CouchUITableSource's declaration of tableView:cellForRowAtIndexPath:. */
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+
 /** Called after the query's results change, before the table view is reloaded. */
 - (void)couchTableSource:(CouchUITableSource*)source
      willUpdateFromQuery:(CouchLiveQuery*)query;
