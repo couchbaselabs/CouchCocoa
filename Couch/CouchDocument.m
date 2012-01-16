@@ -27,12 +27,14 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 @implementation CouchDocument
 
-- (id) initWithParent: (RESTResource*)parent relativePath: (NSString*)path documentID:(NSString *)documentID
+- (id) initWithParent: (RESTResource*)parent
+         relativePath: (NSString*)path
+           documentID:(NSString *)documentID
 {
     self = [super initWithParent:parent relativePath:path];
-    if(self)
-    {
-        _documentID = [documentID copy];
+    if(self) {
+        if (![documentID isEqualToString: path])
+            _documentID = [documentID copy];
     }
     return self;
 }

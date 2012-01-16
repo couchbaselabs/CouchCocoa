@@ -120,13 +120,10 @@ static const NSUInteger kDocRetainLimit = 50;
             return nil;
         if ([docID hasPrefix: @"_design/"])     // Create a design doc when appropriate
             doc = [[CouchDesignDocument alloc] initWithParent: self relativePath: docID];
-        else {
-            if([relativePath isEqual: docID]) {
-                doc = [[CouchDocument alloc] initWithParent: self relativePath: docID];
-            } else {
-                doc = [[CouchDocument alloc] initWithParent:self relativePath:relativePath documentID:docID];
-            }
-        }
+        else
+            doc = [[CouchDocument alloc] initWithParent: self
+                                           relativePath: relativePath
+                                             documentID: docID];
         if (!doc)
             return nil;
         if (!_docCache)

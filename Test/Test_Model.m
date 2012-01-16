@@ -58,7 +58,7 @@
     STAssertEquals(student.grade, 6, nil);
     STAssertEqualObjects(student.permanentRecord, permanentRecord, nil);
     STAssertEqualObjects(student.birthday, birthday, nil);
-    STAssertEqualObjects(student.otherNames, [otherNames copy], nil);
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
     STAssertEqualObjects(student.buddy, nil, nil);
 }
 
@@ -94,7 +94,7 @@
     STAssertEquals(student2.grade, 6, nil);
     STAssertEqualObjects(student2.permanentRecord, permanentRecord, nil);
     STAssertEqualObjects(student2.birthday, birthday, nil);
-    STAssertEqualObjects(student2.otherNames, [otherNames copy], nil);
+    STAssertEqualObjects(student2.otherNames, otherNames, nil);
 }
 
 
