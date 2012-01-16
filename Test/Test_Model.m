@@ -16,11 +16,12 @@
 @property (readwrite) int grade;
 @property (readwrite, retain) NSData* permanentRecord;
 @property (readwrite, retain) NSDate* birthday;
+@property (readwrite, retain) NSArray* otherNames;
 @property (readwrite, retain) TestModel* buddy;
 @end
 
 @implementation TestModel
-@dynamic name, grade, permanentRecord, birthday, buddy;
+@dynamic name, grade, permanentRecord, birthday, otherNames, buddy;
 @end
 
 
@@ -37,11 +38,14 @@
     NSData* permanentRecord = [@"ACK PTHBBBT" dataUsingEncoding: NSUTF8StringEncoding];
     CFAbsoluteTime time = floor(CFAbsoluteTimeGetCurrent()); // no fractional seconds
     NSDate* birthday = [NSDate dateWithTimeIntervalSinceReferenceDate: time];
+    NSArray *otherNames = [NSArray arrayWithObjects:@"Bob", @"Robert", nil];
     NSDictionary* props = [NSDictionary dictionaryWithObjectsAndKeys:
                            @"Bobby Tables", @"name",
                            [NSNumber numberWithInt: 6], @"grade",
                            [RESTBody base64WithData: permanentRecord], @"permanentRecord",
-                           [RESTBody JSONObjectWithDate: birthday], @"birthday", nil];
+                           [RESTBody JSONObjectWithDate: birthday], @"birthday",
+                           otherNames, @"otherNames",
+                           nil];
     CouchDocument* doc = [_db untitledDocument];
     AssertWait([doc putProperties: props]);
     
@@ -54,6 +58,7 @@
     STAssertEquals(student.grade, 6, nil);
     STAssertEqualObjects(student.permanentRecord, permanentRecord, nil);
     STAssertEqualObjects(student.birthday, birthday, nil);
+    STAssertEqualObjects(student.otherNames, [otherNames copy], nil);
     STAssertEqualObjects(student.buddy, nil, nil);
 }
 
@@ -69,6 +74,9 @@
     student.birthday = birthday;
     STAssertEqualObjects(student.permanentRecord, permanentRecord, nil);
     STAssertEqualObjects(student.birthday, birthday, nil);
+    NSArray *otherNames = [NSArray arrayWithObjects:@"Bob", @"Robert", nil];
+    student.otherNames = otherNames;
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
     
     AssertWait([student save]);
     NSString* docID = student.document.documentID;
@@ -86,6 +94,7 @@
     STAssertEquals(student2.grade, 6, nil);
     STAssertEqualObjects(student2.permanentRecord, permanentRecord, nil);
     STAssertEqualObjects(student2.birthday, birthday, nil);
+    STAssertEqualObjects(student2.otherNames, [otherNames copy], nil);
 }
 
 
