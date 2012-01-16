@@ -47,13 +47,29 @@
         _prefetch = query.prefetch;
         self.keys = query.keys;
         _groupLevel = query.groupLevel;
+        self.startKeyDocID = query.startKeyDocID;
+        self.endKeyDocID = query.endKeyDocID;
+        _stale = query.stale;
+        
     }
     return self;
 }
 
 
+- (void) dealloc
+{
+    [_startKey release];
+    [_endKey release];
+    [_startKeyDocID release];
+    [_endKeyDocID release];
+    [_keys release];
+    [super dealloc];
+}
+
+
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
-            prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel;
+            prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
+            endKeyDocID=_endKeyDocID, stale=_stale;
 
 
 - (CouchDesignDocument*) designDocument {
@@ -74,6 +90,8 @@
 
 
 - (NSMutableDictionary*) requestParams {
+    static NSString* const kStaleNames[] = {nil, @"ok", @"update_after"}; // maps CouchStaleness
+    
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     if (_limit)
         [params setObject: [NSNumber numberWithUnsignedLong: _limit] forKey: @"?limit"];
@@ -83,6 +101,12 @@
         [params setObject: [RESTBody stringWithJSONObject: _startKey] forKey: @"?startkey"];
     if (_endKey)
         [params setObject: [RESTBody stringWithJSONObject: _endKey] forKey: @"?endkey"];
+    if (_startKeyDocID)
+        [params setObject: _startKeyDocID forKey: @"?startkey_docid"];
+    if (_endKeyDocID)
+        [params setObject: _startKeyDocID forKey: @"?endkey_docid"];
+    if (_stale != kCouchStaleNever)
+        [params setObject: kStaleNames[_stale] forKey: @"?stale"];
     if (_descending)
         [params setObject: @"true" forKey: @"?descending"];
     if (_prefetch)

@@ -34,6 +34,12 @@
 @implementation Test_Model
 
 
+- (void) test0_propertyNames {
+    NSSet* names = [NSSet setWithObjects: @"name", @"grade", @"permanentRecord", @"birthday", @"otherNames", @"buddy", nil];
+    STAssertEqualObjects([TestModel propertyNames], names, nil);
+}
+
+
 - (void) test1_read {
     NSData* permanentRecord = [@"ACK PTHBBBT" dataUsingEncoding: NSUTF8StringEncoding];
     CFAbsoluteTime time = floor(CFAbsoluteTimeGetCurrent()); // no fractional seconds

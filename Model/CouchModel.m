@@ -153,9 +153,8 @@
     [self markExternallyChanged];
     
     // Send KVO notifications about all my properties in case they changed:
-    // TODO: This is not 100% accurate: won't notify on keys that got removed in new rev
-    NSArray* keys = self.document.userProperties.allKeys;
-    for (id key in keys)
+    NSSet* keys = [[self class] propertyNames];
+    for (NSString* key in keys)
         [self willChangeValueForKey: key];
     
     // Remove unchanged cached values in _properties:
@@ -169,7 +168,7 @@
     }
     
     [self didLoadFromDocument];
-    for (id key in keys)
+    for (NSString* key in keys)
         [self didChangeValueForKey: key];
 }
 
@@ -262,6 +261,11 @@
 
 #pragma mark - PROPERTIES:
 
++ (NSSet*) propertyNames {
+    if (self == [CouchModel class])
+        return [NSSet set]; // Ignore non-persisted properties declared on base CouchModel
+    return [super propertyNames];
+}
 
 // Transforms cached property values back into JSON-compatible objects
 - (id) externalizePropertyValue: (id)value {

@@ -13,6 +13,7 @@
 
 @implementation CouchDynamicObject
 
+
 // Abstract implementations for subclasses to override:
 
 - (id) getValueOfProperty: (NSString*)property {
@@ -103,6 +104,32 @@ static void setDoubleProperty(CouchDynamicObject *self, SEL _cmd, double value) 
 
 
 #pragma mark - PROPERTY INTROSPECTION:
+
+
++ (NSSet*) propertyNames {
+    static NSMutableDictionary* classToNames;
+    if (!classToNames)
+        classToNames = [[NSMutableDictionary alloc] init];
+    
+    if (self == [CouchDynamicObject class])
+        return [NSSet set];
+    
+    NSSet* cachedPropertyNames = [classToNames objectForKey:self];
+    if (cachedPropertyNames)
+        return cachedPropertyNames;
+    
+    NSMutableSet* propertyNames = [NSMutableSet set];
+    objc_property_t* propertiesExcludingSuperclass = class_copyPropertyList(self, NULL);
+    if (propertiesExcludingSuperclass) {
+        objc_property_t* propertyPtr = propertiesExcludingSuperclass;
+        while (*propertyPtr)
+            [propertyNames addObject:[NSString stringWithUTF8String:property_getName(*propertyPtr++)]];
+        free(propertiesExcludingSuperclass);
+    }
+    [propertyNames unionSet:[[self superclass] propertyNames]];
+    [classToNames setObject:propertyNames forKey:self];
+    return propertyNames;
+}
 
 
 // Look up the encoded type of a property, and whether it's settable or readonly
