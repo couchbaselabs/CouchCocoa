@@ -101,7 +101,7 @@
 
 
 - (NSString*) documentID {
-    return self.parent.relativePath;
+    return [(CouchDocument *)self.parent documentID];
 }
 
 

@@ -27,17 +27,31 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 @implementation CouchDocument
 
+- (id) initWithParent: (RESTResource*)parent
+         relativePath: (NSString*)path
+           documentID:(NSString *)documentID
+{
+    self = [super initWithParent:parent relativePath:path];
+    if(self) {
+        if (![documentID isEqualToString: path])
+            _documentID = [documentID copy];
+    }
+    return self;
+}
 
 - (void)dealloc {
     if (_modelObject)
         Warn(@"Deallocing %@ while it still has a modelObject %@", self, _modelObject);
     [_currentRevisionID release];
     [_currentRevision release];
+    [_documentID release];
     [super dealloc];
 }
 
 
 - (NSString*) documentID {
+    if(_documentID)
+        return _documentID;
     return self.relativePath;
 }
 
@@ -319,6 +333,8 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         // On a PUT or DELETE, update my current revision ID:
         if (op.isPUT || op.isDELETE) {
             NSString* rev = [op.responseBody.fromJSON objectForKey: @"rev"];
+            if(rev == nil)
+                rev = [op.responseHeaders objectForKey:@"X-Couch-Update-NewRev"];
             self.currentRevisionID = rev;
             op.resultObject = self.currentRevision;
             if (op.isDELETE)
@@ -390,8 +406,20 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 // Called by -[CouchDatabase putChanges:toRevisions:] after a successful save.
 - (void) bulkSaveCompleted: (NSDictionary*) result forProperties: (NSDictionary*)properties {
-    if (![result objectForKey: @"error"])
+    if (![result objectForKey: @"error"]) {
+        NSString* docID = self.documentID;
+        if (!docID) {
+            docID = [result objectForKey: @"id"];
+            [self assignedRelativePath: docID];
+            [self.database documentAssignedID: self];
+        }
+        if (![properties objectForKey: @"_id"]) {
+            NSMutableDictionary* nuProperties = [[properties mutableCopy] autorelease];
+            [nuProperties setObject: docID forKey: @"_id"];
+            properties = nuProperties;
+        }
         [self updateFromSaveResponse: result withProperties: properties];
+    }
 }
 
 

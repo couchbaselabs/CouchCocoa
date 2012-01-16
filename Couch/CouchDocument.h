@@ -26,6 +26,7 @@
     BOOL _isDeleted;
     NSString* _currentRevisionID;
     CouchRevision* _currentRevision;
+    NSString *_documentID;
 }
 
 /** The unique ID of this document; its key in the database. */

@@ -17,6 +17,7 @@
 #import "CouchDesignDocument.h"
 #import "RESTInternal.h"
 #import "CouchTestCase.h"
+#import "CouchDatabase.h"
 
 
 @interface Test_Couch : CouchTestCase
@@ -161,6 +162,29 @@
                      @"Expected 2nd revision: %@ in %@", doc.currentRevisionID, doc);
         STAssertEqualObjects([doc.currentRevision.properties objectForKey: @"misc"],
                              @"updated!", nil);
+    }
+}
+
+
+- (void) test03_SaveMultipleUnsavedDocuments {
+    NSMutableArray* docs = [NSMutableArray array];
+    NSMutableArray* docProperties = [NSMutableArray array];
+    
+    for (int i=0; i<5; i++) {
+        CouchDocument* doc = [_db untitledDocument];
+        [docs addObject: doc];
+        [docProperties addObject: [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: i]
+                                                              forKey: @"order"]];
+    }
+    
+    AssertWait([_db putChanges: docProperties toRevisions: docs]);
+    
+    for (int i=0; i<5; i++) {
+        CouchDocument* doc = [docs objectAtIndex: i];
+        STAssertTrue([doc.currentRevisionID hasPrefix: @"1-"],
+                     @"Expected 2nd revision: %@ in %@", doc.currentRevisionID, doc);
+        STAssertEqualObjects([doc.currentRevision.properties objectForKey: @"order"],
+                             [NSNumber numberWithInt: i], nil);
     }
 }
 
@@ -535,6 +559,79 @@
         STAssertEqualObjects(row.documentID, prevDoc.documentID, nil);
         STAssertEquals(row.document, prevDoc, nil);
         ++rowNumber;
+    }
+}
+
+#pragma mark - Custom Path Maps
+
+- (void) test_GetDocument_using_a_custom_path_map {
+    NSDictionary* properties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                @"testCreateDocument", @"testName",
+                                [NSNumber numberWithInt:1337], @"tag",
+                                nil];
+    CouchDocument* doc = [self createDocumentWithProperties: properties];
+    
+    NSString* docID = doc.documentID;
+    STAssertTrue(docID.length > 10, @"Invalid doc ID: '%@'", docID);
+    NSString* currentRevisionID = doc.currentRevisionID;
+    STAssertTrue(currentRevisionID.length > 10, @"Invalid doc revision: '%@'", currentRevisionID);
+    
+    STAssertEqualObjects(doc.userProperties, properties, @"Couldn't get doc properties");
+
+    // Use a show function for testing the GET. A show function would not normally work well because it is read-only.
+    NSString *showFunction = @"function(doc, req) { doc.showValue = 'show'; return JSON.stringify(doc);}";
+    NSString *showFunctionName = @"myshow";
+    NSDictionary *showsJson = [NSDictionary dictionaryWithObject:showFunction forKey:showFunctionName];
+    NSString *designDocumentId = @"_design/testPathMap";
+    NSDictionary *designDocumentProperties = [NSDictionary dictionaryWithObject:showsJson forKey:@"shows"];
+    CouchDocument *designDocument = [self.db documentWithID:designDocumentId];
+    [[designDocument putProperties:designDocumentProperties] wait];
+    
+    self.db.documentPathMap = ^(NSString *docId) {
+        return [NSString stringWithFormat:@"%@/_show/%@/%@", designDocumentId, showFunctionName, docId];
+    };
+    
+    NSMutableDictionary *expectedProperties = [properties mutableCopy];
+    [expectedProperties setObject:@"show" forKey:@"showValue"];
+
+    doc = [self.db documentWithID:docID];
+    
+    RESTOperation* op = AssertWait([doc GET]);
+    STAssertEquals(op.httpStatus, 200, @"GET failed");
+    
+    STAssertEqualObjects(doc.userProperties, expectedProperties, @"Couldn't get doc properties after GET");
+
+    // Try it again
+    doc = [self.db documentWithID:docID];
+    
+    op = AssertWait([doc GET]);
+    STAssertEquals(op.httpStatus, 200, @"GET failed");
+    
+    STAssertEqualObjects(doc.userProperties, expectedProperties, @"Couldn't get doc properties after GET");
+}
+
+
+
+- (void) test16_ViewOptions {
+    [self createDocuments: 5];
+    
+    CouchDesignDocument* design = [_db designDocumentWithName: @"mydesign"];
+    [design defineViewNamed: @"vu" map: @"function(doc){emit(doc._id,doc._local_seq);};"];
+    AssertWait([design saveChanges]);
+    
+    CouchQuery* query = [design queryViewNamed: @"vu"];
+    CouchQueryEnumerator* rows = query.rows;
+    for (CouchQueryRow* row in rows) {
+        STAssertEqualObjects(row.value, [NSNull null], nil);
+        NSLog(@"row _id = %@, local_seq = %@", row.key, row.value);
+    }
+    
+    design.includeLocalSequence = YES;
+    AssertWait([design saveChanges]);
+    rows = query.rows;
+    for (CouchQueryRow* row in rows) {
+        STAssertTrue([row.value isKindOfClass: [NSNumber class]], @"Unexpected value: %@", row.value);
+        NSLog(@"row _id = %@, local_seq = %@", row.key, row.value);
     }
 }
 

@@ -34,6 +34,7 @@ NSString* const kCouchLanguageErlang = @"erlang";
     [_language release];
     [_views release];
     [_viewsRevisionID release];
+    [_viewOptions release];
     [super dealloc];
 }
 
@@ -161,6 +162,30 @@ NSString* const kCouchLanguageErlang = @"erlang";
 }
 
 
+- (NSMutableDictionary*) viewOptions {
+    if (!_viewOptions) {
+        NSDictionary* viewOptions = $castIf(NSDictionary, [self.properties objectForKey: @"options"]);
+        if (viewOptions)
+            _viewOptions = [viewOptions mutableCopy];
+        else
+            _viewOptions = [[NSMutableDictionary alloc] init];
+    }
+    return _viewOptions;
+}
+
+- (BOOL) includeLocalSequence {
+    return [$castIf(NSNumber, [[self viewOptions] objectForKey: @"local_seq"]) boolValue];
+}
+
+- (void) setIncludeLocalSequence:(BOOL)localSeq {
+    if (localSeq != self.includeLocalSequence) {
+        [_viewOptions setObject: [NSNumber numberWithBool: localSeq] forKey: @"local_seq"];
+        _changedViewOptions = YES;
+        _changed = YES;
+    }
+}
+
+
 @synthesize changed=_changed;
 
 
@@ -169,7 +194,7 @@ NSString* const kCouchLanguageErlang = @"erlang";
         return _savingOp;
     if (!_changed)
         return nil;
-
+    
     NSMutableDictionary* newProps = [[self.properties mutableCopy] autorelease];
     if (!newProps)
         newProps = [NSMutableDictionary dictionary];
@@ -179,6 +204,8 @@ NSString* const kCouchLanguageErlang = @"erlang";
         [newProps setValue: _language forKey: @"language"];
     if (_changedValidation)
         [newProps setValue: _validation forKey: @"validate_doc_update"];
+    if (_changedViewOptions)
+        [newProps setObject: _viewOptions forKey: @"options"];
     
     _savingOp = [self putProperties: newProps];
     [_savingOp onCompletion: ^{
@@ -187,6 +214,7 @@ NSString* const kCouchLanguageErlang = @"erlang";
         // TODO: What about conflicts?
         _savingOp = nil;
         _changedValidation = NO;
+        _changedViewOptions = NO;
         [_language release];
         _language = nil;
         self.changed = NO;

@@ -55,10 +55,12 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
                             @"value&/(3", @"?key3",
                             nil];
     NSURLRequest* request = [parent requestWithMethod: @"GET" parameters: params];
+    // Now pull out & decode the queries from the URL and make sure they're correct:
     NSArray* queries = [request.URL.query componentsSeparatedByString: @"&"];
     queries = [queries rest_map: ^(id str) {
         return [str stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
     }];
+    queries = [queries sortedArrayUsingSelector: @selector(compare:)];
     NSArray* expected = [NSArray arrayWithObjects:
                          @"key1=value1", @"key2=/%@value2*?", @"key3=value&/(3", nil];
     STAssertEqualObjects(queries, expected, @"URL queries not encoded correctly");

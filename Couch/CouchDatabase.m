@@ -33,6 +33,8 @@ static const NSUInteger kDocRetainLimit = 50;
 
 @implementation CouchDatabase
 
+@dynamic documentPathMap;
+
 
 + (CouchDatabase*) databaseNamed: (NSString*)databaseName
                  onServerWithURL: (NSURL*)serverURL
@@ -71,6 +73,17 @@ static const NSUInteger kDocRetainLimit = 50;
     return [[self PUT: nil parameters: nil] start];
 }
 
+- (void)setDocumentPathMap:(CouchDocumentPathMap)documentPathMap
+{
+    _documentPathMap = [documentPathMap copy];
+    [_docCache forgetAllResources];
+}
+
+- (CouchDocumentPathMap)documentPathMap
+{
+    return _documentPathMap;
+}
+
 
 - (BOOL) ensureCreated: (NSError**)outError {
     RESTOperation* op = [self create];
@@ -99,12 +112,18 @@ static const NSUInteger kDocRetainLimit = 50;
 
 
 - (CouchDocument*) documentWithID: (NSString*)docID {
-    CouchDocument* doc = (CouchDocument*) [_docCache resourceWithRelativePath: docID];
+    NSString *relativePath = _documentPathMap ? _documentPathMap(docID) : docID;
+    
+    CouchDocument* doc = (CouchDocument*) [_docCache resourceWithRelativePath: relativePath];
     if (!doc) {
+        if (docID.length == 0)
+            return nil;
         if ([docID hasPrefix: @"_design/"])     // Create a design doc when appropriate
             doc = [[CouchDesignDocument alloc] initWithParent: self relativePath: docID];
         else
-            doc = [[CouchDocument alloc] initWithParent: self relativePath: docID];
+            doc = [[CouchDocument alloc] initWithParent: self
+                                           relativePath: relativePath
+                                             documentID: docID];
         if (!doc)
             return nil;
         if (!_docCache)
@@ -163,9 +182,14 @@ static const NSUInteger kDocRetainLimit = 50;
             contents = [[props mutableCopy] autorelease];
         }
         if (revisions) {
-            CouchRevision* revision = [revisions objectAtIndex: i];
-            [contents setObject: revision.documentID forKey: @"_id"];
-            [contents setObject: revision.revisionID forKey: @"_rev"];
+            // Elements of 'revisions' may be CouchRevisions or CouchDocuments.
+            id revOrDoc = [revisions objectAtIndex: i];
+            NSString* docID = [revOrDoc documentID];
+            if (docID) {
+                [contents setObject: docID forKey: @"_id"];
+                if ([revOrDoc isKindOfClass: [CouchRevision class]])
+                    [contents setObject: [revOrDoc revisionID] forKey: @"_rev"];
+            }
         }
         [entries addObject: contents];
     }
@@ -183,9 +207,13 @@ static const NSUInteger kDocRetainLimit = 50;
             for (id response in responses) {
                 NSDictionary* responseDict = $castIf(NSDictionary, response);
                 CouchDocument* document;
-                if (revisions)
-                    document = [[revisions objectAtIndex: i] document];
-                else
+                if (revisions) {
+                    id revOrDoc = [revisions objectAtIndex: i];
+                    if ([revOrDoc isKindOfClass: [CouchRevision class]])
+                        document = [revOrDoc document];
+                    else
+                        document = revOrDoc;
+                } else
                     document = [self documentWithID: [responseDict objectForKey: @"id"]];
                 [document bulkSaveCompleted: responseDict
                               forProperties: [entries objectAtIndex: i]];
