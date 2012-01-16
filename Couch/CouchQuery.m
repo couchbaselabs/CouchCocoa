@@ -47,13 +47,17 @@
         _prefetch = query.prefetch;
         self.keys = query.keys;
         _groupLevel = query.groupLevel;
+		_startKeyDocID = query.startKeyDocID;
+		_endKeyDocID = query.endKeyDocID;
+		_stale = query.stale;
+		
     }
     return self;
 }
 
 
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
-            prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel;
+            prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID, endKeyDocID=_endKeyDocID, stale=_stale;
 
 
 - (CouchDesignDocument*) designDocument {
@@ -83,6 +87,12 @@
         [params setObject: [RESTBody stringWithJSONObject: _startKey] forKey: @"?startkey"];
     if (_endKey)
         [params setObject: [RESTBody stringWithJSONObject: _endKey] forKey: @"?endkey"];
+    if (_startKeyDocID)
+        [params setObject: _startKeyDocID forKey: @"?startkey_docid"];
+    if (_endKeyDocID)
+        [params setObject: _startKeyDocID forKey: @"?endkey_docid"];
+    if (_stale)
+        [params setObject: _stale forKey: @"?stale"];
     if (_descending)
         [params setObject: @"true" forKey: @"?descending"];
     if (_prefetch)
