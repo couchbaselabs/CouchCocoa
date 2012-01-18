@@ -13,7 +13,7 @@ typedef id TDReduceBlock;
 typedef id TDFilterBlock;
 typedef id TDValidationBlock;
 #else
-#import <TouchDB/TDDatabase.h>
+#import <TouchDB/TDDatabase+Insertion.h>
 #import <TouchDB/TDView.h>
 #endif
 
