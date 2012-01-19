@@ -391,6 +391,13 @@
 }
 
 
+- (void)dealloc {
+    [_query release];
+    [_result release];
+    [super dealloc];
+}
+
+
 @synthesize query=_query;
 
 - (id) key                              {return [_result objectForKey: @"key"];}
