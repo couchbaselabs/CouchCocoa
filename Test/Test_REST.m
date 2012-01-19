@@ -198,4 +198,23 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     STAssertNil([RESTBody dataWithBase64: nil], @"Base64 decoding failed on nil input");
 }
 
+- (void)test_using_useIndependentCookies
+{
+    // Test a root resource:
+    NSURL* url = [NSURL URLWithString: kParentURL];
+    RESTResource* parent = [[[RESTResource alloc] initWithURL: url] autorelease];
+    parent.useIndependentCookies = YES;
+    
+    RESTOperation* parentOperation = [parent GET];
+    STAssertNoThrow([[parentOperation start] wait], nil);
+    STAssertNil(parentOperation.error, @"%@", parentOperation.error);
+
+    // Test child resource:
+    RESTResource* child = [[[RESTResource alloc] initWithParent: parent relativePath: kChildPath] autorelease];
+    
+    RESTOperation* childOperation = [child GET];
+    STAssertNoThrow([[childOperation start] wait], nil);
+    STAssertNil(childOperation.error, @"%@", childOperation.error);
+}
+
 @end

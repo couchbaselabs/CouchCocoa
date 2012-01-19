@@ -15,7 +15,7 @@
 
 #import "REST.h"
 #import "RESTCache.h"
-
+@class RESTCookies;
 
 void RESTWarn(NSString* format, ...) __attribute__((format(__NSString__, 1, 2)));;
 
@@ -46,6 +46,7 @@ static inline BOOL $equal(id a, id b) {return a==b || [a isEqual: b];}
 @property (readwrite, retain) RESTCache* owningCache;
 - (NSURLCredential*) credentialForOperation: (RESTOperation*)op;
 - (NSURLProtectionSpace*) protectionSpaceForOperation: (RESTOperation*)op;
+- (RESTCookies *)cookiesForOperation: (RESTOperation*)op;
 @end
 
 

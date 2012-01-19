@@ -17,6 +17,13 @@
 
 #import "RESTInternal.h"
 #import "RESTCache.h"
+#import "RESTCookies.h"
+
+@interface RESTResource()
+{
+    RESTCookies *_cookies;
+}
+@end
 
 
 @implementation RESTResource
@@ -24,6 +31,8 @@
 
 @synthesize parent=_parent, relativePath=_relativePath,
             cachedURL=_cachedURL;
+
+@dynamic useIndependentCookies;
 
 
 - (id) initWithURL: (NSURL*)url {
@@ -109,6 +118,26 @@
     _relativePath = [relativePath copy];
 }
 
+#pragma mark -
+#pragma mark COOKIES:
+
+- (BOOL)useIndependentCookies
+{
+    return [self cookiesForOperation:nil] != nil;
+}
+
+- (void)setUseIndependentCookies:(BOOL)useIndependentCookies
+{
+    if(useIndependentCookies && _cookies == nil)
+        _cookies = [[RESTCookies alloc] init];
+    else if(!useIndependentCookies && _cookies != nil)
+        _cookies = nil;
+}
+
+- (RESTCookies *)cookiesForOperation: (RESTOperation*)op
+{
+    return _cookies ? _cookies : [_parent cookiesForOperation: op];
+}
 
 #pragma mark -
 #pragma mark HTTP METHODS:
@@ -156,6 +185,10 @@
         NSString* urlStr = [url.absoluteString stringByAppendingString: queries];
         request.URL = [NSURL URLWithString: urlStr];
     }
+    
+    RESTCookies *cookies = [self cookiesForOperation:nil];
+    if(cookies)
+        [cookies processRequest:request];
 
     return request;
 }

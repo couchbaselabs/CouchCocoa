@@ -122,6 +122,10 @@
     This URL might not be the same as the receiver's -URL property, because "?"-prefixed parameters to a request are added to the URL's query. */
 @property (retain) NSURL* cachedURL;
 
+#pragma mark COOKIES:
+
+@property BOOL useIndependentCookies;
+
 #pragma mark TRACKING OPERATIONS:
 
 /** If set to YES, the .activeOperations property is enabled. */
