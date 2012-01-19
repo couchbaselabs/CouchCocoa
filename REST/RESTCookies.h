@@ -10,7 +10,7 @@
 
 @interface RESTCookies : NSObject
 {
-    NSArray *httpCookies;
+    NSMutableArray *httpCookies;
 }
 
 - (void)processRequest:(NSMutableURLRequest *)request;
