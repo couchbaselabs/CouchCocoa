@@ -124,6 +124,9 @@
 
 #pragma mark COOKIES:
 
+/** If YES, then this resource will management cookies itself rather than using the built-in cookie
+    management. This allows for scenarios such as connecting to different databases on the same
+    server with different user identities. If NO, then the default iOS cookie management is used. */
 @property BOOL useIndependentCookies;
 
 #pragma mark TRACKING OPERATIONS:
