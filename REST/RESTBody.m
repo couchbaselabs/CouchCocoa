@@ -279,6 +279,20 @@ static Class sJSONSerialization;
     return [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
 }
 
++ (NSString*) prettyStringWithJSONObject: (id)obj {
+#if USE_JSONKIT
+    if (!sJSONSerialization)
+        return [obj JSONStringWithOptions: JKSerializeOptionPretty error: nil];
+#endif
+    NSData* data = [sJSONSerialization dataWithJSONObject: obj                                               
+                                                  options: NSJSONReadingAllowFragments
+                                                            | NSJSONWritingPrettyPrinted
+                                                    error: NULL];
+    if (!data)
+        return nil;
+    return [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
+}
+
 
 + (id) JSONObjectWithData: (NSData*)data {
 #if USE_JSONKIT
