@@ -55,11 +55,17 @@
 + (id) modelForDocument: (CouchDocument*)document {
     NSParameterAssert(document);
     CouchModel* model = document.modelObject;
-    if (model)
+    if (model) {
+        // Document already has a model; make sure it's type-compatible with the desired class
         NSAssert([model isKindOfClass: self], @"%@: %@ already has incompatible model %@",
                  self, document, model);
-    else
+    } else if (self != [CouchModel class]) {
+        // If invoked on a subclass of CouchModel, create an instance of that subclass:
         model = [[[self alloc] initWithDocument: document] autorelease];
+    } else {
+        // If invoked on CouchModel itself, ask the factory to instantiate the appropriate class:
+        model = [[CouchModelFactory sharedInstance] modelForDocument: document];
+    }
     return model;
 }
 

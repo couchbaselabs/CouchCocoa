@@ -60,9 +60,10 @@
 		279CCBF413F9823F00C38C82 /* CouchReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 279CCBF113F9823F00C38C82 /* CouchReplication.m */; };
 		279CCBF513F9823F00C38C82 /* CouchReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 279CCBF113F9823F00C38C82 /* CouchReplication.m */; };
 		279CCBF613F9955900C38C82 /* CouchReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CCBF013F9823F00C38C82 /* CouchReplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		279CE39214D1F761009F3FA6 /* CouchModelFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 27AE23AB147C95D3005AAB52 /* CouchModelFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27A577BB13970A3B002776DB /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577A713970959002776DB /* DemoQuery.m */; };
 		27A579B313974E41002776DB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
-		27AE23AD147C95D3005AAB52 /* CouchModelFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 27AE23AB147C95D3005AAB52 /* CouchModelFactory.h */; };
+		27AE23AD147C95D3005AAB52 /* CouchModelFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 27AE23AB147C95D3005AAB52 /* CouchModelFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27AE23AE147C95D3005AAB52 /* CouchModelFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 27AE23AB147C95D3005AAB52 /* CouchModelFactory.h */; };
 		27AE23AF147C95D3005AAB52 /* CouchModelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AE23AC147C95D3005AAB52 /* CouchModelFactory.m */; };
 		27AE23B0147C95D3005AAB52 /* CouchModelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AE23AC147C95D3005AAB52 /* CouchModelFactory.m */; };
@@ -626,6 +627,7 @@
 				27CDEC3513C67D3500C979BB /* CouchResource.h in Headers */,
 				27DB82211408202E00E57444 /* CouchDynamicObject.h in Headers */,
 				27DB82251408225300E57444 /* CouchModel.h in Headers */,
+				27AE23AD147C95D3005AAB52 /* CouchModelFactory.h in Headers */,
 				27CDEC3613C67D3500C979BB /* CouchCocoa.h in Headers */,
 				279276EE14215D5600002958 /* RESTBase64.h in Headers */,
 				27D083B8143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */,
@@ -658,6 +660,7 @@
 				27C7280013EB238900C7ADF5 /* CouchUITableSource.h in Headers */,
 				27938C61140C01D200117675 /* CouchDynamicObject.h in Headers */,
 				27938C63140C01DC00117675 /* CouchModel.h in Headers */,
+				279CE39214D1F761009F3FA6 /* CouchModelFactory.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
