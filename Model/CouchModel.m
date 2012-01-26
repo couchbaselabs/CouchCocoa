@@ -354,6 +354,12 @@
     return value;
 }
 
+- (CouchDatabase*) databaseForModelProperty: (NSString*)property {
+    // This is a hook for subclasses to override if they need to, i.e. if the property
+    // refers to a document in a different database.
+    return _document.database;
+}
+
 - (CouchModel*) getModelProperty: (NSString*)property {
     // Model-valued properties are kept in raw form as document IDs, not mapped to CouchModel
     // references, to avoid reference loops.
@@ -368,7 +374,7 @@
         Warn(@"Model-valued property %@ of %@ is not a string", property, _document);
         return nil;
     }
-    CouchDocument* doc = [_document.database documentWithID: rawValue];
+    CouchDocument* doc = [[self databaseForModelProperty: property] documentWithID: rawValue];
     if (!doc) {
         Warn(@"Unable to get document from property %@ of %@ (value='%@')",
              property, _document, rawValue);
