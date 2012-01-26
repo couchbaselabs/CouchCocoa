@@ -441,6 +441,30 @@ static void setModelProperty(CouchModel *self, SEL _cmd, id value) {
 }
 
 
+#pragma mark - KVO:
+
+
+// CouchDocuments (and transitively their models) have only weak references from the CouchDatabase,
+// so they may be dealloced if not used in a while. This is very bad if they have any observers, as
+// the observation reference will dangle and cause crashes or mysterious bugs.
+// To work around this, turn observation into a string reference by doing a retain.
+// This may result in reference cycles if two models observe each other; not sure what to do about
+// that yet!
+
+- (void) addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context {
+    [super addObserver: observer forKeyPath: keyPath options: options context: context];
+    if (observer != self)
+        [self retain];
+}
+
+- (void) removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath {
+    [super removeObserver: observer forKeyPath: keyPath];
+    if (observer != self)
+        [self retain];
+    [self release];
+}
+
+
 #pragma mark - ATTACHMENTS:
 
 
