@@ -135,4 +135,8 @@
     This happens both when initialized from a document, and after an external change. */
 - (void) didLoadFromDocument;
 
+/** Returns the database in which to look up the document ID of a model-valued property.
+    Defaults to the same database as the receiver's document. You should override this if a document property contains the ID of a document in a different database. */
+- (CouchDatabase*) databaseForModelProperty: (NSString*)propertyName;
+
 @end
