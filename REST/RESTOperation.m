@@ -424,7 +424,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 
 
 - (void)connectionDidFinishLoading: (NSURLConnection*)connection {
-    NSInteger httpStatus = [_response statusCode];
+    int httpStatus = (int) [_response statusCode];
 
     if (gRESTLogLevel >= kRESTLogRequestURLs) {
         NSLog(@"REST: << %ld for %@ %@ (%lu bytes)",
@@ -440,18 +440,26 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         [self completedWithError: nil];
     } else {
         // Escalate HTTP error to a connection error:
-        NSString* message = [NSHTTPURLResponse localizedStringForStatusCode:httpStatus];
-        NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:
-                              message, NSLocalizedFailureReasonErrorKey,
-                              [NSString stringWithFormat: @"%i %@", httpStatus, message],
-                                NSLocalizedDescriptionKey,
-                              self.URL, NSURLErrorKey,
-                              nil];
-        NSError* error = [NSError errorWithDomain: CouchHTTPErrorDomain
-                                             code: httpStatus
-                                         userInfo: info];
+        NSError* error = [[self class] errorWithHTTPStatus: httpStatus message: nil URL: self.URL];
         [self completedWithError: error];
     }
+}
+
+
++ (NSError*) errorWithHTTPStatus: (int)httpStatus
+                         message: (NSString*)message
+                             URL: (NSURL*)url
+{
+    if (!message)
+        message = [NSHTTPURLResponse localizedStringForStatusCode:httpStatus];
+    NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:
+                          message, NSLocalizedDescriptionKey,
+                          message, NSLocalizedFailureReasonErrorKey,
+                          url, NSURLErrorKey,
+                          nil];
+    return [NSError errorWithDomain: CouchHTTPErrorDomain
+                               code: httpStatus
+                           userInfo: info];
 }
 
 

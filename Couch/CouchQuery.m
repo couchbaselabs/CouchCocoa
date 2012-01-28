@@ -150,7 +150,7 @@
                                                                     result: result] autorelease];
         } else {
             Warn(@"Couldn't parse rows from CouchDB view response");
-            error = [NSError errorWithDomain: CouchHTTPErrorDomain code: 500 userInfo:nil];
+            error = [RESTOperation errorWithHTTPStatus: 502 message: nil URL: self.URL];
         }
     }
     return error;

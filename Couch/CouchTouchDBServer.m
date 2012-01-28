@@ -12,9 +12,11 @@
 
 #if TARGET_OS_IPHONE
 extern NSString* const TDReplicatorProgressChangedNotification;
+extern NSString* const TDReplicatorStoppedNotification;
 #else
 // Copied from TouchDB's TDReplicator.m.
 static NSString* TDReplicatorProgressChangedNotification = @"TDReplicatorProgressChanged";
+static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 #endif
 
 
@@ -89,6 +91,7 @@ static NSString* TDReplicatorProgressChangedNotification = @"TDReplicatorProgres
 
 
 - (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_touchServer release];
     [_error release];
     [super dealloc];
@@ -112,9 +115,16 @@ static NSString* TDReplicatorProgressChangedNotification = @"TDReplicatorProgres
                                                  selector: @selector(replicationProgressChanged:)
                                                      name: TDReplicatorProgressChangedNotification
                                                    object: nil];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(replicationProgressChanged:)
+                                                     name: TDReplicatorStoppedNotification
+                                                   object: nil];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:TDReplicatorProgressChangedNotification
+                                                      object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:TDReplicatorStoppedNotification
                                                       object:nil];
     }
     _observing = observe;

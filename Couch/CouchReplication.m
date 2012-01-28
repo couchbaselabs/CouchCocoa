@@ -53,9 +53,10 @@
 
 
 - (void)dealloc {
-    [self stopped];
+    COUCHLOG2(@"%@: dealloc", self);
     [_remote release];
     [_database release];
+    [_status release];
     [_error release];
     [_filter release];
     [_filterParams release];
@@ -125,6 +126,7 @@
             if (_taskID) {
                 // Successfully started:
                 COUCHLOG(@"%@: task ID = '%@'", self, _taskID);
+                [self retain];  // so I don't go away while active; see [self release] in -stopped
                 [_database.server registerActiveTask: [NSDictionary dictionaryWithObjectsAndKeys:
                                                        @"Replication", @"type",
                                                        _taskID, @"task", nil]];
@@ -134,8 +136,7 @@
                 // Huh, something's wrong.
                 Warn(@"%@ couldn't find _local_id in response: %@", self, response);
                 self.running = NO;
-                self.error = [NSError errorWithDomain: CouchHTTPErrorDomain
-                                                 code: 599 userInfo: nil]; // TODO: Real err
+                self.error = [RESTOperation errorWithHTTPStatus: 599 message: nil URL: _remote]; // TODO: Real err
             }
         }
     }];
@@ -149,6 +150,7 @@
         [_taskID release];
         _taskID = nil;
         [_database.server removeObserver: self forKeyPath: @"activeTasks"];
+        [self autorelease]; // balances [self retain] when successfully started
     }
     self.running = NO;
 }
@@ -174,6 +176,13 @@
     COUCHLOG(@"%@ status line = %@", self, status);
     [_status autorelease];
     _status = [status copy];
+    
+    if ([status isEqualToString: @"Stopped"]) {
+        // TouchDB only
+        COUCHLOG(@"%@: Status changed to 'Stopped'", self);
+        [self stopped];
+        return;
+    }
     
     int completed = 0, total = 0;
     if (status) {
@@ -207,13 +216,15 @@
     // Server's activeTasks changed:
     BOOL active = NO;
     NSString* status = nil;
+    NSArray* error = nil;
     for (NSDictionary* task in _database.server.activeTasks) {
         if ([[task objectForKey:@"type"] isEqualToString:@"Replication"]) {
             // Can't look up the task ID directly because it's part of a longer string like
             // "`6390525ac52bd8b5437ab0a118993d0a+continuous`: ..."
             if ([[task objectForKey: @"task"] rangeOfString: _taskID].length > 0) {
                 active = YES;
-                status = [task objectForKey: @"status"];
+                status = $castIf(NSString, [task objectForKey: @"status"]);
+                error = $castIf(NSArray, [task objectForKey: @"error"]);
                 break;
             }
         }
@@ -222,7 +233,20 @@
     if (!active) {
         COUCHLOG(@"%@: No longer an active task", self);
         [self stopped];
-    } else if (!$equal(status, _status)) {
+        return;
+    }
+    
+    // Interpret .error property. This is nonstandard; only TouchDB supports it.
+    if (error.count >= 1) {
+        COUCHLOG(@"%@: error %@", self, error);
+        int status = [$castIf(NSNumber, [error objectAtIndex: 0]) intValue];
+        NSString* message = nil;
+        if (error.count >= 2)
+            message = $castIf(NSString, [error objectAtIndex: 1]);
+        self.error = [RESTOperation errorWithHTTPStatus: status message: message URL: _remote];
+    }
+    
+    if (!$equal(status, _status)) {
         self.status = status;
     }
 }
