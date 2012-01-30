@@ -296,24 +296,15 @@ static const NSUInteger kDocRetainLimit = 50;
 #pragma mark -
 #pragma mark REPLICATION & SYNCHRONIZATION
 
-- (CouchReplication*) pullFromDatabaseAtURL: (NSURL*)sourceURL 
-                                 options: (CouchReplicationOptions)options {
-    CouchReplication* rep = [[[CouchReplication alloc] initWithDatabase: self
-                                                                 remote: sourceURL
-                                                                   pull: YES
-                                                                options: options] autorelease];
-    [rep start];
+- (CouchReplication*) pullFromDatabaseAtURL: (NSURL*)sourceURL {
+    CouchReplication* rep = [self pushToDatabaseAtURL: sourceURL];
+    rep.pull = YES;
     return rep;
 }
 
 - (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL
-                               options: (CouchReplicationOptions)options {
-    CouchReplication* rep = [[[CouchReplication alloc] initWithDatabase: self
-                                                                 remote: targetURL
-                                                                   pull: NO
-                                                                options: options] autorelease];
-    [rep start];
-    return rep;
+{
+    return [[[CouchReplication alloc] initWithDatabase: self remote: targetURL] autorelease];
 }
 
 
