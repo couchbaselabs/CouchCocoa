@@ -139,17 +139,13 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 
 /** Triggers replication from a source database, to this database.
     @param sourceURL  The URL of the database to replicate from.
-    @param options  Zero or more option flags affecting the replication.
-    @return  The CouchReplication object managing the replication. It will already have been started. */
-- (CouchReplication*) pullFromDatabaseAtURL: (NSURL*)sourceURL
-                                    options: (CouchReplicationOptions)options;
+    @return  The CouchReplication object managing the replication. You have a chance to customize its properties (like .continuous and .filter) before it starts. */
+- (CouchReplication*) pullFromDatabaseAtURL: (NSURL*)sourceURL;
 
 /** Triggers replication from this database to a target database.
     @param targetURL  The URL of the database to replicate to.
-    @param options  Zero or more option flags affecting the replication.
-    @return  The CouchReplication object managing the replication. It will already have been started. */
-- (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL
-                                  options: (CouchReplicationOptions)options;
+    @return  The CouchReplication object managing the replication. You have a chance to customize its properties (like .continuous and .filter) before it starts.*/
+- (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL;
 
 /** Configures this database to replicate bidirectionally (sync to and from) a database at the given URL.
     @param otherURL  The URL of the other database, or nil to indicate no replication.

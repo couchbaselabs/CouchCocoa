@@ -38,17 +38,15 @@
 
 - (id) initWithDatabase: (CouchDatabase*)database
                  remote: (NSURL*)remote
-                   pull: (BOOL)pull
-                options: (CouchReplicationOptions)options
 {
     NSParameterAssert(remote);
     self = [super init];
     if (self) {
         _database = [database retain];
         _remote = [remote retain];
-        _pull = pull;
-        _options = options;
-
+        // Give the caller a chance to customize parameters like .filter before calling -start,
+        // but make sure -start will be run even if the caller doesn't call it.
+        [self performSelector: @selector(start) withObject: nil afterDelay: 0.0];
     }
     return self;
 }
@@ -59,6 +57,8 @@
     [_remote release];
     [_database release];
     [_error release];
+    [_filter release];
+    [_filterParams release];
     [super dealloc];
 }
 
@@ -69,6 +69,10 @@
 }
 
 
+@synthesize pull=_pull, createTarget=_createTarget, continuous=_continuous,
+            filter=_filter, filterParams=_filterParams;
+
+
 - (RESTOperation*) operationToStart: (BOOL)start {
     NSString* source = _pull ? _remote.absoluteString : _database.relativePath;
     NSString* target = _pull ? _database.relativePath : _remote.absoluteString;
@@ -76,10 +80,15 @@
                                  source, @"source",
                                  target, @"target",
                                  nil];
-    if (_options & kCouchReplicationCreateTarget)
+    if (_createTarget)
         [body setObject: (id)kCFBooleanTrue forKey: @"create_target"];
-    if (_options & kCouchReplicationContinuous)
+    if (_continuous)
         [body setObject: (id)kCFBooleanTrue forKey: @"continuous"];
+    if (_filter) {
+        [body setObject: _filter forKey: @"filter"];
+        if (_filterParams)
+            [body setObject: _filterParams forKey: @"query_params"];
+    }
     if (!start)
         [body setObject: (id)kCFBooleanTrue forKey: @"cancel"];
     RESTResource* replicate = [[[RESTResource alloc] initWithParent: _database.server 
@@ -89,6 +98,7 @@
 
 
 - (RESTOperation*) start {
+    [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(start) object: nil];
     if (_running)
         return nil;
     self.error = nil;
