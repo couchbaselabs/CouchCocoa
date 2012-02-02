@@ -31,7 +31,9 @@
 }
 
 /** Returns the CouchModel associated with a CouchDocument, or creates & assigns one if necessary.
-    Don't call this on CouchModel itself, rather on the subclass you want to instantiate for that document, e.g. [MyWidgetModel modelForDocument: doc]. It always returns an instance of the class it's called on. */
+    If the CouchDocument already has an associated model, it's returned. Otherwise a new one is instantiated.
+    If you call this on CouchModel itself, it'll delegate to the CouchModelFactory to decide what class to instantiate; this lets you map different classes to different "type" property values, for instance.
+    If you call this method on a CouchModel subclass, it will always instantiate an instance of that class; e.g. [MyWidgetModel modelForDocument: doc] always creates a MyWidgetModel. */
 + (id) modelForDocument: (CouchDocument*)document;
 
 /** Creates a new "untitled" model with a new unsaved document.
@@ -134,5 +136,9 @@
 /** Called when the model's properties are reloaded from the document.
     This happens both when initialized from a document, and after an external change. */
 - (void) didLoadFromDocument;
+
+/** Returns the database in which to look up the document ID of a model-valued property.
+    Defaults to the same database as the receiver's document. You should override this if a document property contains the ID of a document in a different database. */
+- (CouchDatabase*) databaseForModelProperty: (NSString*)propertyName;
 
 @end

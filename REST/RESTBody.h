@@ -86,6 +86,9 @@
 /** Converts an object to a JSON string.
     JSON 'fragments' (NSString / NSNumber) are allowed. Returns nil on nil input. */
 + (NSString*) stringWithJSONObject: (id)obj;
+/** Converts an object to a pretty-printed JSON string.
+    JSON 'fragments' (NSString / NSNumber) are allowed. Returns nil on nil input. */
++ (NSString*) prettyStringWithJSONObject: (id)obj;
 /** Parses JSON data into a Foundation object tree.
     If parsing fails, returns nil. */
 + (id) JSONObjectWithData: (NSData*)data;

@@ -232,7 +232,8 @@
 enum {
     NSJSONReadingMutableContainers = (1UL << 0),
     NSJSONReadingMutableLeaves = (1UL << 1),
-    NSJSONReadingAllowFragments = (1UL << 2)
+    NSJSONReadingAllowFragments = (1UL << 2),
+    NSJSONWritingPrettyPrinted = (1UL << 0)
 };
 @interface NSJSONSerialization : NSObject
 + (NSData *)dataWithJSONObject:(id)obj options:(NSUInteger)opt error:(NSError **)error;
@@ -273,6 +274,20 @@ static Class sJSONSerialization;
 #endif
     NSData* data = [sJSONSerialization dataWithJSONObject: obj                                               
                                                   options: NSJSONReadingAllowFragments
+                                                    error: NULL];
+    if (!data)
+        return nil;
+    return [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
+}
+
++ (NSString*) prettyStringWithJSONObject: (id)obj {
+#if USE_JSONKIT
+    if (!sJSONSerialization)
+        return [obj JSONStringWithOptions: JKSerializeOptionPretty error: nil];
+#endif
+    NSData* data = [sJSONSerialization dataWithJSONObject: obj                                               
+                                                  options: NSJSONReadingAllowFragments
+                                                            | NSJSONWritingPrettyPrinted
                                                     error: NULL];
     if (!data)
         return nil;

@@ -55,11 +55,17 @@
 + (id) modelForDocument: (CouchDocument*)document {
     NSParameterAssert(document);
     CouchModel* model = document.modelObject;
-    if (model)
+    if (model) {
+        // Document already has a model; make sure it's type-compatible with the desired class
         NSAssert([model isKindOfClass: self], @"%@: %@ already has incompatible model %@",
                  self, document, model);
-    else
+    } else if (self != [CouchModel class]) {
+        // If invoked on a subclass of CouchModel, create an instance of that subclass:
         model = [[[self alloc] initWithDocument: document] autorelease];
+    } else {
+        // If invoked on CouchModel itself, ask the factory to instantiate the appropriate class:
+        model = [[CouchModelFactory sharedInstance] modelForDocument: document];
+    }
     return model;
 }
 
@@ -354,6 +360,12 @@
     return value;
 }
 
+- (CouchDatabase*) databaseForModelProperty: (NSString*)property {
+    // This is a hook for subclasses to override if they need to, i.e. if the property
+    // refers to a document in a different database.
+    return _document.database;
+}
+
 - (CouchModel*) getModelProperty: (NSString*)property {
     // Model-valued properties are kept in raw form as document IDs, not mapped to CouchModel
     // references, to avoid reference loops.
@@ -368,7 +380,7 @@
         Warn(@"Model-valued property %@ of %@ is not a string", property, _document);
         return nil;
     }
-    CouchDocument* doc = [_document.database documentWithID: rawValue];
+    CouchDocument* doc = [[self databaseForModelProperty: property] documentWithID: rawValue];
     if (!doc) {
         Warn(@"Unable to get document from property %@ of %@ (value='%@')",
              property, _document, rawValue);
@@ -438,6 +450,30 @@ static void setModelProperty(CouchModel *self, SEL _cmd, id value) {
         return (IMP)setModelProperty;
     else 
         return [super impForSetterOfClass: propertyClass];
+}
+
+
+#pragma mark - KVO:
+
+
+// CouchDocuments (and transitively their models) have only weak references from the CouchDatabase,
+// so they may be dealloced if not used in a while. This is very bad if they have any observers, as
+// the observation reference will dangle and cause crashes or mysterious bugs.
+// To work around this, turn observation into a string reference by doing a retain.
+// This may result in reference cycles if two models observe each other; not sure what to do about
+// that yet!
+
+- (void) addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context {
+    [super addObserver: observer forKeyPath: keyPath options: options context: context];
+    if (observer != self)
+        [self retain];
+}
+
+- (void) removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath {
+    [super removeObserver: observer forKeyPath: keyPath];
+    if (observer != self)
+        [self retain];
+    [self release];
 }
 
 
