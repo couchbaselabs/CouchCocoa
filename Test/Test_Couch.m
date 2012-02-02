@@ -655,9 +655,7 @@
     
     STAssertFalse([firstReplicationUrl isEqual:secondReplicationUrl], nil);
     
-    [[secondReplication deleteDocument] wait];
-    
-    [[replicatedDatabase DELETE] wait];
+    AssertWait([replicatedDatabase DELETE]);
     [replicatedDatabase release];
 }
 
