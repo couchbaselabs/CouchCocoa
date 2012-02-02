@@ -156,7 +156,7 @@ int gCouchLogLevel = 0;
     if(existingReplication != nil && !replaceExisting)
         return existingReplication;
     if(existingReplication != nil && replaceExisting)
-        [existingReplication deleteDocument];
+        [[existingReplication deleteDocument] wait];  // this will only wait for the first attempt to delete
     
     return [CouchPersistentReplication createWithReplicatorDatabase: self.replicatorDatabase
                                                              source: source target: target];

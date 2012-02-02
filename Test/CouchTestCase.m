@@ -38,16 +38,6 @@
     _server.tracksActiveOperations = YES;
     
     _db = [self newDatabaseNamed:@"testdb_temporary"];
-    /*_db = [[_server databaseNamed: @"testdb_temporary"] retain];
-    STAssertNotNil(_db, @"Couldn't create database object");
-    RESTOperation* op = [_db create];
-    if (![op wait]) {
-        NSLog(@"NOTE: DB '%@' exists; deleting and re-creating it for tests", _db.relativePath);
-        STAssertEquals(op.httpStatus, 412,
-                       @"Unexpected error creating db: %@", op.error);
-        AssertWait([_db DELETE]);
-        AssertWait([_db create]);
-    }*/
     
     gRESTLogLevel = kRESTLogRequestHeaders; // kRESTLogNothing;
 }
