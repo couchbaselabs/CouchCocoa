@@ -34,7 +34,19 @@
 - (void)processRequest:(NSMutableURLRequest *)request
 {
     request.HTTPShouldHandleCookies = NO;
-    [request setAllHTTPHeaderFields:[NSHTTPCookie requestHeaderFieldsWithCookies:_httpCookies]];
+    
+    NSMutableDictionary *requestHeaders = request.allHTTPHeaderFields ?
+                                            [request.allHTTPHeaderFields mutableCopy] :
+                                            [[NSMutableDictionary alloc] init];
+    
+    NSURL *url = request.URL;
+    NSPredicate *cookieMatchesUrl = [NSPredicate predicateWithFormat:@"%@ beginswith[c] path", url.path];
+    NSArray *cookiesForRequest = [_httpCookies filteredArrayUsingPredicate:cookieMatchesUrl];
+    NSDictionary *cookieHeaders = [NSHTTPCookie requestHeaderFieldsWithCookies:cookiesForRequest];
+    [requestHeaders addEntriesFromDictionary:cookieHeaders];
+    
+    [request setAllHTTPHeaderFields:requestHeaders];
+    [requestHeaders release];
 }
 
 - (void)processResponse:(NSHTTPURLResponse *)response
