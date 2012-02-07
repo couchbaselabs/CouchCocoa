@@ -92,7 +92,7 @@
     
     STAssertNoThrow([objectUnderTest processRequest:request], nil);
     
-    STAssertEquals(request.allHTTPHeaderFields.count, 1u, nil);
+    STAssertEquals(request.allHTTPHeaderFields.count, (NSUInteger)1, nil);
     NSString *cookies = [request.allHTTPHeaderFields objectForKey:@"Cookie"];
     STAssertEqualObjects(cookies, cookieString, nil);
 }
@@ -109,7 +109,7 @@
     
     STAssertNoThrow([objectUnderTest processRequest:request], nil);
     
-    STAssertEquals(request.allHTTPHeaderFields.count, 1u, nil);
+    STAssertEquals(request.allHTTPHeaderFields.count, (NSUInteger)1, nil);
     NSString *cookies = [request.allHTTPHeaderFields objectForKey:@"Cookie"];
     STAssertEqualObjects(cookies, cookieString, nil);
 }
@@ -125,7 +125,7 @@
     
     STAssertNoThrow([objectUnderTest processRequest:request], nil);
     
-    STAssertEquals(request.allHTTPHeaderFields.count, 0u, nil);
+    STAssertEquals(request.allHTTPHeaderFields.count, (NSUInteger)0, nil);
 }
 
 @end
