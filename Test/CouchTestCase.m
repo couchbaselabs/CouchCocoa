@@ -13,9 +13,9 @@
 
 @implementation CouchTestCase
 
-- (CouchDatabase *)newDatabaseNamed:(NSString *)databaseName
+- (CouchDatabase *)databaseNamed:(NSString *)databaseName
 {
-    CouchDatabase *database = [[_server databaseNamed: databaseName] retain];
+    CouchDatabase *database = [_server databaseNamed: databaseName];
     STAssertNotNil(database, @"Couldn't create database object");
     RESTOperation* op = [database create];
     if (![op wait]) {
@@ -37,7 +37,7 @@
     STAssertNotNil(_server, @"Couldn't create server object");
     _server.tracksActiveOperations = YES;
     
-    _db = [self newDatabaseNamed:@"testdb_temporary"];
+    _db = [[self databaseNamed:@"testdb_temporary"] retain];
     
     gRESTLogLevel = kRESTLogRequestHeaders; // kRESTLogNothing;
 }

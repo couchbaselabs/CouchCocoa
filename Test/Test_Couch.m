@@ -635,9 +635,9 @@
     }
 }
 
-- (void) test_replication_with_replaceExisting_should_create_new_document
+- (void) test_ReplicationWithReplaceExistingShouldCreateNewDocument
 {
-    CouchDatabase *replicatedDatabase = [self newDatabaseNamed:@"testdb_temporary_replication"];
+    CouchDatabase *replicatedDatabase = [[self databaseNamed:@"testdb_temporary_replication"] retain];
     
     CouchPersistentReplication *firstReplication = [_db replicationFromDatabaseAtURL:replicatedDatabase.URL];
     [[firstReplication save] wait];

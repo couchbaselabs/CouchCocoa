@@ -16,7 +16,7 @@
     CouchDatabase* _db;
 }
 
-- (CouchDatabase *)newDatabaseNamed:(NSString *)databaseName;
+- (CouchDatabase *)databaseNamed:(NSString *)databaseName;
 
 @property (readonly) CouchDatabase* db;
 
