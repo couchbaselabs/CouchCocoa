@@ -125,6 +125,8 @@ enum {
     
     [_inputBuffer release];
     _inputBuffer = nil;
+    
+    [_trackingRequest release];
 }
 
 
