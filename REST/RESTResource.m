@@ -19,20 +19,11 @@
 #import "RESTCache.h"
 #import "RESTCookies.h"
 
-@interface RESTResource()
-{
-    RESTCookies *_cookies;
-}
-@end
-
-
 @implementation RESTResource
 
 
 @synthesize parent=_parent, relativePath=_relativePath,
             cachedURL=_cachedURL;
-
-@dynamic useIndependentCookies;
 
 
 - (id) initWithURL: (NSURL*)url {
@@ -66,6 +57,7 @@
 {
     [_owningCache resourceBeingDealloced: self];
     [_activeOperations release];
+    [_cookies release];
     [_credential release];
     [_protectionSpace release];
     [_eTag release];
@@ -121,17 +113,15 @@
 #pragma mark -
 #pragma mark COOKIES:
 
-- (BOOL)useIndependentCookies
+- (void) setUseIndependentCookies: (BOOL)useIndependentCookies;
 {
-    return [self cookiesForOperation:nil] != nil;
-}
-
-- (void)setUseIndependentCookies:(BOOL)useIndependentCookies
-{
-    if(useIndependentCookies && _cookies == nil)
+    if(useIndependentCookies && _cookies == nil) {
         _cookies = [[RESTCookies alloc] init];
-    else if(!useIndependentCookies && _cookies != nil)
+    }
+    else if(!useIndependentCookies && _cookies != nil) {
+        [_cookies release];
         _cookies = nil;
+    }
 }
 
 - (RESTCookies *)cookiesForOperation: (RESTOperation*)op
@@ -186,9 +176,7 @@
         request.URL = [NSURL URLWithString: urlStr];
     }
     
-    RESTCookies *cookies = [self cookiesForOperation:nil];
-    if(cookies)
-        [cookies processRequest:request];
+    [[self cookiesForOperation:nil] processRequest:request];
 
     return request;
 }

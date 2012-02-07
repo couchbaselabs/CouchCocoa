@@ -20,21 +20,21 @@
 {
     self = [super init];
     {
-        httpCookies = [[NSMutableArray array] retain];
+        _httpCookies = [[NSMutableArray array] retain];
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [_httpCookies release];
     [super dealloc];
-    [httpCookies release];
 }
 
 - (void)processRequest:(NSMutableURLRequest *)request
 {
     request.HTTPShouldHandleCookies = NO;
-    [request setAllHTTPHeaderFields:[NSHTTPCookie requestHeaderFieldsWithCookies:httpCookies]];
+    [request setAllHTTPHeaderFields:[NSHTTPCookie requestHeaderFieldsWithCookies:_httpCookies]];
 }
 
 - (void)processResponse:(NSHTTPURLResponse *)response
@@ -57,18 +57,18 @@
 {
 	NSHTTPCookie *cookie;
 	NSUInteger i;
-	NSUInteger numberOfCookies = [httpCookies count];
+	NSUInteger numberOfCookies = [_httpCookies count];
 	for (i = 0; i < numberOfCookies; i++) {
-		cookie = [httpCookies objectAtIndex:i];
+		cookie = [_httpCookies objectAtIndex:i];
 		if ([[cookie domain] isEqualToString:[newCookie domain]] &&
             [[cookie path] isEqualToString:[newCookie path]] &&
             [[cookie name] isEqualToString:[newCookie name]])
         {
-			[httpCookies removeObjectAtIndex:i];
+			[_httpCookies removeObjectAtIndex:i];
 			break;
 		}
 	}
-    [httpCookies addObject:newCookie];
+    [_httpCookies addObject:newCookie];
 }
 
 @end

@@ -438,10 +438,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     }
 
     if (httpStatus < 300) {
-        RESTCookies *cookies = [_resource cookiesForOperation:self];
-        if(cookies) {
-            [cookies processResponse:_response];
-        }
+        [[_resource cookiesForOperation:self] processResponse:_response];
         [self completedWithError: nil];
     } else {
         // Escalate HTTP error to a connection error:

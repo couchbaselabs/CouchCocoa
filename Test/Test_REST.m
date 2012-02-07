@@ -198,7 +198,7 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
     STAssertNil([RESTBody dataWithBase64: nil], @"Base64 decoding failed on nil input");
 }
 
-- (void)test_using_useIndependentCookies
+- (void)testUseIndependentCookies
 {
     // Test a root resource:
     NSURL* url = [NSURL URLWithString: kParentURL];
