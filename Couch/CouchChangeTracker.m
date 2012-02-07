@@ -196,7 +196,7 @@ enum {
         NSTimeInterval retryDelay = 0.2 * (1 << (_retryCount-1));
         [self performSelector: @selector(start) withObject: nil afterDelay: retryDelay];
     } else {
-        Warn(@"%@: Can't connect, giving up: %@", error);
+        Warn(@"%@: Can't connect, giving up: %@", self, error);
     }
 }
 
