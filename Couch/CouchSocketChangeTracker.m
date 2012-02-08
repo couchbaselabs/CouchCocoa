@@ -93,6 +93,8 @@ enum {
     [_trackingOutput release];
     _trackingOutput = nil;
     
+    [_trackingRequest release];
+    _trackingRequest = nil;
     [_inputBuffer release];
     _inputBuffer = nil;
     

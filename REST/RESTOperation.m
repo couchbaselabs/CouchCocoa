@@ -46,7 +46,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 @implementation RESTOperation
 
 
-@synthesize resource=_resource, request=_request, error=_error;
+@synthesize resource=_resource, request=_request, response=_response, error=_error;
 
 
 - (id) initWithResource: (RESTResource*)resource request: (NSURLRequest*)request {

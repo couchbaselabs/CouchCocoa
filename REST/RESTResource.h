@@ -15,6 +15,7 @@
 
 #import <Foundation/Foundation.h>
 @class RESTCache, RESTOperation;
+@protocol RESTResourceDelegate;
 
 
 /** Represents an HTTP resource identified by a specific URL.
@@ -27,6 +28,7 @@
     RESTResource* _parent;
     NSString* _relativePath;
     RESTCache* _owningCache;
+    id<RESTResourceDelegate> _delegate;
     NSMutableSet* _activeOperations;
 
     NSString* _eTag;
@@ -54,6 +56,8 @@
 
 /** The relative path from the parent (as given in the initializer.) */
 @property (readonly) NSString* relativePath;
+
+@property (assign, nonatomic) id<RESTResourceDelegate> delegate;
 
 /** Sets the login credential (e.g. username/password) to be used for authentication by this resource and its children.
     IMPORTANT: CouchDB's default configuration unfortunately doesn't support this type of programmatic auth. To make it work, you'll need to add a "WWW-Authenticate" property to the server's [httpd] configuration section, as described at <https://groups.google.com/d/msg/mobile-couchbase/GiSnos0Hx54/q5JGepLaQBgJ>. */
@@ -147,5 +151,20 @@
     The base implementation sets this object's relativePath and URL properties based on the value of the response's Location: header. If you override this method, be sure to call the superclass method.
     @param op  The HTTP operation, which is actually a POST to the parent resource. */
 - (void) createdByPOST: (RESTOperation*)op;
+
+@end
+
+
+/** An object that registers as the delegate of a RESTResource.
+    The delegate will be called by the resource it's attached to, and by all child resources. If multiple resources in the hierarchy have delegates, the child resources' delegates are called before their parents'. */
+@protocol RESTResourceDelegate <NSObject>
+
+/** Called immediately before a resource sends a request.
+    The delegate may modify the request, carefully. For example, it could add headers. */
+- (void) resource: (RESTResource*)resource willSendRequest: (NSMutableURLRequest*)request;
+
+/** Called immediately after a response arrives, before the associated RESTOperation's onCompletion block.
+    This is called even for responses that contain HTTP errors, though not for ones that fail below the HTTP layer (i.e. unreachable host.) */
+- (void) resource: (RESTResource*)resource didReceiveResponse: (NSHTTPURLResponse*)response;
 
 @end

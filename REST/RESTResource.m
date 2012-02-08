@@ -22,7 +22,7 @@
 @implementation RESTResource
 
 
-@synthesize parent=_parent, relativePath=_relativePath,
+@synthesize parent=_parent, relativePath=_relativePath, delegate=_delegate,
             cachedURL=_cachedURL;
 
 
@@ -109,6 +109,13 @@
 }
 
 
+- (void) callDelegate: (SEL)selector forResource: (RESTResource*)resource withObject: (id)object {
+    if ([_delegate respondsToSelector: selector])
+        [(id)_delegate performSelector: selector withObject: resource withObject: object];
+    [_parent callDelegate: selector forResource: resource withObject: object];
+}
+
+
 #pragma mark -
 #pragma mark HTTP METHODS:
 
@@ -160,7 +167,8 @@
 }
 
 
-- (RESTOperation*) sendRequest: (NSURLRequest*)request {
+- (RESTOperation*) sendRequest: (NSMutableURLRequest*)request {
+    [self callDelegate: @selector(resource:willSendRequest:) forResource: self withObject: request];
     return [[[RESTOperation alloc] initWithResource: self request: request] autorelease];
 }
 
@@ -315,6 +323,11 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 
 
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
+    NSHTTPURLResponse* response = op.response;
+    if (response)
+        [self callDelegate: @selector(resource:didReceiveResponse:) 
+               forResource: self withObject: response];
+    
     if (op.isGET) {
         if (op.httpStatus == 304) {
             error = nil;            // 304 Not Modified is not an error
