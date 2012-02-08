@@ -138,14 +138,26 @@ int gCouchLogLevel = 0;
     }];
 }
 
-
-- (CouchPersistentReplication*) replicationWithSource: (NSString*)source
-                                               target: (NSString*)target
+- (CouchPersistentReplication*) existingReplicationWithSource: (NSString *)source
+                                                       target: (NSString *)target
 {
     for (CouchPersistentReplication* repl in self.replications) {
         if ($equal(repl.source, source) && $equal(repl.target, target))
             return repl;
     }
+    return nil;
+}
+
+- (CouchPersistentReplication*) replicationWithSource: (NSString*)source
+                                               target: (NSString*)target
+                                      replaceExisting:(BOOL)replaceExisting
+{
+    CouchPersistentReplication *existingReplication = [self existingReplicationWithSource:source target:target];
+    if(existingReplication != nil && !replaceExisting)
+        return existingReplication;
+    if(existingReplication != nil && replaceExisting)
+        [[existingReplication deleteDocument] wait];  // this will only wait for the first attempt to delete
+    
     return [CouchPersistentReplication createWithReplicatorDatabase: self.replicatorDatabase
                                                              source: source target: target];
 }

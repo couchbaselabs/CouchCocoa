@@ -16,6 +16,7 @@
 #import "RESTOperation.h"
 
 #import "RESTInternal.h"
+#import "RESTCookies.h"
 
 
 /** Possible states that a RESTOperation is in during its lifecycle. */
@@ -437,6 +438,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     }
 
     if (httpStatus < 300) {
+        [[_resource cookiesForOperation:self] processResponse:_response];
         [self completedWithError: nil];
     } else {
         // Escalate HTTP error to a connection error:

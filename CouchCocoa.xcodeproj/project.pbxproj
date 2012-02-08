@@ -147,6 +147,12 @@
 		27EEA5B613D6052300D7ACA4 /* REST.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A664413A5BA4600791F4A /* REST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EF148C1396D8CC0052913E /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EF148B1396D8CC0052913E /* DemoAppController.m */; };
 		27EF14B31396DD3B0052913E /* AddressesDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27EF14B21396DD3B0052913E /* AddressesDemo.xib */; };
+		2E91CB7A14E0C4F6001C4498 /* RESTCookiesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E91CB7914E0C4F6001C4498 /* RESTCookiesTest.m */; };
+		2E91CB7B14E0C4F6001C4498 /* RESTCookiesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E91CB7914E0C4F6001C4498 /* RESTCookiesTest.m */; };
+		2EBE85B314C8B0F2003CF4FC /* RESTCookies.h in Headers */ = {isa = PBXBuildFile; fileRef = 2EBE85B114C8B0F2003CF4FC /* RESTCookies.h */; };
+		2EBE85B414C8B0F2003CF4FC /* RESTCookies.h in Headers */ = {isa = PBXBuildFile; fileRef = 2EBE85B114C8B0F2003CF4FC /* RESTCookies.h */; };
+		2EBE85B514C8B0F2003CF4FC /* RESTCookies.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBE85B214C8B0F2003CF4FC /* RESTCookies.m */; };
+		2EBE85B614C8B0F2003CF4FC /* RESTCookies.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBE85B214C8B0F2003CF4FC /* RESTCookies.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -291,6 +297,9 @@
 		27EF148B1396D8CC0052913E /* DemoAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoAppController.m; sourceTree = "<group>"; };
 		27EF14B21396DD3B0052913E /* AddressesDemo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressesDemo.xib; sourceTree = "<group>"; };
 		27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ShoppingDemo-Info.plist"; path = "Demo/ShoppingDemo-Info.plist"; sourceTree = SOURCE_ROOT; };
+		2E91CB7914E0C4F6001C4498 /* RESTCookiesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTCookiesTest.m; sourceTree = "<group>"; };
+		2EBE85B114C8B0F2003CF4FC /* RESTCookies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTCookies.h; sourceTree = "<group>"; };
+		2EBE85B214C8B0F2003CF4FC /* RESTCookies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTCookies.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -454,6 +463,7 @@
 				2795994E140A02DB001C168A /* Test_Model.m */,
 				27911B731411A8C700ABD31B /* CouchTestCase.h */,
 				27911B741411A8C700ABD31B /* CouchTestCase.m */,
+				2E91CB7914E0C4F6001C4498 /* RESTCookiesTest.m */,
 				2771C7C11472ECF70012DF57 /* logo.png */,
 			);
 			path = Test;
@@ -479,6 +489,8 @@
 				27DA430513B659A900BBADB7 /* RESTInternal.m */,
 				279276EC14215D5600002958 /* RESTBase64.h */,
 				279276ED14215D5600002958 /* RESTBase64.m */,
+				2EBE85B114C8B0F2003CF4FC /* RESTCookies.h */,
+				2EBE85B214C8B0F2003CF4FC /* RESTCookies.m */,
 			);
 			name = Internal;
 			sourceTree = "<group>";
@@ -601,6 +613,7 @@
 				27D083B9143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */,
 				274EB8A514479D72001B7DD0 /* CouchEmbeddedServer.h in Headers */,
 				27AE23AE147C95D3005AAB52 /* CouchModelFactory.h in Headers */,
+				2EBE85B414C8B0F2003CF4FC /* RESTCookies.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,6 +645,7 @@
 				279276EE14215D5600002958 /* RESTBase64.h in Headers */,
 				27D083B8143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */,
 				27AE23AD147C95D3005AAB52 /* CouchModelFactory.h in Headers */,
+				2EBE85B314C8B0F2003CF4FC /* RESTCookies.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -982,6 +996,7 @@
 				27CB654F143A746700EEA1F2 /* CouchDesignDocument_Embedded.m in Sources */,
 				274EB8A714479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */,
 				27AE23B0147C95D3005AAB52 /* CouchModelFactory.m in Sources */,
+				2EBE85B614C8B0F2003CF4FC /* RESTCookies.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -994,6 +1009,7 @@
 				27959950140A02DB001C168A /* Test_Model.m in Sources */,
 				27911B721411A7C100ABD31B /* Test_DynamicObject.m in Sources */,
 				27911B761411A8C700ABD31B /* CouchTestCase.m in Sources */,
+				2E91CB7B14E0C4F6001C4498 /* RESTCookiesTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1034,6 +1050,7 @@
 				27CB654E143A746700EEA1F2 /* CouchDesignDocument_Embedded.m in Sources */,
 				274EB8A614479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */,
 				27AE23AF147C95D3005AAB52 /* CouchModelFactory.m in Sources */,
+				2EBE85B514C8B0F2003CF4FC /* RESTCookies.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1046,6 +1063,7 @@
 				2795994F140A02DB001C168A /* Test_Model.m in Sources */,
 				27911B711411A7C100ABD31B /* Test_DynamicObject.m in Sources */,
 				27911B751411A8C700ABD31B /* CouchTestCase.m in Sources */,
+				2E91CB7A14E0C4F6001C4498 /* RESTCookiesTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,21 @@
 
 @implementation CouchTestCase
 
+- (CouchDatabase *)databaseNamed:(NSString *)databaseName
+{
+    CouchDatabase *database = [_server databaseNamed: databaseName];
+    STAssertNotNil(database, @"Couldn't create database object");
+    RESTOperation* op = [database create];
+    if (![op wait]) {
+        NSLog(@"NOTE: DB '%@' exists; deleting and re-creating it for tests", database.relativePath);
+        STAssertEquals(op.httpStatus, 412,
+                       @"Unexpected error creating db: %@", op.error);
+        AssertWait([database DELETE]);
+        AssertWait([database create]);
+    }
+
+    return database;
+}
 
 - (void) setUp {
     gRESTWarnRaisesException = YES;
@@ -22,16 +37,7 @@
     STAssertNotNil(_server, @"Couldn't create server object");
     _server.tracksActiveOperations = YES;
     
-    _db = [[_server databaseNamed: @"testdb_temporary"] retain];
-    STAssertNotNil(_db, @"Couldn't create database object");
-    RESTOperation* op = [_db create];
-    if (![op wait]) {
-        NSLog(@"NOTE: DB '%@' exists; deleting and re-creating it for tests", _db.relativePath);
-        STAssertEquals(op.httpStatus, 412,
-                       @"Unexpected error creating db: %@", op.error);
-        AssertWait([_db DELETE]);
-        AssertWait([_db create]);
-    }
+    _db = [[self databaseNamed:@"testdb_temporary"] retain];
     
     gRESTLogLevel = kRESTLogRequestHeaders; // kRESTLogNothing;
 }

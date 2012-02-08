@@ -14,7 +14,7 @@
 //  and limitations under the License.
 
 #import <Foundation/Foundation.h>
-@class RESTCache, RESTOperation;
+@class RESTCache, RESTOperation, RESTCookies;
 
 
 /** Represents an HTTP resource identified by a specific URL.
@@ -35,6 +35,7 @@
     
     NSURLCredential* _credential;
     NSURLProtectionSpace* _protectionSpace;
+    RESTCookies *_cookies;
 }
 
 /** Creates an instance with an absolute URL and no parent. */
@@ -121,6 +122,15 @@
     This is associated with the -eTag and -lastModified properties.
     This URL might not be the same as the receiver's -URL property, because "?"-prefixed parameters to a request are added to the URL's query. */
 @property (retain) NSURL* cachedURL;
+
+#pragma mark COOKIES:
+
+/** Allows controlling whether this resource will management cookies itself or use the built-in cookie
+    management. This allows for scenarios such as connecting to different databases on the same
+    server with different user identities.
+    @param useIndependentCookies  YES to have this resource cookies itself; no to have Cocoa cookie management
+    */
+- (void) setUseIndependentCookies: (BOOL)useIndependentCookies;
 
 #pragma mark TRACKING OPERATIONS:
 

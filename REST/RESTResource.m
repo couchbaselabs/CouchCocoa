@@ -17,7 +17,7 @@
 
 #import "RESTInternal.h"
 #import "RESTCache.h"
-
+#import "RESTCookies.h"
 
 @implementation RESTResource
 
@@ -57,6 +57,7 @@
 {
     [_owningCache resourceBeingDealloced: self];
     [_activeOperations release];
+    [_cookies release];
     [_credential release];
     [_protectionSpace release];
     [_eTag release];
@@ -109,6 +110,24 @@
     _relativePath = [relativePath copy];
 }
 
+#pragma mark -
+#pragma mark COOKIES:
+
+- (void) setUseIndependentCookies: (BOOL)useIndependentCookies;
+{
+    if(useIndependentCookies && _cookies == nil) {
+        _cookies = [[RESTCookies alloc] init];
+    }
+    else if(!useIndependentCookies && _cookies != nil) {
+        [_cookies release];
+        _cookies = nil;
+    }
+}
+
+- (RESTCookies *)cookiesForOperation: (RESTOperation*)op
+{
+    return _cookies ? _cookies : [_parent cookiesForOperation: op];
+}
 
 #pragma mark -
 #pragma mark HTTP METHODS:
@@ -156,6 +175,8 @@
         NSString* urlStr = [url.absoluteString stringByAppendingString: queries];
         request.URL = [NSURL URLWithString: urlStr];
     }
+    
+    [[self cookiesForOperation:nil] processRequest:request];
 
     return request;
 }

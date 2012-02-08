@@ -635,5 +635,28 @@
     }
 }
 
+- (void) test_ReplicationWithReplaceExistingShouldCreateNewDocument
+{
+    CouchDatabase *replicatedDatabase = [[self databaseNamed:@"testdb_temporary_replication"] retain];
+    
+    CouchPersistentReplication *firstReplication = [_db replicationFromDatabaseAtURL:replicatedDatabase.URL];
+    [[firstReplication save] wait];
+    
+    STAssertNotNil(firstReplication, nil);
+    NSURL *firstReplicationUrl = firstReplication.document.URL;
+    STAssertNotNil(firstReplicationUrl, nil);
+    
+    CouchPersistentReplication *secondReplication = [_db replicationFromDatabaseAtURL:replicatedDatabase.URL replaceExisting:YES];
+    [[secondReplication save] wait];
+    
+    STAssertNotNil(secondReplication, nil);
+    NSURL *secondReplicationUrl = secondReplication.document.URL;
+    STAssertNotNil(secondReplicationUrl, nil);
+    
+    STAssertFalse([firstReplicationUrl isEqual:secondReplicationUrl], nil);
+    
+    AssertWait([replicatedDatabase DELETE]);
+    [replicatedDatabase release];
+}
 
 @end
