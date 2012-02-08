@@ -53,7 +53,7 @@ enum {
     CFWriteStreamRef cfOutputStream = NULL;
     CFStreamCreatePairWithSocketToHost(NULL,
                                        (CFStringRef)_databaseURL.host,
-                                       _databaseURL.port.intValue,
+                                       _databaseURL.port.intValue ?: 80,
                                        &cfInputStream, &cfOutputStream);
     if (!cfInputStream)
         return NO;
