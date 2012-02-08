@@ -129,6 +129,9 @@ typedef void (^OnCompleteBlock)();
 /** The body of the response, with its entity headers (Synchronous.) */
 @property (readonly) RESTBody* responseBody;
 
+/** The raw NSHTTPURLResponse object, in case you need it. */
+@property (readonly) NSHTTPURLResponse* response;
+
 
 /** Object associated with this response.
     A client can store anything it wants here, typically a value parsed from or represented by the response body; often this property will be set by an onCompletion block. */
