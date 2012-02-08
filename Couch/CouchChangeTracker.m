@@ -83,7 +83,8 @@ enum {
 #if TARGET_OS_IPHONE
     CFReadStreamRef cfInputStream = NULL;
     CFWriteStreamRef cfOutputStream = NULL;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)url.host, url.port.intValue,
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)url.host,
+                                       url.port.intValue ?: 80,
                                        &cfInputStream, &cfOutputStream);
     if (!cfInputStream)
         return NO;
