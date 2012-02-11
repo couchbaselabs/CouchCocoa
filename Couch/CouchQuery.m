@@ -375,6 +375,12 @@
 
 @implementation CouchQueryRow
 
+- (void)dealloc
+{
+    [_query release];
+    [_result release];
+    [super dealloc];
+}
 
 - (id) initWithQuery: (CouchQuery*)query result: (id)result {
     self = [super init];
