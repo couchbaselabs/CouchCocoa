@@ -81,7 +81,7 @@ You'll probably want to run a local database server on your iOS device, since it
 
 Released under the [Apache license, version 2.0][6].
 
-Contributors: [Jens Alfke](https://github.com/snej/), [J Chris Anderson](https://github.com/jchris/), [David Venable](https://github.com/dlvenable), [Alex McArthur](https://github.com/alexmcarthur), Jonathon Mah(https://github.com/jmah), [Pierre Metrailler](https://github.com/pimetrai), [Sven A. Schmidt](https://github.com/sas71), [Katrin Apel](https://github.com/kaalita).
+Contributors: [Jens Alfke](https://github.com/snej/), [J Chris Anderson](https://github.com/jchris/), [David Venable](https://github.com/dlvenable), [Alex McArthur](https://github.com/alexmcarthur), [Jonathon Mah](https://github.com/jmah), [Pierre Metrailler](https://github.com/pimetrai), [Sven A. Schmidt](https://github.com/sas71), [Katrin Apel](https://github.com/kaalita).
 
 Copyright 2011, Couchbase, Inc.
 
