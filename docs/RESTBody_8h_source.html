@@ -150,24 +150,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00082"></a>00082 @interface <a class="code" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a> (JSON)
 <a name="l00085"></a>00085 + (NSData*) dataWithJSONObject: (<span class="keywordtype">id</span>)obj;
 <a name="l00088"></a>00088 + (NSString*) stringWithJSONObject: (<span class="keywordtype">id</span>)obj;
-<a name="l00091"></a>00091 + (id) JSONObjectWithData: (NSData*)data;
-<a name="l00094"></a>00094 + (id) JSONObjectWithString: (NSString*)string;
-<a name="l00095"></a>00095 
-<a name="l00097"></a>00097 + (NSString*) JSONObjectWithDate: (NSDate*)date;
+<a name="l00091"></a>00091 + (NSString*) prettyStringWithJSONObject: (<span class="keywordtype">id</span>)obj;
+<a name="l00094"></a>00094 + (id) JSONObjectWithData: (NSData*)data;
+<a name="l00097"></a>00097 + (id) JSONObjectWithString: (NSString*)string;
 <a name="l00098"></a>00098 
-<a name="l00101"></a>00101 + (NSDate*) dateWithJSONObject: (<span class="keywordtype">id</span>)jsonObject;
-<a name="l00102"></a>00102 
-<a name="l00104"></a>00104 + (NSString*) base64WithData: (NSData*)data;
+<a name="l00100"></a>00100 + (NSString*) JSONObjectWithDate: (NSDate*)date;
+<a name="l00101"></a>00101 
+<a name="l00104"></a>00104 + (NSDate*) dateWithJSONObject: (<span class="keywordtype">id</span>)jsonObject;
 <a name="l00105"></a>00105 
-<a name="l00108"></a>00108 + (NSData*) dataWithBase64: (NSString*)base64;
-<a name="l00109"></a>00109 
-<a name="l00110"></a>00110 <span class="keyword">@end</span>
+<a name="l00107"></a>00107 + (NSString*) base64WithData: (NSData*)data;
+<a name="l00108"></a>00108 
+<a name="l00111"></a>00111 + (NSData*) dataWithBase64: (NSString*)base64;
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>RESTBody.h</b>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

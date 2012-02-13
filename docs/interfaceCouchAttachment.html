@@ -132,7 +132,7 @@ Properties</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A binary attachment to a document. </p>
-<p>Actually a <a class="el" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a> is a child of a <a class="el" href="interfaceCouchRevision.html" title="A single revision of a CouchDocument.">CouchRevision</a>, since attachments (like all document contents) are versioned. This means that each instance represents an attachment immutably as it appeared in one revision of its document. So if you PUT a change to an attachment, the updated attachment will have a new <a class="el" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a> object. </p>
+<p>Actually a <a class="el" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a> may be a child of either a <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> or a <a class="el" href="interfaceCouchRevision.html" title="A single revision of a CouchDocument.">CouchRevision</a>. The latter represents an attachment immutably as it appeared in one revision of its document. So if you PUT a change to an attachment, the updated attachment will have a new <a class="el" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a> object. </p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a4c08c331d71bf364ef80004faebc1b00"></a><!-- doxytag: member="CouchAttachment::PUT:contentType:" ref="a4c08c331d71bf364ef80004faebc1b00" args="(NSData *body,[contentType] NSString *contentType)" -->
 <div class="memitem">
@@ -315,7 +315,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchAttachment.html">CouchAttachment</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

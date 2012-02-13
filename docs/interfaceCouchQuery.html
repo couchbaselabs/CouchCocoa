@@ -130,6 +130,12 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If non-nil, the key value to start at.  <a href="#a6d75255a5a716e2370995984dc023c7b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">id&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQuery.html#a29d57fa0e012417842f7c2ae15a46332">endKey</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If non-nil, the key value to end after.  <a href="#a29d57fa0e012417842f7c2ae15a46332"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQuery.html#a2a2dd4347f84e06eb7b0e39fe0970b5d">startKeyDocID</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If non-nil, the document ID to start at.  <a href="#a2a2dd4347f84e06eb7b0e39fe0970b5d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQuery.html#a38ef73746086a17eadf2a26576863253">endKeyDocID</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If non-nil, the document ID to end at.  <a href="#a38ef73746086a17eadf2a26576863253"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">CouchStaleness&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQuery.html#a89ddd51df0dd57249249a1caa5121c2e">stale</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If set, allows faster results at the expense of returning possibly out-of-date data.  <a href="#a89ddd51df0dd57249249a1caa5121c2e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQuery.html#af9075216a95fccb3f2a715c9f99c2534">keys</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If non-nil, the query will fetch only the rows with the given keys.  <a href="#af9075216a95fccb3f2a715c9f99c2534"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSUInteger&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQuery.html#a7aa93769b508034f848e1383806ed10d">groupLevel</a></td></tr>
@@ -306,6 +312,53 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a2a2dd4347f84e06eb7b0e39fe0970b5d"></a><!-- doxytag: member="CouchQuery::startKeyDocID" ref="a2a2dd4347f84e06eb7b0e39fe0970b5d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSString*) startKeyDocID<code> [read, write, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>If non-nil, the document ID to start at. </p>
+<p>(Useful if the view contains multiple identical keys, making .startKey ambiguous.) </p>
+
+</div>
+</div>
+<a class="anchor" id="a38ef73746086a17eadf2a26576863253"></a><!-- doxytag: member="CouchQuery::endKeyDocID" ref="a38ef73746086a17eadf2a26576863253" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSString*) endKeyDocID<code> [read, write, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>If non-nil, the document ID to end at. </p>
+<p>(Useful if the view contains multiple identical keys, making .endKey ambiguous.) </p>
+
+</div>
+</div>
+<a class="anchor" id="a89ddd51df0dd57249249a1caa5121c2e"></a><!-- doxytag: member="CouchQuery::stale" ref="a89ddd51df0dd57249249a1caa5121c2e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (CouchStaleness) stale<code> [read, write, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>If set, allows faster results at the expense of returning possibly out-of-date data. </p>
+
+</div>
+</div>
 <a class="anchor" id="af9075216a95fccb3f2a715c9f99c2534"></a><!-- doxytag: member="CouchQuery::keys" ref="af9075216a95fccb3f2a715c9f99c2534" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -360,7 +413,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchQuery.html">CouchQuery</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

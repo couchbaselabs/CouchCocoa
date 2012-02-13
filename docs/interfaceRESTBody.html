@@ -120,6 +120,8 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an object to UTF-8-encoded JSON data.  <a href="#ae757c2e4db6dbb318d9bc0ad8de4533d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(NSString *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a96c9e3a1cf7e271f014806a58ec519b1">stringWithJSONObject:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an object to a JSON string.  <a href="#a96c9e3a1cf7e271f014806a58ec519b1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSString *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a8af6649ef997a83d14030d2c25a16225">prettyStringWithJSONObject:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an object to a pretty-printed JSON string.  <a href="#a8af6649ef997a83d14030d2c25a16225"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a0f89ef884888ccc2bfa16b5ef2f10752">JSONObjectWithData:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses JSON data into a Foundation object tree.  <a href="#a0f89ef884888ccc2bfa16b5ef2f10752"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceRESTBody.html#a4d33faffbc3fa6f88e8204a9c8ccc873">JSONObjectWithString:</a></td></tr>
@@ -285,6 +287,26 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div class="memdoc">
 
 <p>Converts an object to a JSON string. </p>
+<p>JSON 'fragments' (NSString / NSNumber) are allowed. Returns nil on nil input. </p>
+
+</div>
+</div>
+<a class="anchor" id="a8af6649ef997a83d14030d2c25a16225"></a><!-- doxytag: member="RESTBody::prettyStringWithJSONObject:" ref="a8af6649ef997a83d14030d2c25a16225" args="(id obj)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (NSString*) prettyStringWithJSONObject: </td>
+          <td></td>
+          <td class="paramtype">(id)&#160;</td>
+          <td class="paramname"><em>obj</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts an object to a pretty-printed JSON string. </p>
 <p>JSON 'fragments' (NSString / NSNumber) are allowed. Returns nil on nil input. </p>
 
 </div>
@@ -528,7 +550,7 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceRESTBody.html">RESTBody</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

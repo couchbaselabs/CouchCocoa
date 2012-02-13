@@ -124,6 +124,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>databaseDirectory
 : <a class="el" href="interfaceCouchbaseMobile.html#abf0dfed6fbc88a5c275f587a13ad1678">CouchbaseMobile</a>
 </li>
+<li>databaseForModelProperty:
+: <a class="el" href="interfaceCouchModel.html#aca9177926e4614f6275f96d11288caae">CouchModel</a>
+</li>
 <li>databaseName
 : <a class="el" href="protocolCouchbaseValidationContext-p.html#abd6501986b4af369c2dc49fa26e5e461">&lt;CouchbaseValidationContext&gt;</a>
 </li>
@@ -168,16 +171,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>deleteDocuments:
 : <a class="el" href="interfaceCouchDatabase.html#a27ad95f653386df188a2a6db822280d2">CouchDatabase</a>
-, <a class="el" href="interfaceCouchUITableSource.html#aace10246c2b839459619b375a28b4aec">CouchUITableSource</a>
-</li>
-<li>deleteDocumentsAtIndexes:
-: <a class="el" href="interfaceCouchUITableSource.html#a212788c58a4bf5e0925a2bc6c85a5899">CouchUITableSource</a>
 </li>
 <li>deleteRevisions:
 : <a class="el" href="interfaceCouchDatabase.html#a4828f0d7bf5f6eb2c6534a5cbd4d28fd">CouchDatabase</a>
-</li>
-<li>deletionAllowed
-: <a class="el" href="interfaceCouchUITableSource.html#a4995a2a5e4fe95f8430319a0b8f484df">CouchUITableSource</a>
 </li>
 <li>descending
 : <a class="el" href="interfaceCouchQuery.html#a3705a833fe2e52aed92a53ca7ec16c0c">CouchQuery</a>
@@ -191,18 +187,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>didLoadFromDocument
 : <a class="el" href="interfaceCouchModel.html#a13aa73db92e5023fbe90000f7c60707e">CouchModel</a>
 </li>
-<li>document
-: <a class="el" href="interfaceCouchRevision.html#a8af951ceded40313b8c552c2d025815c">CouchRevision</a>
-, <a class="el" href="interfaceCouchModel.html#a9b690fa2ea88e4e228e672dc553d393c">CouchModel</a>
-, <a class="el" href="interfaceCouchQueryRow.html#a4e706a6b4009a1992248ec5714b31983">CouchQueryRow</a>
-, <a class="el" href="interfaceCouchAttachment.html#a9b55b7793eb67a89f350bcf33914d0a4">CouchAttachment</a>
+<li>doc_ids
+: <a class="el" href="interfaceCouchPersistentReplication.html#ad8133fc10f1adae3961c17d5a8ac8597">CouchPersistentReplication</a>
 </li>
-<li>documentAtIndexPath:
-: <a class="el" href="interfaceCouchUITableSource.html#ab983571c9c4f7eba65dfd284b971fffc">CouchUITableSource</a>
+<li>document
+: <a class="el" href="interfaceCouchModel.html#a9b690fa2ea88e4e228e672dc553d393c">CouchModel</a>
+, <a class="el" href="interfaceCouchRevision.html#a8af951ceded40313b8c552c2d025815c">CouchRevision</a>
+, <a class="el" href="interfaceCouchAttachment.html#a9b55b7793eb67a89f350bcf33914d0a4">CouchAttachment</a>
+, <a class="el" href="interfaceCouchQueryRow.html#a4e706a6b4009a1992248ec5714b31983">CouchQueryRow</a>
 </li>
 <li>documentID
-: <a class="el" href="interfaceCouchDocument.html#a6e78f25602d9222487e1ab3d59cc9834">CouchDocument</a>
-, <a class="el" href="interfaceCouchRevision.html#a36bd80626291ca19de4f5556470e9df8">CouchRevision</a>
+: <a class="el" href="interfaceCouchRevision.html#a36bd80626291ca19de4f5556470e9df8">CouchRevision</a>
+, <a class="el" href="interfaceCouchQueryRow.html#ad46d4d9e6f1737b61a62ae0f2cd8d77e">CouchQueryRow</a>
+, <a class="el" href="interfaceCouchDocument.html#a6e78f25602d9222487e1ab3d59cc9834">CouchDocument</a>
+</li>
+<li>documentPathMap
+: <a class="el" href="interfaceCouchDatabase.html#aeabf2d3d91256cb45e97f7909331c292">CouchDatabase</a>
 </li>
 <li>documentProperties
 : <a class="el" href="interfaceCouchQueryRow.html#ac906fdc8bf2651aa22f9995c15d6872e">CouchQueryRow</a>
@@ -221,7 +221,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

@@ -134,6 +134,8 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches and returns the names of all the views defined in this design document.  <a href="#a4ab9f87cdcd1ee77f06a3e4e4fe73cca"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDesignDocument.html#ab89eaefef43717bf722760b75cf38680">validation</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The validation function, a JavaScript function that validates document contents.  <a href="#ab89eaefef43717bf722760b75cf38680"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDesignDocument.html#aeafbfffa0071fcb5137f43d3e0c274bd">includeLocalSequence</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Should view query results include the document local sequence number in the index? Setting this to YES sets the 'local_seq' property of the design document's 'options' property to 'true'.  <a href="#aeafbfffa0071fcb5137f43d3e0c274bd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2dc920adf3987f86020fcccd45f5389"></a><!-- doxytag: member="CouchDesignDocument::changed" ref="ab2dc920adf3987f86020fcccd45f5389" args="" -->
 BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDesignDocument.html#ab2dc920adf3987f86020fcccd45f5389">changed</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Have the contents of the design document been changed in-memory but not yet saved? <br/></td></tr>
@@ -434,6 +436,22 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 
 </div>
 </div>
+<a class="anchor" id="aeafbfffa0071fcb5137f43d3e0c274bd"></a><!-- doxytag: member="CouchDesignDocument::includeLocalSequence" ref="aeafbfffa0071fcb5137f43d3e0c274bd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) includeLocalSequence<code> [read, write, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Should view query results include the document local sequence number in the index? Setting this to YES sets the 'local_seq' property of the design document's 'options' property to 'true'. </p>
+<p>This affects every view in this design document. </p>
+
+</div>
+</div>
 <a class="anchor" id="ab3f0cfa435264227f4febe2cb5b5ce59"></a><!-- doxytag: member="CouchDesignDocument::validationBlock" ref="ab3f0cfa435264227f4febe2cb5b5ce59" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -457,7 +475,7 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDesignDocument.html">CouchDesignDocument</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

@@ -120,19 +120,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00050"></a>00050 
 <a name="l00053"></a><a class="code" href="interfaceCouchPersistentReplication.html#a08e53b11a97f233701f2c97bda3360c4">00053</a> <span class="keyword">@property</span> (copy) NSDictionary* query_params;
 <a name="l00054"></a>00054 
-<a name="l00056"></a><a class="code" href="interfaceCouchPersistentReplication.html#a8571844e0a5a7503c756cee369bb50e3">00056</a> <span class="keyword">@property</span> (readonly) CouchReplicationState state;
+<a name="l00056"></a><a class="code" href="interfaceCouchPersistentReplication.html#ad8133fc10f1adae3961c17d5a8ac8597">00056</a> <span class="keyword">@property</span> (copy) NSArray *doc_ids;
 <a name="l00057"></a>00057 
-<a name="l00059"></a><a class="code" href="interfaceCouchPersistentReplication.html#ac3d44a4412d2adc604a6d2e4e73b0384">00059</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
-<a name="l00060"></a>00060 
-<a name="l00062"></a><a class="code" href="interfaceCouchPersistentReplication.html#a3323b291136cbcf733e568ab10ebf13f">00062</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
-<a name="l00063"></a>00063 
-<a name="l00064"></a>00064 <span class="keyword">@end</span>
+<a name="l00064"></a>00064 - (void) actAsUser: (NSString*)username withRoles: (NSArray*)roles;
+<a name="l00065"></a>00065 
+<a name="l00067"></a>00067 - (void) actAsAdmin;
+<a name="l00068"></a>00068 
+<a name="l00070"></a><a class="code" href="interfaceCouchPersistentReplication.html#a8571844e0a5a7503c756cee369bb50e3">00070</a> <span class="keyword">@property</span> (readonly) CouchReplicationState state;
+<a name="l00071"></a>00071 
+<a name="l00073"></a><a class="code" href="interfaceCouchPersistentReplication.html#ac3d44a4412d2adc604a6d2e4e73b0384">00073</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
+<a name="l00074"></a>00074 
+<a name="l00076"></a><a class="code" href="interfaceCouchPersistentReplication.html#a3323b291136cbcf733e568ab10ebf13f">00076</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchPersistentReplication.h</b>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

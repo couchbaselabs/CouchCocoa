@@ -113,6 +113,14 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of a named property.  <a href="#a7141c1eca3a1fd9e01140a4cc07d029b"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(NSSet *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceCouchDynamicObject.html#aadbf5cfea340fb4763e7ed493945f6b2">propertyNames</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of all properties defined in this class and superclasses up to <a class="el" href="interfaceCouchDynamicObject.html" title="A generic class with runtime support for dynamic properties.">CouchDynamicObject</a>.  <a href="#aadbf5cfea340fb4763e7ed493945f6b2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(Class)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceCouchDynamicObject.html#aeefa1e979b0b6add79361b48714ee730">classOfProperty:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Given the name of an object-valued property, returns the class of the property's value.  <a href="#aeefa1e979b0b6add79361b48714ee730"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06ed01556e5e84229af966bf382e2008"></a><!-- doxytag: member="CouchDynamicObject::getterKey:" ref="a06ed01556e5e84229af966bf382e2008" args="(SEL sel)" -->
+(NSString *)&#160;</td><td class="memItemRight" valign="bottom">+ <b>getterKey:</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91301d628ff79cd06b31e5afa381d45a"></a><!-- doxytag: member="CouchDynamicObject::setterKey:" ref="a91301d628ff79cd06b31e5afa381d45a" args="(SEL sel)" -->
+(NSString *)&#160;</td><td class="memItemRight" valign="bottom">+ <b>setterKey:</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1775011eeb337c2559b9bcaff12ea26a"></a><!-- doxytag: member="CouchDynamicObject::impForGetterOfClass:" ref="a1775011eeb337c2559b9bcaff12ea26a" args="(Class propertyClass)" -->
 (IMP)&#160;</td><td class="memItemRight" valign="bottom">+ <b>impForGetterOfClass:</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ba9b1fe0ecf842f15c491b2bfdda96f"></a><!-- doxytag: member="CouchDynamicObject::impForSetterOfClass:" ref="a8ba9b1fe0ecf842f15c491b2bfdda96f" args="(Class propertyClass)" -->
@@ -126,6 +134,24 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A generic class with runtime support for dynamic properties. </p>
 <p>You can subclass this and declare properties in the subclass without needing to implement them or make instance variables; simply note them as '@dynamic' in the @implementation. The dynamic accessors will be bridged to calls to -getValueOfProperty: and setValue:ofProperty:, allowing you to easily store property values in an NSDictionary or other container. </p>
 </div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="aadbf5cfea340fb4763e7ed493945f6b2"></a><!-- doxytag: member="CouchDynamicObject::propertyNames" ref="aadbf5cfea340fb4763e7ed493945f6b2" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (NSSet*) propertyNames </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns the names of all properties defined in this class and superclasses up to <a class="el" href="interfaceCouchDynamicObject.html" title="A generic class with runtime support for dynamic properties.">CouchDynamicObject</a>. </p>
+
+</div>
+</div>
 <a class="anchor" id="ade9f65c71d5f45d00f439fd754da7896"></a><!-- doxytag: member="CouchDynamicObject::getValueOfProperty:" ref="ade9f65c71d5f45d00f439fd754da7896" args="(NSString *property)" -->
 <div class="memitem">
 <div class="memproto">
@@ -181,6 +207,26 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aeefa1e979b0b6add79361b48714ee730"></a><!-- doxytag: member="CouchDynamicObject::classOfProperty:" ref="aeefa1e979b0b6add79361b48714ee730" args="(NSString *propertyName)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (Class) classOfProperty: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>propertyName</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Given the name of an object-valued property, returns the class of the property's value. </p>
+<p>Returns nil if the property doesn't exist, or if its type isn't an object pointer or is 'id'. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Model/<a class="el" href="CouchDynamicObject_8h_source.html">CouchDynamicObject.h</a></li>
 </ul>
@@ -189,7 +235,7 @@ Static Public Member Functions</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDynamicObject.html">CouchDynamicObject</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

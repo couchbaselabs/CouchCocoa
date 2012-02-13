@@ -98,91 +98,107 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00015"></a>00015 
 <a name="l00016"></a>00016 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
 <a name="l00017"></a>00017 <span class="keyword">@class</span> <a class="code" href="interfaceRESTCache.html" title="An in-memory cache of RESTResource objects.">RESTCache</a>, <a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>;
-<a name="l00018"></a>00018 
+<a name="l00018"></a>00018 <span class="keyword">@protocol </span><a class="code" href="protocolRESTResourceDelegate-p.html" title="An object that registers as the delegate of a RESTResource.">RESTResourceDelegate</a>;
 <a name="l00019"></a>00019 
-<a name="l00023"></a><a class="code" href="interfaceRESTResource.html">00023</a> <span class="keyword">@interface </span><a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a> : NSObject
-<a name="l00024"></a>00024 {
-<a name="l00025"></a>00025     <span class="keyword">@private</span>
-<a name="l00026"></a>00026     NSURL* _url;
-<a name="l00027"></a>00027     <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* _parent;
-<a name="l00028"></a>00028     NSString* _relativePath;
-<a name="l00029"></a>00029     <a class="code" href="interfaceRESTCache.html" title="An in-memory cache of RESTResource objects.">RESTCache</a>* _owningCache;
-<a name="l00030"></a>00030     NSMutableSet* _activeOperations;
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032     NSString* _eTag;
-<a name="l00033"></a>00033     NSString* _lastModified;
-<a name="l00034"></a>00034     NSURL* _cachedURL;
-<a name="l00035"></a>00035     
-<a name="l00036"></a>00036     NSURLCredential* _credential;
-<a name="l00037"></a>00037 }
-<a name="l00038"></a>00038 
-<a name="l00040"></a>00040 - (id) initWithURL: (NSURL*)url;
+<a name="l00020"></a>00020 
+<a name="l00024"></a><a class="code" href="interfaceRESTResource.html">00024</a> <span class="keyword">@interface </span><a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a> : NSObject
+<a name="l00025"></a>00025 {
+<a name="l00026"></a>00026     <span class="keyword">@private</span>
+<a name="l00027"></a>00027     NSURL* _url;
+<a name="l00028"></a>00028     <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* _parent;
+<a name="l00029"></a>00029     NSString* _relativePath;
+<a name="l00030"></a>00030     <a class="code" href="interfaceRESTCache.html" title="An in-memory cache of RESTResource objects.">RESTCache</a>* _owningCache;
+<a name="l00031"></a>00031     id&lt;RESTResourceDelegate&gt; _delegate;
+<a name="l00032"></a>00032     NSMutableSet* _activeOperations;
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034     NSString* _eTag;
+<a name="l00035"></a>00035     NSString* _lastModified;
+<a name="l00036"></a>00036     NSURL* _cachedURL;
+<a name="l00037"></a>00037     
+<a name="l00038"></a>00038     NSURLCredential* _credential;
+<a name="l00039"></a>00039     NSURLProtectionSpace* _protectionSpace;
+<a name="l00040"></a>00040 }
 <a name="l00041"></a>00041 
-<a name="l00045"></a>00045 - (id) initWithParent: (<a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>*)parent relativePath: (NSString*)path;
-<a name="l00046"></a>00046 
-<a name="l00049"></a>00049 - (id) initUntitledWithParent: (<a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>*)parent;
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="keyword">@property</span> (readonly) NSURL* URL;
-<a name="l00052"></a>00052 <span class="keyword">@property</span> (readonly) <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* parent;
+<a name="l00043"></a>00043 - (id) initWithURL: (NSURL*)url;
+<a name="l00044"></a>00044 
+<a name="l00048"></a>00048 - (id) initWithParent: (<a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>*)parent relativePath: (NSString*)path;
+<a name="l00049"></a>00049 
+<a name="l00052"></a>00052 - (id) initUntitledWithParent: (<a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>*)parent;
 <a name="l00053"></a>00053 
-<a name="l00055"></a><a class="code" href="interfaceRESTResource.html#a2083f1f4827358ed4efb63a80e9ff2f1">00055</a> <span class="keyword">@property</span> (readonly) NSString* relativePath;
+<a name="l00054"></a>00054 <span class="keyword">@property</span> (readonly) NSURL* URL;
+<a name="l00055"></a>00055 <span class="keyword">@property</span> (readonly) <a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>* parent;
 <a name="l00056"></a>00056 
-<a name="l00058"></a>00058 - (void) setCredential: (NSURLCredential*)credential;
+<a name="l00058"></a><a class="code" href="interfaceRESTResource.html#a2083f1f4827358ed4efb63a80e9ff2f1">00058</a> <span class="keyword">@property</span> (readonly) NSString* relativePath;
 <a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="preprocessor">#pragma mark HTTP METHODS:</span>
-<a name="l00061"></a>00061 <span class="preprocessor"></span>
-<a name="l00064"></a>00064 - (RESTOperation*) GET;
+<a name="l00060"></a>00060 <span class="keyword">@property</span> (assign, nonatomic) id&lt;RESTResourceDelegate&gt; delegate;
+<a name="l00061"></a>00061 
+<a name="l00064"></a>00064 - (void) setCredential: (NSURLCredential*)credential;
 <a name="l00065"></a>00065 
-<a name="l00067"></a>00067 - (RESTOperation*) POST: (NSData*)body parameters: (NSDictionary*)parameters;
+<a name="l00067"></a>00067 - (void) setProtectionSpace: (NSURLProtectionSpace*)protectionSpace;
 <a name="l00068"></a>00068 
-<a name="l00071"></a>00071 - (RESTOperation*) PUT: (NSData*)body parameters: (NSDictionary*)parameters;
-<a name="l00072"></a>00072 
-<a name="l00075"></a>00075 - (RESTOperation*) PUTJSON: (<span class="keywordtype">id</span>)body parameters: (NSDictionary*)parameters;
-<a name="l00076"></a>00076 
-<a name="l00079"></a>00079 - (RESTOperation*) POSTJSON: (<span class="keywordtype">id</span>)body parameters: (NSDictionary*)parameters;
-<a name="l00080"></a>00080 
-<a name="l00082"></a>00082 - (RESTOperation*) DELETE;
-<a name="l00083"></a>00083 
-<a name="l00089"></a>00089 - (RESTOperation*) sendHTTP: (NSString*)method parameters: (NSDictionary*)parameters;
-<a name="l00090"></a>00090 
-<a name="l00094"></a>00094 - (NSMutableURLRequest*) requestWithMethod: (NSString*)method
-<a name="l00095"></a>00095                                 parameters: (NSDictionary*)parameters;
-<a name="l00096"></a>00096 
-<a name="l00099"></a>00099 - (RESTOperation*) sendRequest: (NSURLRequest*)request;
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101 <span class="preprocessor">#pragma mark CACHING:</span>
-<a name="l00102"></a>00102 <span class="preprocessor"></span>
-<a name="l00107"></a>00107 - (BOOL) cacheResponse: (RESTOperation*)operation;
-<a name="l00108"></a>00108 
-<a name="l00110"></a><a class="code" href="interfaceRESTResource.html#af2ad7920d6f9c4f94e5ddabe7121118a">00110</a> <span class="keyword">@property</span> (copy) NSString* eTag;
-<a name="l00111"></a>00111 
-<a name="l00113"></a><a class="code" href="interfaceRESTResource.html#a92ed3a54ae2b02496db863b23f30b568">00113</a> <span class="keyword">@property</span> (copy) NSString* lastModified;
-<a name="l00114"></a>00114 
-<a name="l00118"></a><a class="code" href="interfaceRESTResource.html#ab4719b026a15eb2838cf4d0a0713f881">00118</a> <span class="keyword">@property</span> (retain) NSURL* cachedURL;
-<a name="l00119"></a>00119 
-<a name="l00120"></a>00120 <span class="preprocessor">#pragma mark TRACKING OPERATIONS:</span>
-<a name="l00121"></a>00121 <span class="preprocessor"></span>
-<a name="l00123"></a><a class="code" href="interfaceRESTResource.html#af91e324b25085ad3d7fc16b36663e94b">00123</a> <span class="keyword">@property</span> BOOL <a class="code" href="interfaceRESTResource.html#af91e324b25085ad3d7fc16b36663e94b" title="If set to YES, the .activeOperations property is enabled.">tracksActiveOperations</a>;
-<a name="l00124"></a>00124 
-<a name="l00127"></a><a class="code" href="interfaceRESTResource.html#a49d9a75af1f175a22b9b36b78731e238">00127</a> <span class="keyword">@property</span> (nonatomic, readonly) NSSet* activeOperations;
+<a name="l00069"></a>00069 <span class="preprocessor">#pragma mark HTTP METHODS:</span>
+<a name="l00070"></a>00070 <span class="preprocessor"></span>
+<a name="l00073"></a>00073 - (RESTOperation*) GET;
+<a name="l00074"></a>00074 
+<a name="l00076"></a>00076 - (RESTOperation*) POST: (NSData*)body parameters: (NSDictionary*)parameters;
+<a name="l00077"></a>00077 
+<a name="l00080"></a>00080 - (RESTOperation*) PUT: (NSData*)body parameters: (NSDictionary*)parameters;
+<a name="l00081"></a>00081 
+<a name="l00084"></a>00084 - (RESTOperation*) PUTJSON: (<span class="keywordtype">id</span>)body parameters: (NSDictionary*)parameters;
+<a name="l00085"></a>00085 
+<a name="l00088"></a>00088 - (RESTOperation*) POSTJSON: (<span class="keywordtype">id</span>)body parameters: (NSDictionary*)parameters;
+<a name="l00089"></a>00089 
+<a name="l00091"></a>00091 - (RESTOperation*) DELETE;
+<a name="l00092"></a>00092 
+<a name="l00098"></a>00098 - (RESTOperation*) sendHTTP: (NSString*)method parameters: (NSDictionary*)parameters;
+<a name="l00099"></a>00099 
+<a name="l00103"></a>00103 - (NSMutableURLRequest*) requestWithMethod: (NSString*)method
+<a name="l00104"></a>00104                                 parameters: (NSDictionary*)parameters;
+<a name="l00105"></a>00105 
+<a name="l00108"></a>00108 - (RESTOperation*) sendRequest: (NSURLRequest*)request;
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110 <span class="preprocessor">#pragma mark CACHING:</span>
+<a name="l00111"></a>00111 <span class="preprocessor"></span>
+<a name="l00116"></a>00116 - (BOOL) cacheResponse: (RESTOperation*)operation;
+<a name="l00117"></a>00117 
+<a name="l00119"></a><a class="code" href="interfaceRESTResource.html#af2ad7920d6f9c4f94e5ddabe7121118a">00119</a> <span class="keyword">@property</span> (copy) NSString* eTag;
+<a name="l00120"></a>00120 
+<a name="l00122"></a><a class="code" href="interfaceRESTResource.html#a92ed3a54ae2b02496db863b23f30b568">00122</a> <span class="keyword">@property</span> (copy) NSString* lastModified;
+<a name="l00123"></a>00123 
+<a name="l00127"></a><a class="code" href="interfaceRESTResource.html#ab4719b026a15eb2838cf4d0a0713f881">00127</a> <span class="keyword">@property</span> (retain) NSURL* cachedURL;
 <a name="l00128"></a>00128 
-<a name="l00129"></a>00129 <span class="preprocessor">#pragma mark PROTECTED:</span>
+<a name="l00129"></a>00129 <span class="preprocessor">#pragma mark TRACKING OPERATIONS:</span>
 <a name="l00130"></a>00130 <span class="preprocessor"></span>
-<a name="l00131"></a>00131 - (void) operationDidStart: (RESTOperation*)op;
-<a name="l00132"></a>00132 
-<a name="l00133"></a>00133 - (void) operationDidComplete: (RESTOperation*)op;
-<a name="l00134"></a>00134 
-<a name="l00139"></a>00139 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error;
-<a name="l00140"></a>00140 
-<a name="l00144"></a>00144 - (void) createdByPOST: (RESTOperation*)op;
-<a name="l00145"></a>00145 
-<a name="l00146"></a>00146 <span class="keyword">@end</span>
+<a name="l00132"></a><a class="code" href="interfaceRESTResource.html#af91e324b25085ad3d7fc16b36663e94b">00132</a> <span class="keyword">@property</span> BOOL <a class="code" href="interfaceRESTResource.html#af91e324b25085ad3d7fc16b36663e94b" title="If set to YES, the .activeOperations property is enabled.">tracksActiveOperations</a>;
+<a name="l00133"></a>00133 
+<a name="l00136"></a><a class="code" href="interfaceRESTResource.html#a49d9a75af1f175a22b9b36b78731e238">00136</a> <span class="keyword">@property</span> (nonatomic, readonly) NSSet* activeOperations;
+<a name="l00137"></a>00137 
+<a name="l00138"></a>00138 <span class="preprocessor">#pragma mark PROTECTED:</span>
+<a name="l00139"></a>00139 <span class="preprocessor"></span>
+<a name="l00140"></a>00140 - (void) operationDidStart: (RESTOperation*)op;
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142 - (void) operationDidComplete: (RESTOperation*)op;
+<a name="l00143"></a>00143 
+<a name="l00148"></a>00148 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error;
+<a name="l00149"></a>00149 
+<a name="l00153"></a>00153 - (void) createdByPOST: (RESTOperation*)op;
+<a name="l00154"></a>00154 
+<a name="l00155"></a>00155 <span class="keyword">@end</span>
+<a name="l00156"></a>00156 
+<a name="l00157"></a>00157 
+<a name="l00160"></a><a class="code" href="protocolRESTResourceDelegate-p.html">00160</a> <span class="keyword">@protocol </span><a class="code" href="protocolRESTResourceDelegate-p.html" title="An object that registers as the delegate of a RESTResource.">RESTResourceDelegate</a> &lt;NSObject&gt;
+<a name="l00161"></a>00161 
+<a name="l00164"></a>00164 - (void) resource: (<a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>*)resource willSendRequest: (NSMutableURLRequest*)request;
+<a name="l00165"></a>00165 
+<a name="l00168"></a>00168 - (void) resource: (<a class="code" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>*)resource didReceiveResponse: (NSHTTPURLResponse*)response;
+<a name="l00169"></a>00169 
+<a name="l00170"></a>00170 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>RESTResource.h</b>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

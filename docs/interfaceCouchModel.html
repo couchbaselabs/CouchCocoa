@@ -118,8 +118,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The document's current properties, in externalized JSON format.  <a href="#a2b2ac66c9a991a9b7ff4c602fe6cadef"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModel.html#ac56b79c68cb38e51a27514ef56f3fa31">deleteDocument</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the document from the database.  <a href="#ac56b79c68cb38e51a27514ef56f3fa31"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a13e10962997149aca9870e2a4fcbb6e2"></a><!-- doxytag: member="CouchModel::markExternallyChanged" ref="a13e10962997149aca9870e2a4fcbb6e2" args="()" -->
-(void)&#160;</td><td class="memItemRight" valign="bottom">- <b>markExternallyChanged</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModel.html#a13e10962997149aca9870e2a4fcbb6e2">markExternallyChanged</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the timeSinceExternallyChanged property to zero.  <a href="#a13e10962997149aca9870e2a4fcbb6e2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModel.html#a2c0b406cb0278a80cbc51fc96ec86837">getValueOfProperty:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a property by name.  <a href="#a2c0b406cb0278a80cbc51fc96ec86837"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(BOOL)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModel.html#a108cad119ff627a2c665d1c988c8937f">setValue:ofProperty:</a></td></tr>
@@ -136,10 +136,14 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The document ID to use when creating a new document.  <a href="#a33028beee6c908ada9cb4e9be5d7dca9"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModel.html#a13aa73db92e5023fbe90000f7c60707e">didLoadFromDocument</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the model's properties are reloaded from the document.  <a href="#a13aa73db92e5023fbe90000f7c60707e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModel.html#aca9177926e4614f6275f96d11288caae">databaseForModelProperty:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the database in which to look up the document ID of a model-valued property.  <a href="#aca9177926e4614f6275f96d11288caae"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceCouchModel.html#a70f250e676f3c37f434f7dc86b6e51e9">modelForDocument:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> associated with a <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a>, or creates &amp; assigns one if necessary.  <a href="#a70f250e676f3c37f434f7dc86b6e51e9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceCouchModel.html#a555ee3fd25954aae0018b0e1ffa0a18b">saveModels:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bulk-saves changes to multiple model objects (which must all be in the same database).  <a href="#a555ee3fd25954aae0018b0e1ffa0a18b"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceCouchDocument.html">CouchDocument</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchModel.html#a9b690fa2ea88e4e228e672dc553d393c">document</a></td></tr>
@@ -161,7 +165,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Generic model class for Couch documents. </p>
-<p>There's a 1::1 mapping between these and CouchDocuments; call +modelForDocument: to get (or create) a model object for a document, and .document to get the document of a model. You should subclass this and declare properties in the subclass's @interface. As with NSManagedObject, you don't need to implement their accessor methods or declare instance variables; simply note them as '@dynamic' in the @implementation. The property value will automatically be fetched from or stored to the document, using the same name. Supported scalar types are bool, char, short, int, double. These map to JSON numbers, except 'bool' which maps to JSON 'true' and 'false'. (Use bool instead of BOOL.) Supported object types are NSString, NSNumber, NSData, NSDate, NSArray, NSDictionary. (NSData and NSDate are not native JSON; they will be automatically converted to/from strings in base64 and ISO date formats, respectively.) </p>
+<p>There's a 1::1 mapping between these and CouchDocuments; call +modelForDocument: to get (or create) a model object for a document, and .document to get the document of a model. You should subclass this and declare properties in the subclass's @interface. As with NSManagedObject, you don't need to implement their accessor methods or declare instance variables; simply note them as '@dynamic' in the class @implementation. The property value will automatically be fetched from or stored to the document, using the same name. Supported scalar types are bool, char, short, int, double. These map to JSON numbers, except 'bool' which maps to JSON 'true' and 'false'. (Use bool instead of BOOL.) Supported object types are NSString, NSNumber, NSData, NSDate, NSArray, NSDictionary. (NSData and NSDate are not native JSON; they will be automatically converted to/from strings in base64 and ISO date formats, respectively.) Additionally, a property's type can be a pointer to a <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> subclass. This provides references between model objects. The raw property value in the document must be a string whose value is interpreted as a document ID. </p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a70f250e676f3c37f434f7dc86b6e51e9"></a><!-- doxytag: member="CouchModel::modelForDocument:" ref="a70f250e676f3c37f434f7dc86b6e51e9" args="(CouchDocument *document)" -->
 <div class="memitem">
@@ -179,7 +183,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 <div class="memdoc">
 
 <p>Returns the <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> associated with a <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a>, or creates &amp; assigns one if necessary. </p>
-<p>Don't call this on <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> itself, rather on the subclass you want to instantiate for that document, e.g. [MyWidgetModel modelForDocument: doc]. It always returns an instance of the class it's called on. </p>
+<p>If the <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> already has an associated model, it's returned. Otherwise a new one is instantiated. If you call this on <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> itself, it'll delegate to the <a class="el" href="interfaceCouchModelFactory.html" title="A configurable mapping from CouchDocument to CouchModel.">CouchModelFactory</a> to decide what class to instantiate; this lets you map different classes to different "type" property values, for instance. If you call this method on a <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> subclass, it will always instantiate an instance of that class; e.g. [MyWidgetModel modelForDocument: doc] always creates a MyWidgetModel. </p>
 
 </div>
 </div>
@@ -275,6 +279,51 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 
 <p>Deletes the document from the database. </p>
 <p>You can still use the model object afterwards, but it will refer to the deleted revision. </p>
+
+</div>
+</div>
+<a class="anchor" id="a555ee3fd25954aae0018b0e1ffa0a18b"></a><!-- doxytag: member="CouchModel::saveModels:" ref="a555ee3fd25954aae0018b0e1ffa0a18b" args="(NSArray *models)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) saveModels: </td>
+          <td></td>
+          <td class="paramtype">(NSArray *)&#160;</td>
+          <td class="paramname"><em>models</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Bulk-saves changes to multiple model objects (which must all be in the same database). </p>
+<p>This invokes -[<a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> putChanges:], which sends a single request to _bulk_docs. Any unchanged models in the array are ignored. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">models</td><td>An array of <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> objects, which must all be in the same database. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A <a class="el" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a> that saves all changes, or nil if none of the models need saving. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a13e10962997149aca9870e2a4fcbb6e2"></a><!-- doxytag: member="CouchModel::markExternallyChanged" ref="a13e10962997149aca9870e2a4fcbb6e2" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) markExternallyChanged </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Resets the timeSinceExternallyChanged property to zero. </p>
 
 </div>
 </div>
@@ -480,6 +529,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 
 </div>
 </div>
+<a class="anchor" id="aca9177926e4614f6275f96d11288caae"></a><!-- doxytag: member="CouchModel::databaseForModelProperty:" ref="aca9177926e4614f6275f96d11288caae" args="(NSString *propertyName)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>*) databaseForModelProperty: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>propertyName</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns the database in which to look up the document ID of a model-valued property. </p>
+<p>Defaults to the same database as the receiver's document. You should override this if a document property contains the ID of a document in a different database. </p>
+
+</div>
+</div>
 <hr/><h2>Property Documentation</h2>
 <a class="anchor" id="a9b690fa2ea88e4e228e672dc553d393c"></a><!-- doxytag: member="CouchModel::document" ref="a9b690fa2ea88e4e228e672dc553d393c" args="" -->
 <div class="memitem">
@@ -568,7 +637,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchModel.html">CouchModel</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

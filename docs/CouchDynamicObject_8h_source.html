@@ -94,25 +94,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00011"></a>00011 
 <a name="l00015"></a><a class="code" href="interfaceCouchDynamicObject.html">00015</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchDynamicObject.html" title="A generic class with runtime support for dynamic properties.">CouchDynamicObject</a> : NSObject
 <a name="l00016"></a>00016 
-<a name="l00020"></a>00020 - (id) getValueOfProperty: (NSString*)property;
-<a name="l00021"></a>00021 
-<a name="l00027"></a>00027 - (BOOL) setValue: (<span class="keywordtype">id</span>)value ofProperty: (NSString*)property;
-<a name="l00028"></a>00028 
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030 <span class="comment">// ADVANCED STUFF FOR SUBCLASSES TO OVERRIDE:</span>
+<a name="l00018"></a>00018 + (NSSet*) <a class="code" href="interfaceCouchDynamicObject.html#aadbf5cfea340fb4763e7ed493945f6b2" title="Returns the names of all properties defined in this class and superclasses up to CouchDynamicObject.">propertyNames</a>;
+<a name="l00019"></a>00019 
+<a name="l00023"></a>00023 - (id) getValueOfProperty: (NSString*)property;
+<a name="l00024"></a>00024 
+<a name="l00030"></a>00030 - (BOOL) setValue: (<span class="keywordtype">id</span>)value ofProperty: (NSString*)property;
 <a name="l00031"></a>00031 
-<a name="l00032"></a>00032 + (IMP) impForGetterOfClass: (Class)propertyClass;
-<a name="l00033"></a>00033 + (IMP) impForSetterOfClass: (Class)propertyClass;
-<a name="l00034"></a>00034 + (IMP) impForGetterOfType: (const <span class="keywordtype">char</span>*)propertyType;
-<a name="l00035"></a>00035 + (IMP) impForSetterOfType: (const <span class="keywordtype">char</span>*)propertyType;
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037 <span class="keyword">@end</span>
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033 <span class="comment">// FOR SUBCLASSES TO CALL:</span>
+<a name="l00034"></a>00034 
+<a name="l00037"></a>00037 + (Class) classOfProperty: (NSString*)propertyName;
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039 + (NSString*) getterKey: (<span class="keywordtype">SEL</span>)sel;
+<a name="l00040"></a>00040 + (NSString*) setterKey: (<span class="keywordtype">SEL</span>)sel;
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042 <span class="comment">// ADVANCED STUFF FOR SUBCLASSES TO OVERRIDE:</span>
+<a name="l00043"></a>00043 
+<a name="l00044"></a>00044 + (IMP) impForGetterOfClass: (Class)propertyClass;
+<a name="l00045"></a>00045 + (IMP) impForSetterOfClass: (Class)propertyClass;
+<a name="l00046"></a>00046 + (IMP) impForGetterOfType: (const <span class="keywordtype">char</span>*)propertyType;
+<a name="l00047"></a>00047 + (IMP) impForSetterOfType: (const <span class="keywordtype">char</span>*)propertyType;
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchDynamicObject.h</b>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

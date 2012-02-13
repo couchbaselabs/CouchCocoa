@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>CouchCocoa: &lt;CouchbaseDelegate&gt; Protocol Reference</title>
+<title>CouchCocoa: &lt;RESTResourceDelegate&gt; Protocol Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -76,107 +76,103 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-  initNavTree('protocolCouchbaseDelegate-p.html','');
+  initNavTree('protocolRESTResourceDelegate-p.html','');
 </script>
 <div id="doc-content">
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
-<div class="title">&lt;CouchbaseDelegate&gt; Protocol Reference</div>  </div>
+<div class="title">&lt;RESTResourceDelegate&gt; Protocol Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="CouchbaseDelegate-p" -->
-<p><a href="protocolCouchbaseDelegate-p-members.html">List of all members.</a></p>
+<!-- doxytag: class="RESTResourceDelegate-p" -->
+<p>An object that registers as the delegate of a <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>.  
+ <a href="protocolRESTResourceDelegate-p.html#details">More...</a></p>
+
+<p><code>#import &lt;<a class="el" href="RESTResource_8h_source.html">RESTResource.h</a>&gt;</code></p>
+
+<p><a href="protocolRESTResourceDelegate-p-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolCouchbaseDelegate-p.html#a4ad43d84e7459750955d3da4414c3187">couchbaseMobile:didStart:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after a <a class="el" href="interfaceCouchbaseMobile.html" title="Manages an embedded instance of CouchDB that runs in a background thread.">CouchbaseMobile</a> instance finishes starting up.  <a href="#a4ad43d84e7459750955d3da4414c3187"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolCouchbaseDelegate-p.html#aff201de876b8f673335df3570c0fbdde">couchbaseMobile:failedToStart:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after a <a class="el" href="interfaceCouchbaseMobile.html" title="Manages an embedded instance of CouchDB that runs in a background thread.">CouchbaseMobile</a> instance fails to start up.  <a href="#aff201de876b8f673335df3570c0fbdde"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolRESTResourceDelegate-p.html#a1a9f0ba1e73e6e236abcb52a50f99f91">resource:willSendRequest:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Called immediately before a resource sends a request.  <a href="#a1a9f0ba1e73e6e236abcb52a50f99f91"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolRESTResourceDelegate-p.html#a3547833fa60215e0d3110976e32bd180">resource:didReceiveResponse:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Called immediately after a response arrives, before the associated RESTOperation's onCompletion block.  <a href="#a3547833fa60215e0d3110976e32bd180"></a><br/></td></tr>
 </table>
-<hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a4ad43d84e7459750955d3da4414c3187"></a><!-- doxytag: member="CouchbaseDelegate&#45;p::couchbaseMobile:didStart:" ref="a4ad43d84e7459750955d3da4414c3187" args="(CouchbaseMobile *couchbase,[didStart] NSURL *serverURL)" -->
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>An object that registers as the delegate of a <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>. </p>
+<p>The delegate will be called by the resource it's attached to, and by all child resources. If multiple resources in the hierarchy have delegates, the child resources' delegates are called before their parents'. </p>
+</div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a1a9f0ba1e73e6e236abcb52a50f99f91"></a><!-- doxytag: member="RESTResourceDelegate&#45;p::resource:willSendRequest:" ref="a1a9f0ba1e73e6e236abcb52a50f99f91" args="(RESTResource *resource,[willSendRequest] NSMutableURLRequest *request)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (void) couchbaseMobile: </td>
+          <td class="memname">- (void) resource: </td>
           <td></td>
-          <td class="paramtype">(<a class="el" href="interfaceCouchbaseMobile.html">CouchbaseMobile</a> *)&#160;</td>
-          <td class="paramname"><em>couchbase</em></td>
+          <td class="paramtype">(<a class="el" href="interfaceRESTResource.html">RESTResource</a> *)&#160;</td>
+          <td class="paramname"><em>resource</em></td>
         </tr>
         <tr>
-          <td class="paramkey">didStart:</td>
+          <td class="paramkey">willSendRequest:</td>
           <td></td>
-          <td class="paramtype">(NSURL *)&#160;</td>
-          <td class="paramname"><em>serverURL</em>&#160;</td>
+          <td class="paramtype">(NSMutableURLRequest *)&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td></td>
-          <td></td><td><code> [required]</code></td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Called after a <a class="el" href="interfaceCouchbaseMobile.html" title="Manages an embedded instance of CouchDB that runs in a background thread.">CouchbaseMobile</a> instance finishes starting up. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">couchbase</td><td>The instance of <a class="el" href="interfaceCouchbaseMobile.html" title="Manages an embedded instance of CouchDB that runs in a background thread.">CouchbaseMobile</a>. </td></tr>
-    <tr><td class="paramname">serverURL</td><td>The URL at which the Couchbase server is listening. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Called immediately before a resource sends a request. </p>
+<p>The delegate may modify the request, carefully. For example, it could add headers. </p>
 
 </div>
 </div>
-<a class="anchor" id="aff201de876b8f673335df3570c0fbdde"></a><!-- doxytag: member="CouchbaseDelegate&#45;p::couchbaseMobile:failedToStart:" ref="aff201de876b8f673335df3570c0fbdde" args="(CouchbaseMobile *couchbase,[failedToStart] NSError *error)" -->
+<a class="anchor" id="a3547833fa60215e0d3110976e32bd180"></a><!-- doxytag: member="RESTResourceDelegate&#45;p::resource:didReceiveResponse:" ref="a3547833fa60215e0d3110976e32bd180" args="(RESTResource *resource,[didReceiveResponse] NSHTTPURLResponse *response)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (void) couchbaseMobile: </td>
+          <td class="memname">- (void) resource: </td>
           <td></td>
-          <td class="paramtype">(<a class="el" href="interfaceCouchbaseMobile.html">CouchbaseMobile</a> *)&#160;</td>
-          <td class="paramname"><em>couchbase</em></td>
+          <td class="paramtype">(<a class="el" href="interfaceRESTResource.html">RESTResource</a> *)&#160;</td>
+          <td class="paramname"><em>resource</em></td>
         </tr>
         <tr>
-          <td class="paramkey">failedToStart:</td>
+          <td class="paramkey">didReceiveResponse:</td>
           <td></td>
-          <td class="paramtype">(NSError *)&#160;</td>
-          <td class="paramname"><em>error</em>&#160;</td>
+          <td class="paramtype">(NSHTTPURLResponse *)&#160;</td>
+          <td class="paramname"><em>response</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td></td>
-          <td></td><td><code> [required]</code></td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Called after a <a class="el" href="interfaceCouchbaseMobile.html" title="Manages an embedded instance of CouchDB that runs in a background thread.">CouchbaseMobile</a> instance fails to start up. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">couchbase</td><td>The instance of <a class="el" href="interfaceCouchbaseMobile.html" title="Manages an embedded instance of CouchDB that runs in a background thread.">CouchbaseMobile</a>. </td></tr>
-    <tr><td class="paramname">error</td><td>The error that occurred. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Called immediately after a response arrives, before the associated RESTOperation's onCompletion block. </p>
+<p>This is called even for responses that contain HTTP errors, though not for ones that fail below the HTTP layer (i.e. unreachable host.) </p>
 
 </div>
 </div>
 <hr/>The documentation for this protocol was generated from the following file:<ul>
-<li>Couch/<a class="el" href="CouchbaseMobile_8h_source.html">CouchbaseMobile.h</a></li>
+<li>REST/<a class="el" href="RESTResource_8h_source.html">RESTResource.h</a></li>
 </ul>
 </div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><a class="el" href="protocolCouchbaseDelegate-p.html">CouchbaseDelegate</a>      </li>
+      <li class="navelem"><a class="el" href="protocolRESTResourceDelegate-p.html">RESTResourceDelegate</a>      </li>
       <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>

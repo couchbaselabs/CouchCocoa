@@ -81,6 +81,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a>  </div>
   <div class="headertitle">
 <div class="title">CouchPersistentReplication Class Reference</div>  </div>
@@ -104,6 +105,12 @@ Inheritance diagram for CouchPersistentReplication:</div>
 
 <p><a href="classCouchPersistentReplication-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchPersistentReplication.html#abab49bcdf8f5f23f8dc5d0244f776288">actAsUser:withRoles:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the "user_ctx" property of the replication, which identifies what privileges it will run with when accessing the local server.  <a href="#abab49bcdf8f5f23f8dc5d0244f776288"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchPersistentReplication.html#a85aa3350d0912f8239f978f823459ecc">actAsAdmin</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenience that calls -actAsUser:withRoles: to specify the _admin role.  <a href="#a85aa3350d0912f8239f978f823459ecc"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#aa756e9529b43e15d029f0d28acd6a186">source</a></td></tr>
@@ -118,6 +125,8 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Path of an optional filter function to run on the source server.  <a href="#a37cae61a9ed3877093eac20bbe54640d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#a08e53b11a97f233701f2c97bda3360c4">query_params</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters to pass to the filter function.  <a href="#a08e53b11a97f233701f2c97bda3360c4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#ad8133fc10f1adae3961c17d5a8ac8597">doc_ids</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the documents to specify as part of the replication.  <a href="#ad8133fc10f1adae3961c17d5a8ac8597"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">CouchReplicationState&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#a8571844e0a5a7503c756cee369bb50e3">state</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The current state of replication activity.  <a href="#a8571844e0a5a7503c756cee369bb50e3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#ac3d44a4412d2adc604a6d2e4e73b0384">completed</a></td></tr>
@@ -128,7 +137,63 @@ Properties</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A model object representing a persistent replication to or from another database. </p>
 <p>Each instance represents a document in the server's special _replication database. Instances are created by the -replicate... factory methods on <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>. </p>
-</div><hr/><h2>Property Documentation</h2>
+</div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="abab49bcdf8f5f23f8dc5d0244f776288"></a><!-- doxytag: member="CouchPersistentReplication::actAsUser:withRoles:" ref="abab49bcdf8f5f23f8dc5d0244f776288" args="(NSString *username,[withRoles] NSArray *roles)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) actAsUser: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>username</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">withRoles:</td>
+          <td></td>
+          <td class="paramtype">(NSArray *)&#160;</td>
+          <td class="paramname"><em>roles</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the "user_ctx" property of the replication, which identifies what privileges it will run with when accessing the local server. </p>
+<p>To replicate design documents, this should be set to a value with "_admin" in the list of roles. The server will not let you specify privileges you don't have, so the request to create the replication must be made with credentials that match what you're setting here, unless the server is in no-authentication "admin party" mode. See &lt;<a href="https://gist.github.com/832610">https://gist.github.com/832610</a>&gt;, section 8, for details. If both 'user' and 'roles' are nil, the user_ctx will be cleared. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">username</td><td>A server username, or nil </td></tr>
+    <tr><td class="paramname">roles</td><td>An array of CouchDB role name strings, or nil </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a85aa3350d0912f8239f978f823459ecc"></a><!-- doxytag: member="CouchPersistentReplication::actAsAdmin" ref="a85aa3350d0912f8239f978f823459ecc" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) actAsAdmin </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>A convenience that calls -actAsUser:withRoles: to specify the _admin role. </p>
+
+</div>
+</div>
+<hr/><h2>Property Documentation</h2>
 <a class="anchor" id="aa756e9529b43e15d029f0d28acd6a186"></a><!-- doxytag: member="CouchPersistentReplication::source" ref="aa756e9529b43e15d029f0d28acd6a186" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -223,6 +288,21 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad8133fc10f1adae3961c17d5a8ac8597"></a><!-- doxytag: member="CouchPersistentReplication::doc_ids" ref="ad8133fc10f1adae3961c17d5a8ac8597" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSArray*) doc_ids<code> [read, write, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the documents to specify as part of the replication. </p>
+
+</div>
+</div>
 <a class="anchor" id="a8571844e0a5a7503c756cee369bb50e3"></a><!-- doxytag: member="CouchPersistentReplication::state" ref="a8571844e0a5a7503c756cee369bb50e3" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -276,7 +356,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

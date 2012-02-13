@@ -93,82 +93,86 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00010"></a>00010 <span class="keyword">@class</span> <a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>, <a class="code" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>, <a class="code" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a>, <a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>;
 <a name="l00011"></a>00011 
 <a name="l00012"></a>00012 
-<a name="l00018"></a><a class="code" href="interfaceCouchModel.html">00018</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> : <a class="code" href="interfaceCouchDynamicObject.html" title="A generic class with runtime support for dynamic properties.">CouchDynamicObject</a>
-<a name="l00019"></a>00019 {
-<a name="l00020"></a>00020     <span class="keyword">@private</span>
-<a name="l00021"></a>00021     CouchDocument* _document;
-<a name="l00022"></a>00022     CFAbsoluteTime _changedTime;
-<a name="l00023"></a>00023     <span class="keywordtype">bool</span> _autosaves :1;
-<a name="l00024"></a>00024     <span class="keywordtype">bool</span> _isNew     :1;
-<a name="l00025"></a>00025     <span class="keywordtype">bool</span> _needsSave :1;
-<a name="l00026"></a>00026 
-<a name="l00027"></a>00027     NSMutableDictionary* _properties;   <span class="comment">// Cached property values, including changed values</span>
-<a name="l00028"></a>00028     NSMutableSet* _changedNames;        <span class="comment">// Names of properties that have been changed but not saved</span>
-<a name="l00029"></a>00029     NSMutableDictionary* _changedAttachments;
-<a name="l00030"></a>00030 }
-<a name="l00031"></a>00031 
-<a name="l00034"></a>00034 + (id) modelForDocument: (CouchDocument*)document;
-<a name="l00035"></a>00035 
-<a name="l00038"></a>00038 - (id) initWithNewDocumentInDatabase: (CouchDatabase*)database;
-<a name="l00039"></a>00039 
-<a name="l00043"></a>00043 - (id) init;
-<a name="l00044"></a>00044 
-<a name="l00046"></a><a class="code" href="interfaceCouchModel.html#a9b690fa2ea88e4e228e672dc553d393c">00046</a> <span class="keyword">@property</span> (readonly, retain) CouchDocument* document;
+<a name="l00019"></a><a class="code" href="interfaceCouchModel.html">00019</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> : <a class="code" href="interfaceCouchDynamicObject.html" title="A generic class with runtime support for dynamic properties.">CouchDynamicObject</a>
+<a name="l00020"></a>00020 {
+<a name="l00021"></a>00021     <span class="keyword">@private</span>
+<a name="l00022"></a>00022     CouchDocument* _document;
+<a name="l00023"></a>00023     CFAbsoluteTime _changedTime;
+<a name="l00024"></a>00024     <span class="keywordtype">bool</span> _autosaves :1;
+<a name="l00025"></a>00025     <span class="keywordtype">bool</span> _isNew     :1;
+<a name="l00026"></a>00026     <span class="keywordtype">bool</span> _needsSave :1;
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028     NSMutableDictionary* _properties;   <span class="comment">// Cached property values, including changed values</span>
+<a name="l00029"></a>00029     NSMutableSet* _changedNames;        <span class="comment">// Names of properties that have been changed but not saved</span>
+<a name="l00030"></a>00030     NSMutableDictionary* _changedAttachments;
+<a name="l00031"></a>00031 }
+<a name="l00032"></a>00032 
+<a name="l00037"></a>00037 + (id) modelForDocument: (CouchDocument*)document;
+<a name="l00038"></a>00038 
+<a name="l00041"></a>00041 - (id) initWithNewDocumentInDatabase: (CouchDatabase*)database;
+<a name="l00042"></a>00042 
+<a name="l00046"></a>00046 - (id) init;
 <a name="l00047"></a>00047 
-<a name="l00051"></a><a class="code" href="interfaceCouchModel.html#a6ee5e60c15aa738113958d7db30f494b">00051</a> <span class="keyword">@property</span> (retain) CouchDatabase* database;
-<a name="l00052"></a>00052 
-<a name="l00054"></a><a class="code" href="interfaceCouchModel.html#a1c31b62210541dfd9f8f4ca798680669">00054</a> <span class="keyword">@property</span> (readonly) <span class="keywordtype">bool</span> isNew;
+<a name="l00049"></a><a class="code" href="interfaceCouchModel.html#a9b690fa2ea88e4e228e672dc553d393c">00049</a> <span class="keyword">@property</span> (readonly, retain) CouchDocument* document;
+<a name="l00050"></a>00050 
+<a name="l00054"></a><a class="code" href="interfaceCouchModel.html#a6ee5e60c15aa738113958d7db30f494b">00054</a> <span class="keyword">@property</span> (retain) CouchDatabase* database;
 <a name="l00055"></a>00055 
-<a name="l00056"></a>00056 <span class="preprocessor">#pragma mark - SAVING:</span>
-<a name="l00057"></a>00057 <span class="preprocessor"></span>
-<a name="l00060"></a>00060 - (RESTOperation*) save;
-<a name="l00061"></a>00061 
-<a name="l00064"></a><a class="code" href="interfaceCouchModel.html#a63fbfd1e32a28fb1425aea2310f9b346">00064</a> <span class="keyword">@property</span> (nonatomic) <span class="keywordtype">bool</span> autosaves;
-<a name="l00065"></a>00065 
-<a name="l00067"></a><a class="code" href="interfaceCouchModel.html#ac9d5b139c8d40dfd87ef7840f04c4bce">00067</a> <span class="keyword">@property</span> (readonly) <span class="keywordtype">bool</span> needsSave;
+<a name="l00057"></a><a class="code" href="interfaceCouchModel.html#a1c31b62210541dfd9f8f4ca798680669">00057</a> <span class="keyword">@property</span> (readonly) <span class="keywordtype">bool</span> isNew;
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059 <span class="preprocessor">#pragma mark - SAVING:</span>
+<a name="l00060"></a>00060 <span class="preprocessor"></span>
+<a name="l00063"></a>00063 - (RESTOperation*) save;
+<a name="l00064"></a>00064 
+<a name="l00067"></a><a class="code" href="interfaceCouchModel.html#a63fbfd1e32a28fb1425aea2310f9b346">00067</a> <span class="keyword">@property</span> (nonatomic) <span class="keywordtype">bool</span> autosaves;
 <a name="l00068"></a>00068 
-<a name="l00070"></a>00070 - (NSDictionary*) propertiesToSave;
+<a name="l00070"></a><a class="code" href="interfaceCouchModel.html#ac9d5b139c8d40dfd87ef7840f04c4bce">00070</a> <span class="keyword">@property</span> (readonly) <span class="keywordtype">bool</span> needsSave;
 <a name="l00071"></a>00071 
-<a name="l00074"></a>00074 - (RESTOperation*) deleteDocument;
-<a name="l00075"></a>00075 
-<a name="l00078"></a><a class="code" href="interfaceCouchModel.html#aa62db60d053b4e5045a3aada7077f3e4">00078</a> <span class="keyword">@property</span> (readonly) NSTimeInterval timeSinceExternallyChanged;
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080 - (void) markExternallyChanged;
-<a name="l00081"></a>00081 
-<a name="l00082"></a>00082 <span class="preprocessor">#pragma mark - PROPERTIES &amp; ATTACHMENTS:</span>
-<a name="l00083"></a>00083 <span class="preprocessor"></span>
-<a name="l00086"></a>00086 - (id) getValueOfProperty: (NSString*)property;
-<a name="l00087"></a>00087 
-<a name="l00090"></a>00090 - (BOOL) setValue: (<span class="keywordtype">id</span>)value ofProperty: (NSString*)property;
-<a name="l00091"></a>00091 
+<a name="l00073"></a>00073 - (NSDictionary*) propertiesToSave;
+<a name="l00074"></a>00074 
+<a name="l00077"></a>00077 - (RESTOperation*) deleteDocument;
+<a name="l00078"></a>00078 
+<a name="l00081"></a><a class="code" href="interfaceCouchModel.html#aa62db60d053b4e5045a3aada7077f3e4">00081</a> <span class="keyword">@property</span> (readonly) NSTimeInterval timeSinceExternallyChanged;
+<a name="l00082"></a>00082 
+<a name="l00088"></a>00088 + (RESTOperation*) saveModels: (NSArray*)models;
+<a name="l00089"></a>00089 
+<a name="l00091"></a>00091 - (void) markExternallyChanged;
 <a name="l00092"></a>00092 
-<a name="l00095"></a><a class="code" href="interfaceCouchModel.html#a8ed3b496cca0e57a30079374c16e505d">00095</a> <span class="keyword">@property</span> (readonly) NSArray* attachmentNames;
-<a name="l00096"></a>00096 
-<a name="l00098"></a>00098 - (<a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>*) attachmentNamed: (NSString*)name;
-<a name="l00099"></a>00099 
-<a name="l00105"></a>00105 - (<a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>*) createAttachmentWithName: (NSString*)name
-<a name="l00106"></a>00106                                          type: (NSString*)contentType
-<a name="l00107"></a>00107                                          body: (NSData*)body;
-<a name="l00108"></a>00108 
-<a name="l00111"></a>00111 - (void) removeAttachmentNamed: (NSString*)name;
-<a name="l00112"></a>00112 
-<a name="l00113"></a>00113 
-<a name="l00114"></a>00114 
-<a name="l00115"></a>00115 <span class="preprocessor">#pragma mark - PROTECTED (FOR SUBCLASSES TO OVERRIDE)</span>
-<a name="l00116"></a>00116 <span class="preprocessor"></span>
-<a name="l00119"></a>00119 - (id) initWithDocument: (CouchDocument*)document;
-<a name="l00120"></a>00120 
-<a name="l00123"></a>00123 - (NSString*) idForNewDocumentInDatabase: (CouchDatabase*)db;
+<a name="l00093"></a>00093 <span class="preprocessor">#pragma mark - PROPERTIES &amp; ATTACHMENTS:</span>
+<a name="l00094"></a>00094 <span class="preprocessor"></span>
+<a name="l00097"></a>00097 - (id) getValueOfProperty: (NSString*)property;
+<a name="l00098"></a>00098 
+<a name="l00101"></a>00101 - (BOOL) setValue: (<span class="keywordtype">id</span>)value ofProperty: (NSString*)property;
+<a name="l00102"></a>00102 
+<a name="l00103"></a>00103 
+<a name="l00106"></a><a class="code" href="interfaceCouchModel.html#a8ed3b496cca0e57a30079374c16e505d">00106</a> <span class="keyword">@property</span> (readonly) NSArray* attachmentNames;
+<a name="l00107"></a>00107 
+<a name="l00109"></a>00109 - (<a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>*) attachmentNamed: (NSString*)name;
+<a name="l00110"></a>00110 
+<a name="l00116"></a>00116 - (<a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>*) createAttachmentWithName: (NSString*)name
+<a name="l00117"></a>00117                                          type: (NSString*)contentType
+<a name="l00118"></a>00118                                          body: (NSData*)body;
+<a name="l00119"></a>00119 
+<a name="l00122"></a>00122 - (void) removeAttachmentNamed: (NSString*)name;
+<a name="l00123"></a>00123 
 <a name="l00124"></a>00124 
-<a name="l00127"></a>00127 - (void) didLoadFromDocument;
-<a name="l00128"></a>00128 
-<a name="l00129"></a>00129 <span class="keyword">@end</span>
+<a name="l00125"></a>00125 
+<a name="l00126"></a>00126 <span class="preprocessor">#pragma mark - PROTECTED (FOR SUBCLASSES TO OVERRIDE)</span>
+<a name="l00127"></a>00127 <span class="preprocessor"></span>
+<a name="l00130"></a>00130 - (id) initWithDocument: (CouchDocument*)document;
+<a name="l00131"></a>00131 
+<a name="l00134"></a>00134 - (NSString*) idForNewDocumentInDatabase: (CouchDatabase*)db;
+<a name="l00135"></a>00135 
+<a name="l00138"></a>00138 - (void) didLoadFromDocument;
+<a name="l00139"></a>00139 
+<a name="l00142"></a>00142 - (CouchDatabase*) databaseForModelProperty: (NSString*)propertyName;
+<a name="l00143"></a>00143 
+<a name="l00144"></a>00144 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchModel.h</b>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

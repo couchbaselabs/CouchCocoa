@@ -107,8 +107,10 @@ Properties</h2></td></tr>
 id&#160;</td><td class="memItemRight" valign="bottom"><b>key</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dd0a034d32ea3283aa8c094946bba9b"></a><!-- doxytag: member="CouchQueryRow::value" ref="a8dd0a034d32ea3283aa8c094946bba9b" args="" -->
 id&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad46d4d9e6f1737b61a62ae0f2cd8d77e"></a><!-- doxytag: member="CouchQueryRow::documentID" ref="ad46d4d9e6f1737b61a62ae0f2cd8d77e" args="" -->
-NSString *&#160;</td><td class="memItemRight" valign="bottom"><b>documentID</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQueryRow.html#ad46d4d9e6f1737b61a62ae0f2cd8d77e">documentID</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the document described by this view row.  <a href="#ad46d4d9e6f1737b61a62ae0f2cd8d77e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQueryRow.html#a08bc348909e2dadba04a23081bded5bb">sourceDocumentID</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the document that caused this view row to be emitted.  <a href="#a08bc348909e2dadba04a23081bded5bb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQueryRow.html#af35c435f34e6f801c0b25feaed88a3dc">documentRevision</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The revision ID of the document this row was mapped from.  <a href="#af35c435f34e6f801c0b25feaed88a3dc"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceCouchDocument.html">CouchDocument</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchQueryRow.html#a4e706a6b4009a1992248ec5714b31983">document</a></td></tr>
@@ -148,6 +150,38 @@ id&#160;</td><td class="memItemRight" valign="bottom"><b>key3</b></td></tr>
 </div>
 </div>
 <hr/><h2>Property Documentation</h2>
+<a class="anchor" id="ad46d4d9e6f1737b61a62ae0f2cd8d77e"></a><!-- doxytag: member="CouchQueryRow::documentID" ref="ad46d4d9e6f1737b61a62ae0f2cd8d77e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSString*) documentID<code> [read, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The ID of the document described by this view row. </p>
+<p>(This is not necessarily the same as the document that caused this row to be emitted; see the discussion of the .sourceDocumentID property for details.) </p>
+
+</div>
+</div>
+<a class="anchor" id="a08bc348909e2dadba04a23081bded5bb"></a><!-- doxytag: member="CouchQueryRow::sourceDocumentID" ref="a08bc348909e2dadba04a23081bded5bb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSString*) sourceDocumentID<code> [read, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The ID of the document that caused this view row to be emitted. </p>
+<p>This is the value of the "id" property of the JSON view row. It will be the same as the .documentID property, unless the map function caused a related document to be linked by adding an "_id" key to the emitted value; in this case .documentID will refer to the linked document, while sourceDocumentID always refers to the original document. </p>
+
+</div>
+</div>
 <a class="anchor" id="af35c435f34e6f801c0b25feaed88a3dc"></a><!-- doxytag: member="CouchQueryRow::documentRevision" ref="af35c435f34e6f801c0b25feaed88a3dc" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -219,7 +253,7 @@ id&#160;</td><td class="memItemRight" valign="bottom"><b>key3</b></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchQueryRow.html">CouchQueryRow</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

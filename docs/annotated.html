@@ -99,6 +99,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="indexkey"><a class="el" href="interfaceCouchEmbeddedServer.html">CouchEmbeddedServer</a></td><td class="indexvalue">A convenience class that glues Couchbase Mobile into CouchCocoa </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchLiveQuery.html">CouchLiveQuery</a></td><td class="indexvalue">A <a class="el" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a> subclass that automatically refreshes the result rows every time the database changes </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchModel.html">CouchModel</a></td><td class="indexvalue">Generic model class for Couch documents </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interfaceCouchModelFactory.html">CouchModelFactory</a></td><td class="indexvalue">A configurable mapping from <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> to <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a></td><td class="indexvalue">A model object representing a persistent replication to or from another database </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchQuery.html">CouchQuery</a></td><td class="indexvalue">Represents a CouchDB 'view', or a view-like resource like _all_documents </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchQueryEnumerator.html">CouchQueryEnumerator</a></td><td class="indexvalue">Enumerator on a CouchQuery's result rows </td></tr>
@@ -107,20 +108,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="indexkey"><a class="el" href="interfaceCouchResource.html">CouchResource</a></td><td class="indexvalue">Superclass of CouchDB model classes </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchRevision.html">CouchRevision</a></td><td class="indexvalue">A single revision of a <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchServer.html">CouchServer</a></td><td class="indexvalue">The top level of a CouchDB server </td></tr>
-  <tr><td class="indexkey"><a class="el" href="protocolCouchUITableDelegate-p.html">&lt;CouchUITableDelegate&gt;</a></td><td class="indexvalue">Additional methods for the table view's delegate, that will be invoked by the <a class="el" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a> </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interfaceCouchUITableSource.html">CouchUITableSource</a></td><td class="indexvalue">A UITableView data source driven by a <a class="el" href="interfaceCouchLiveQuery.html" title="A CouchQuery subclass that automatically refreshes the result rows every time the database changes...">CouchLiveQuery</a> </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTBase64.html">RESTBase64</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTBody.html">RESTBody</a></td><td class="indexvalue">An HTTP request/response body </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTCache.html">RESTCache</a></td><td class="indexvalue">An in-memory cache of <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a> objects </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTMutableBody.html">RESTMutableBody</a></td><td class="indexvalue">A mutable subclass of <a class="el" href="interfaceRESTBody.html" title="An HTTP request/response body.">RESTBody</a> that allows the content and headers to be replaced </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTOperation.html">RESTOperation</a></td><td class="indexvalue">Represents an HTTP request to a <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a>, and its response </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTResource.html">RESTResource</a></td><td class="indexvalue">Represents an HTTP resource identified by a specific URL </td></tr>
+  <tr><td class="indexkey"><a class="el" href="protocolRESTResourceDelegate-p.html">&lt;RESTResourceDelegate&gt;</a></td><td class="indexvalue">An object that registers as the delegate of a <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a> </td></tr>
 </table>
 </div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

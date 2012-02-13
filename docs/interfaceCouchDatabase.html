@@ -140,10 +140,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience method that creates a custom query from a JavaScript map function.  <a href="#a7029724505256f6dcbb32ac4527cb4b2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDesignDocument.html">CouchDesignDocument</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#ae0ea4103c0658afeb8c34d67ef10d79b">designDocumentWithName:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a <a class="el" href="interfaceCouchDesignDocument.html" title="A Design Document is a special document type that contains things like map/reduce functions...">CouchDesignDocument</a> object with the given ID.  <a href="#ae0ea4103c0658afeb8c34d67ef10d79b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchReplication.html">CouchReplication</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a0d807197b9c72cf81b840949cba3c655">pullFromDatabaseAtURL:options:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from a source database, to this database.  <a href="#a0d807197b9c72cf81b840949cba3c655"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchReplication.html">CouchReplication</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a9876ed16610544ac71b46d986a806259">pushToDatabaseAtURL:options:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from this database to a target database.  <a href="#a9876ed16610544ac71b46d986a806259"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchReplication.html">CouchReplication</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a11ecd1674bd8533dbf9c1f7f9d29f180">pullFromDatabaseAtURL:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from a source database, to this database.  <a href="#a11ecd1674bd8533dbf9c1f7f9d29f180"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchReplication.html">CouchReplication</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#ad6027f89bbdc7386ef28250fb9974060">pushToDatabaseAtURL:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers replication from this database to a target database.  <a href="#ad6027f89bbdc7386ef28250fb9974060"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(NSArray *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a9ceb30e194df080959ec4a9dde91d945">replicateWithURL:exclusively:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures this database to replicate bidirectionally (sync to and from) a database at the given URL.  <a href="#a9ceb30e194df080959ec4a9dde91d945"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a76969effe69959e9ebd3f883ef05297e">replicationFromDatabaseAtURL:</a></td></tr>
@@ -160,6 +160,8 @@ Static Public Member Functions</h2></td></tr>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99d523b7cd3821a2cb48c70b0836553b"></a><!-- doxytag: member="CouchDatabase::server" ref="a99d523b7cd3821a2cb48c70b0836553b" args="" -->
 <a class="el" href="interfaceCouchServer.html">CouchServer</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>server</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">CouchDocumentPathMap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDatabase.html#aeabf2d3d91256cb45e97f7909331c292">documentPathMap</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows retrieving documents from the <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> using a different path from the documentID.  <a href="#aeabf2d3d91256cb45e97f7909331c292"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDatabase.html#adb7a1b1c5b1083dd3de18b8ad3c55704">tracksChanges</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls whether document change-tracking is enabled.  <a href="#adb7a1b1c5b1083dd3de18b8ad3c55704"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSUInteger&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDatabase.html#a64d23366955ed65b5928526249cb05da">lastSequenceNumber</a></td></tr>
@@ -403,7 +405,7 @@ Properties</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">properties</td><td>An array specifying the new properties of each item in revisions. Each item must be an NSDictionary, or an NSNull object which means to delete the corresponding document. </td></tr>
-    <tr><td class="paramname">revisions</td><td>A parallel array to 'properties', containing each <a class="el" href="interfaceCouchRevision.html" title="A single revision of a CouchDocument.">CouchRevision</a> to be updated. Can be nil, in which case the method acts as described in the docs for -putChanges:. </td></tr>
+    <tr><td class="paramname">revisions</td><td>A parallel array to 'properties', containing each <a class="el" href="interfaceCouchRevision.html" title="A single revision of a CouchDocument.">CouchRevision</a> or <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> to be updated. Can be nil, in which case the method acts as described in the docs for -putChanges:. </td></tr>
   </table>
   </dd>
 </dl>
@@ -576,7 +578,7 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0d807197b9c72cf81b840949cba3c655"></a><!-- doxytag: member="CouchDatabase::pullFromDatabaseAtURL:options:" ref="a0d807197b9c72cf81b840949cba3c655" args="(NSURL *sourceURL,[options] CouchReplicationOptions options)" -->
+<a class="anchor" id="a11ecd1674bd8533dbf9c1f7f9d29f180"></a><!-- doxytag: member="CouchDatabase::pullFromDatabaseAtURL:" ref="a11ecd1674bd8533dbf9c1f7f9d29f180" args="(NSURL *sourceURL)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -585,17 +587,7 @@ Properties</h2></td></tr>
           <td></td>
           <td class="paramtype">(NSURL *)&#160;</td>
           <td class="paramname"><em>sourceURL</em></td>
-        </tr>
-        <tr>
-          <td class="paramkey">options:</td>
           <td></td>
-          <td class="paramtype">(CouchReplicationOptions)&#160;</td>
-          <td class="paramname"><em>options</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -605,15 +597,14 @@ Properties</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">sourceURL</td><td>The URL of the database to replicate from. </td></tr>
-    <tr><td class="paramname">options</td><td>Zero or more option flags affecting the replication. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="interfaceCouchReplication.html" title="Tracks a CouchDB replication.">CouchReplication</a> object managing the replication. It will already have been started. </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="interfaceCouchReplication.html" title="Tracks a CouchDB replication.">CouchReplication</a> object managing the replication. You have a chance to customize its properties (like .continuous and .filter) before it starts. </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a9876ed16610544ac71b46d986a806259"></a><!-- doxytag: member="CouchDatabase::pushToDatabaseAtURL:options:" ref="a9876ed16610544ac71b46d986a806259" args="(NSURL *targetURL,[options] CouchReplicationOptions options)" -->
+<a class="anchor" id="ad6027f89bbdc7386ef28250fb9974060"></a><!-- doxytag: member="CouchDatabase::pushToDatabaseAtURL:" ref="ad6027f89bbdc7386ef28250fb9974060" args="(NSURL *targetURL)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -622,17 +613,7 @@ Properties</h2></td></tr>
           <td></td>
           <td class="paramtype">(NSURL *)&#160;</td>
           <td class="paramname"><em>targetURL</em></td>
-        </tr>
-        <tr>
-          <td class="paramkey">options:</td>
           <td></td>
-          <td class="paramtype">(CouchReplicationOptions)&#160;</td>
-          <td class="paramname"><em>options</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -642,11 +623,10 @@ Properties</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">targetURL</td><td>The URL of the database to replicate to. </td></tr>
-    <tr><td class="paramname">options</td><td>Zero or more option flags affecting the replication. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="interfaceCouchReplication.html" title="Tracks a CouchDB replication.">CouchReplication</a> object managing the replication. It will already have been started. </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The <a class="el" href="interfaceCouchReplication.html" title="Tracks a CouchDB replication.">CouchReplication</a> object managing the replication. You have a chance to customize its properties (like .continuous and .filter) before it starts. </dd></dl>
 
 </div>
 </div>
@@ -728,6 +708,22 @@ Properties</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Property Documentation</h2>
+<a class="anchor" id="aeabf2d3d91256cb45e97f7909331c292"></a><!-- doxytag: member="CouchDatabase::documentPathMap" ref="aeabf2d3d91256cb45e97f7909331c292" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (CouchDocumentPathMap) documentPathMap<code> [read, write, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Allows retrieving documents from the <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> using a different path from the documentID. </p>
+<p>This is useful for accessing a document using a Couch rewrite. The result of the CouchDocumentPathMap is the path relative to the database. </p>
+
+</div>
+</div>
 <a class="anchor" id="adb7a1b1c5b1083dd3de18b8ad3c55704"></a><!-- doxytag: member="CouchDatabase::tracksChanges" ref="adb7a1b1c5b1083dd3de18b8ad3c55704" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -783,7 +779,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
