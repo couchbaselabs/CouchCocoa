@@ -29,6 +29,7 @@
 @property (nonatomic, readwrite, copy) NSString* status;
 @property (nonatomic, readwrite) unsigned completed, total;
 @property (nonatomic, readwrite, retain) NSError* error;
+@property (nonatomic, readwrite) CouchReplicationMode mode;
 - (void) stopped;
 @end
 
@@ -153,6 +154,7 @@
         [self autorelease]; // balances [self retain] when successfully started
     }
     self.running = NO;
+    self.mode = kCouchReplicationStopped;
 }
 
 
@@ -165,7 +167,7 @@
 
 
 @synthesize running = _running, status=_status, completed=_completed, total=_total, error = _error;
-@synthesize remoteURL = _remote;
+@synthesize mode=_mode, remoteURL = _remote;
 
 
 - (NSString*) status {
@@ -176,37 +178,47 @@
     COUCHLOG(@"%@ status line = %@", self, status);
     [_status autorelease];
     _status = [status copy];
+    CouchReplicationMode mode = _mode;
     
     if ([status isEqualToString: @"Stopped"]) {
         // TouchDB only
         COUCHLOG(@"%@: Status changed to 'Stopped'", self);
         [self stopped];
-        return;
-    }
-    
-    int completed = 0, total = 0;
-    if (status) {
-        // Current format of status is "Processed \d+ / \d+ changes".
-        NSScanner* scanner = [NSScanner scannerWithString: status];
-        if ([scanner scanString: @"Processed" intoString:NULL]
-                && [scanner scanInt: &completed]
-                && [scanner scanString: @"/" intoString:NULL]
-                && [scanner scanInt: &total]
-                && [scanner scanString: @"changes" intoString:NULL]) {
-        } else {
-            completed = total = 0;
-            Warn(@"CouchReplication: Unable to parse status string \"%@\"", _status);
+        mode = kCouchReplicationStopped;
+        
+    } else if ([status isEqualToString: @"Offline"]) {
+        mode = kCouchReplicationOffline;
+    } else if ([status isEqualToString: @"Idle"]) {
+        mode = kCouchReplicationIdle;
+    } else {
+        int completed = 0, total = 0;
+        if (status) {
+            // Current format of status is "Processed \d+ / \d+ changes".
+            NSScanner* scanner = [NSScanner scannerWithString: status];
+            if ([scanner scanString: @"Processed" intoString:NULL]
+                    && [scanner scanInt: &completed]
+                    && [scanner scanString: @"/" intoString:NULL]
+                    && [scanner scanInt: &total]
+                    && [scanner scanString: @"changes" intoString:NULL]) {
+                mode = kCouchReplicationActive;
+            } else {
+                completed = total = 0;
+                Warn(@"CouchReplication: Unable to parse status string \"%@\"", _status);
+            }
+        }
+        
+        if (completed != _completed || total != _total) {
+            [self willChangeValueForKey: @"completed"];
+            [self willChangeValueForKey: @"total"];
+            _completed = completed;
+            _total = total;
+            [self didChangeValueForKey: @"total"];
+            [self didChangeValueForKey: @"completed"];
         }
     }
-    
-    if (completed != _completed || total != _total) {
-        [self willChangeValueForKey: @"completed"];
-        [self willChangeValueForKey: @"total"];
-        _completed = completed;
-        _total = total;
-        [self didChangeValueForKey: @"total"];
-        [self didChangeValueForKey: @"completed"];
-    }
+
+    if (mode != _mode)
+        self.mode = mode;
 }
 
 
