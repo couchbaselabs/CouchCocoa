@@ -308,7 +308,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
             [[[NSRunLoop currentRunLoop] currentMode] isEqualToString: kRESTObjectRunLoopMode]) {
         // If another RESTOperation is blocked in -wait, don't call out to client code until after
         // it finishes, because clients won't expect to get invoked re-entrantly.
-        NSLog(@"RESTOperation: Deferring completion till other op finishes waiting");
+        if (gRESTLogLevel >= kRESTLogRequestHeaders)
+            NSLog(@"RESTOperation: Deferring completion till other op finishes waiting");
         [self performSelector: _cmd withObject: error
                    afterDelay: 0.0 inModes: [NSArray arrayWithObject: NSRunLoopCommonModes]];
         return;
@@ -489,7 +490,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 {
     if (challenge.previousFailureCount == 0) {
         NSURLCredential* credential = [_resource credentialForOperation: self];
-        NSLog(@"REST: Authentication challenge! credential=%@", credential);
+        if (gRESTLogLevel > kRESTLogRequestURLs)
+            NSLog(@"REST: Authentication challenge! credential=%@", credential);
         if(!credential) {
             NSURLProtectionSpace* acceptableProtectionSpace = [_resource protectionSpaceForOperation:self];
             if(acceptableProtectionSpace) {
