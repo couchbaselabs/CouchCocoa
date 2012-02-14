@@ -62,6 +62,7 @@
     [_eTag release];
     [_lastModified release];
     [_url release];
+    [_cachedURL release];
     [_relativePath release];
     [_parent release];
     [super dealloc];
