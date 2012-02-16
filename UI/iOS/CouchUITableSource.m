@@ -102,12 +102,49 @@
 
 
 -(void) reloadFromQuery {
+  COUCHLOG(@"### reloadFromQuery ###");
     CouchQueryEnumerator* rowEnum = _query.rows;
     if (rowEnum) {
-        [_rows release];
-        _rows = [rowEnum.allObjects mutableCopy];
-        [self tellDelegate: @selector(couchTableSource:willUpdateFromQuery:) withObject: _query];
-        [self.tableView reloadData];
+      NSMutableArray *previousRows = nil;
+      if (_rows != nil) {
+        previousRows = [_rows mutableCopy];
+      }
+      
+      [_rows release];
+      _rows = [rowEnum.allObjects mutableCopy];
+      
+      NSMutableArray *newRows = _rows;      
+      NSMutableArray *deletedIndexPaths = [NSMutableArray array];
+      NSMutableArray *addedIndexPaths = [NSMutableArray array];
+      
+      if (previousRows != nil) {
+        NSMutableArray *addedObjects = [newRows mutableCopy];
+        [addedObjects removeObjectsInArray:previousRows];
+        NSMutableArray *deletedObjects = [previousRows mutableCopy];
+        [deletedObjects removeObjectsInArray:newRows];
+        
+        for (id obj in deletedObjects) {
+          NSUInteger index = [previousRows indexOfObject:obj];
+          [deletedIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+        }
+        for (id obj in addedObjects) {
+          NSUInteger index = [newRows indexOfObject:obj];
+          [addedIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+        }
+        
+        [addedObjects release];
+        [deletedObjects release];
+        [previousRows release];
+      }
+
+      [self tellDelegate: @selector(couchTableSource:willUpdateFromQuery:) withObject: _query];
+      
+      [self.tableView beginUpdates];
+      [self.tableView insertRowsAtIndexPaths:addedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+      [self.tableView deleteRowsAtIndexPaths:deletedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+      [self.tableView endUpdates];
+      
+      [self.tableView reloadData];
     }
 }
 
