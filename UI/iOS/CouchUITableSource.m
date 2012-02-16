@@ -102,7 +102,7 @@
 
 
 -(void) reloadFromQuery {
-  COUCHLOG(@"### reloadFromQuery ###");
+  NSLog(@">>> reloadFromQuery <<<");
     CouchQueryEnumerator* rowEnum = _query.rows;
     if (rowEnum) {
       NSMutableArray *previousRows = nil;
@@ -113,29 +113,30 @@
       [_rows release];
       _rows = [rowEnum.allObjects mutableCopy];
       
-      NSMutableArray *newRows = _rows;      
+      NSMutableArray *newRows = _rows;
       NSMutableArray *deletedIndexPaths = [NSMutableArray array];
       NSMutableArray *addedIndexPaths = [NSMutableArray array];
       
+      NSMutableArray *addedObjects = [newRows mutableCopy];
+      [addedObjects removeObjectsInArray:previousRows];
+      NSMutableArray *deletedObjects = nil;
       if (previousRows != nil) {
-        NSMutableArray *addedObjects = [newRows mutableCopy];
-        [addedObjects removeObjectsInArray:previousRows];
-        NSMutableArray *deletedObjects = [previousRows mutableCopy];
-        [deletedObjects removeObjectsInArray:newRows];
-        
-        for (id obj in deletedObjects) {
-          NSUInteger index = [previousRows indexOfObject:obj];
-          [deletedIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
-        }
-        for (id obj in addedObjects) {
-          NSUInteger index = [newRows indexOfObject:obj];
-          [addedIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
-        }
-        
-        [addedObjects release];
-        [deletedObjects release];
-        [previousRows release];
+        deletedObjects = [previousRows mutableCopy];
       }
+      [deletedObjects removeObjectsInArray:newRows];
+        
+      for (id obj in deletedObjects) {
+        NSUInteger index = [previousRows indexOfObject:obj];
+        [deletedIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+      }
+      for (id obj in addedObjects) {
+        NSUInteger index = [newRows indexOfObject:obj];
+        [addedIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+      }
+        
+      [addedObjects release];
+      [deletedObjects release];
+      [previousRows release];
 
       [self tellDelegate: @selector(couchTableSource:willUpdateFromQuery:) withObject: _query];
       
@@ -144,6 +145,8 @@
       [self.tableView deleteRowsAtIndexPaths:deletedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
       [self.tableView endUpdates];
       
+//      [self.tableView reloadData];
+    } else {
       [self.tableView reloadData];
     }
 }
