@@ -464,4 +464,18 @@
 }
 
 
+- (BOOL)isEqual:(id)anObject {
+  if (! [anObject isKindOfClass:[self class]] ) {
+    return NO;
+  }
+  return [[self documentID] isEqualToString:[anObject documentID]];
+}
+
+
+- (NSUInteger)hash {
+  return [[self documentID] hash];
+}
+
+
+
 @end
