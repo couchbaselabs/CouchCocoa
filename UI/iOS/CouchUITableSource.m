@@ -101,33 +101,42 @@
 }
 
 
--(NSArray *)deletedIndexPathsOldRows:(NSArray *)oldRows newRows:(NSArray *)newRows {
-  return [NSArray array];
-}
-
-
 -(NSDictionary *)indexMapForRows:(NSArray *)rows {
   NSMutableDictionary *indexMap = [[NSMutableDictionary alloc] initWithCapacity:[rows count]];
   for (int index = 0; index < [rows count]; ++index) {
     CouchQueryRow *row = [rows objectAtIndex:index];
     [indexMap setObject:[NSIndexPath indexPathWithIndex:index] forKey:[row documentID]];
+//    [indexMap setObject:[NSIndexPath indexPathWithIndex:index] forKey:[row hash]];
   }
   return [indexMap autorelease];
 }
 
 
--(NSArray *)newIndexPathsOldRows:(NSArray *)oldRows newRows:(NSArray *)newRows {
+-(NSArray *)deletedIndexPathsOldRows:(NSArray *)oldRows newRows:(NSArray *)newRows {
   NSDictionary *oldIndexMap = [self indexMapForRows:oldRows];
   NSDictionary *newIndexMap = [self indexMapForRows:newRows];
   
-  NSMutableSet *newIds = [NSMutableSet setWithArray:newIndexMap.allKeys];
+  NSMutableSet *remainder = [NSMutableSet setWithArray:oldIndexMap.allKeys];
+  NSSet *newIds = [NSSet setWithArray:newIndexMap.allKeys];
+  [remainder minusSet:newIds];
+  NSArray *deletedIds = remainder.allObjects;
+  
+  NSArray *deletedIndexPaths = [oldIndexMap objectsForKeys:deletedIds notFoundMarker:[NSNull null]];  
+  return deletedIndexPaths;
+}
+
+
+-(NSArray *)addedIndexPathsOldRows:(NSArray *)oldRows newRows:(NSArray *)newRows {
+  NSDictionary *oldIndexMap = [self indexMapForRows:oldRows];
+  NSDictionary *newIndexMap = [self indexMapForRows:newRows];
+  
+  NSMutableSet *remainder = [NSMutableSet setWithArray:newIndexMap.allKeys];
   NSSet *oldIds = [NSSet setWithArray:oldIndexMap.allKeys];
+  [remainder minusSet:oldIds];
+  NSArray *addedIds = remainder.allObjects;
   
-  [newIds minusSet:oldIds];
-  NSArray *addedIds = newIds.allObjects;
-  
-  NSArray *newIndexPaths = [newIndexMap objectsForKeys:addedIds notFoundMarker:[NSNull null]];  
-  return newIndexPaths;
+  NSArray *addedIndexPaths = [newIndexMap objectsForKeys:addedIds notFoundMarker:[NSNull null]];  
+  return addedIndexPaths;
 }
 
 

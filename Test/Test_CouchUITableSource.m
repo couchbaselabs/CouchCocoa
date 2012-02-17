@@ -71,7 +71,7 @@
   NSArray *deletedIndexPaths = [self.tsource performSelector:@selector(deletedIndexPathsOldRows:newRows:) withObject:old withObject:new];
   STAssertEquals([deletedIndexPaths count], 0u, nil);
 
-  NSArray *newIndexPaths = [self.tsource performSelector:@selector(newIndexPathsOldRows:newRows:) withObject:old withObject:new];
+  NSArray *newIndexPaths = [self.tsource performSelector:@selector(addedIndexPathsOldRows:newRows:) withObject:old withObject:new];
   STAssertEquals([newIndexPaths count], 3u, nil);
   NSSet *expected = [NSSet setWithArray:[NSArray arrayWithObjects:
                                          [NSIndexPath indexPathWithIndex:0],
@@ -88,13 +88,31 @@
   NSDictionary *row2b = [NSDictionary dictionaryWithObjectsAndKeys:doc2b, @"doc", nil];
   new = [NSArray arrayWithObjects:[MockRow rowWithResult:row1], [MockRow rowWithResult:row2], [MockRow rowWithResult:row2a], [MockRow rowWithResult:row2b], [MockRow rowWithResult:row3], nil];
   
-  newIndexPaths = [self.tsource performSelector:@selector(newIndexPathsOldRows:newRows:) withObject:old withObject:new];
+  deletedIndexPaths = [self.tsource performSelector:@selector(deletedIndexPathsOldRows:newRows:) withObject:old withObject:new];
+  STAssertEquals([deletedIndexPaths count], 0u, nil);
+
+  newIndexPaths = [self.tsource performSelector:@selector(addedIndexPathsOldRows:newRows:) withObject:old withObject:new];
   STAssertEquals([newIndexPaths count], 2u, nil);
   expected = [NSSet setWithArray:[NSArray arrayWithObjects:
                                          [NSIndexPath indexPathWithIndex:2],
                                          [NSIndexPath indexPathWithIndex:3],
                                          nil]];
   STAssertTrue([expected isEqualToSet:[NSSet setWithArray:newIndexPaths]], nil);
+  
+  // now remove some rows
+  old = new;
+  new = [NSArray arrayWithObjects:[MockRow rowWithResult:row1], [MockRow rowWithResult:row2b], [MockRow rowWithResult:row3], nil];
+
+  deletedIndexPaths = [self.tsource performSelector:@selector(deletedIndexPathsOldRows:newRows:) withObject:old withObject:new];
+  STAssertEquals([deletedIndexPaths count], 2u, nil);
+  expected = [NSSet setWithArray:[NSArray arrayWithObjects:
+                                  [NSIndexPath indexPathWithIndex:1],
+                                  [NSIndexPath indexPathWithIndex:2],
+                                  nil]];
+  STAssertTrue([expected isEqualToSet:[NSSet setWithArray:deletedIndexPaths]], nil);
+
+  newIndexPaths = [self.tsource performSelector:@selector(addedIndexPathsOldRows:newRows:) withObject:old withObject:new];
+  STAssertEquals([newIndexPaths count], 0u, nil);
 }
 
 
