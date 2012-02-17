@@ -101,6 +101,36 @@
 }
 
 
+-(NSArray *)deletedIndexPathsOldRows:(NSArray *)oldRows newRows:(NSArray *)newRows {
+  return [NSArray array];
+}
+
+
+-(NSDictionary *)indexMapForRows:(NSArray *)rows {
+  NSMutableDictionary *indexMap = [[NSMutableDictionary alloc] initWithCapacity:[rows count]];
+  for (int index = 0; index < [rows count]; ++index) {
+    CouchQueryRow *row = [rows objectAtIndex:index];
+    [indexMap setObject:[NSIndexPath indexPathWithIndex:index] forKey:[row documentID]];
+  }
+  return [indexMap autorelease];
+}
+
+
+-(NSArray *)newIndexPathsOldRows:(NSArray *)oldRows newRows:(NSArray *)newRows {
+  NSDictionary *oldIndexMap = [self indexMapForRows:oldRows];
+  NSDictionary *newIndexMap = [self indexMapForRows:newRows];
+  
+  NSMutableSet *newIds = [NSMutableSet setWithArray:newIndexMap.allKeys];
+  NSSet *oldIds = [NSSet setWithArray:oldIndexMap.allKeys];
+  
+  [newIds minusSet:oldIds];
+  NSArray *addedIds = newIds.allObjects;
+  
+  NSArray *newIndexPaths = [newIndexMap objectsForKeys:addedIds notFoundMarker:[NSNull null]];  
+  return newIndexPaths;
+}
+
+
 -(void) reloadFromQuery {
   NSLog(@">>> reloadFromQuery <<<");
     CouchQueryEnumerator* rowEnum = _query.rows;
@@ -145,7 +175,8 @@
       [self.tableView deleteRowsAtIndexPaths:deletedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
       [self.tableView endUpdates];
       
-//      [self.tableView reloadData];
+      // reload all rows that weren't added (they may have content changes)
+//      [self.tableView rel
     } else {
       [self.tableView reloadData];
     }
