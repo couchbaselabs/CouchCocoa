@@ -140,6 +140,37 @@
 }
 
 
+-(NSArray *)modifiedIndexPathsOldRows:(NSArray *)oldRows newRows:(NSArray *)newRows {
+  NSDictionary *oldIndexMap = [self indexMapForRows:oldRows];
+  NSDictionary *newIndexMap = [self indexMapForRows:newRows];
+  
+  NSMutableSet *intersection = [NSMutableSet setWithArray:oldIndexMap.allKeys];
+  [intersection intersectSet:[NSSet setWithArray:newIndexMap.allKeys]];
+  NSArray *intersectionIds = intersection.allObjects;
+  
+  NSArray *intersectionOldIndexPaths = [oldIndexMap objectsForKeys:intersectionIds notFoundMarker:[NSNull null]];
+  NSArray *intersectionNewIndexPaths = [newIndexMap objectsForKeys:intersectionIds notFoundMarker:[NSNull null]];
+  NSAssert([intersectionIds count] == [intersectionOldIndexPaths count] &&
+           [intersectionIds count] == [intersectionNewIndexPaths count],
+           @"intersection index counts must be equal");
+  
+  NSMutableArray *modifiedIndexPaths = [NSMutableArray array];
+  for (NSUInteger index = 0; index < [intersectionIds count]; ++index) {
+    NSIndexPath *oldIndexPath = [intersectionOldIndexPaths objectAtIndex:index];
+    NSIndexPath *newIndexPath = [intersectionNewIndexPaths objectAtIndex:index];
+    CouchQueryRow *oldRow = [oldRows objectAtIndex:[oldIndexPath indexAtPosition:0]];
+    CouchQueryRow *newRow = [newRows objectAtIndex:[newIndexPath indexAtPosition:0]];
+    NSAssert([[oldRow documentID] isEqualToString:[newRow documentID]],
+             @"document ids must be equal for objects in intersection");
+    if (! [[oldRow documentRevision] isEqualToString:[newRow documentRevision]]) {
+      [modifiedIndexPaths addObject:newIndexPath];
+    }
+  }
+  
+  return modifiedIndexPaths;
+}
+
+
 -(void) reloadFromQuery {
   NSLog(@">>> reloadFromQuery <<<");
     CouchQueryEnumerator* rowEnum = _query.rows;
