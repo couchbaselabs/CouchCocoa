@@ -79,6 +79,23 @@
                                          [NSIndexPath indexPathWithIndex:2],
                                          nil]];
   STAssertTrue([expected isEqualToSet:[NSSet setWithArray:newIndexPaths]], nil);
+  
+  // add more rows
+  old = new;
+  NSDictionary *doc2a = [NSDictionary dictionaryWithObjectsAndKeys:@"id_2a", @"_id", @"rev_1", @"_rev", nil];
+  NSDictionary *doc2b = [NSDictionary dictionaryWithObjectsAndKeys:@"id_2b", @"_id", @"rev_1", @"_rev", nil];
+  NSDictionary *row2a = [NSDictionary dictionaryWithObjectsAndKeys:doc2a, @"doc", nil];
+  NSDictionary *row2b = [NSDictionary dictionaryWithObjectsAndKeys:doc2b, @"doc", nil];
+  new = [NSArray arrayWithObjects:[MockRow rowWithResult:row1], [MockRow rowWithResult:row2], [MockRow rowWithResult:row2a], [MockRow rowWithResult:row2b], [MockRow rowWithResult:row3], nil];
+  
+  newIndexPaths = [self.tsource performSelector:@selector(newIndexPathsOldRows:newRows:) withObject:old withObject:new];
+  STAssertEquals([newIndexPaths count], 2u, nil);
+  expected = [NSSet setWithArray:[NSArray arrayWithObjects:
+                                         [NSIndexPath indexPathWithIndex:2],
+                                         [NSIndexPath indexPathWithIndex:3],
+                                         nil]];
+  STAssertTrue([expected isEqualToSet:[NSSet setWithArray:newIndexPaths]], nil);
 }
+
 
 @end
