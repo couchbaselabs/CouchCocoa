@@ -464,18 +464,4 @@
 }
 
 
-//- (BOOL)isEqual:(id)anObject {
-//  if (! [anObject isKindOfClass:[self class]] ) {
-//    return NO;
-//  }
-//  return [_result isEqualToDictionary:((CouchQueryRow *)anObject)->_result];
-//}
-//
-//
-//- (NSUInteger)hash {
-//  return [_result hash];
-//}
-
-
-
 @end
