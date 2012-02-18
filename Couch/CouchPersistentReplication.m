@@ -19,6 +19,8 @@
 
 @interface CouchPersistentReplication ()
 @property (readwrite) CouchReplicationState state;
+@property (nonatomic, readwrite, retain) NSError* error;
+@property (nonatomic, readwrite) CouchReplicationMode mode;
 - (void) setStatusString: (NSString*)status;
 @end
 
@@ -27,7 +29,7 @@
 
 
 @dynamic source, target, create_target, continuous, filter, query_params, doc_ids;
-@synthesize state=_state, completed=_completed, total=_total;
+@synthesize state=_state, completed=_completed, total=_total, error=_error, mode=_mode;
 
 
 + (CouchPersistentReplication*) createWithReplicatorDatabase: (CouchDatabase*)replicatorDB
@@ -62,6 +64,14 @@
 
 - (void) actAsAdmin {
     [self actAsUser: nil withRoles: [NSArray arrayWithObject: @"_admin"]];
+}
+
+
+- (NSURL*) remoteURL {
+    NSString* urlStr = self.source;
+    if ([urlStr rangeOfString: @":"].length == 0)
+        urlStr = self.target;
+    return [NSURL URLWithString: urlStr];
 }
 
 
@@ -138,21 +148,35 @@
     COUCHLOG(@"%@ = %@", self, status);
     [_statusString autorelease];
     _statusString = [status copy];
+    CouchReplicationMode mode = _mode;
+    int completed = _completed, total = _total;
     
-    int completed = 0, total = 0;
-    if (status) {
-        // Current format of status is "Processed \d+ / \d+ changes".
-        NSScanner* scanner = [NSScanner scannerWithString: status];
-        if ([scanner scanString: @"Processed" intoString:NULL]
-                && [scanner scanInt: &completed]
-                && [scanner scanString: @"/" intoString:NULL]
-                && [scanner scanInt: &total]
-                && [scanner scanString: @"changes" intoString:NULL]) {
-        } else {
-            completed = total = 0;
-            Warn(@"CouchReplication: Unable to parse status string \"%@\"", _statusString);
+    if ([status isEqualToString: @"Stopped"]) {
+        // TouchDB only
+        mode = kCouchReplicationStopped;
+        
+    } else if ([status isEqualToString: @"Offline"]) {
+        mode = kCouchReplicationOffline;
+    } else if ([status isEqualToString: @"Idle"]) {
+        mode = kCouchReplicationIdle;
+        completed = total = 0;
+    } else {
+        if (status) {
+            // Current format of status is "Processed \d+ / \d+ changes".
+            NSScanner* scanner = [NSScanner scannerWithString: status];
+            if ([scanner scanString: @"Processed" intoString:NULL]
+                    && [scanner scanInt: &completed]
+                    && [scanner scanString: @"/" intoString:NULL]
+                    && [scanner scanInt: &total]
+                    && [scanner scanString: @"changes" intoString:NULL]) {
+                mode = kCouchReplicationActive;
+            } else {
+                completed = total = 0;
+                Warn(@"CouchReplication: Unable to parse status string \"%@\"", _statusString);
+            }
         }
     }
+    
     if (completed != _completed || total != _total) {
         [self willChangeValueForKey: @"completed"];
         [self willChangeValueForKey: @"total"];
@@ -161,6 +185,8 @@
         [self didChangeValueForKey: @"total"];
         [self didChangeValueForKey: @"completed"];
     }
+    if (mode != _mode)
+        self.mode = mode;
 }
 
 
@@ -172,16 +198,30 @@
         // Server's activeTasks changed:
         NSString* myReplicationID = [self getValueOfProperty: @"_replication_id"];
         NSString* status = nil;
+        NSArray* error = nil;
         for (NSDictionary* task in server.activeTasks) {
             if ([[task objectForKey:@"type"] isEqualToString:@"Replication"]) {
                 // Can't look up the task ID directly because it's part of a longer string like
                 // "`6390525ac52bd8b5437ab0a118993d0a+continuous`: ..."
                 if ([[task objectForKey: @"task"] rangeOfString: myReplicationID].length > 0) {
                     status = [task objectForKey: @"status"];
+                    error = $castIf(NSArray, [task objectForKey: @"error"]);
                     break;
                 }
             }
         }
+
+        // Interpret .error property. This is nonstandard; only TouchDB supports it.
+        if (error.count >= 1) {
+            COUCHLOG(@"%@: error %@", self, error);
+            int status = [$castIf(NSNumber, [error objectAtIndex: 0]) intValue];
+            NSString* message = nil;
+            if (error.count >= 2)
+                message = $castIf(NSString, [error objectAtIndex: 1]);
+            self.error = [RESTOperation errorWithHTTPStatus: status message: message
+                                                        URL: self.document.URL];
+        }
+        
         if (!$equal(status, _statusString))
             [self setStatusString: status];
     } else {
