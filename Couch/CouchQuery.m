@@ -464,17 +464,17 @@
 }
 
 
-- (BOOL)isEqual:(id)anObject {
-  if (! [anObject isKindOfClass:[self class]] ) {
-    return NO;
-  }
-  return [[self documentID] isEqualToString:[anObject documentID]];
-}
-
-
-- (NSUInteger)hash {
-  return [[self documentID] hash];
-}
+//- (BOOL)isEqual:(id)anObject {
+//  if (! [anObject isKindOfClass:[self class]] ) {
+//    return NO;
+//  }
+//  return [_result isEqualToDictionary:((CouchQueryRow *)anObject)->_result];
+//}
+//
+//
+//- (NSUInteger)hash {
+//  return [_result hash];
+//}
 
 
 
