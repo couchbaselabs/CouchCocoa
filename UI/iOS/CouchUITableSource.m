@@ -105,7 +105,7 @@
   NSMutableDictionary *indexMap = [[NSMutableDictionary alloc] initWithCapacity:[rows count]];
   for (int index = 0; index < [rows count]; ++index) {
     CouchQueryRow *row = [rows objectAtIndex:index];
-    [indexMap setObject:[NSIndexPath indexPathWithIndex:index] forKey:[row documentID]];
+    [indexMap setObject:[NSIndexPath indexPathForRow:index inSection:0] forKey:[row documentID]];
 //    [indexMap setObject:[NSIndexPath indexPathWithIndex:index] forKey:[row hash]];
   }
   return [indexMap autorelease];
@@ -158,8 +158,8 @@
   for (NSUInteger index = 0; index < [intersectionIds count]; ++index) {
     NSIndexPath *oldIndexPath = [intersectionOldIndexPaths objectAtIndex:index];
     NSIndexPath *newIndexPath = [intersectionNewIndexPaths objectAtIndex:index];
-    CouchQueryRow *oldRow = [oldRows objectAtIndex:[oldIndexPath indexAtPosition:0]];
-    CouchQueryRow *newRow = [newRows objectAtIndex:[newIndexPath indexAtPosition:0]];
+    CouchQueryRow *oldRow = [oldRows objectAtIndex:oldIndexPath.row];
+    CouchQueryRow *newRow = [newRows objectAtIndex:newIndexPath.row];
     NSAssert([[oldRow documentID] isEqualToString:[newRow documentID]],
              @"document ids must be equal for objects in intersection");
     if (! [[oldRow documentRevision] isEqualToString:[newRow documentRevision]]) {
@@ -172,43 +172,22 @@
 
 
 -(void) reloadFromQuery {
-  NSLog(@">>> reloadFromQuery <<<");
+  NSLog(@"=== reloadFromQuery ===");
     CouchQueryEnumerator* rowEnum = _query.rows;
     if (rowEnum) {
-      NSMutableArray *previousRows = nil;
+      NSMutableArray *oldRows = nil;
       if (_rows != nil) {
-        previousRows = [_rows mutableCopy];
+        oldRows = [_rows mutableCopy];
       }
       
       [_rows release];
       _rows = [rowEnum.allObjects mutableCopy];
       
-      NSMutableArray *newRows = _rows;
-      NSMutableArray *deletedIndexPaths = [NSMutableArray array];
-      NSMutableArray *addedIndexPaths = [NSMutableArray array];
-      
-      NSMutableArray *addedObjects = [newRows mutableCopy];
-      [addedObjects removeObjectsInArray:previousRows];
-      NSMutableArray *deletedObjects = nil;
-      if (previousRows != nil) {
-        deletedObjects = [previousRows mutableCopy];
-      }
-      [deletedObjects removeObjectsInArray:newRows];
-        
-      for (id obj in deletedObjects) {
-        NSUInteger index = [previousRows indexOfObject:obj];
-        [deletedIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
-      }
-      for (id obj in addedObjects) {
-        NSUInteger index = [newRows indexOfObject:obj];
-        [addedIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
-      }
-        
-      [addedObjects release];
-      [deletedObjects release];
-      [previousRows release];
-
       [self tellDelegate: @selector(couchTableSource:willUpdateFromQuery:) withObject: _query];
+      
+      NSArray *addedIndexPaths = [self addedIndexPathsOldRows:oldRows newRows:_rows];
+      NSArray *deletedIndexPaths = [self deletedIndexPathsOldRows:oldRows newRows:_rows];
+      NSArray *modifiedIndexPath = [self modifiedIndexPathsOldRows:oldRows newRows:_rows];
       
       [self.tableView beginUpdates];
       [self.tableView insertRowsAtIndexPaths:addedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -216,7 +195,7 @@
       [self.tableView endUpdates];
       
       // reload all rows that weren't added (they may have content changes)
-//      [self.tableView rel
+      [self.tableView reloadRowsAtIndexPaths:modifiedIndexPath withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
       [self.tableView reloadData];
     }
