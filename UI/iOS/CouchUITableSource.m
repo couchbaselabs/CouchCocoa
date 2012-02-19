@@ -194,7 +194,7 @@
       [self.tableView endUpdates];
       
       // reload all rows that weren't added (they may have content changes)
-      [self.tableView reloadRowsAtIndexPaths:modifiedIndexPath withRowAnimation:UITableViewRowAnimationAutomatic];
+      [self.tableView reloadRowsAtIndexPaths:modifiedIndexPath withRowAnimation:UITableViewRowAnimationRight];
     } else {
       [self.tableView reloadData];
     }
