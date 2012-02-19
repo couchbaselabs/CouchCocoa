@@ -172,7 +172,6 @@
 
 
 -(void) reloadFromQuery {
-  NSLog(@"=== reloadFromQuery ===");
     CouchQueryEnumerator* rowEnum = _query.rows;
     if (rowEnum) {
       NSMutableArray *oldRows = nil;
