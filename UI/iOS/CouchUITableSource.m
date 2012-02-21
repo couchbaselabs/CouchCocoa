@@ -172,32 +172,32 @@
 
 
 -(void) reloadFromQuery {
-    CouchQueryEnumerator* rowEnum = _query.rows;
-    if (rowEnum) {
-      NSMutableArray *oldRows = nil;
-      if (_rows != nil) {
-        oldRows = [_rows mutableCopy];
-      }
-      
-      [_rows release];
-      _rows = [rowEnum.allObjects mutableCopy];
-      
-      [self tellDelegate: @selector(couchTableSource:willUpdateFromQuery:) withObject: _query];
-      
-      NSArray *addedIndexPaths = [self addedIndexPathsOldRows:oldRows newRows:_rows];
-      NSArray *deletedIndexPaths = [self deletedIndexPathsOldRows:oldRows newRows:_rows];
-      NSArray *modifiedIndexPath = [self modifiedIndexPathsOldRows:oldRows newRows:_rows];
-      
-      [self.tableView beginUpdates];
-      [self.tableView insertRowsAtIndexPaths:addedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-      [self.tableView deleteRowsAtIndexPaths:deletedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-      [self.tableView endUpdates];
-      
-      // reload all rows that weren't added (they may have content changes)
-      [self.tableView reloadRowsAtIndexPaths:modifiedIndexPath withRowAnimation:UITableViewRowAnimationRight];
-    } else {
-      [self.tableView reloadData];
+  CouchQueryEnumerator* rowEnum = _query.rows;
+  if (rowEnum) {
+    NSMutableArray *oldRows = nil;
+    if (_rows != nil) {
+      oldRows = [_rows mutableCopy];
     }
+    
+    [_rows release];
+    _rows = [rowEnum.allObjects mutableCopy];
+    
+    [self tellDelegate: @selector(couchTableSource:willUpdateFromQuery:) withObject: _query];
+    
+    NSArray *addedIndexPaths = [self addedIndexPathsOldRows:oldRows newRows:_rows];
+    NSArray *deletedIndexPaths = [self deletedIndexPathsOldRows:oldRows newRows:_rows];
+    NSArray *modifiedIndexPaths = [self modifiedIndexPathsOldRows:oldRows newRows:_rows];
+    
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:addedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView deleteRowsAtIndexPaths:deletedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    // reload all rows that weren't added (they may have content changes)
+    [self.tableView reloadRowsAtIndexPaths:modifiedIndexPaths withRowAnimation:UITableViewRowAnimationRight];
+    [self.tableView endUpdates];
+    
+  } else {
+    [self.tableView reloadData];
+  }
 }
 
 
