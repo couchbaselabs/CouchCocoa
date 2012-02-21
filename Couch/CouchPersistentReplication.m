@@ -141,6 +141,24 @@
 }
 
 
+- (void) restartWithRetries: (int)retries {
+    [self setValue: nil ofProperty: @"_replication_state"];
+    RESTOperation* op = [self save];
+    [op onCompletion:^{
+        if (op.httpStatus == 409 && retries > 0) {
+            COUCHLOG(@"%@: retrying restart (%i tries left)", self, retries);
+            [self restartWithRetries: retries - 1];
+        } else if (op.error) {
+            Warn(@"%@: Restart failed, %@", self, op.error);
+        }
+    }];
+}
+
+- (void) restart {
+    [self restartWithRetries: 10];
+}
+
+
 #pragma mark - STATUS TRACKING
 
 

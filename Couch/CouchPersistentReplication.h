@@ -71,6 +71,9 @@ typedef enum {
 /** A convenience that calls -actAsUser:withRoles: to specify the _admin role. */
 - (void) actAsAdmin;
 
+/** Restarts a replication; this is most useful to make a non-continuous replication run again after it's stopped. */
+- (void) restart;
+
 /** The current state of replication activity. */
 @property (readonly) CouchReplicationState state;
 
