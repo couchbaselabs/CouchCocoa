@@ -74,6 +74,7 @@ The framework will be located at:
 3. Open your Xcode project.
 4. Drag the copied framework into the project window's file list.
 5. Add the framework to your target (if you weren't already prompted to in the previous step.)
+6. In the "Link Binary with Libraries" section, click the plus button and add "libz.dylib"
 
 You'll probably want to run a local database server on your iOS device, since it'll allow your app to work offline (and improves performance.) CouchCocoa.framework doesn't contain CouchDB itself, so you should also add the [Couchbase Mobile][9] framework to your app. Using the two together is very simple: when the CouchbaseMobile object calls your delegate method to tell you the server's up and running, just use the URL it gives you to instantiate a CouchServer object.
 
