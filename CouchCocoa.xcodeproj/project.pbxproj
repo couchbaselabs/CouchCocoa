@@ -29,7 +29,6 @@
 		2739BF5B13BCE5BD004829CD /* CouchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B275F1394225600DDD950 /* CouchQuery.m */; };
 		2739BF5C13BCE5BD004829CD /* CouchResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B24CB1392EE3600DDD950 /* CouchResource.m */; };
 		2739BF5D13BCE5BD004829CD /* CouchChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781244513AFA6CD0051A99D /* CouchChangeTracker.m */; };
-		2739BF5E13BCE5CD004829CD /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781242313AC1B2F0051A99D /* JSONKit.m */; };
 		274EB8D014490145001B7DD0 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF413C67C9B00C979BB /* AppKit.framework */; };
 		2759A0B713E0907000866098 /* libcrypto-iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2759A0B613E0907000866098 /* libcrypto-iphonesimulator.a */; };
 		2771C7C21472ECF70012DF57 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2771C7C11472ECF70012DF57 /* logo.png */; };
@@ -97,7 +96,6 @@
 		27CDEC2413C67D0300C979BB /* CouchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B275F1394225600DDD950 /* CouchQuery.m */; };
 		27CDEC2513C67D0300C979BB /* CouchResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B24CB1392EE3600DDD950 /* CouchResource.m */; };
 		27CDEC2613C67D0300C979BB /* CouchChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781244513AFA6CD0051A99D /* CouchChangeTracker.m */; };
-		27CDEC2713C67D0300C979BB /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781242313AC1B2F0051A99D /* JSONKit.m */; };
 		27CDEC2813C67D1100C979BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF613C67C9B00C979BB /* Foundation.framework */; };
 		27CDEC2913C67D3500C979BB /* RESTResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B231A13916F1400DDD950 /* RESTResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CDEC2A13C67D3500C979BB /* RESTOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22FD138F32CB00DDD950 /* RESTOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -222,8 +220,6 @@
 		274EB8AA14479E7B001B7DD0 /* CouchbaseMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouchbaseMobile.h; sourceTree = "<group>"; };
 		2759A0B613E0907000866098 /* libcrypto-iphonesimulator.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.objfile"; name = "libcrypto-iphonesimulator.a"; path = "Test/libcrypto-iphonesimulator.a"; sourceTree = "<group>"; };
 		2771C7C11472ECF70012DF57 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		2781242213AC1B2F0051A99D /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Vendor/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
-		2781242313AC1B2F0051A99D /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = Vendor/JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 		2781242B13AC265A0051A99D /* RESTCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTCache.h; sourceTree = "<group>"; };
 		2781242C13AC265A0051A99D /* RESTCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTCache.m; sourceTree = "<group>"; };
 		2781244413AFA6CD0051A99D /* CouchChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchChangeTracker.h; sourceTree = "<group>"; };
@@ -386,7 +382,6 @@
 				27EF147F1396D7CD0052913E /* Demo */,
 				273175A313CBA6B7000FF426 /* Doxyfile */,
 				27D5997813CE404300694B37 /* README.md */,
-				27A57A51139751B2002776DB /* JSONKit */,
 				27CDEBF713C67C9B00C979BB /* Resources */,
 				272E9D8213A2EBDF009F18E9 /* Frameworks */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
@@ -522,16 +517,6 @@
 				279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */,
 			);
 			name = ChangeTracker;
-			sourceTree = "<group>";
-		};
-		27A57A51139751B2002776DB /* JSONKit */ = {
-			isa = PBXGroup;
-			children = (
-				2781242213AC1B2F0051A99D /* JSONKit.h */,
-				2781242313AC1B2F0051A99D /* JSONKit.m */,
-			);
-			name = JSONKit;
-			path = Vendor/JSONKit;
 			sourceTree = "<group>";
 		};
 		27C727F713EB232700C7ADF5 /* UI */ = {
@@ -985,7 +970,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2739BF5E13BCE5CD004829CD /* JSONKit.m in Sources */,
 				2739BF5713BCE5BD004829CD /* CouchDocument.m in Sources */,
 				2739BF5813BCE5BD004829CD /* CouchRevision.m in Sources */,
 				2739BF5913BCE5BD004829CD /* CouchAttachment.m in Sources */,
@@ -1054,7 +1038,6 @@
 				27CDEC2413C67D0300C979BB /* CouchQuery.m in Sources */,
 				27CDEC2513C67D0300C979BB /* CouchResource.m in Sources */,
 				27CDEC2613C67D0300C979BB /* CouchChangeTracker.m in Sources */,
-				27CDEC2713C67D0300C979BB /* JSONKit.m in Sources */,
 				279CCBF413F9823F00C38C82 /* CouchReplication.m in Sources */,
 				27DB821E1408202000E57444 /* CouchDynamicObject.m in Sources */,
 				27DB82271408225300E57444 /* CouchModel.m in Sources */,
@@ -1132,8 +1115,8 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1154,8 +1137,8 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1347,7 +1330,6 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CouchCocoa;
 				WRAPPER_EXTENSION = framework;
@@ -1367,7 +1349,6 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CouchCocoa;
 				WRAPPER_EXTENSION = framework;
