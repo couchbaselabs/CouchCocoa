@@ -155,7 +155,6 @@
 		27EEA5B613D6052300D7ACA4 /* REST.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A664413A5BA4600791F4A /* REST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EF148C1396D8CC0052913E /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EF148B1396D8CC0052913E /* DemoAppController.m */; };
 		27EF14B31396DD3B0052913E /* AddressesDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27EF14B21396DD3B0052913E /* AddressesDemo.xib */; };
-		5A24804614EE46A0004867FD /* Test_CouchUITableSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A24804514EE46A0004867FD /* Test_CouchUITableSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -304,7 +303,6 @@
 		27EF148B1396D8CC0052913E /* DemoAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoAppController.m; sourceTree = "<group>"; };
 		27EF14B21396DD3B0052913E /* AddressesDemo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressesDemo.xib; sourceTree = "<group>"; };
 		27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ShoppingDemo-Info.plist"; path = "Demo/ShoppingDemo-Info.plist"; sourceTree = SOURCE_ROOT; };
-		5A24804514EE46A0004867FD /* Test_CouchUITableSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test_CouchUITableSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -470,7 +468,6 @@
 				27911B731411A8C700ABD31B /* CouchTestCase.h */,
 				27911B741411A8C700ABD31B /* CouchTestCase.m */,
 				2771C7C11472ECF70012DF57 /* logo.png */,
-				5A24804514EE46A0004867FD /* Test_CouchUITableSource.m */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -1026,7 +1023,6 @@
 				27959950140A02DB001C168A /* Test_Model.m in Sources */,
 				27911B721411A7C100ABD31B /* Test_DynamicObject.m in Sources */,
 				27911B761411A8C700ABD31B /* CouchTestCase.m in Sources */,
-				5A24804614EE46A0004867FD /* Test_CouchUITableSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
