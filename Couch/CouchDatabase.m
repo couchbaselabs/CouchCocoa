@@ -397,7 +397,7 @@ static const NSUInteger kDocRetainLimit = 50;
     if (_busyDocuments.count) {
         // Don't process changes while I have pending PUT/POST/DELETEs out. Wait till they finish,
         // so I don't think the change is external.
-        COUCHLOG(@"CouchDatabase deferring change (seq %lu) till operations finish", 
+        COUCHLOG2(@"CouchDatabase deferring change (seq %lu) till operations finish", 
               (unsigned long)sequence);
         if (!_deferredChanges)
             _deferredChanges = [[NSMutableArray alloc] init];

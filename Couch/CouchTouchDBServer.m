@@ -119,6 +119,7 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
                                                  selector: @selector(replicationProgressChanged:)
                                                      name: TDReplicatorStoppedNotification
                                                    object: nil];
+        [self performSelector: @selector(checkActiveTasks) withObject: nil afterDelay: 0.0];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:TDReplicatorProgressChangedNotification
@@ -136,6 +137,7 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 
 
 - (void) replicationProgressChanged: (NSNotification*)n {
+    COUCHLOG(@"%@: Replication progress changed", self);//TEMP
     // This is called on the background TouchDB thread, so dispatch to main thread
     [self performSelectorOnMainThread: @selector(checkActiveTasks) withObject: nil
                         waitUntilDone: NO];

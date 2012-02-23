@@ -7,6 +7,7 @@
 //
 
 #import "CouchModel.h"
+#import "CouchReplication.h"
 
 
 /** Possible current states of a replication. */
@@ -27,6 +28,8 @@ typedef enum {
     CouchReplicationState _state;
     unsigned _completed, _total;
     NSString* _statusString;
+    NSError* _error;
+    CouchReplicationMode _mode;
 }
 
 /** The source URL for the replication.
@@ -36,6 +39,8 @@ typedef enum {
 /** The destination URL for the replication.
     This will be either a complete HTTP(s) URL or the name of a database on this server. */
 @property (readonly, copy) NSString* target;
+
+@property (readonly) NSURL* remoteURL;
 
 /** Should the target database be created if it doesn't already exist? (Defaults to NO). */
 @property bool create_target;
@@ -66,6 +71,9 @@ typedef enum {
 /** A convenience that calls -actAsUser:withRoles: to specify the _admin role. */
 - (void) actAsAdmin;
 
+/** Restarts a replication; this is most useful to make a non-continuous replication run again after it's stopped. */
+- (void) restart;
+
 /** The current state of replication activity. */
 @property (readonly) CouchReplicationState state;
 
@@ -74,5 +82,9 @@ typedef enum {
 
 /** The total number of changes to be processed, if the task is active, else 0 (observable). */
 @property (nonatomic, readonly) unsigned total;
+
+@property (nonatomic, readonly, retain) NSError* error;
+
+@property (nonatomic, readonly) CouchReplicationMode mode;
 
 @end

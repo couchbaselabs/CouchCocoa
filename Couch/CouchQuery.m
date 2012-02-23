@@ -141,6 +141,8 @@
 
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     error = [super operation: op willCompleteWithError: error];
+    if (error)
+        Warn(@"%@ failed with %@", self, error);
     if (!error && op.httpStatus == 200) {
         NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
         NSArray* rows = $castIf(NSArray, [result objectForKey: @"rows"]);
