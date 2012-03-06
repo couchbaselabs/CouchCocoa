@@ -16,7 +16,7 @@
 #import "RESTBody.h"
 
 #import "RESTInternal.h"
-#import "RESTBase64.h"
+#import "TDBase64.h"
 
 
 @implementation RESTBody
@@ -366,12 +366,12 @@ static NSDateFormatter* getISO8601Formatter() {
 
 
 + (NSString*) base64WithData: (NSData*)data {
-    return [RESTBase64 encode: data];
+    return [TDBase64 encode: data];
 }
 
 
 + (NSData*) dataWithBase64: (NSString*)base64 {
-    return [RESTBase64 decode: base64];
+    return [TDBase64 decode: base64];
 }
 
 

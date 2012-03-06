@@ -15,8 +15,8 @@
 
 #import "CouchResource.h"
 #import "CouchReplication.h"
-@class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchModelFactory,
-        CouchPersistentReplication, CouchQuery, CouchServer;
+@class RESTCache, TDChangeTracker, CouchDocument, CouchDesignDocument, CouchModelFactory,
+       CouchPersistentReplication, CouchQuery, CouchServer;
 
 typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 
@@ -27,7 +27,7 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
     @private
     RESTCache* _docCache;
     NSCountedSet* _busyDocuments;
-    CouchChangeTracker* _tracker;
+    TDChangeTracker* _tracker;
     NSUInteger _lastSequenceNumber;
     BOOL _lastSequenceNumberKnown;
     id _onChangeBlock;

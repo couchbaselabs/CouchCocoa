@@ -15,7 +15,7 @@
 
 #import "CouchDatabase.h"
 #import "RESTCache.h"
-#import "CouchChangeTracker.h"
+#import "TDChangeTracker.h"
 #import "CouchInternal.h"
 
 
@@ -26,7 +26,7 @@ NSString* const kCouchDatabaseChangeNotification = @"CouchDatabaseChange";
 static const NSUInteger kDocRetainLimit = 50;
 
 
-@interface CouchDatabase () <CouchChangeTrackerClient>
+@interface CouchDatabase () <TDChangeTrackerClient>
 - (void) processDeferredChanges;
 @end
 
@@ -385,7 +385,7 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
-// Part of <CouchChangeTrackerClient> protocol
+// Part of <TDChangeTrackerClient> protocol
 - (void) changeTrackerReceivedChange: (NSDictionary*)change {
     // Get & check sequence number:
     NSNumber* sequenceObj = $castIf(NSNumber, [change objectForKey: @"seq"]);
@@ -449,7 +449,7 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
-// Part of <CouchChangeTrackerClient> protocol
+// Part of <TDChangeTrackerClient> protocol
 - (NSURLCredential*) authCredential {
     return [self credentialForOperation: nil];
 }
@@ -462,10 +462,11 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) setTracksChanges: (BOOL)track {
     if (track && !_tracker) {
-        _tracker = [[CouchChangeTracker alloc] initWithDatabaseURL: self.URL
-                                                              mode: kContinuous
-                                                      lastSequence: self.lastSequenceNumber
-                                                            client: self];
+        NSString* lastSequence = [NSString stringWithFormat: @"%u", self.lastSequenceNumber];
+        _tracker = [[TDChangeTracker alloc] initWithDatabaseURL: self.URL
+                                                           mode: kContinuous
+                                                   lastSequence: lastSequence
+                                                         client: self];
         [_tracker start];
     } else if (!track && _tracker) {
         [_tracker stop];

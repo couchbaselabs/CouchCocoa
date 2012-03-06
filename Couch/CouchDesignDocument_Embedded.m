@@ -10,29 +10,9 @@
 #import "CouchTouchDBServer.h"
 #import "CouchDatabase.h"
 
-
-// Redeclare API from TouchDB to avoid having to #include external headers:
-@class TDDatabase, TDView;
-
-@interface TDServer : NSObject
-- (TDDatabase*) databaseNamed: (NSString*)name;
-@end
-
-@interface TDDatabase : NSObject
-- (TDView*) viewNamed: (NSString*)name;
-- (TDView*) existingViewNamed: (NSString*)name;
-- (void) defineFilter: (NSString*)filterName asBlock: (TDFilterBlock)filterBlock;
-- (void) defineValidation: (NSString*)validationName asBlock: (TDValidationBlock)validationBlock;
-- (TDValidationBlock) validationNamed: (NSString*)validationName;
-@end
-
-@interface TDView : NSObject
-- (BOOL) setMapBlock: (TDMapBlock)mapBlock
-         reduceBlock: (TDReduceBlock)reduceBlock
-             version: (NSString*)version;
-- (void) deleteView;
-@end
-
+#import <TouchDB/TDDatabase+Insertion.h>
+#import <TouchDB/TDView.h>
+#import <TouchDB/TDServer.h>
 
 
 @implementation CouchDesignDocument (Embedded)
@@ -50,7 +30,7 @@
 
 
 - (void) defineViewNamed: (NSString*)viewName
-                mapBlock: (TDMapBlock)mapBlock
+                mapBlock: (CouchMapBlock)mapBlock
                  version: (NSString*)version
 {
     [self defineViewNamed: viewName mapBlock: mapBlock reduceBlock: NULL version: version];
@@ -58,8 +38,8 @@
 
 
 - (void) defineViewNamed: (NSString*)viewName
-                mapBlock: (TDMapBlock)mapBlock
-             reduceBlock: (TDReduceBlock)reduceBlock
+                mapBlock: (CouchMapBlock)mapBlock
+             reduceBlock: (CouchReduceBlock)reduceBlock
                  version: (NSString*)version
 {
     viewName = [self qualifiedName: viewName];
@@ -74,19 +54,25 @@
 
 
 - (void) defineFilterNamed: (NSString*)filterName
-                     block: (TDFilterBlock)filterBlock
+                     block: (CouchFilterBlock)filterBlock
 {
+    filterBlock = [filterBlock copy];
     filterName = [self qualifiedName: filterName];
-    [self.touchDatabase defineFilter: filterName asBlock: filterBlock];
+    [self.touchDatabase defineFilter: filterName asBlock: ^(TDRevision* rev) {
+        return filterBlock(rev.properties);
+    }];
+    [filterBlock release];
 }
 
 
-- (TDValidationBlock) validationBlock {
-    return [self.touchDatabase validationNamed: self.relativePath];
+- (CouchValidationBlock) validationBlock {
+    // The two types of validation blocks (and their contexts) are compatible.
+    return (CouchValidationBlock) [self.touchDatabase validationNamed: self.relativePath];
 }
 
-- (void) setValidationBlock: (TDValidationBlock)validateBlock {
-    [self.touchDatabase defineValidation: self.relativePath asBlock: validateBlock];
+- (void) setValidationBlock: (CouchValidationBlock)validateBlock {
+    [self.touchDatabase defineValidation: self.relativePath
+                                 asBlock: (TDValidationBlock)validateBlock];
 }
 
 

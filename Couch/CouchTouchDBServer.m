@@ -9,27 +9,9 @@
 #import "CouchTouchDBServer.h"
 #import "CouchInternal.h"
 
-
-#if TARGET_OS_IPHONE
-extern NSString* const TDReplicatorProgressChangedNotification;
-extern NSString* const TDReplicatorStoppedNotification;
-#else
-// Copied from TouchDB's TDReplicator.m.
-static NSString* TDReplicatorProgressChangedNotification = @"TDReplicatorProgressChanged";
-static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
-#endif
-
-
-// Declare essential bits of TDServer and TDURLProtocol to avoid having to #import TouchDB:
-@interface TDServer : NSObject
-- (id) initWithDirectory: (NSString*)dirPath error: (NSError**)outError;
-@end
-
-@interface TDURLProtocol : NSURLProtocol
-+ (NSURL*) rootURL;
-+ (void) setServer: (TDServer*)server;
-@end
-
+#import "TDServer.h"
+#import "TDURLProtocol.h"
+#import "TDReplicator.h"
 
 
 @implementation CouchTouchDBServer
@@ -46,18 +28,7 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 
 
 - (id)init {
-#if TARGET_OS_IPHONE
-    Class classTDURLProtocol = [TDURLProtocol class];
-    Class classTDServer = [TDServer class];
-#else
-    // On Mac OS TouchDB.framework is linked dynamically, so avoid explicit references to its
-    // classes because they'd create link errors building CouchCocoa.
-    Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
-    Class classTDServer = NSClassFromString(@"TDServer");
-    NSAssert(classTDURLProtocol && classTDServer, @"Not linked with TouchDB framework");
-#endif
-        
-    self = [super initWithURL: [classTDURLProtocol rootURL]];
+    self = [super initWithURL: [TDURLProtocol rootURL]];
     if (self) {
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
                                                              NSUserDomainMask, YES);
@@ -71,10 +42,10 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
         if ([[NSFileManager defaultManager] createDirectoryAtPath: path
                                       withIntermediateDirectories: YES
                                                        attributes: nil error: &error]) {
-            _touchServer = [[classTDServer alloc] initWithDirectory: path error: &error];
+            _touchServer = [[TDServer alloc] initWithDirectory: path error: &error];
         }
         if (_touchServer)
-            [classTDURLProtocol setServer: _touchServer];
+            [TDURLProtocol setServer: _touchServer];
         else
             _error = [error retain];
     }

@@ -66,10 +66,9 @@ int main (int argc, const char * argv[]) {
 
 
 - (void) startContinuousSyncWith: (NSURL*)otherDbURL {
-    _pull = [[_database pullFromDatabaseAtURL: otherDbURL
-                                      options: kCouchReplicationContinuous] retain];
-    _push = [[_database pushToDatabaseAtURL: otherDbURL
-                                    options: kCouchReplicationContinuous] retain];
+    _pull = [[_database pullFromDatabaseAtURL: otherDbURL] retain];
+    _push = [[_database pushToDatabaseAtURL: otherDbURL] retain];
+    _pull.continuous = _push.continuous = YES;
 }
 
 
