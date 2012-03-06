@@ -194,6 +194,15 @@
 @synthesize isNew=_isNew, autosaves=_autosaves, needsSave=_needsSave;
 
 
+- (void) setAutosaves: (bool) autosaves {
+    if (autosaves != _autosaves) {
+        _autosaves = autosaves;
+        if (_autosaves && _needsSave)
+            [self performSelector: @selector(save) withObject: nil afterDelay: 0.0];
+    }
+}
+
+
 - (void) markNeedsSave {
     if (_autosaves && !_needsSave)
         [self performSelector: @selector(save) withObject: nil afterDelay: 0.0];
