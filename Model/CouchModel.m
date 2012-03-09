@@ -401,9 +401,10 @@
     if (!value) {
         Class declaredClass = [[self class] classOfProperty: property];
         value = [declaredClass modelForDocument: doc];
+        if (!value) 
+            Warn(@"Unable to instantiate %@ from %@ -- property %@ of %@ (%@)",
+                 declaredClass, doc, property, self, _document);
     }
-    if (!value) 
-        Warn(@"Unable to decode model from property %@ of %@", property, _document);
     return value;
 }
 
