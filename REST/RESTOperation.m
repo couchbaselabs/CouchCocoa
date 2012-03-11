@@ -195,6 +195,14 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 }
 
 
+- (BOOL) wait: (NSError**)outError {
+    BOOL result = [self wait];
+    if (outError)
+        *outError = _error;
+    return result;
+}
+
+
 + (BOOL) wait: (NSSet*)operations {
     if (operations.count == 0)
         return YES;
