@@ -15,7 +15,8 @@
 
 #import "CouchResource.h"
 #import "CouchReplication.h"
-@class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchPersistentReplication, CouchQuery, CouchServer;
+@class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchModelFactory,
+        CouchPersistentReplication, CouchQuery, CouchServer;
 
 typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 
@@ -32,6 +33,7 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
     id _onChangeBlock;
     NSMutableArray* _deferredChanges;
     CouchDocumentPathMap _documentPathMap;
+    CouchModelFactory* _modelFactory;
 }
 
 /** A convenience to instantiate a CouchDatabase directly from a URL, without having to first instantiate a CouchServer.

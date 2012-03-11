@@ -55,6 +55,7 @@ static const NSUInteger kDocRetainLimit = 50;
     [_busyDocuments release];
     [_deferredChanges release];
     [_onChangeBlock release];
+    [_modelFactory release];
     [super dealloc];
 }
 
