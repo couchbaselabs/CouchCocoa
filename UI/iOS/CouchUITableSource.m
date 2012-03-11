@@ -104,10 +104,21 @@
 -(void) reloadFromQuery {
     CouchQueryEnumerator* rowEnum = _query.rows;
     if (rowEnum) {
+        NSArray *oldRows = [_rows retain];
         [_rows release];
         _rows = [rowEnum.allObjects mutableCopy];
         [self tellDelegate: @selector(couchTableSource:willUpdateFromQuery:) withObject: _query];
-        [self.tableView reloadData];
+        
+        id delegate = _tableView.delegate;
+        SEL selector = @selector(couchTableSource:updateFromQuery:previousRows:);
+        if ([delegate respondsToSelector: selector]) {
+            [delegate couchTableSource: self 
+                       updateFromQuery: _query
+                          previousRows: oldRows];
+        } else {
+            [self.tableView reloadData];
+        }
+        [oldRows release];
     }
 }
 
