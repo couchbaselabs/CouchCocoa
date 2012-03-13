@@ -44,6 +44,14 @@
 }
 
 
+- (id) initWithDocument:(CouchDocument *)document {
+    self = [super initWithDocument: document];
+    if (self)
+        self.autosaves = YES;
+    return self;
+}
+
+
 - (void)dealloc {
     self.state = kReplicationIdle;  // turns off observing
     [_statusString release];
