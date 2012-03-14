@@ -36,7 +36,7 @@ static NSString* const kChildURL = @"http://127.0.0.1:5984/_utils/image/logo.png
 {
     [super setUp];
     
-    gRESTWarnRaisesException = YES;
+    gMYWarnRaisesException = YES;
     gRESTLogLevel = kRESTLogRequestHeaders;
 }
 

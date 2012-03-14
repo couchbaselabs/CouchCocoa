@@ -15,7 +15,7 @@
 
 
 - (void) setUp {
-    gRESTWarnRaisesException = YES;
+    gMYWarnRaisesException = YES;
     [self raiseAfterFailure];
     
     _server = [[CouchServer alloc] init];  // local server
