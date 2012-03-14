@@ -18,9 +18,9 @@
 @implementation CouchDesignDocument (Embedded)
 
 
-- (TDDatabase*) touchDatabase {
-    TDServer* touchServer = [(CouchTouchDBServer*)self.database.server touchServer];
-    return [touchServer databaseNamed: self.database.relativePath];
+- (void) tellTDDatabase: (void(^)(TDDatabase*))block {
+    [(CouchTouchDBServer*)self.database.server tellTDDatabaseNamed: self.database.relativePath
+                                                                to: block];
 }
 
 
@@ -43,13 +43,15 @@
                  version: (NSString*)version
 {
     viewName = [self qualifiedName: viewName];
-    if (mapBlock) {
-        TDView* view = [self.touchDatabase viewNamed: viewName];
-        [view setMapBlock: mapBlock reduceBlock: reduceBlock version: version];
-    } else {
-        NSAssert(!reduceBlock, @"Can't set a reduce block without a map block");
-        [[self.touchDatabase existingViewNamed: viewName] deleteView];
-    }
+    [self tellTDDatabase: ^(TDDatabase* tddb) {
+        if (mapBlock) {
+            TDView* view = [tddb viewNamed: viewName];
+            [view setMapBlock: mapBlock reduceBlock: reduceBlock version: version];
+        } else {
+            NSAssert(!reduceBlock, @"Can't set a reduce block without a map block");
+            [[tddb existingViewNamed: viewName] deleteView];
+        }
+    }];
 }
 
 
@@ -58,21 +60,20 @@
 {
     filterBlock = [filterBlock copy];
     filterName = [self qualifiedName: filterName];
-    [self.touchDatabase defineFilter: filterName asBlock: ^(TDRevision* rev) {
-        return filterBlock(rev.properties);
+    [self tellTDDatabase: ^(TDDatabase* tddb) {
+        [tddb defineFilter: filterName asBlock: ^(TDRevision* rev) {
+            return filterBlock(rev.properties);
+        }];
     }];
     [filterBlock release];
 }
 
 
-- (CouchValidationBlock) validationBlock {
-    // The two types of validation blocks (and their contexts) are compatible.
-    return (CouchValidationBlock) [self.touchDatabase validationNamed: self.relativePath];
-}
-
 - (void) setValidationBlock: (CouchValidationBlock)validateBlock {
-    [self.touchDatabase defineValidation: self.relativePath
-                                 asBlock: (TDValidationBlock)validateBlock];
+    [self tellTDDatabase: ^(TDDatabase* tddb) {
+        [tddb defineValidation: self.relativePath
+                       asBlock: (TDValidationBlock)validateBlock];
+    }];
 }
 
 

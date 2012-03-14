@@ -69,7 +69,12 @@
 }
 
 
-@synthesize touchServer=_touchServer, error=_error;
+@synthesize error=_error;
+
+
+- (void) tellTDDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block {
+    [_touchServer tellDatabaseNamed: dbName to: block];
+}
 
 
 #pragma mark - ACTIVITY:

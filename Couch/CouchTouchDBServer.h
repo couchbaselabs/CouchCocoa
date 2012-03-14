@@ -7,7 +7,7 @@
 //
 
 #import "CouchServer.h"
-@class TDServer;
+@class TDServer, TDDatabase;
 
 
 /** A convenience class that glues TouchDB into CouchCocoa.
@@ -34,7 +34,9 @@
 /** If this is non-nil, the server failed to initialize. */
 @property (readonly) NSError* error;
 
-/** The underlying TouchDB server object. */
-@property (readonly) TDServer* touchServer;
+/** Invokes the given block on the TouchDB server thread, passing it a pointer to a TDDatabase.
+    You can use this to (carefully!) access the TDDatabase API.
+    Be aware that the block may not run immediately; it's queued and will be called immediately before the server handles the next REST call. */
+- (void) tellTDDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block;
 
 @end

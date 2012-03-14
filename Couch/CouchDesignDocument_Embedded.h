@@ -79,6 +79,6 @@ typedef BOOL (^CouchValidationBlock) (NSDictionary* doc,
                      block: (CouchFilterBlock)filterBlock;
 
 /** An Objective-C block that can validate any document being added/updated/deleted in this database. */
-@property (copy) CouchValidationBlock validationBlock;
+- (void) setValidationBlock: (CouchValidationBlock)validationBlock;
 
 @end
