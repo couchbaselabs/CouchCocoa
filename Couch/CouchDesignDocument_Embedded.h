@@ -48,7 +48,7 @@ typedef id TDValidationBlock;
 - (void) defineFilterNamed: (NSString*)filterName
                      block: (TDFilterBlock)filterBlock;
 
-/** An Objective-C block that can validate any document being added/updated to this database. */
-@property (copy) TDValidationBlock validationBlock;
+/** An Objective-C block that can validate any document being added/updated/deleted in this database. */
+- (void) setValidationBlock: (TDValidationBlock)validationBlock;
 
 @end
