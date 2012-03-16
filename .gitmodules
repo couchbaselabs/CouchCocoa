@@ -1,6 +1,0 @@
-[submodule "Vendor/JSONKit"]
-	path = Vendor/JSONKit
-	url = git://github.com/johnezang/JSONKit.git
-[submodule "Vendor/TouchDB"]
-	path = Vendor/TouchDB
-	url = git@github.com:couchbaselabs/TouchDB-iOS.git
