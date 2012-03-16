@@ -476,4 +476,27 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
+- (void) dumpByType {
+    NSArray* docs = [[[self getAllDocuments] rows] allObjects];
+    docs = [docs my_map:^id(CouchQueryRow* row) { return row.document; }];
+    docs = [docs sortedArrayUsingComparator: ^NSComparisonResult(id doc1, id doc2) {
+        return [([doc1 propertyForKey: @"type"] ?: @"") 
+                        compare: ([doc2 propertyForKey: @"type"] ?: @"")];
+    }];
+    Log(@"===== Dump database %@ (%u docs):", self.URL.absoluteString, (unsigned)docs.count);
+    for (CouchDocument* doc in docs) {
+        Log(@"  %@: %@", [doc propertyForKey: @"type"], doc.documentID);
+        NSDictionary* properties = doc.properties;
+        NSArray* keys = [properties.allKeys sortedArrayUsingSelector: @selector(localizedCaseInsensitiveCompare:)];
+        for (NSString* key in keys) {
+            if (![key hasPrefix: @"_"] && ![key isEqualToString: @"type"])
+                Log(@"      '%@':%@ %@", 
+                    key, 
+                    [@"            " substringFromIndex: MIN(12, key.length)],
+                    [RESTBody stringWithJSONObject: [properties objectForKey: key]]);
+        }
+    }
+}
+
+
 @end

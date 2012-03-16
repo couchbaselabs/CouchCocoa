@@ -166,6 +166,10 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 /** All currently configured persistent replications involving this database, as CouchPersistentReplication objects. */
 @property (readonly) NSArray* replications;
 
+/** For debugging: Logs the IDs and contents of all documents to the console.
+    Documents are sorted by the value of the 'type' property. */
+- (void) dumpByType;
+
 @end
 
 
