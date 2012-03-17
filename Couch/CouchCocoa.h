@@ -17,6 +17,7 @@
 #import "CouchAttachment.h"
 #import "CouchDatabase.h"
 #import "CouchDesignDocument.h"
+#import "CouchDesignDocument_Embedded.h"
 #import "CouchDocument.h"
 #import "CouchModel.h"
 #import "CouchPersistentReplication.h"

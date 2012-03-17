@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Couchbase, Inc. All rights reserved.
 //
 
-#import <CouchCocoa/CouchDatabase.h>
+#import "CouchDatabase.h"
 @class CouchDocument;
 
 
