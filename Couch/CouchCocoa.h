@@ -45,7 +45,9 @@
  
  The upper layer, whose classes are prefixed with "Couch", extends the REST layer with a class hierarchy representing CouchDB abstractions like servers, databases, documents and views. Each of these has its own subclass of RESTResource, and so each instance represents a particular URL on the CouchDB server. However, this API relieves you of having to know about the details of the CouchDB URL structure.
  
- Most of the time you'll be working with methods declared in the Couch classes, but don't forget that they inherit from the REST classes. In particular, there are some commonly used methods declared in RESTResource, like -URL and -DELETE, that are easy to overlook if you forget about inheritance.
+ Most of the time you'll be working with methods declared in the Couch classes, but don't forget that they inherit from the REST classes. In particular, there are some commonly used methods declared in RESTResource, like -URL, -GET, and -DELETE, that are easy to overlook if you forget about inheritance.
+ 
+ There is also an optional even-higher level API, the CouchModel class, that models database documents as Objective-C objects and document properties as Objective-C 2 properties. It's a little bit like a "CoreData Lite". You don't have to use it, but it can make your code a lot simpler and clearer.
  
  Some <a href="https://github.com/couchbaselabs/CouchCocoa/wiki/Example-Snippets">example code snippets</a> are available.
  

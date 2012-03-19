@@ -30,6 +30,7 @@ extern NSString* const kCouchLanguageErlang;
     @private
     NSString* _language;
     NSMutableDictionary* _views;
+    NSMutableDictionary* _filters;
     NSString* _validation;
     NSMutableDictionary* _viewOptions;
     NSString* _viewsRevisionID;
@@ -77,6 +78,18 @@ extern NSString* const kCouchLanguageErlang;
     @param mapFunction  The source code of the map function. If nil, the view will be deleted. */
 - (void) defineViewNamed: (NSString*)viewName
                      map: (NSString*)mapFunction;
+
+/** The filter functions defined in this design document.
+    @return  An NSDictionary whose keys are filter names and values are function source code. */
+@property (readonly) NSDictionary* filters;
+
+/** Sets the definition of a filter, or deletes it.
+    After making changes to one or more filters, you should call -saveChanges to PUT them back to the database.
+    If the new definition is identical to the existing one, the design document will not be marked as changed or saved back to the database.
+    @param filterName  The name of the filter, in the scope of this design doc.
+    @param filterFunction  The source code of the filter function. If nil, the filter will be deleted. */
+- (void) defineFilterNamed: (NSString*)filterName
+                asFunction: (NSString*)filterFunction;
 
 /** The validation function, a JavaScript function that validates document contents. */
 @property (copy) NSString* validation;
