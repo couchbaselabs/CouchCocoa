@@ -70,6 +70,11 @@
 - (void)couchTableSource:(CouchUITableSource*)source
      willUpdateFromQuery:(CouchLiveQuery*)query;
 
+/** Called after the query's results change to update the table view. If this method is not implemented by the delegate, reloadData is called on the table view.*/
+- (void)couchTableSource:(CouchUITableSource*)source
+         updateFromQuery:(CouchLiveQuery*)query
+            previousRows:(NSArray *)previousRows;
+
 /** Called from -tableView:cellForRowAtIndexPath: just before it returns, giving the delegate a chance to customize the new cell. */
 - (void)couchTableSource:(CouchUITableSource*)source
              willUseCell:(UITableViewCell*)cell

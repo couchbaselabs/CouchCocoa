@@ -72,6 +72,12 @@
 @synthesize error=_error;
 
 
+- (void) tellTDServer: (void (^)(TDServer*))block {
+    TDServer* server = _touchServer;
+    [_touchServer queue: ^{ block(server); }];
+}
+
+
 - (void) tellTDDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block {
     [_touchServer tellDatabaseNamed: dbName to: block];
 }
