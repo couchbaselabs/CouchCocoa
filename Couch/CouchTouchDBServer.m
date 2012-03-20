@@ -23,6 +23,7 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 // Declare essential bits of TDServer and TDURLProtocol to avoid having to #import TouchDB:
 @interface TDServer : NSObject
 - (id) initWithDirectory: (NSString*)dirPath error: (NSError**)outError;
+- (void) queue: (void(^)())block;
 - (void) tellDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block;
 @end
 
@@ -100,6 +101,12 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 
 
 @synthesize error=_error;
+
+
+- (void) tellTDServer: (void (^)(TDServer*))block {
+    TDServer* server = _touchServer;
+    [_touchServer queue: ^{ block(server); }];
+}
 
 
 - (void) tellTDDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block {

@@ -34,6 +34,11 @@
 /** If this is non-nil, the server failed to initialize. */
 @property (readonly) NSError* error;
 
+/** Invokes the given block on the TouchDB server thread, passing it a pointer to the TDServer.
+    You can use this to (carefully!) access the TDServer API.
+    Be aware that the block may not run immediately; it's queued and will be called immediately before the server handles the next REST call. */
+- (void) tellTDServer: (void (^)(TDServer*))block;
+
 /** Invokes the given block on the TouchDB server thread, passing it a pointer to a TDDatabase.
     You can use this to (carefully!) access the TDDatabase API.
     Be aware that the block may not run immediately; it's queued and will be called immediately before the server handles the next REST call. */
