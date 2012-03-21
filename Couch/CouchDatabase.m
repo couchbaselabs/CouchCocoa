@@ -465,6 +465,7 @@ static const NSUInteger kDocRetainLimit = 50;
         NSString* lastSequence = [NSString stringWithFormat: @"%u", self.lastSequenceNumber];
         _tracker = [[TDChangeTracker alloc] initWithDatabaseURL: self.URL
                                                            mode: kContinuous
+                                                      conflicts: NO
                                                    lastSequence: lastSequence
                                                          client: self];
         [_tracker start];
