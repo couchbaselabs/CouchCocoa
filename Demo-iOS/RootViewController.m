@@ -25,8 +25,6 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 
-#import "Syncpoint.h"
-
 
 @interface RootViewController ()
 @property(nonatomic, strong)CouchDatabase *database;
@@ -82,15 +80,6 @@
     self.dataSource.labelProperty = @"text";    // Document property to display in the cell label
 
     [self updateSyncURL];
-    
-    // Start up Syncpoint client:
-    NSURL* remote = [NSURL URLWithString: @"http://single.couchbase.net/"];
-    _syncpoint = [[Syncpoint alloc] initWithRemoteServer: remote];
-    _syncpoint.facebookAppID = @"251541441584833";
-    if (![_syncpoint start]) {
-        NSLog(@"Syncpoint failed to start: %@", _syncpoint.error);
-        exit(1);
-    }
 }
 
 

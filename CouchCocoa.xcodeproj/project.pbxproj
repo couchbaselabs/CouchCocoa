@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		2725993913D8B43F006E391E /* CouchCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		2725993A13D8CEB7006E391E /* CouchCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
+		272B84E91521193D00A90CB2 /* AddressCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 272B84DE1521193D00A90CB2 /* AddressCard.m */; };
+		272B84EB1521193D00A90CB2 /* AddressesDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 272B84E01521193D00A90CB2 /* AddressesDemo.xib */; };
+		272B84EC1521193D00A90CB2 /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272B84E21521193D00A90CB2 /* DemoAppController.m */; };
+		272B84ED1521193D00A90CB2 /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 272B84E41521193D00A90CB2 /* DemoQuery.m */; };
 		2739BF2D13BCE53B004829CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2C13BCE53B004829CD /* Foundation.framework */; };
 		2739BF3713BCE53C004829CD /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */; };
 		2739BF3913BCE53C004829CD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF3813BCE53C004829CD /* UIKit.framework */; };
@@ -268,6 +272,18 @@
 		270A663A13A5B36900791F4A /* Test_Couch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Test_Couch.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		270A663C13A5B3DF00791F4A /* CouchCocoa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouchCocoa.h; sourceTree = "<group>"; };
 		270A664413A5BA4600791F4A /* REST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REST.h; sourceTree = "<group>"; };
+		272B84DD1521193D00A90CB2 /* AddressCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCard.h; sourceTree = "<group>"; };
+		272B84DE1521193D00A90CB2 /* AddressCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressCard.m; sourceTree = "<group>"; };
+		272B84DF1521193D00A90CB2 /* AddressesDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AddressesDemo-Info.plist"; sourceTree = "<group>"; };
+		272B84E01521193D00A90CB2 /* AddressesDemo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressesDemo.xib; sourceTree = "<group>"; };
+		272B84E11521193D00A90CB2 /* DemoAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoAppController.h; sourceTree = "<group>"; };
+		272B84E21521193D00A90CB2 /* DemoAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoAppController.m; sourceTree = "<group>"; };
+		272B84E31521193D00A90CB2 /* DemoQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoQuery.h; sourceTree = "<group>"; };
+		272B84E41521193D00A90CB2 /* DemoQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoQuery.m; sourceTree = "<group>"; };
+		272B84E51521193D00A90CB2 /* ShoppingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShoppingDemo-Info.plist"; sourceTree = "<group>"; };
+		272B84E61521193D00A90CB2 /* ShoppingDemo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShoppingDemo.xib; sourceTree = "<group>"; };
+		272B84E71521193D00A90CB2 /* ShoppingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingItem.h; sourceTree = "<group>"; };
+		272B84E81521193D00A90CB2 /* ShoppingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingItem.m; sourceTree = "<group>"; };
 		272E9D8313A2EBDF009F18E9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		272E9D9313A2EBE0009F18E9 /* Test_REST.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Test_REST.m; sourceTree = "<group>"; };
 		273175A313CBA6B7000FF426 /* Doxyfile */ = {isa = PBXFileReference; explicitFileType = text.script; path = Doxyfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.sh; };
@@ -488,6 +504,7 @@
 				27C727F713EB232700C7ADF5 /* UI */,
 				27C90FE514F6C94D007C5E58 /* Demo-Mac */,
 				27C9101614F6CDBD007C5E58 /* Demo-iOS */,
+				272B84DC1521193D00A90CB2 /* Demo */,
 				272E9D8B13A2EBE0009F18E9 /* Test */,
 				273175A313CBA6B7000FF426 /* Doxyfile */,
 				27D5997813CE404300694B37 /* README.md */,
@@ -545,6 +562,25 @@
 				27EB94F614F7030700072752 /* libCouchCocoa.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		272B84DC1521193D00A90CB2 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				272B84DD1521193D00A90CB2 /* AddressCard.h */,
+				272B84DE1521193D00A90CB2 /* AddressCard.m */,
+				272B84DF1521193D00A90CB2 /* AddressesDemo-Info.plist */,
+				272B84E01521193D00A90CB2 /* AddressesDemo.xib */,
+				272B84E11521193D00A90CB2 /* DemoAppController.h */,
+				272B84E21521193D00A90CB2 /* DemoAppController.m */,
+				272B84E31521193D00A90CB2 /* DemoQuery.h */,
+				272B84E41521193D00A90CB2 /* DemoQuery.m */,
+				272B84E51521193D00A90CB2 /* ShoppingDemo-Info.plist */,
+				272B84E61521193D00A90CB2 /* ShoppingDemo.xib */,
+				272B84E71521193D00A90CB2 /* ShoppingItem.h */,
+				272B84E81521193D00A90CB2 /* ShoppingItem.m */,
+			);
+			path = Demo;
 			sourceTree = "<group>";
 		};
 		272E9D8213A2EBDF009F18E9 /* Frameworks */ = {
@@ -666,11 +702,16 @@
 		27C9101614F6CDBD007C5E58 /* Demo-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				27C9101714F6CDBD007C5E58 /* ConfigViewController.h */,
-				27C9101814F6CDBD007C5E58 /* ConfigViewController.m */,
-				27C9101914F6CDBD007C5E58 /* ConfigViewController.xib */,
 				27C9101A14F6CDBD007C5E58 /* DemoAppDelegate.h */,
 				27C9101B14F6CDBD007C5E58 /* DemoAppDelegate.m */,
+				27C9102A14F6CDBD007C5E58 /* RootViewController.h */,
+				27C9102B14F6CDBD007C5E58 /* RootViewController.m */,
+				27C9101714F6CDBD007C5E58 /* ConfigViewController.h */,
+				27C9101814F6CDBD007C5E58 /* ConfigViewController.m */,
+				27C9102814F6CDBD007C5E58 /* main.m */,
+				27C9102914F6CDBD007C5E58 /* MainWindow.xib */,
+				27C9102C14F6CDBD007C5E58 /* RootViewController.xib */,
+				27C9101914F6CDBD007C5E58 /* ConfigViewController.xib */,
 				27C9101C14F6CDBD007C5E58 /* EmptyAppDelegate.h */,
 				27C9101D14F6CDBD007C5E58 /* EmptyAppDelegate.m */,
 				27C9101E14F6CDBD007C5E58 /* InfoPlist.strings */,
@@ -680,11 +721,6 @@
 				27C9102514F6CDBD007C5E58 /* iOS Empty App-Info.plist */,
 				27C9102614F6CDBD007C5E58 /* list_area___checkbox___checked.png */,
 				27C9102714F6CDBD007C5E58 /* list_area___checkbox___unchecked.png */,
-				27C9102814F6CDBD007C5E58 /* main.m */,
-				27C9102914F6CDBD007C5E58 /* MainWindow.xib */,
-				27C9102A14F6CDBD007C5E58 /* RootViewController.h */,
-				27C9102B14F6CDBD007C5E58 /* RootViewController.m */,
-				27C9102C14F6CDBD007C5E58 /* RootViewController.xib */,
 			);
 			path = "Demo-iOS";
 			sourceTree = "<group>";
@@ -1113,6 +1149,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				272B84EB1521193D00A90CB2 /* AddressesDemo.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1315,6 +1352,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				272B84E91521193D00A90CB2 /* AddressCard.m in Sources */,
+				272B84EC1521193D00A90CB2 /* DemoAppController.m in Sources */,
+				272B84ED1521193D00A90CB2 /* DemoQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
