@@ -38,15 +38,30 @@ enum {
 
 
 @synthesize lastSequenceNumber = _lastSequenceNumber;
+@synthesize filter = _filter;
+@synthesize filterParams = _filterParams;
 
 
-- (id)initWithDatabase: (CouchDatabase*)database {
+- (id)initWithDatabase: (CouchDatabase*)database delegate: (NSObject <CouchChangeDelegate>*)delegate {
     NSParameterAssert(database);
+    NSParameterAssert(delegate);
     self = [super init];
     if (self) {
         _database = [database retain];
+        _delegate = [delegate retain];
+        _filterParams = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+
+- (void)dealloc
+{
+    [_database release];
+    [_delegate release];
+    [_filter release];
+    [_filterParams release];
+    [super dealloc];
 }
 
 
@@ -55,14 +70,44 @@ enum {
 }
 
 
+- (void) receivedChangeLine: (NSData*)chunk {
+    NSString* line = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
+            autorelease];
+    if (!line) {
+        Warn(@"Couldn't parse UTF-8 from _changes");
+        return;
+    }
+    if (line.length == 0 || [line isEqualToString: @"\n"])
+        return;
+    NSDictionary* change = $castIf(NSDictionary, [RESTBody JSONObjectWithString: line]);
+    if (change) {
+        [_delegate tracker: self receivedChange: change];
+    } else {
+        Warn(@"Received unparseable change line from server: %@", line);
+    }
+}
+
+
 - (BOOL) start {
     NSAssert(!_trackingInput, @"Already started");
     
     NSURL* url = _database.URL;
+    NSMutableString *path = [NSMutableString stringWithFormat:
+                         @"/%@/_changes?feed=continuous&heartbeat=300000&since=%u",
+                         _database.relativePath, _lastSequenceNumber];
+
+    if (_filter) {
+        [path appendFormat: @"&filter=%@", _filter];
+
+        [_filterParams enumerateKeysAndObjectsUsingBlock: ^(NSString *key, NSString *object, BOOL *stop) {
+            [path appendFormat:@"&%@=%@", key, [object stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+        }];
+    }
+
     NSMutableString* request = [NSMutableString stringWithFormat:
-                         @"GET /%@/_changes?feed=continuous&heartbeat=300000&since=%u HTTP/1.1\r\n"
+                         @"GET %@ HTTP/1.1\r\n"
                          @"Host: %@\r\n",
-                                _database.relativePath, _lastSequenceNumber, url.host];
+                                path, url.host];
     NSURLCredential* credential = [_database credentialForOperation: nil];
     if (credential) {
         NSString* auth = [NSString stringWithFormat: @"%@:%@",
@@ -176,8 +221,8 @@ enum {
                                                                             chunkLength)];
                 [_inputBuffer replaceBytesInRange: NSMakeRange(0, lineLength + 2 + chunkLength)
                                         withBytes: NULL length: 0];
-                // Finally! Send the line to the database to parse:
-                [_database receivedChangeLine: chunk];
+                // Finally! Parse the line and send to the delegate:
+                [self receivedChangeLine: chunk];
                 return YES;
             }
         }
