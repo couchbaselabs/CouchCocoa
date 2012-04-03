@@ -53,6 +53,21 @@
 }
 
 
+- (id) initWithServerPath: (NSString*)serverPath {
+    NSError* error;
+    TDServer* server = [[TDServer alloc] initWithDirectory: serverPath error: &error];
+    NSURL* rootURL = server ? [TDURLProtocol registerServer: server] : [TDURLProtocol rootURL];
+    
+    self = [super initWithURL: rootURL];
+    if (self) {
+        _touchServer = [server retain];
+        if (!server)
+            _error = [error retain];
+    }
+    return self;
+}
+
+
 - (id) initWithURL:(NSURL *)url {
     if (url)
         return [super initWithURL: url];
@@ -63,6 +78,7 @@
 
 - (void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_touchServer close];
     [_touchServer release];
     [_error release];
     [super dealloc];

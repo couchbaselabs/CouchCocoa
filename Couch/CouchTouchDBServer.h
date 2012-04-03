@@ -25,8 +25,12 @@
  use this shared instance among multiple threads. */
 + (CouchTouchDBServer*) sharedInstance;
 
-/** Preferred initializer. Starts up an in-process server. */
+/** Preferred initializer. Starts up an in-process server that stores its data in the default location (in the app's Application Support directory). */
 - (id)init;
+
+/** Starts up a server that stores its data at the given path.
+    @param serverPath  The filesystem path to the server directory. If it doesn't already exist it will be created. */
+- (id) initWithServerPath: (NSString*)serverPath;
 
 /** Inherited initializer, if you want to connect to a remote server for debugging purposes. */
 - (id) initWithURL: (NSURL*)url;
