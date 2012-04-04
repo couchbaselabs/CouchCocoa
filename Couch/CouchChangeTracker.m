@@ -99,8 +99,18 @@ enum {
     if (_filter) {
         [path appendFormat: @"&filter=%@", _filter];
 
-        [_filterParams enumerateKeysAndObjectsUsingBlock: ^(NSString *key, NSString *object, BOOL *stop) {
-            [path appendFormat:@"&%@=%@", key, [object stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+        [_filterParams enumerateKeysAndObjectsUsingBlock: ^(NSString *key, id object, BOOL *stop) {
+            NSString *value;
+            if ([object isKindOfClass:[NSString class]]) {
+                value = object;
+            } else {
+                value = [NSString stringWithFormat: @"%@", object];
+            }
+
+            [path appendString:@"&"];
+            [path appendString:key];
+            [path appendString:@"="];
+            [path appendString:[value stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
         }];
     }
 
