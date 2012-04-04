@@ -385,7 +385,7 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
-- (void) receivedChange: (NSDictionary*)change
+- (void) tracker: (CouchChangeTracker*)tracker receivedChange: (NSDictionary*)change
 {
     // Get & check sequence number:
     NSNumber* sequenceObj = $castIf(NSNumber, [change objectForKey: @"seq"]);
@@ -444,25 +444,7 @@ static const NSUInteger kDocRetainLimit = 50;
     _deferredChanges = nil;
     
     for (NSDictionary* change in changes) {
-        [self receivedChange: change];
-    }
-}
-
-
-- (void) receivedChangeLine: (NSData*)chunk {
-    NSString* line = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
-                            autorelease];
-    if (!line) {
-        Warn(@"Couldn't parse UTF-8 from _changes");
-        return;
-    }
-    if (line.length == 0 || [line isEqualToString: @"\n"])
-        return;
-    NSDictionary* change = $castIf(NSDictionary, [RESTBody JSONObjectWithString: line]);
-    if (change) {
-        [self receivedChange: change];
-    } else {
-        Warn(@"Received unparseable change line from server: %@", line);
+        [self tracker: _tracker receivedChange: change];
     }
 }
 
@@ -474,7 +456,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) setTracksChanges: (BOOL)track {
     if (track && !_tracker) {
-        _tracker = [[CouchChangeTracker alloc] initWithDatabase: self];
+        _tracker = [[CouchChangeTracker alloc] initWithDatabase: self delegate: self];
         _tracker.lastSequenceNumber = self.lastSequenceNumber;
         [_tracker start];
     } else if (!track && _tracker) {

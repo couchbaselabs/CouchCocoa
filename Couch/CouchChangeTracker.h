@@ -14,15 +14,24 @@
 //  and limitations under the License.
 
 #import <Foundation/Foundation.h>
+
+@class CouchChangeTracker;
 @class CouchDatabase;
 
 
-/** Reads the continuous-mode _changes feed of a database, and sends the individual lines to -[CouchDatabase receivedChangeChunk:].
-    This class is used internally by CouchDatabase and you shouldn't need to use it yourself. */
+@protocol CouchChangeDelegate <NSObject>
+
+- (void) tracker:(CouchChangeTracker*)tracker receivedChange: (NSDictionary*)change;
+
+@end
+
+
+/** Reads the continuous-mode _changes feed of a database, and sends the individual lines to -[CouchChangeDelegate receivedChange:]. */
 @interface CouchChangeTracker : NSObject <NSStreamDelegate>
 {
     @private
     CouchDatabase* _database;
+    NSObject <CouchChangeDelegate>* _delegate;
     NSUInteger _lastSequenceNumber;
     NSInputStream* _trackingInput;
     NSOutputStream* _trackingOutput;
@@ -33,9 +42,11 @@
     int _state;
 }
 
-- (id)initWithDatabase: (CouchDatabase*)database;
+- (id)initWithDatabase: (CouchDatabase*)database delegate: (NSObject <CouchChangeDelegate>*)delegate;
 
 @property (nonatomic) NSUInteger lastSequenceNumber;
+@property (nonatomic, retain) NSString *filter;
+@property (nonatomic, readonly) NSMutableDictionary *filterParams;
 
 - (BOOL) start;
 - (void) stop;

@@ -15,13 +15,14 @@
 
 #import "CouchResource.h"
 #import "CouchReplication.h"
-@class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchPersistentReplication, CouchQuery, CouchServer;
+#import "CouchChangeTracker.h"
+@class RESTCache, CouchDocument, CouchDesignDocument, CouchPersistentReplication, CouchQuery, CouchServer;
 
 typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 
 /** A CouchDB database; contains CouchDocuments.
     The CouchServer is the factory object for CouchDatabases. */
-@interface CouchDatabase : CouchResource
+@interface CouchDatabase : CouchResource <CouchChangeDelegate>
 {
     @private
     RESTCache* _docCache;
