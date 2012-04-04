@@ -26,8 +26,7 @@
 @end
 
 
-/** Reads the continuous-mode _changes feed of a database, and sends the individual lines to -[CouchChangeDelegate receivedChangeLine:].
-    This class is used internally by CouchDatabase and you shouldn't need to use it yourself. */
+/** Reads the continuous-mode _changes feed of a database, and sends the individual lines to -[CouchChangeDelegate receivedChange:]. */
 @interface CouchChangeTracker : NSObject <NSStreamDelegate>
 {
     @private

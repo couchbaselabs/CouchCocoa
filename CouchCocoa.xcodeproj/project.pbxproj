@@ -397,6 +397,8 @@
 				2739BF2113BAB412004829CD /* CouchRevision.m */,
 				278B22FA138F320A00DDD950 /* CouchAttachment.h */,
 				278B22FB138F320A00DDD950 /* CouchAttachment.m */,
+				2781244413AFA6CD0051A99D /* CouchChangeTracker.h */,
+				2781244513AFA6CD0051A99D /* CouchChangeTracker.m */,
 				27BB781613A08B520069ABA7 /* CouchDesignDocument.h */,
 				27BB781713A08B520069ABA7 /* CouchDesignDocument.m */,
 				27CB654A143A746700EEA1F2 /* CouchDesignDocument_Embedded.h */,
@@ -463,8 +465,6 @@
 			isa = PBXGroup;
 			children = (
 				27333BCA13B7E61700EF5A10 /* CouchInternal.h */,
-				2781244413AFA6CD0051A99D /* CouchChangeTracker.h */,
-				2781244513AFA6CD0051A99D /* CouchChangeTracker.m */,
 				274EB8AA14479E7B001B7DD0 /* CouchbaseMobile.h */,
 				27D083B7143FBEEA0067702F /* CouchbaseCallbacks.h */,
 				27CDEC3913C6806400C979BB /* CouchPrefix.pch */,
