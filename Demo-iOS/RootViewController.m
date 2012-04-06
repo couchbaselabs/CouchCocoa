@@ -310,7 +310,7 @@
     if (!showingSyncButton) {
         showingSyncButton = YES;
         UIBarButtonItem* syncButton =
-                [[UIBarButtonItem alloc] initWithTitle: @"Configure"
+                [[UIBarButtonItem alloc] initWithTitle: @"Pair"
                                                  style:UIBarButtonItemStylePlain
                                                 target: self 
                                                 action: @selector(configureSync:)];
