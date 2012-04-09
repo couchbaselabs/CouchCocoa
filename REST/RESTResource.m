@@ -17,6 +17,7 @@
 
 #import "RESTInternal.h"
 #import "RESTCache.h"
+#import "TDBase64.h"
 
 
 @implementation RESTResource
@@ -162,6 +163,15 @@
     if (queries) {
         NSString* urlStr = [url.absoluteString stringByAppendingString: queries];
         request.URL = [NSURL URLWithString: urlStr];
+    }
+
+    // if the URL contains basic-auth credentials, use them without waiting for 401 challenge
+    NSString* username = [request.URL user];
+    NSString* password = [request.URL password];
+    if (username && password) {
+        NSString *creds = [NSString stringWithFormat:@"%@:%@", username, password];
+        creds = [TDBase64 encode: [creds dataUsingEncoding:NSUTF8StringEncoding]];
+        [request addValue:[NSString stringWithFormat:@"Basic %@", creds] forHTTPHeaderField:@"Authorization"];
     }
 
     return request;
