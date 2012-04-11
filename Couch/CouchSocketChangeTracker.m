@@ -61,7 +61,7 @@ enum {
     _trackingOutput = (NSOutputStream*)cfOutputStream;
 #else
     [NSStream getStreamsToHost: [NSHost hostWithName: _databaseURL.host]
-                          port: _databaseURL.port.intValue
+                          port: _databaseURL.port.intValue ?: 80
                    inputStream: &_trackingInput outputStream: &_trackingOutput];
     if (!_trackingOutput)
         return NO;
