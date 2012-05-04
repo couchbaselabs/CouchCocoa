@@ -36,6 +36,9 @@
 /** Without a URL, connects to localhost on default port 5984. */
 - (id) init;
 
+/** Releases all resources used by the CouchServer instance. */
+- (void) close;
+
 /** Fetches the server's current version string. (Synchronous) */
 - (NSString*) getVersion: (NSError**)outError;
 

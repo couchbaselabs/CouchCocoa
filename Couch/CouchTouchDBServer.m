@@ -60,9 +60,11 @@
     
     self = [super initWithURL: rootURL];
     if (self) {
-        _touchServer = [server retain];
+        _touchServer = server;
         if (!server)
             _error = [error retain];
+    } else {
+        [server release];
     }
     return self;
 }
@@ -78,8 +80,7 @@
 
 - (void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_touchServer close];
-    [_touchServer release];
+    [self close];
     [_error release];
     [super dealloc];
 }
@@ -96,6 +97,14 @@
 
 - (void) tellTDDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block {
     [_touchServer tellDatabaseNamed: dbName to: block];
+}
+
+
+- (void) close {
+    [super close];
+    [_touchServer close];
+    [_touchServer release];
+    _touchServer = nil;
 }
 
 

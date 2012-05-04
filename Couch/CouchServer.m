@@ -53,6 +53,14 @@ int gCouchLogLevel = 0;
 }
 
 
+- (void) close {
+    [_replicationsQuery release];
+    _replicationsQuery = nil;
+    for (CouchDatabase* db in _dbCache.allCachedResources)
+        [db unretainDocumentCache];
+}
+
+
 - (RESTResource*) childWithPath: (NSString*)name {
     return [[[CouchResource alloc] initWithParent: self relativePath: name] autorelease];
 }
@@ -122,7 +130,7 @@ int gCouchLogLevel = 0;
     if (!_replicationsQuery) {
         CouchDatabase* replicatorDB = [self replicatorDatabase];
         replicatorDB.tracksChanges = YES;
-        _replicationsQuery = [[replicatorDB getAllDocuments] asLiveQuery];
+        _replicationsQuery = [[[replicatorDB getAllDocuments] asLiveQuery] retain];
         [_replicationsQuery wait];
     }
     return _replicationsQuery;

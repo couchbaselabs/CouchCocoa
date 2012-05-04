@@ -100,6 +100,16 @@ static const NSUInteger kDefaultRetainLimit = 50;
 }
 
 
+- (NSArray*) allCachedResources {
+    return _map.allValues;
+}
+
+
+- (void) unretainResources {
+    [_cache removeAllObjects];
+}
+
+
 - (void) forgetAllResources {
     [_map removeAllObjects];
     [_cache removeAllObjects];

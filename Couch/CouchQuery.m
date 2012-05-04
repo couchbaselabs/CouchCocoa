@@ -23,12 +23,12 @@
 
 
 @interface CouchQueryEnumerator ()
-- (id) initWithQuery: (CouchQuery*)query result: (NSDictionary*)result;
+- (id) initWithDatabase: (CouchDatabase*)db result: (NSDictionary*)result;
 @end
 
 
 @interface CouchQueryRow ()
-- (id) initWithQuery: (CouchQuery*)query result: (id)result;
+- (id) initWithDatabase: (CouchDatabase*)db result: (id)result;
 @end
 
 
@@ -69,7 +69,7 @@
 
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
             prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
-            endKeyDocID=_endKeyDocID, stale=_stale;
+            endKeyDocID=_endKeyDocID, stale=_stale, sequences=_sequences;
 
 
 - (CouchDesignDocument*) designDocument {
@@ -111,6 +111,8 @@
         [params setObject: @"true" forKey: @"?descending"];
     if (_prefetch)
         [params setObject: @"true" forKey: @"?include_docs"];
+    if (_sequences)
+        [params setObject: @"true" forKey: @"?local_seq"];
     if (_groupLevel > 0)
         [params setObject: [NSNumber numberWithUnsignedLong: _groupLevel] forKey: @"?group_level"];
     [params setObject: @"true" forKey: @"?update_seq"];
@@ -148,8 +150,8 @@
         NSArray* rows = $castIf(NSArray, [result objectForKey: @"rows"]);
         if (rows) {
             [self cacheResponse: op];
-            op.resultObject = [[[CouchQueryEnumerator alloc] initWithQuery: self
-                                                                    result: result] autorelease];
+            op.resultObject = [[[CouchQueryEnumerator alloc] initWithDatabase: self.database
+                                                                       result: result] autorelease];
         } else {
             Warn(@"Couldn't parse rows from CouchDB view response");
             error = [RESTOperation errorWithHTTPStatus: 502 message: nil URL: self.URL];
@@ -269,7 +271,8 @@
         if (rows && ![rows isEqual: _rows]) {
             COUCHLOG(@"CouchLiveQuery: ...Rows changed! (now %lu)", (unsigned long)rows.count);
             self.rows = rows;   // Triggers KVO notification
-            self.prefetch = NO;   // (prefetch disables conditional GET shortcut on next fetch)
+            if (!self.sequences)
+                self.prefetch = NO;   // (prefetch disables conditional GET shortcut on next fetch)
         
             // If this query isn't up-to-date (race condition where the db updated again after sending
             // the response), start another fetch.
@@ -293,19 +296,19 @@
 @synthesize totalCount=_totalCount, sequenceNumber=_sequenceNumber;
 
 
-- (id) initWithQuery: (CouchQuery*)query
-                rows: (NSArray*)rows
-          totalCount: (NSUInteger)totalCount
-      sequenceNumber: (NSUInteger)sequenceNumber
+- (id) initWithDatabase: (CouchDatabase*)database
+                   rows: (NSArray*)rows
+             totalCount: (NSUInteger)totalCount
+         sequenceNumber: (NSUInteger)sequenceNumber
 {
-    NSParameterAssert(query);
+    NSParameterAssert(database);
     self = [super init];
     if (self ) {
         if (!rows) {
             [self release];
             return nil;
         }
-        _query = [query retain];
+        _database = database;
         _rows = [rows retain];
         _totalCount = totalCount;
         _sequenceNumber = sequenceNumber;
@@ -313,24 +316,23 @@
     return self;
 }
 
-- (id) initWithQuery: (CouchQuery*)query result: (NSDictionary*)result {
-    return [self initWithQuery: query
-                          rows: $castIf(NSArray, [result objectForKey: @"rows"])
-                    totalCount: [[result objectForKey: @"total_rows"] intValue]
-                sequenceNumber: [[result objectForKey: @"update_seq"] intValue]];
+- (id) initWithDatabase: (CouchDatabase*)db result: (NSDictionary*)result {
+    return [self initWithDatabase: db
+                             rows: $castIf(NSArray, [result objectForKey: @"rows"])
+                       totalCount: [[result objectForKey: @"total_rows"] intValue]
+                   sequenceNumber: [[result objectForKey: @"update_seq"] intValue]];
 }
 
 - (id) copyWithZone: (NSZone*)zone {
-    return [[[self class] alloc] initWithQuery: _query
-                                          rows: _rows
-                                    totalCount: _totalCount
-                                sequenceNumber: _sequenceNumber];
+    return [[[self class] alloc] initWithDatabase: _database
+                                             rows: _rows
+                                       totalCount: _totalCount
+                                   sequenceNumber: _sequenceNumber];
 }
 
 
 - (void) dealloc
 {
-    [_query release];
     [_rows release];
     [super dealloc];
 }
@@ -352,8 +354,8 @@
 
 
 - (CouchQueryRow*) rowAtIndex: (NSUInteger)index {
-    return [[[CouchQueryRow alloc] initWithQuery: _query
-                                          result: [_rows objectAtIndex:index]]
+    return [[[CouchQueryRow alloc] initWithDatabase: _database
+                                             result: [_rows objectAtIndex:index]]
             autorelease];
 }
 
@@ -378,7 +380,7 @@
 @implementation CouchQueryRow
 
 
-- (id) initWithQuery: (CouchQuery*)query result: (id)result {
+- (id) initWithDatabase: (CouchDatabase*)database result: (id)result {
     self = [super init];
     if (self) {
         if (![result isKindOfClass: [NSDictionary class]]) {
@@ -386,7 +388,7 @@
             [self release];
             return nil;
         }
-        _query = [query retain];
+        _database = database;
         _result = [result retain];
     }
     return self;
@@ -394,13 +396,10 @@
 
 
 - (void)dealloc {
-    [_query release];
     [_result release];
     [super dealloc];
 }
 
-
-@synthesize query=_query;
 
 - (id) key                              {return [_result objectForKey: @"key"];}
 - (id) value                            {return [_result objectForKey: @"value"];}
@@ -451,9 +450,15 @@
     NSString* docID = self.documentID;
     if (!docID)
         return nil;
-    CouchDocument* doc = [_query.database documentWithID: docID];
+    CouchDocument* doc = [_database documentWithID: docID];
     [doc loadCurrentRevisionFrom: self];
     return doc;
+}
+
+
+- (UInt64) localSequence {
+    id seq = [self.documentProperties objectForKey: @"_local_seq"];
+    return $castIf(NSNumber, seq).unsignedLongLongValue;
 }
 
 

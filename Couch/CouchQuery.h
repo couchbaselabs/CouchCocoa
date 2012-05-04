@@ -35,7 +35,7 @@ typedef enum {
     NSString* _startKeyDocID;
     NSString* _endKeyDocID;
     CouchStaleness _stale;
-    BOOL _descending, _prefetch;
+    BOOL _descending, _prefetch, _sequences;
     NSArray *_keys;
     NSUInteger _groupLevel;
 }
@@ -80,6 +80,8 @@ typedef enum {
     These can be accessed via CouchQueryRow's -documentContents property. */
 @property BOOL prefetch;
 
+@property BOOL sequences;
+
 
 /** Starts an asynchronous query of the CouchDB view.
     When complete, the operation's resultObject will be the CouchQueryEnumerator. */
@@ -122,7 +124,7 @@ typedef enum {
 @interface CouchQueryEnumerator : NSEnumerator <NSCopying>
 {
     @private
-    CouchQuery* _query;
+    CouchDatabase* _database;
     NSArray* _rows;
     NSUInteger _totalCount;
     NSUInteger _nextRow;
@@ -151,11 +153,10 @@ typedef enum {
 @interface CouchQueryRow : NSObject
 {
     @private
-    CouchQuery* _query;
+    CouchDatabase* _database;
     id _result;
 }
 
-@property (readonly) CouchQuery* query;
 @property (readonly) id key;
 @property (readonly) id value;
 
@@ -187,4 +188,7 @@ typedef enum {
 /** Convenience for use in keypaths. Returns the key at the given index. */
 @property (readonly) id key0, key1, key2, key3;
 
+/** The local sequence number of the associated doc/revision.
+    Valid only if the 'sequences' and 'prefetch' properties were set in the query; otherwise returns 0. */
+@property (readonly) UInt64 localSequence;
 @end
