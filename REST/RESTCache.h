@@ -55,4 +55,10 @@
 /** Removes all resources from the cache. */
 - (void) forgetAllResources;
 
+/** Removes retained references to objects.
+    All objects that don't have anything else retaining them will be removed from the cache. */
+- (void) unretainResources;
+
+- (NSArray*) allCachedResources;
+
 @end

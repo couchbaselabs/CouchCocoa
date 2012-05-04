@@ -157,6 +157,10 @@ static const NSUInteger kDocRetainLimit = 50;
     [_docCache forgetAllResources];
 }
 
+- (void) unretainDocumentCache {
+    [_docCache unretainResources];
+}
+
 
 #pragma mark -
 #pragma mark BATCH CHANGES

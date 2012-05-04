@@ -25,11 +25,13 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 - (id) initWithDirectory: (NSString*)dirPath error: (NSError**)outError;
 - (void) queue: (void(^)())block;
 - (void) tellDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block;
+- (void) close;
 @end
 
 @interface TDURLProtocol : NSURLProtocol
 + (NSURL*) rootURL;
 + (void) setServer: (TDServer*)server;
++ (NSURL*) registerServer: (TDServer*)server;
 @end
 
 
@@ -84,6 +86,35 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 }
 
 
+- (id) initWithServerPath: (NSString*)serverPath {
+#if TARGET_OS_IPHONE
+    Class classTDURLProtocol = [TDURLProtocol class];
+    Class classTDServer = [TDServer class];
+#else
+    // On Mac OS TouchDB.framework is linked dynamically, so avoid explicit references to its
+    // classes because they'd create link errors building CouchCocoa.
+    Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
+    Class classTDServer = NSClassFromString(@"TDServer");
+    NSAssert(classTDURLProtocol && classTDServer, @"Not linked with TouchDB framework");
+#endif
+    
+    NSError* error;
+    TDServer* server = [[classTDServer alloc] initWithDirectory: serverPath error: &error];
+    NSURL* rootURL = server ? [classTDURLProtocol registerServer: server]
+                            : [classTDURLProtocol rootURL];
+    
+    self = [super initWithURL: rootURL];
+    if (self) {
+        _touchServer = server;
+        if (!server)
+            _error = [error retain];
+    } else {
+        [server release];
+    }
+    return self;
+}
+
+
 - (id) initWithURL:(NSURL *)url {
     if (url)
         return [super initWithURL: url];
@@ -94,7 +125,7 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 
 - (void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_touchServer release];
+    [self close];
     [_error release];
     [super dealloc];
 }
@@ -111,6 +142,14 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 
 - (void) tellTDDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block {
     [_touchServer tellDatabaseNamed: dbName to: block];
+}
+
+
+- (void) close {
+    [super close];
+    [_touchServer close];
+    [_touchServer release];
+    _touchServer = nil;
 }
 
 
