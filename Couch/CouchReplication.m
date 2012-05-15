@@ -61,6 +61,7 @@
     [_error release];
     [_filter release];
     [_filterParams release];
+    [_options release];
     [super dealloc];
 }
 
@@ -72,7 +73,7 @@
 
 
 @synthesize pull=_pull, createTarget=_createTarget, continuous=_continuous,
-            filter=_filter, filterParams=_filterParams;
+            filter=_filter, filterParams=_filterParams, options=_options;
 
 
 - (RESTOperation*) operationToStart: (BOOL)start {
@@ -91,6 +92,9 @@
         if (_filterParams)
             [body setObject: _filterParams forKey: @"query_params"];
     }
+    if (_options)
+        [body addEntriesFromDictionary: _options];
+
     if (!start)
         [body setObject: (id)kCFBooleanTrue forKey: @"cancel"];
     RESTResource* replicate = [[[RESTResource alloc] initWithParent: _database.server 

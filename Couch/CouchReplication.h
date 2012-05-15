@@ -34,6 +34,7 @@ typedef enum {
     bool _pull, _createTarget, _continuous;
     NSString* _filter;
     NSDictionary* _filterParams;
+    NSDictionary* _options;
     BOOL _running;
     NSString* _taskID;
     NSString* _status;
@@ -56,6 +57,10 @@ typedef enum {
 /** Parameters to pass to the filter function.
     Should be a JSON-compatible dictionary. */
 @property (nonatomic, copy) NSDictionary* filterParams;
+
+/** Other options to be provided to the replicator.
+    These will be added to the JSON body of the POST to /_replicate. */
+@property (nonatomic, copy) NSDictionary* options;
 
 
 /** Starts the replication, asynchronously.
