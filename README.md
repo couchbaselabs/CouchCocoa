@@ -1,6 +1,6 @@
 ## CouchCocoa: An Objective-C API To Apache CouchDB™
 
-CouchCocoa is a medium-level Objective-C API for working with [CouchDB][1] on iOS and Mac OS. By "medium-level" we mean:
+CouchCocoa is a medium-level Objective-C API for working with [CouchDB][1] and TouchDB[10] on iOS and Mac OS. By "medium-level" we mean:
 
 * It doesn't require knowledge of the HTTP API, only of CouchDB's architecture. You won't have to remember special paths or URL query parameters.
 * But it doesn't provide a full-fledged model layer like CoreData or ActiveRecord. You're still working with CouchDB documents as, basically, NSDictionaries, and you'll need your own mapping between those and your app's object model.
@@ -21,7 +21,7 @@ This API is not the only way to access CouchDB on iOS and Mac OS. There are othe
 
 ### Prerequisite
 
-Xcode 4.1 or later, with the SDK for iOS 4 or later. (It's possible the project might still work with Xcode 3, but we're not testing or supporting this.)
+Xcode 4.2 or later, with the SDK for iOS 4.3 or later.
 
 ### One-Time Repository Setup
 
@@ -36,7 +36,7 @@ If you cloned the CouchCocoa Git repository, aso opposed to downloading a precom
 There are two simple Mac demo apps included in the Demo/ subfolder. One lets you edit a simple list of names and email addresses, the other is a shopping list. (They actually share most of the same source code; all the differences are in their model classes and .xib files, thanks to the magic of Cocoa bindings.) To run them:
 
 0. Start a CouchDB server (such as [Couchbase Server][4]) on localhost.
-1. Open CouchDemo.xcodeproj (in Xcode 4.0.2 or later)
+1. Open CouchCocoa.xcodeproj (in Xcode 4.2 or later)
 2. Select "Demo-Addresses" or "Demo-Shopping" from the scheme pop-up in the toolbar
 3. Press the Run button
 
@@ -44,9 +44,10 @@ There are two simple Mac demo apps included in the Demo/ subfolder. One lets you
 
 (You only need to do this if you checked out the CouchCocoa source code and want to build it yourself. If you downloaded a precompiled framework, just go onto the next section.)
 
-1. Open CouchDemo.xcodeproj
-2. Select "Mac Framework" or "iOS Framework" from the scheme pop-up in the toolbar
-3. Product > Build
+1. Select which branch you want. If you're working with TouchDB, you'll want the `touchdb` branch. Otherwise use `master`. Use `git checkout' to check out the appropriate branch.
+2. Open CouchCocoa.xcodeproj
+3. Select "Mac Framework" or "iOS Framework" from the scheme pop-up in the toolbar
+4. Product > Build
 
 If you want to run the unit tests, first make sure a CouchDB server is running on localhost, then choose Product > Test.
 
@@ -81,9 +82,11 @@ You'll probably want to run a local database server on your iOS device, since it
 
 Released under the [Apache license, version 2.0][6].
 
-Contributors: [Jens Alfke](https://github.com/snej/), [J Chris Anderson](https://github.com/jchris/)
+Author: [Jens Alfke](https://github.com/snej/)
 
-Copyright 2011, Couchbase, Inc.
+With contributions from: [J Chris Anderson](https://github.com/jchris/), David Venable, Alex McArthur, Jonathon Mah, Pierre Metrailler, Sven A. Schmidt, Katrin Apel.
+
+Copyright 2012, Couchbase, Inc.
 
 
 
@@ -96,3 +99,4 @@ Copyright 2011, Couchbase, Inc.
 [7]: https://github.com/couchbaselabs/CouchCocoa/wiki/Example-Snippets
 [8]: http://couchbaselabs.github.com/CouchCocoa/docs/
 [9]: http://www.couchbase.org/get/couchbase-mobile-for-ios/current
+[10]: https://github.com/couchbaselabs/TouchDB-iOS
