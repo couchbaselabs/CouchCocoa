@@ -50,16 +50,11 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 
 
 - (id)init {
-#if TARGET_OS_IPHONE
-    Class classTDURLProtocol = [TDURLProtocol class];
-    Class classTDServer = [TDServer class];
-#else
-    // On Mac OS TouchDB.framework is linked dynamically, so avoid explicit references to its
-    // classes because they'd create link errors building CouchCocoa.
+    // Avoid link-time dependency on TouchDB; look up classes dynamically:
     Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
     Class classTDServer = NSClassFromString(@"TDServer");
-    NSAssert(classTDURLProtocol && classTDServer, @"Not linked with TouchDB framework");
-#endif
+    NSAssert(classTDURLProtocol && classTDServer,
+             @"Not linked with TouchDB framework (or you didn't use the -objc linker flag)");
         
     self = [super initWithURL: [classTDURLProtocol rootURL]];
     if (self) {
@@ -87,16 +82,12 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 
 
 - (id) initWithServerPath: (NSString*)serverPath {
-#if TARGET_OS_IPHONE
-    Class classTDURLProtocol = [TDURLProtocol class];
-    Class classTDServer = [TDServer class];
-#else
     // On Mac OS TouchDB.framework is linked dynamically, so avoid explicit references to its
     // classes because they'd create link errors building CouchCocoa.
     Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
     Class classTDServer = NSClassFromString(@"TDServer");
-    NSAssert(classTDURLProtocol && classTDServer, @"Not linked with TouchDB framework");
-#endif
+    NSAssert(classTDURLProtocol && classTDServer,
+             @"Not linked with TouchDB framework (or you didn't use the -objc linker flag)");
     
     NSError* error;
     TDServer* server = [[classTDServer alloc] initWithDirectory: serverPath error: &error];
