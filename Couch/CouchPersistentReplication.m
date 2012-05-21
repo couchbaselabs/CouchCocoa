@@ -18,6 +18,8 @@
 
 
 @interface CouchPersistentReplication ()
+@property (copy) id source;
+@property (copy) id target;
 @property (readwrite) CouchReplicationState state;
 @property (nonatomic, readwrite, retain) NSError* error;
 @property (nonatomic, readwrite) CouchReplicationMode mode;
@@ -38,8 +40,8 @@
 {
     CouchPersistentReplication* rep = [[self alloc] initWithNewDocumentInDatabase: replicatorDB];
     rep.autosaves = YES;
-    [rep setValue: source ofProperty: @"source"];
-    [rep setValue: target ofProperty: @"target"];
+    rep.source = source;
+    rep.target = target;
     return [rep autorelease];
 }
 
@@ -75,11 +77,71 @@
 }
 
 
+static inline BOOL isLocalDBName(NSString* url) {
+    return [url rangeOfString: @":"].length == 0;
+}
+
+
+- (NSString*) sourceURLStr {
+    id source = self.source;
+    if ([source isKindOfClass: [NSDictionary class]])
+        source = [source objectForKey: @"url"];
+    return $castIf(NSString, source);
+}
+
+
+- (NSString*) targetURLStr {
+    id target = self.target;
+    if ([target isKindOfClass: [NSDictionary class]])
+        target = [target objectForKey: @"url"];
+    return $castIf(NSString, target);
+}
+
+
+- (bool) pull {
+    return isLocalDBName(self.targetURLStr);
+}
+
+
+- (CouchDatabase*) localDatabase {
+    NSString* name = self.sourceURLStr;
+    if (!isLocalDBName(name))
+        name = self.targetURLStr;
+    return [self.database.server databaseNamed: name];
+}
+
+
 - (NSURL*) remoteURL {
-    NSString* urlStr = self.source;
-    if ([urlStr rangeOfString: @":"].length == 0)
-        urlStr = self.target;
+    NSString* urlStr = self.sourceURLStr;
+    if (isLocalDBName(urlStr))
+        urlStr = self.targetURLStr;
     return [NSURL URLWithString: urlStr];
+}
+
+
+- (NSDictionary*) headers {
+    id source = self.source;
+    if ([source isKindOfClass: [NSDictionary class]] 
+            && !isLocalDBName([source objectForKey: @"url"]))
+        return [source objectForKey: @"headers"];
+    id target = self.target;
+    if ([target isKindOfClass: [NSDictionary class]] 
+            && !isLocalDBName([target objectForKey: @"url"]))
+        return [target objectForKey: @"headers"];
+    return nil;
+}
+
+
+- (void) setHeaders: (NSDictionary*)headers {
+    BOOL isPull = self.pull;
+    id remote = isPull ? self.source : self.target;
+    if ([remote isKindOfClass: [NSString class]])
+        remote = [NSMutableDictionary dictionaryWithObject: remote forKey: @"url"];
+    [remote setValue: headers forKey: @"headers"];
+    if (isPull)
+        self.source = remote;
+    else
+        self.target = remote;
 }
 
 

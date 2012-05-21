@@ -35,6 +35,7 @@ typedef enum {
     NSString* _filter;
     NSDictionary* _filterParams;
     NSDictionary* _options;
+    NSDictionary* _headers;
     BOOL _running;
     NSString* _taskID;
     NSString* _status;
@@ -42,6 +43,15 @@ typedef enum {
     CouchReplicationMode _mode;
     NSError* _error;
 }
+
+/** The local database being replicated to/from. */
+@property (nonatomic, readonly) CouchDatabase* localDatabase;
+
+/** The URL of the remote database. */
+@property (nonatomic, readonly) NSURL* remoteURL;
+
+/** Does the replication pull from (as opposed to push to) the target? */
+@property (nonatomic, readonly) bool pull;
 
 /** Should the target database be created if it doesn't already exist? (Defaults to NO). */
 @property (nonatomic) bool createTarget;
@@ -58,6 +68,10 @@ typedef enum {
     Should be a JSON-compatible dictionary. */
 @property (nonatomic, copy) NSDictionary* filterParams;
 
+/** Extra HTTP headers to send in all requests to the remote server.
+    Should map strings (header names) to strings. */
+@property (nonatomic, copy) NSDictionary* headers;
+
 /** Other options to be provided to the replicator.
     These will be added to the JSON body of the POST to /_replicate. */
 @property (nonatomic, copy) NSDictionary* options;
@@ -69,11 +83,6 @@ typedef enum {
 
 /** Stops replication, asynchronously. */
 - (void) stop;
-
-@property (nonatomic, readonly) NSURL* remoteURL;
-
-/** Does the replication pull from (as opposed to push to) the target? */
-@property (nonatomic, readonly) bool pull;
 
 @property (nonatomic, readonly) BOOL running;
 

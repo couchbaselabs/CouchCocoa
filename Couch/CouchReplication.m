@@ -62,6 +62,7 @@
     [_filter release];
     [_filterParams release];
     [_options release];
+    [_headers release];
     [super dealloc];
 }
 
@@ -73,12 +74,21 @@
 
 
 @synthesize pull=_pull, createTarget=_createTarget, continuous=_continuous,
-            filter=_filter, filterParams=_filterParams, options=_options;
+            filter=_filter, filterParams=_filterParams, options=_options, headers=_headers,
+            localDatabase=_database;
 
 
 - (RESTOperation*) operationToStart: (BOOL)start {
-    NSString* source = _pull ? _remote.absoluteString : _database.relativePath;
-    NSString* target = _pull ? _database.relativePath : _remote.absoluteString;
+    id source = _pull ? _remote.absoluteString : _database.relativePath;
+    id target = _pull ? _database.relativePath : _remote.absoluteString;
+    if (_headers.count > 0) {
+        // Convert 'source' or 'target' to a dictionary so we can add 'headers' to it:
+        id *param = _pull ? &source : &target;
+        *param = [NSDictionary dictionaryWithObjectsAndKeys:
+                  *param, @"url",
+                  _headers, @"headers",
+                  nil];
+    }
     NSMutableDictionary* body = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  source, @"source",
                                  target, @"target",
