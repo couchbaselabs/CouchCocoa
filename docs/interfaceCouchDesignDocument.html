@@ -122,10 +122,14 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A shortcut that defines a simple view with no reduce function.  <a href="#a5eb130406c0e950de996ed8666a85845"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDesignDocument.html#a5d1dc02a41f0fc6fb6e9c99fb08a8da5">saveChanges</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves changes, asynchronously.  <a href="#a5d1dc02a41f0fc6fb6e9c99fb08a8da5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDesignDocument.html#a78d06c3d01c5aff6bb727d2e4839a51c">defineViewNamed:mapBlock:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines or deletes a native view.  <a href="#a78d06c3d01c5aff6bb727d2e4839a51c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDesignDocument.html#af6d34b0d360747a65ace210c787c3582">defineViewNamed:mapBlock:reduceBlock:</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines or deletes a native view with both a map and a reduce function.  <a href="#af6d34b0d360747a65ace210c787c3582"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDesignDocument.html#a7b8be4d14680492ebef8c83f596e7c89">defineViewNamed:mapBlock:version:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines or deletes a native view.  <a href="#a7b8be4d14680492ebef8c83f596e7c89"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDesignDocument.html#ab5361b36d70f54b3e3d9053f56d87c5c">defineViewNamed:mapBlock:reduceBlock:version:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines or deletes a native view with both a map and a reduce function.  <a href="#ab5361b36d70f54b3e3d9053f56d87c5c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45a383d3ba840e71c153f4415bce963a"></a><!-- doxytag: member="CouchDesignDocument::defineFilterNamed:block:" ref="a45a383d3ba840e71c153f4415bce963a" args="(NSString *filterName,[block] TDFilterBlock filterBlock)" -->
+(void)&#160;</td><td class="memItemRight" valign="bottom">- <b>defineFilterNamed:block:</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDesignDocument.html#a6f7df77f006b49c4d68a1a0067263906">setValidationBlock:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An Objective-C block that can validate any document being added/updated/deleted in this database.  <a href="#a6f7df77f006b49c4d68a1a0067263906"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDesignDocument.html#a0994b466827b310412a2265966de2974">language</a></td></tr>
@@ -139,8 +143,6 @@ Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2dc920adf3987f86020fcccd45f5389"></a><!-- doxytag: member="CouchDesignDocument::changed" ref="ab2dc920adf3987f86020fcccd45f5389" args="" -->
 BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDesignDocument.html#ab2dc920adf3987f86020fcccd45f5389">changed</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Have the contents of the design document been changed in-memory but not yet saved? <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">CouchValidateUpdateBlock&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDesignDocument.html#ab3f0cfa435264227f4febe2cb5b5ce59">validationBlock</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An Objective-C block that can validate any document being added/updated to this database.  <a href="#ab3f0cfa435264227f4febe2cb5b5ce59"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A Design Document is a special document type that contains things like map/reduce functions, and the code and static resources for CouchApps. </p>
@@ -322,7 +324,7 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 
 </div>
 </div>
-<a class="anchor" id="a78d06c3d01c5aff6bb727d2e4839a51c"></a><!-- doxytag: member="CouchDesignDocument::defineViewNamed:mapBlock:" ref="a78d06c3d01c5aff6bb727d2e4839a51c" args="(NSString *viewName,[mapBlock] CouchMapBlock mapBlock)" -->
+<a class="anchor" id="a7b8be4d14680492ebef8c83f596e7c89"></a><!-- doxytag: member="CouchDesignDocument::defineViewNamed:mapBlock:version:" ref="a7b8be4d14680492ebef8c83f596e7c89" args="(NSString *viewName,[mapBlock] TDMapBlock mapBlock,[version] NSString *version)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -335,8 +337,14 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
         <tr>
           <td class="paramkey">mapBlock:</td>
           <td></td>
-          <td class="paramtype">(CouchMapBlock)&#160;</td>
-          <td class="paramname"><em>mapBlock</em>&#160;</td>
+          <td class="paramtype">(TDMapBlock)&#160;</td>
+          <td class="paramname"><em>mapBlock</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">version:</td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -352,7 +360,7 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 
 </div>
 </div>
-<a class="anchor" id="af6d34b0d360747a65ace210c787c3582"></a><!-- doxytag: member="CouchDesignDocument::defineViewNamed:mapBlock:reduceBlock:" ref="af6d34b0d360747a65ace210c787c3582" args="(NSString *viewName,[mapBlock] CouchMapBlock mapBlock,[reduceBlock] CouchReduceBlock reduceBlock)" -->
+<a class="anchor" id="ab5361b36d70f54b3e3d9053f56d87c5c"></a><!-- doxytag: member="CouchDesignDocument::defineViewNamed:mapBlock:reduceBlock:version:" ref="ab5361b36d70f54b3e3d9053f56d87c5c" args="(NSString *viewName,[mapBlock] TDMapBlock mapBlock,[reduceBlock] TDReduceBlock reduceBlock,[version] NSString *version)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -365,14 +373,20 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
         <tr>
           <td class="paramkey">mapBlock:</td>
           <td></td>
-          <td class="paramtype">(CouchMapBlock)&#160;</td>
+          <td class="paramtype">(TDMapBlock)&#160;</td>
           <td class="paramname"><em>mapBlock</em></td>
         </tr>
         <tr>
           <td class="paramkey">reduceBlock:</td>
           <td></td>
-          <td class="paramtype">(CouchReduceBlock)&#160;</td>
-          <td class="paramname"><em>reduceBlock</em>&#160;</td>
+          <td class="paramtype">(TDReduceBlock)&#160;</td>
+          <td class="paramname"><em>reduceBlock</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">version:</td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -385,6 +399,25 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 
 <p>Defines or deletes a native view with both a map and a reduce function. </p>
 <p>For details, read the documentation of the -defineViewNamed:mapBlock: method. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6f7df77f006b49c4d68a1a0067263906"></a><!-- doxytag: member="CouchDesignDocument::setValidationBlock:" ref="a6f7df77f006b49c4d68a1a0067263906" args="(TDValidationBlock validationBlock)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) setValidationBlock: </td>
+          <td></td>
+          <td class="paramtype">(TDValidationBlock)&#160;</td>
+          <td class="paramname"><em>validationBlock</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>An Objective-C block that can validate any document being added/updated/deleted in this database. </p>
 
 </div>
 </div>
@@ -452,21 +485,6 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 
 </div>
 </div>
-<a class="anchor" id="ab3f0cfa435264227f4febe2cb5b5ce59"></a><!-- doxytag: member="CouchDesignDocument::validationBlock" ref="ab3f0cfa435264227f4febe2cb5b5ce59" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (CouchValidateUpdateBlock) validationBlock<code> [read, write, copy]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>An Objective-C block that can validate any document being added/updated to this database. </p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Couch/<a class="el" href="CouchDesignDocument_8h_source.html">CouchDesignDocument.h</a></li>
 </ul>
@@ -475,7 +493,7 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDesignDocument.html">CouchDesignDocument</a>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:05 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

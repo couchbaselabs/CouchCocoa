@@ -90,16 +90,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="indexkey"><a class="el" href="protocolCouchbaseDelegate-p.html">&lt;CouchbaseDelegate&gt;</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchbaseMobile.html">CouchbaseMobile</a></td><td class="indexvalue">Manages an embedded instance of CouchDB that runs in a background thread </td></tr>
   <tr><td class="indexkey"><a class="el" href="protocolCouchbaseValidationContext-p.html">&lt;CouchbaseValidationContext&gt;</a></td><td class="indexvalue">Context passed into a CouchValidateUpdateBlock </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interfaceCouchChangeTracker.html">CouchChangeTracker</a></td><td class="indexvalue">Reads the continuous-mode _changes feed of a database, and sends the individual lines to -[<a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> receivedChangeChunk:] </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interfaceCouchChangeTracker.html">CouchChangeTracker</a></td><td class="indexvalue">Reads the continuous-mode _changes feed of a database, and sends the individual change entries to its client's -changeTrackerReceivedChange: </td></tr>
+  <tr><td class="indexkey"><a class="el" href="protocolCouchChangeTrackerClient-p.html">&lt;CouchChangeTrackerClient&gt;</a></td><td class="indexvalue"></td></tr>
+  <tr><td class="indexkey"><a class="el" href="interfaceCouchConnectionChangeTracker.html">CouchConnectionChangeTracker</a></td><td class="indexvalue"><a class="el" href="interfaceCouchChangeTracker.html" title="Reads the continuous-mode _changes feed of a database, and sends the individual change entries to its...">CouchChangeTracker</a> that uses a regular NSURLConnection </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a></td><td class="indexvalue">A CouchDB database; contains CouchDocuments </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchDesignDocument.html">CouchDesignDocument</a></td><td class="indexvalue">A Design Document is a special document type that contains things like map/reduce functions, and the code and static resources for CouchApps </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchDocument.html">CouchDocument</a></td><td class="indexvalue">A CouchDB document, aka "record" aka "row" </td></tr>
   <tr><td class="indexkey"><a class="el" href="protocolCouchDocumentModel-p.html">&lt;CouchDocumentModel&gt;</a></td><td class="indexvalue"></td></tr>
-  <tr><td class="indexkey"><a class="el" href="interfaceCouchDynamicObject.html">CouchDynamicObject</a></td><td class="indexvalue">A generic class with runtime support for dynamic properties </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchEmbeddedServer.html">CouchEmbeddedServer</a></td><td class="indexvalue">A convenience class that glues Couchbase Mobile into CouchCocoa </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchLiveQuery.html">CouchLiveQuery</a></td><td class="indexvalue">A <a class="el" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a> subclass that automatically refreshes the result rows every time the database changes </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interfaceCouchModel.html">CouchModel</a></td><td class="indexvalue">Generic model class for Couch documents </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interfaceCouchModelFactory.html">CouchModelFactory</a></td><td class="indexvalue">A configurable mapping from <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> to <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a></td><td class="indexvalue">A model object representing a persistent replication to or from another database </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchQuery.html">CouchQuery</a></td><td class="indexvalue">Represents a CouchDB 'view', or a view-like resource like _all_documents </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchQueryEnumerator.html">CouchQueryEnumerator</a></td><td class="indexvalue">Enumerator on a CouchQuery's result rows </td></tr>
@@ -108,6 +107,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="indexkey"><a class="el" href="interfaceCouchResource.html">CouchResource</a></td><td class="indexvalue">Superclass of CouchDB model classes </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchRevision.html">CouchRevision</a></td><td class="indexvalue">A single revision of a <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceCouchServer.html">CouchServer</a></td><td class="indexvalue">The top level of a CouchDB server </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interfaceCouchSocketChangeTracker.html">CouchSocketChangeTracker</a></td><td class="indexvalue"><a class="el" href="interfaceCouchChangeTracker.html" title="Reads the continuous-mode _changes feed of a database, and sends the individual change entries to its...">CouchChangeTracker</a> implementation that uses a raw TCP socket to read the chunk-mode HTTP response </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interfaceCouchTouchDBServer.html">CouchTouchDBServer</a></td><td class="indexvalue">A convenience class that glues TouchDB into CouchCocoa </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTBase64.html">RESTBase64</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTBody.html">RESTBody</a></td><td class="indexvalue">An HTTP request/response body </td></tr>
   <tr><td class="indexkey"><a class="el" href="interfaceRESTCache.html">RESTCache</a></td><td class="indexvalue">An in-memory cache of <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a> objects </td></tr>
@@ -120,7 +121,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:04 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

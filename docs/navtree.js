@@ -9,15 +9,14 @@ var NAVTREE =
       [ "CouchbaseMobile", "interfaceCouchbaseMobile.html", null ],
       [ "<CouchbaseValidationContext>", "protocolCouchbaseValidationContext-p.html", null ],
       [ "CouchChangeTracker", "interfaceCouchChangeTracker.html", null ],
+      [ "<CouchChangeTrackerClient>", "protocolCouchChangeTrackerClient-p.html", null ],
+      [ "CouchConnectionChangeTracker", "interfaceCouchConnectionChangeTracker.html", null ],
       [ "CouchDatabase", "interfaceCouchDatabase.html", null ],
       [ "CouchDesignDocument", "interfaceCouchDesignDocument.html", null ],
       [ "CouchDocument", "interfaceCouchDocument.html", null ],
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
-      [ "CouchDynamicObject", "interfaceCouchDynamicObject.html", null ],
       [ "CouchEmbeddedServer", "interfaceCouchEmbeddedServer.html", null ],
       [ "CouchLiveQuery", "interfaceCouchLiveQuery.html", null ],
-      [ "CouchModel", "interfaceCouchModel.html", null ],
-      [ "CouchModelFactory", "interfaceCouchModelFactory.html", null ],
       [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ],
       [ "CouchQuery", "interfaceCouchQuery.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
@@ -26,6 +25,8 @@ var NAVTREE =
       [ "CouchResource", "interfaceCouchResource.html", null ],
       [ "CouchRevision", "interfaceCouchRevision.html", null ],
       [ "CouchServer", "interfaceCouchServer.html", null ],
+      [ "CouchSocketChangeTracker", "interfaceCouchSocketChangeTracker.html", null ],
+      [ "CouchTouchDBServer", "interfaceCouchTouchDBServer.html", null ],
       [ "RESTBase64", "interfaceRESTBase64.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", null ],
       [ "RESTCache", "interfaceRESTCache.html", null ],
@@ -40,14 +41,13 @@ var NAVTREE =
       [ "<CouchbaseDelegate>", "protocolCouchbaseDelegate-p.html", null ],
       [ "CouchbaseMobile", "interfaceCouchbaseMobile.html", null ],
       [ "<CouchbaseValidationContext>", "protocolCouchbaseValidationContext-p.html", null ],
-      [ "CouchChangeTracker", "interfaceCouchChangeTracker.html", null ],
-      [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
-      [ "CouchDynamicObject", "interfaceCouchDynamicObject.html", [
-        [ "CouchModel", "interfaceCouchModel.html", [
-          [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ]
-        ] ]
+      [ "CouchChangeTracker", "interfaceCouchChangeTracker.html", [
+        [ "CouchConnectionChangeTracker", "interfaceCouchConnectionChangeTracker.html", null ],
+        [ "CouchSocketChangeTracker", "interfaceCouchSocketChangeTracker.html", null ]
       ] ],
-      [ "CouchModelFactory", "interfaceCouchModelFactory.html", null ],
+      [ "<CouchChangeTrackerClient>", "protocolCouchChangeTrackerClient-p.html", null ],
+      [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
+      [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
       [ "CouchReplication", "interfaceCouchReplication.html", null ],
@@ -69,7 +69,8 @@ var NAVTREE =
           ] ],
           [ "CouchRevision", "interfaceCouchRevision.html", null ],
           [ "CouchServer", "interfaceCouchServer.html", [
-            [ "CouchEmbeddedServer", "interfaceCouchEmbeddedServer.html", null ]
+            [ "CouchEmbeddedServer", "interfaceCouchEmbeddedServer.html", null ],
+            [ "CouchTouchDBServer", "interfaceCouchTouchDBServer.html", null ]
           ] ]
         ] ]
       ] ],
@@ -82,6 +83,7 @@ var NAVTREE =
       [ "Couch/CouchbaseMobile.h", null, null ],
       [ "Couch/CouchChangeTracker.h", null, null ],
       [ "Couch/CouchCocoa.h", null, null ],
+      [ "Couch/CouchConnectionChangeTracker.h", null, null ],
       [ "Couch/CouchDatabase.h", null, null ],
       [ "Couch/CouchDesignDocument.h", null, null ],
       [ "Couch/CouchDesignDocument_Embedded.h", null, null ],
@@ -93,9 +95,8 @@ var NAVTREE =
       [ "Couch/CouchResource.h", null, null ],
       [ "Couch/CouchRevision.h", null, null ],
       [ "Couch/CouchServer.h", null, null ],
-      [ "Model/CouchDynamicObject.h", null, null ],
-      [ "Model/CouchModel.h", null, null ],
-      [ "Model/CouchModelFactory.h", null, null ],
+      [ "Couch/CouchSocketChangeTracker.h", null, null ],
+      [ "Couch/CouchTouchDBServer.h", null, null ],
       [ "REST/REST.h", null, null ],
       [ "REST/RESTBase64.h", null, null ],
       [ "REST/RESTBody.h", null, null ],

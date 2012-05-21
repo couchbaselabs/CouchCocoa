@@ -90,55 +90,68 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00007"></a>00007 <span class="comment">//</span>
 <a name="l00008"></a>00008 
 <a name="l00009"></a>00009 <span class="preprocessor">#import &quot;CouchModel.h&quot;</span>
-<a name="l00010"></a>00010 
+<a name="l00010"></a>00010 <span class="preprocessor">#import &quot;CouchReplication.h&quot;</span>
 <a name="l00011"></a>00011 
-<a name="l00013"></a>00013 <span class="keyword">typedef</span> <span class="keyword">enum</span> {
-<a name="l00014"></a>00014     kReplicationIdle,           
-<a name="l00015"></a>00015     kReplicationTriggered,      
-<a name="l00016"></a>00016     kReplicationCompleted,      
-<a name="l00017"></a>00017     kReplicationError           
-<a name="l00018"></a>00018 } CouchReplicationState;
-<a name="l00019"></a>00019 
+<a name="l00012"></a>00012 
+<a name="l00014"></a>00014 <span class="keyword">typedef</span> <span class="keyword">enum</span> {
+<a name="l00015"></a>00015     kReplicationIdle,           
+<a name="l00016"></a>00016     kReplicationTriggered,      
+<a name="l00017"></a>00017     kReplicationCompleted,      
+<a name="l00018"></a>00018     kReplicationError           
+<a name="l00019"></a>00019 } CouchReplicationState;
 <a name="l00020"></a>00020 
-<a name="l00024"></a><a class="code" href="interfaceCouchPersistentReplication.html">00024</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchPersistentReplication.html" title="A model object representing a persistent replication to or from another database.">CouchPersistentReplication</a> : <a class="code" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a>
-<a name="l00025"></a>00025 {
-<a name="l00026"></a>00026     <span class="keyword">@private</span>
-<a name="l00027"></a>00027     CouchReplicationState _state;
-<a name="l00028"></a>00028     <span class="keywordtype">unsigned</span> _completed, _total;
-<a name="l00029"></a>00029     NSString* _statusString;
-<a name="l00030"></a>00030 }
-<a name="l00031"></a>00031 
-<a name="l00034"></a><a class="code" href="interfaceCouchPersistentReplication.html#aa756e9529b43e15d029f0d28acd6a186">00034</a> <span class="keyword">@property</span> (readonly, copy) NSString* source;
-<a name="l00035"></a>00035 
-<a name="l00038"></a><a class="code" href="interfaceCouchPersistentReplication.html#a2caceb363bf159933e5253819f859e61">00038</a> <span class="keyword">@property</span> (readonly, copy) NSString* target;
-<a name="l00039"></a>00039 
-<a name="l00041"></a><a class="code" href="interfaceCouchPersistentReplication.html#aad4d927ac01c0cdd22cf5888eb4a73de">00041</a> <span class="keyword">@property</span> <span class="keywordtype">bool</span> <a class="code" href="interfaceCouchPersistentReplication.html#aad4d927ac01c0cdd22cf5888eb4a73de" title="Should the target database be created if it doesn&#39;t already exist? (Defaults to NO).">create_target</a>;
-<a name="l00042"></a>00042 
-<a name="l00044"></a><a class="code" href="interfaceCouchPersistentReplication.html#a0a14d3314f927b8d39bdbbd0a725e154">00044</a> <span class="keyword">@property</span> <span class="keywordtype">bool</span> <a class="code" href="interfaceCouchPersistentReplication.html#a0a14d3314f927b8d39bdbbd0a725e154" title="Should the replication operate continuously, copying changes as soon as the source database is modifi...">continuous</a>;
-<a name="l00045"></a>00045 
-<a name="l00049"></a><a class="code" href="interfaceCouchPersistentReplication.html#a37cae61a9ed3877093eac20bbe54640d">00049</a> <span class="keyword">@property</span> (copy) NSString* filter;
-<a name="l00050"></a>00050 
-<a name="l00053"></a><a class="code" href="interfaceCouchPersistentReplication.html#a08e53b11a97f233701f2c97bda3360c4">00053</a> <span class="keyword">@property</span> (copy) NSDictionary* query_params;
+<a name="l00021"></a>00021 
+<a name="l00025"></a><a class="code" href="interfaceCouchPersistentReplication.html">00025</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchPersistentReplication.html" title="A model object representing a persistent replication to or from another database.">CouchPersistentReplication</a> : CouchModel
+<a name="l00026"></a>00026 {
+<a name="l00027"></a>00027     <span class="keyword">@private</span>
+<a name="l00028"></a>00028     CouchReplicationState _state;
+<a name="l00029"></a>00029     <span class="keywordtype">unsigned</span> _completed, _total;
+<a name="l00030"></a>00030     NSString* _statusString;
+<a name="l00031"></a>00031     NSError* _error;
+<a name="l00032"></a>00032     CouchReplicationMode _mode;
+<a name="l00033"></a>00033 }
+<a name="l00034"></a>00034 
+<a name="l00036"></a><a class="code" href="interfaceCouchPersistentReplication.html#af6131121d2c5490bba5565dcd5ed9996">00036</a> <span class="keyword">@property</span> (readonly) <a class="code" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>* localDatabase;
+<a name="l00037"></a>00037 
+<a name="l00039"></a><a class="code" href="interfaceCouchPersistentReplication.html#a386985c32f568ee3d93f0534744e3425">00039</a> <span class="keyword">@property</span> (readonly) NSURL* remoteURL;
+<a name="l00040"></a>00040 
+<a name="l00042"></a><a class="code" href="interfaceCouchPersistentReplication.html#ab6e0f286866f214729324d9c07ac5a84">00042</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">bool</span> pull;
+<a name="l00043"></a>00043 
+<a name="l00045"></a><a class="code" href="interfaceCouchPersistentReplication.html#aad4d927ac01c0cdd22cf5888eb4a73de">00045</a> <span class="keyword">@property</span> <span class="keywordtype">bool</span> <a class="code" href="interfaceCouchPersistentReplication.html#aad4d927ac01c0cdd22cf5888eb4a73de" title="Should the target database be created if it doesn&#39;t already exist? (Defaults to NO).">create_target</a>;
+<a name="l00046"></a>00046 
+<a name="l00048"></a><a class="code" href="interfaceCouchPersistentReplication.html#a0a14d3314f927b8d39bdbbd0a725e154">00048</a> <span class="keyword">@property</span> <span class="keywordtype">bool</span> <a class="code" href="interfaceCouchPersistentReplication.html#a0a14d3314f927b8d39bdbbd0a725e154" title="Should the replication operate continuously, copying changes as soon as the source database is modifi...">continuous</a>;
+<a name="l00049"></a>00049 
+<a name="l00053"></a><a class="code" href="interfaceCouchPersistentReplication.html#a37cae61a9ed3877093eac20bbe54640d">00053</a> <span class="keyword">@property</span> (copy) NSString* filter;
 <a name="l00054"></a>00054 
-<a name="l00056"></a><a class="code" href="interfaceCouchPersistentReplication.html#ad8133fc10f1adae3961c17d5a8ac8597">00056</a> <span class="keyword">@property</span> (copy) NSArray *doc_ids;
-<a name="l00057"></a>00057 
-<a name="l00064"></a>00064 - (void) actAsUser: (NSString*)username withRoles: (NSArray*)roles;
+<a name="l00057"></a><a class="code" href="interfaceCouchPersistentReplication.html#a08e53b11a97f233701f2c97bda3360c4">00057</a> <span class="keyword">@property</span> (copy) NSDictionary* query_params;
+<a name="l00058"></a>00058 
+<a name="l00060"></a><a class="code" href="interfaceCouchPersistentReplication.html#ad8133fc10f1adae3961c17d5a8ac8597">00060</a> <span class="keyword">@property</span> (copy) NSArray *doc_ids;
+<a name="l00061"></a>00061 
+<a name="l00064"></a><a class="code" href="interfaceCouchPersistentReplication.html#a355658a793e48cd057e3af36ff622277">00064</a> <span class="keyword">@property</span> (copy) NSDictionary* headers;
 <a name="l00065"></a>00065 
-<a name="l00067"></a>00067 - (void) actAsAdmin;
-<a name="l00068"></a>00068 
-<a name="l00070"></a><a class="code" href="interfaceCouchPersistentReplication.html#a8571844e0a5a7503c756cee369bb50e3">00070</a> <span class="keyword">@property</span> (readonly) CouchReplicationState state;
-<a name="l00071"></a>00071 
-<a name="l00073"></a><a class="code" href="interfaceCouchPersistentReplication.html#ac3d44a4412d2adc604a6d2e4e73b0384">00073</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
-<a name="l00074"></a>00074 
-<a name="l00076"></a><a class="code" href="interfaceCouchPersistentReplication.html#a3323b291136cbcf733e568ab10ebf13f">00076</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078 <span class="keyword">@end</span>
+<a name="l00072"></a>00072 - (void) actAsUser: (NSString*)username withRoles: (NSArray*)roles;
+<a name="l00073"></a>00073 
+<a name="l00075"></a>00075 - (void) actAsAdmin;
+<a name="l00076"></a>00076 
+<a name="l00078"></a>00078 - (void) restart;
+<a name="l00079"></a>00079 
+<a name="l00081"></a><a class="code" href="interfaceCouchPersistentReplication.html#a8571844e0a5a7503c756cee369bb50e3">00081</a> <span class="keyword">@property</span> (readonly) CouchReplicationState state;
+<a name="l00082"></a>00082 
+<a name="l00084"></a><a class="code" href="interfaceCouchPersistentReplication.html#ac3d44a4412d2adc604a6d2e4e73b0384">00084</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
+<a name="l00085"></a>00085 
+<a name="l00087"></a><a class="code" href="interfaceCouchPersistentReplication.html#a3323b291136cbcf733e568ab10ebf13f">00087</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089 <span class="keyword">@property</span> (nonatomic, readonly, retain) NSError* error;
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091 <span class="keyword">@property</span> (nonatomic, readonly) CouchReplicationMode mode;
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchPersistentReplication.h</b>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:04 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

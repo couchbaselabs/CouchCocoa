@@ -108,6 +108,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a resource from the cache.  <a href="#a58d8bd12b5433b7de3a3164948cd5c4a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTCache.html#aedd642d2fed69474dc5b9942187daf9b">forgetAllResources</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all resources from the cache.  <a href="#aedd642d2fed69474dc5b9942187daf9b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceRESTCache.html#af9018eb4c57bd6be1be6cca309429690">unretainResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes retained references to objects.  <a href="#af9018eb4c57bd6be1be6cca309429690"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b482e0b4a803da95d4eedada4f2ba40"></a><!-- doxytag: member="RESTCache::allCachedResources" ref="a7b482e0b4a803da95d4eedada4f2ba40" args="()" -->
+(NSArray *)&#160;</td><td class="memItemRight" valign="bottom">- <b>allCachedResources</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>An in-memory cache of <a class="el" href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL.">RESTResource</a> objects. </p>
@@ -191,6 +195,25 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af9018eb4c57bd6be1be6cca309429690"></a><!-- doxytag: member="RESTCache::unretainResources" ref="af9018eb4c57bd6be1be6cca309429690" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) unretainResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Removes retained references to objects. </p>
+<p>All objects that don't have anything else retaining them will be removed from the cache. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>REST/<a class="el" href="RESTCache_8h_source.html">RESTCache.h</a></li>
 </ul>
@@ -199,7 +222,7 @@ Public Member Functions</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceRESTCache.html">RESTCache</a>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:05 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

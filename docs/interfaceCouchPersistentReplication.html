@@ -87,21 +87,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">CouchPersistentReplication Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="CouchPersistentReplication" --><!-- doxytag: inherits="CouchModel" -->
+<!-- doxytag: class="CouchPersistentReplication" -->
 <p>A model object representing a persistent replication to or from another database.  
  <a href="interfaceCouchPersistentReplication.html#details">More...</a></p>
 
 <p><code>#import &lt;<a class="el" href="CouchPersistentReplication_8h_source.html">CouchPersistentReplication.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for CouchPersistentReplication:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="interfaceCouchPersistentReplication.png" usemap="#CouchPersistentReplication_map" alt=""/>
-  <map id="CouchPersistentReplication_map" name="CouchPersistentReplication_map">
-<area href="interfaceCouchModel.html" title="Generic model class for Couch documents." alt="CouchModel" shape="rect" coords="0,56,166,80"/>
-<area href="interfaceCouchDynamicObject.html" title="A generic class with runtime support for dynamic properties." alt="CouchDynamicObject" shape="rect" coords="0,0,166,24"/>
-</map>
- </div></div>
 
 <p><a href="classCouchPersistentReplication-members.html">List of all members.</a></p>
 <table class="memberdecls">
@@ -111,12 +101,17 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the "user_ctx" property of the replication, which identifies what privileges it will run with when accessing the local server.  <a href="#abab49bcdf8f5f23f8dc5d0244f776288"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchPersistentReplication.html#a85aa3350d0912f8239f978f823459ecc">actAsAdmin</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenience that calls -actAsUser:withRoles: to specify the _admin role.  <a href="#a85aa3350d0912f8239f978f823459ecc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchPersistentReplication.html#a68599ed634d60c8ddd21610028e69aa4">restart</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Restarts a replication; this is most useful to make a non-continuous replication run again after it's stopped.  <a href="#a68599ed634d60c8ddd21610028e69aa4"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#aa756e9529b43e15d029f0d28acd6a186">source</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The source URL for the replication.  <a href="#aa756e9529b43e15d029f0d28acd6a186"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#a2caceb363bf159933e5253819f859e61">target</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The destination URL for the replication.  <a href="#a2caceb363bf159933e5253819f859e61"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#af6131121d2c5490bba5565dcd5ed9996">localDatabase</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The local database being replicated to/from.  <a href="#af6131121d2c5490bba5565dcd5ed9996"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSURL *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#a386985c32f568ee3d93f0534744e3425">remoteURL</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The remote database being replicated to/from.  <a href="#a386985c32f568ee3d93f0534744e3425"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6e0f286866f214729324d9c07ac5a84"></a><!-- doxytag: member="CouchPersistentReplication::pull" ref="ab6e0f286866f214729324d9c07ac5a84" args="" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#ab6e0f286866f214729324d9c07ac5a84">pull</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the replication pull from (as opposed to push to) the target? <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#aad4d927ac01c0cdd22cf5888eb4a73de">create_target</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Should the target database be created if it doesn't already exist? (Defaults to NO).  <a href="#aad4d927ac01c0cdd22cf5888eb4a73de"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#a0a14d3314f927b8d39bdbbd0a725e154">continuous</a></td></tr>
@@ -127,12 +122,18 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters to pass to the filter function.  <a href="#a08e53b11a97f233701f2c97bda3360c4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#ad8133fc10f1adae3961c17d5a8ac8597">doc_ids</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the documents to specify as part of the replication.  <a href="#ad8133fc10f1adae3961c17d5a8ac8597"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#a355658a793e48cd057e3af36ff622277">headers</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra HTTP headers to send in all requests to the remote server.  <a href="#a355658a793e48cd057e3af36ff622277"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">CouchReplicationState&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#a8571844e0a5a7503c756cee369bb50e3">state</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The current state of replication activity.  <a href="#a8571844e0a5a7503c756cee369bb50e3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#ac3d44a4412d2adc604a6d2e4e73b0384">completed</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of completed changes processed, if the task is active, else 0 (observable).  <a href="#ac3d44a4412d2adc604a6d2e4e73b0384"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchPersistentReplication.html#a3323b291136cbcf733e568ab10ebf13f">total</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of changes to be processed, if the task is active, else 0 (observable).  <a href="#a3323b291136cbcf733e568ab10ebf13f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fbf7fe565ab54e8931fa08d5591e256"></a><!-- doxytag: member="CouchPersistentReplication::error" ref="a9fbf7fe565ab54e8931fa08d5591e256" args="" -->
+NSError *&#160;</td><td class="memItemRight" valign="bottom"><b>error</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c4a19b6b5a1dc4d7adafc6673fc57bb"></a><!-- doxytag: member="CouchPersistentReplication::mode" ref="a5c4a19b6b5a1dc4d7adafc6673fc57bb" args="" -->
+CouchReplicationMode&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A model object representing a persistent replication to or from another database. </p>
@@ -193,36 +194,52 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a68599ed634d60c8ddd21610028e69aa4"></a><!-- doxytag: member="CouchPersistentReplication::restart" ref="a68599ed634d60c8ddd21610028e69aa4" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) restart </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Restarts a replication; this is most useful to make a non-continuous replication run again after it's stopped. </p>
+
+</div>
+</div>
 <hr/><h2>Property Documentation</h2>
-<a class="anchor" id="aa756e9529b43e15d029f0d28acd6a186"></a><!-- doxytag: member="CouchPersistentReplication::source" ref="aa756e9529b43e15d029f0d28acd6a186" args="" -->
+<a class="anchor" id="af6131121d2c5490bba5565dcd5ed9996"></a><!-- doxytag: member="CouchPersistentReplication::localDatabase" ref="af6131121d2c5490bba5565dcd5ed9996" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSString*) source<code> [read, copy]</code></td>
+          <td class="memname">- (<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>*) localDatabase<code> [read, assign]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>The source URL for the replication. </p>
-<p>This will be either a complete HTTP(s) URL or the name of a database on this server. </p>
+<p>The local database being replicated to/from. </p>
 
 </div>
 </div>
-<a class="anchor" id="a2caceb363bf159933e5253819f859e61"></a><!-- doxytag: member="CouchPersistentReplication::target" ref="a2caceb363bf159933e5253819f859e61" args="" -->
+<a class="anchor" id="a386985c32f568ee3d93f0534744e3425"></a><!-- doxytag: member="CouchPersistentReplication::remoteURL" ref="a386985c32f568ee3d93f0534744e3425" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSString*) target<code> [read, copy]</code></td>
+          <td class="memname">- (NSURL*) remoteURL<code> [read, assign]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>The destination URL for the replication. </p>
-<p>This will be either a complete HTTP(s) URL or the name of a database on this server. </p>
+<p>The remote database being replicated to/from. </p>
 
 </div>
 </div>
@@ -303,6 +320,22 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a355658a793e48cd057e3af36ff622277"></a><!-- doxytag: member="CouchPersistentReplication::headers" ref="a355658a793e48cd057e3af36ff622277" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSDictionary*) headers<code> [read, write, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Extra HTTP headers to send in all requests to the remote server. </p>
+<p>Should map strings (header names) to strings. </p>
+
+</div>
+</div>
 <a class="anchor" id="a8571844e0a5a7503c756cee369bb50e3"></a><!-- doxytag: member="CouchPersistentReplication::state" ref="a8571844e0a5a7503c756cee369bb50e3" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -356,7 +389,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchPersistentReplication.html">CouchPersistentReplication</a>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:05 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

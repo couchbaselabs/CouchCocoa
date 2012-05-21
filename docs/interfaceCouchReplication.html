@@ -118,6 +118,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>_continuous</b></td><
 NSString *&#160;</td><td class="memItemRight" valign="bottom"><b>_filter</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa468dc0cd6d0dcf30de5056dc2dd513d"></a><!-- doxytag: member="CouchReplication::_filterParams" ref="aa468dc0cd6d0dcf30de5056dc2dd513d" args="" -->
 NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_filterParams</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a006203405d63d3ec70139ab2e496aa79"></a><!-- doxytag: member="CouchReplication::_options" ref="a006203405d63d3ec70139ab2e496aa79" args="" -->
+NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_options</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ac9289e321ee551ef592b3d666f2250"></a><!-- doxytag: member="CouchReplication::_headers" ref="a5ac9289e321ee551ef592b3d666f2250" args="" -->
+NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_headers</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8bce2bb4fd2fe46472d4d5296371284"></a><!-- doxytag: member="CouchReplication::_running" ref="ad8bce2bb4fd2fe46472d4d5296371284" args="" -->
 BOOL&#160;</td><td class="memItemRight" valign="bottom"><b>_running</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52812e4f682cea5d03cb9803001810d2"></a><!-- doxytag: member="CouchReplication::_taskID" ref="a52812e4f682cea5d03cb9803001810d2" args="" -->
@@ -128,10 +132,19 @@ NSString *&#160;</td><td class="memItemRight" valign="bottom"><b>_status</b></td
 unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>_completed</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0f009ab394e26b56e8fdb4a9433709b"></a><!-- doxytag: member="CouchReplication::_total" ref="ad0f009ab394e26b56e8fdb4a9433709b" args="" -->
 unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>_total</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7b49fcbf2190e4a77d638eafab3d530"></a><!-- doxytag: member="CouchReplication::_mode" ref="aa7b49fcbf2190e4a77d638eafab3d530" args="" -->
+CouchReplicationMode&#160;</td><td class="memItemRight" valign="bottom"><b>_mode</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a485dfbace27ae2ef721191cdc6cc37d0"></a><!-- doxytag: member="CouchReplication::_error" ref="a485dfbace27ae2ef721191cdc6cc37d0" args="" -->
 NSError *&#160;</td><td class="memItemRight" valign="bottom"><b>_error</b></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a78d5451cbe59b0aad20b19b40df6947e">localDatabase</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The local database being replicated to/from.  <a href="#a78d5451cbe59b0aad20b19b40df6947e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSURL *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a2e53951ab75c5cb7200cecf11f8416f8">remoteURL</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The URL of the remote database.  <a href="#a2e53951ab75c5cb7200cecf11f8416f8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96e4c099cd222c861ada929785471906"></a><!-- doxytag: member="CouchReplication::pull" ref="a96e4c099cd222c861ada929785471906" args="" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a96e4c099cd222c861ada929785471906">pull</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the replication pull from (as opposed to push to) the target? <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a4f7dc6abe19135f688b7ab142785cced">createTarget</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Should the target database be created if it doesn't already exist? (Defaults to NO).  <a href="#a4f7dc6abe19135f688b7ab142785cced"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a5b7323b3a0f0fff0d047ed6814a0385e">continuous</a></td></tr>
@@ -140,11 +153,10 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Path of an optional filter function to run on the source server.  <a href="#a26a5d54183f4c913b5e70b07fb72a450"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a847bae4f6d0ba9f2c9866c52a9659638">filterParams</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters to pass to the filter function.  <a href="#a847bae4f6d0ba9f2c9866c52a9659638"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e53951ab75c5cb7200cecf11f8416f8"></a><!-- doxytag: member="CouchReplication::remoteURL" ref="a2e53951ab75c5cb7200cecf11f8416f8" args="" -->
-NSURL *&#160;</td><td class="memItemRight" valign="bottom"><b>remoteURL</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96e4c099cd222c861ada929785471906"></a><!-- doxytag: member="CouchReplication::pull" ref="a96e4c099cd222c861ada929785471906" args="" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a96e4c099cd222c861ada929785471906">pull</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the replication pull from (as opposed to push to) the target? <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a130c32bc41aeabae0b878d844d5763cb">headers</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra HTTP headers to send in all requests to the remote server.  <a href="#a130c32bc41aeabae0b878d844d5763cb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a1ee02a93fa52d0219a40f39efb4bf85b">options</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Other options to be provided to the replicator.  <a href="#a1ee02a93fa52d0219a40f39efb4bf85b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40675a0efcb3897b64438b47c732b73f"></a><!-- doxytag: member="CouchReplication::running" ref="a40675a0efcb3897b64438b47c732b73f" args="" -->
 BOOL&#160;</td><td class="memItemRight" valign="bottom"><b>running</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#ad8539ef404692f2c1e05f39b1a278176">status</a></td></tr>
@@ -155,6 +167,8 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><b>running</b></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of changes to be processed, if the task is active, else 0 (observable).  <a href="#a8a764ea121c757fee8eef4e303e77d1e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f3082e2d836867d1b400b88b81b1a85"></a><!-- doxytag: member="CouchReplication::error" ref="a6f3082e2d836867d1b400b88b81b1a85" args="" -->
 NSError *&#160;</td><td class="memItemRight" valign="bottom"><b>error</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeaf58c4c280888f3aec2fdd2eecb0874"></a><!-- doxytag: member="CouchReplication::mode" ref="aeaf58c4c280888f3aec2fdd2eecb0874" args="" -->
+CouchReplicationMode&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Tracks a CouchDB replication. </p>
@@ -198,6 +212,36 @@ NSError *&#160;</td><td class="memItemRight" valign="bottom"><b>error</b></td></
 </div>
 </div>
 <hr/><h2>Property Documentation</h2>
+<a class="anchor" id="a78d5451cbe59b0aad20b19b40df6947e"></a><!-- doxytag: member="CouchReplication::localDatabase" ref="a78d5451cbe59b0aad20b19b40df6947e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>*) localDatabase<code> [read, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The local database being replicated to/from. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2e53951ab75c5cb7200cecf11f8416f8"></a><!-- doxytag: member="CouchReplication::remoteURL" ref="a2e53951ab75c5cb7200cecf11f8416f8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSURL*) remoteURL<code> [read, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The URL of the remote database. </p>
+
+</div>
+</div>
 <a class="anchor" id="a4f7dc6abe19135f688b7ab142785cced"></a><!-- doxytag: member="CouchReplication::createTarget" ref="a4f7dc6abe19135f688b7ab142785cced" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -260,6 +304,38 @@ NSError *&#160;</td><td class="memItemRight" valign="bottom"><b>error</b></td></
 
 </div>
 </div>
+<a class="anchor" id="a130c32bc41aeabae0b878d844d5763cb"></a><!-- doxytag: member="CouchReplication::headers" ref="a130c32bc41aeabae0b878d844d5763cb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSDictionary*) headers<code> [read, write, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Extra HTTP headers to send in all requests to the remote server. </p>
+<p>Should map strings (header names) to strings. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1ee02a93fa52d0219a40f39efb4bf85b"></a><!-- doxytag: member="CouchReplication::options" ref="a1ee02a93fa52d0219a40f39efb4bf85b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSDictionary*) options<code> [read, write, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Other options to be provided to the replicator. </p>
+<p>These will be added to the JSON body of the POST to /_replicate. </p>
+
+</div>
+</div>
 <a class="anchor" id="ad8539ef404692f2c1e05f39b1a278176"></a><!-- doxytag: member="CouchReplication::status" ref="ad8539ef404692f2c1e05f39b1a278176" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -314,7 +390,7 @@ NSError *&#160;</td><td class="memItemRight" valign="bottom"><b>error</b></td></
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchReplication.html">CouchReplication</a>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:05 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

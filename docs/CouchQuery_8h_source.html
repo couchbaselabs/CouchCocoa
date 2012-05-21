@@ -116,7 +116,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00035"></a>00035     NSString* _startKeyDocID;
 <a name="l00036"></a>00036     NSString* _endKeyDocID;
 <a name="l00037"></a>00037     CouchStaleness _stale;
-<a name="l00038"></a>00038     BOOL _descending, _prefetch;
+<a name="l00038"></a>00038     BOOL _descending, _prefetch, _sequences;
 <a name="l00039"></a>00039     NSArray *_keys;
 <a name="l00040"></a>00040     NSUInteger _groupLevel;
 <a name="l00041"></a>00041 }
@@ -145,88 +145,90 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00078"></a>00078 
 <a name="l00081"></a><a class="code" href="interfaceCouchQuery.html#a4b40bd48cfa4ae877a147308b4cbb098">00081</a> <span class="keyword">@property</span> BOOL <a class="code" href="interfaceCouchQuery.html#a4b40bd48cfa4ae877a147308b4cbb098" title="If set to YES, the results will include the entire document contents of the associated rows...">prefetch</a>;
 <a name="l00082"></a>00082 
-<a name="l00083"></a>00083 
-<a name="l00086"></a>00086 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) start;
-<a name="l00087"></a>00087 
-<a name="l00089"></a>00089 - (CouchQueryEnumerator*) rows;
-<a name="l00090"></a>00090 
-<a name="l00092"></a>00092 - (CouchQueryEnumerator*) rowsIfChanged;
-<a name="l00093"></a>00093 
-<a name="l00094"></a>00094 
-<a name="l00096"></a>00096 - (<a class="code" href="interfaceCouchLiveQuery.html" title="A CouchQuery subclass that automatically refreshes the result rows every time the database changes...">CouchLiveQuery</a>*) asLiveQuery;
-<a name="l00097"></a>00097 
-<a name="l00098"></a>00098 <span class="keyword">@end</span>
+<a name="l00083"></a>00083 <span class="keyword">@property</span> BOOL sequences;
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 
+<a name="l00088"></a>00088 - (<a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>*) start;
+<a name="l00089"></a>00089 
+<a name="l00091"></a>00091 - (CouchQueryEnumerator*) rows;
+<a name="l00092"></a>00092 
+<a name="l00094"></a>00094 - (CouchQueryEnumerator*) rowsIfChanged;
+<a name="l00095"></a>00095 
+<a name="l00096"></a>00096 
+<a name="l00098"></a>00098 - (<a class="code" href="interfaceCouchLiveQuery.html" title="A CouchQuery subclass that automatically refreshes the result rows every time the database changes...">CouchLiveQuery</a>*) asLiveQuery;
 <a name="l00099"></a>00099 
-<a name="l00100"></a>00100 
-<a name="l00103"></a><a class="code" href="interfaceCouchLiveQuery.html">00103</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchLiveQuery.html" title="A CouchQuery subclass that automatically refreshes the result rows every time the database changes...">CouchLiveQuery</a> : <a class="code" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a>
-<a name="l00104"></a>00104 {
-<a name="l00105"></a>00105     <span class="keyword">@private</span>
-<a name="l00106"></a>00106     BOOL _observing;
-<a name="l00107"></a>00107     <a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>* _op;
-<a name="l00108"></a>00108     CouchQueryEnumerator* _rows;
-<a name="l00109"></a>00109 }
-<a name="l00110"></a>00110 
-<a name="l00112"></a><a class="code" href="interfaceCouchLiveQuery.html#a899910e1fb8557ca5f84cb5f1e5cb5f4">00112</a> <span class="keyword">@property</span> (readonly, retain) CouchQueryEnumerator* rows;
-<a name="l00113"></a>00113 
-<a name="l00116"></a>00116 - (BOOL) wait;
-<a name="l00117"></a>00117 <span class="keyword">@end</span>
-<a name="l00118"></a>00118 
-<a name="l00119"></a>00119 
-<a name="l00122"></a><a class="code" href="interfaceCouchQueryEnumerator.html">00122</a> <span class="keyword">@interface </span>CouchQueryEnumerator : NSEnumerator &lt;NSCopying&gt;
-<a name="l00123"></a>00123 {
-<a name="l00124"></a>00124     <span class="keyword">@private</span>
-<a name="l00125"></a>00125     <a class="code" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a>* _query;
-<a name="l00126"></a>00126     NSArray* _rows;
-<a name="l00127"></a>00127     NSUInteger _totalCount;
-<a name="l00128"></a>00128     NSUInteger _nextRow;
-<a name="l00129"></a>00129     NSUInteger _sequenceNumber;
-<a name="l00130"></a>00130 }
-<a name="l00131"></a>00131 
-<a name="l00133"></a>00133 <span class="keyword">@property</span> (readonly) NSUInteger count;
-<a name="l00134"></a><a class="code" href="interfaceCouchQueryEnumerator.html#ab555481e91f65d124bca9ceb94a98cdc">00134</a> 
-<a name="l00136"></a>00136 <span class="keyword">@property</span> (readonly) NSUInteger totalCount;
-<a name="l00137"></a><a class="code" href="interfaceCouchQueryEnumerator.html#a749240a5dd613c37d93624f30f1b638d">00137</a> 
-<a name="l00139"></a>00139 <span class="keyword">@property</span> (readonly) NSUInteger sequenceNumber;
-<a name="l00140"></a><a class="code" href="interfaceCouchQueryEnumerator.html#a0d8c2f9eabdf39b1d6a369b29cb7f152">00140</a> 
-<a name="l00142"></a>00142 - (CouchQueryRow*) nextRow;
-<a name="l00143"></a>00143 
-<a name="l00145"></a>00145 - (CouchQueryRow*) rowAtIndex: (NSUInteger)index;
-<a name="l00146"></a>00146 
-<a name="l00147"></a>00147 <span class="keyword">@end</span>
+<a name="l00100"></a>00100 <span class="keyword">@end</span>
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102 
+<a name="l00105"></a><a class="code" href="interfaceCouchLiveQuery.html">00105</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchLiveQuery.html" title="A CouchQuery subclass that automatically refreshes the result rows every time the database changes...">CouchLiveQuery</a> : <a class="code" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a>
+<a name="l00106"></a>00106 {
+<a name="l00107"></a>00107     <span class="keyword">@private</span>
+<a name="l00108"></a>00108     BOOL _observing;
+<a name="l00109"></a>00109     <a class="code" href="interfaceRESTOperation.html" title="Represents an HTTP request to a RESTResource, and its response.">RESTOperation</a>* _op;
+<a name="l00110"></a>00110     CouchQueryEnumerator* _rows;
+<a name="l00111"></a>00111 }
+<a name="l00112"></a>00112 
+<a name="l00114"></a><a class="code" href="interfaceCouchLiveQuery.html#a899910e1fb8557ca5f84cb5f1e5cb5f4">00114</a> <span class="keyword">@property</span> (readonly, retain) CouchQueryEnumerator* rows;
+<a name="l00115"></a>00115 
+<a name="l00118"></a>00118 - (BOOL) wait;
+<a name="l00119"></a>00119 <span class="keyword">@end</span>
+<a name="l00120"></a>00120 
+<a name="l00121"></a>00121 
+<a name="l00124"></a><a class="code" href="interfaceCouchQueryEnumerator.html">00124</a> <span class="keyword">@interface </span>CouchQueryEnumerator : NSEnumerator &lt;NSCopying&gt;
+<a name="l00125"></a>00125 {
+<a name="l00126"></a>00126     <span class="keyword">@private</span>
+<a name="l00127"></a>00127     <a class="code" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>* _database;
+<a name="l00128"></a>00128     NSArray* _rows;
+<a name="l00129"></a>00129     NSUInteger _totalCount;
+<a name="l00130"></a>00130     NSUInteger _nextRow;
+<a name="l00131"></a>00131     NSUInteger _sequenceNumber;
+<a name="l00132"></a>00132 }
+<a name="l00133"></a>00133 
+<a name="l00135"></a>00135 <span class="keyword">@property</span> (readonly) NSUInteger count;
+<a name="l00136"></a><a class="code" href="interfaceCouchQueryEnumerator.html#ab555481e91f65d124bca9ceb94a98cdc">00136</a> 
+<a name="l00138"></a>00138 <span class="keyword">@property</span> (readonly) NSUInteger totalCount;
+<a name="l00139"></a><a class="code" href="interfaceCouchQueryEnumerator.html#a749240a5dd613c37d93624f30f1b638d">00139</a> 
+<a name="l00141"></a>00141 <span class="keyword">@property</span> (readonly) NSUInteger sequenceNumber;
+<a name="l00142"></a><a class="code" href="interfaceCouchQueryEnumerator.html#a0d8c2f9eabdf39b1d6a369b29cb7f152">00142</a> 
+<a name="l00144"></a>00144 - (CouchQueryRow*) nextRow;
+<a name="l00145"></a>00145 
+<a name="l00147"></a>00147 - (CouchQueryRow*) rowAtIndex: (NSUInteger)index;
 <a name="l00148"></a>00148 
-<a name="l00149"></a>00149 
-<a name="l00151"></a>00151 <span class="keyword">@interface </span>CouchQueryRow : NSObject
-<a name="l00152"></a><a class="code" href="interfaceCouchQueryRow.html">00152</a> {
-<a name="l00153"></a>00153     <span class="keyword">@private</span>
-<a name="l00154"></a>00154     <a class="code" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a>* _query;
-<a name="l00155"></a>00155     <span class="keywordtype">id</span> _result;
-<a name="l00156"></a>00156 }
-<a name="l00157"></a>00157 
-<a name="l00158"></a>00158 <span class="keyword">@property</span> (readonly) <a class="code" href="interfaceCouchQuery.html" title="Represents a CouchDB &#39;view&#39;, or a view-like resource like _all_documents.">CouchQuery</a>* query;
-<a name="l00159"></a>00159 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> key;
-<a name="l00160"></a>00160 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> value;
-<a name="l00161"></a>00161 
-<a name="l00164"></a>00164 <span class="keyword">@property</span> (readonly) NSString* documentID;
-<a name="l00165"></a><a class="code" href="interfaceCouchQueryRow.html#ad46d4d9e6f1737b61a62ae0f2cd8d77e">00165</a> 
-<a name="l00169"></a>00169 <span class="keyword">@property</span> (readonly) NSString* sourceDocumentID;
-<a name="l00170"></a><a class="code" href="interfaceCouchQueryRow.html#a08bc348909e2dadba04a23081bded5bb">00170</a> 
-<a name="l00172"></a>00172 <span class="keyword">@property</span> (readonly) NSString* documentRevision;
-<a name="l00173"></a><a class="code" href="interfaceCouchQueryRow.html#af35c435f34e6f801c0b25feaed88a3dc">00173</a> 
-<a name="l00176"></a>00176 <span class="keyword">@property</span> (readonly) CouchDocument* document;
-<a name="l00177"></a><a class="code" href="interfaceCouchQueryRow.html#a4e706a6b4009a1992248ec5714b31983">00177</a> 
-<a name="l00180"></a>00180 <span class="keyword">@property</span> (readonly) NSDictionary* documentProperties;
-<a name="l00181"></a><a class="code" href="interfaceCouchQueryRow.html#ac906fdc8bf2651aa22f9995c15d6872e">00181</a> 
-<a name="l00185"></a>00185 - (id) keyAtIndex: (NSUInteger)index;
-<a name="l00186"></a>00186 
-<a name="l00188"></a>00188 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> key0, key1, key2, key3;
-<a name="l00189"></a><a class="code" href="interfaceCouchQueryRow.html#ab707e103665125194c22f999d4713734">00189</a> 
-<a name="l00190"></a>00190 <span class="keyword">@end</span>
+<a name="l00149"></a>00149 <span class="keyword">@end</span>
+<a name="l00150"></a>00150 
+<a name="l00151"></a>00151 
+<a name="l00153"></a>00153 <span class="keyword">@interface </span>CouchQueryRow : NSObject
+<a name="l00154"></a><a class="code" href="interfaceCouchQueryRow.html">00154</a> {
+<a name="l00155"></a>00155     <span class="keyword">@private</span>
+<a name="l00156"></a>00156     <a class="code" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>* _database;
+<a name="l00157"></a>00157     <span class="keywordtype">id</span> _result;
+<a name="l00158"></a>00158 }
+<a name="l00159"></a>00159 
+<a name="l00160"></a>00160 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> key;
+<a name="l00161"></a>00161 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> value;
+<a name="l00162"></a>00162 
+<a name="l00165"></a>00165 <span class="keyword">@property</span> (readonly) NSString* documentID;
+<a name="l00166"></a><a class="code" href="interfaceCouchQueryRow.html#ad46d4d9e6f1737b61a62ae0f2cd8d77e">00166</a> 
+<a name="l00170"></a>00170 <span class="keyword">@property</span> (readonly) NSString* sourceDocumentID;
+<a name="l00171"></a><a class="code" href="interfaceCouchQueryRow.html#a08bc348909e2dadba04a23081bded5bb">00171</a> 
+<a name="l00173"></a>00173 <span class="keyword">@property</span> (readonly) NSString* documentRevision;
+<a name="l00174"></a><a class="code" href="interfaceCouchQueryRow.html#af35c435f34e6f801c0b25feaed88a3dc">00174</a> 
+<a name="l00177"></a>00177 <span class="keyword">@property</span> (readonly) CouchDocument* document;
+<a name="l00178"></a><a class="code" href="interfaceCouchQueryRow.html#a4e706a6b4009a1992248ec5714b31983">00178</a> 
+<a name="l00181"></a>00181 <span class="keyword">@property</span> (readonly) NSDictionary* documentProperties;
+<a name="l00182"></a><a class="code" href="interfaceCouchQueryRow.html#ac906fdc8bf2651aa22f9995c15d6872e">00182</a> 
+<a name="l00186"></a>00186 - (id) keyAtIndex: (NSUInteger)index;
+<a name="l00187"></a>00187 
+<a name="l00189"></a>00189 <span class="keyword">@property</span> (readonly) <span class="keywordtype">id</span> key0, key1, key2, key3;
+<a name="l00190"></a><a class="code" href="interfaceCouchQueryRow.html#ab707e103665125194c22f999d4713734">00190</a> 
+<a name="l00193"></a>00193 <span class="keyword">@property</span> (readonly) UInt64 localSequence;
+<a name="l00194"></a><a class="code" href="interfaceCouchQueryRow.html#a8f8ea76030d3757095826dc4052ccb63">00194</a> <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchQuery.h</b>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:04 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

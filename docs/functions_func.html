@@ -91,6 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_q"><span>q</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
+      <li><a href="#index_t"><span>t</span></a></li>
       <li><a href="#index_u"><span>u</span></a></li>
       <li><a href="#index_w"><span>w</span></a></li>
     </ul>
@@ -127,7 +128,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>attachmentNamed:
 : <a class="el" href="interfaceCouchRevision.html#af24c0ca302c6a2540e0de1561b1d741c">CouchRevision</a>
-, <a class="el" href="interfaceCouchModel.html#a8d6a5741df258e9ea7a98906cb1616d1">CouchModel</a>
 </li>
 </ul>
 
@@ -146,14 +146,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>cancel
 : <a class="el" href="interfaceRESTOperation.html#a9c5a363dc442470eb0fa0215fbb638c1">RESTOperation</a>
 </li>
-<li>classForDocumentType:
-: <a class="el" href="interfaceCouchModelFactory.html#a7def082e9ede91e3bc29ee4043a22dfe">CouchModelFactory</a>
-</li>
-<li>classOfProperty:
-: <a class="el" href="interfaceCouchDynamicObject.html#aeefa1e979b0b6add79361b48714ee730">CouchDynamicObject</a>
-</li>
 <li>clearDocumentCache
 : <a class="el" href="interfaceCouchDatabase.html#a70dd409ff51d61ebc7d3415c9e7dc2f5">CouchDatabase</a>
+</li>
+<li>close
+: <a class="el" href="interfaceCouchServer.html#ac73080859eafd5b04bf5dcb57d92cbe8">CouchServer</a>
+, <a class="el" href="interfaceCouchTouchDBServer.html#ad9dc9c22df1cb928cb1d619fe0df18db">CouchTouchDBServer</a>
 </li>
 <li>compact
 : <a class="el" href="interfaceCouchDatabase.html#a395a1cf628c26bcb06ebc331991ffd77">CouchDatabase</a>
@@ -173,9 +171,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>createAttachmentWithName:type:
 : <a class="el" href="interfaceCouchRevision.html#a0ddce3bce7ca38fd1fbe62fbad37054c">CouchRevision</a>
 </li>
-<li>createAttachmentWithName:type:body:
-: <a class="el" href="interfaceCouchModel.html#a8a4b8ba6030a487b023a38c8455cbc1a">CouchModel</a>
-</li>
 <li>createdByPOST:
 : <a class="el" href="interfaceRESTResource.html#a7b7feb01d0707dbdff894eeb1f6a5a26">RESTResource</a>
 </li>
@@ -186,9 +181,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
-<li>databaseForModelProperty:
-: <a class="el" href="interfaceCouchModel.html#aca9177926e4614f6275f96d11288caae">CouchModel</a>
-</li>
 <li>databaseNamed:
 : <a class="el" href="interfaceCouchServer.html#ac32e45ec1035052b0341888fb4dd91a6">CouchServer</a>
 </li>
@@ -213,17 +205,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>defineViewNamed:map:reduce:
 : <a class="el" href="interfaceCouchDesignDocument.html#aea25955362191613cf3315f006049a8c">CouchDesignDocument</a>
 </li>
-<li>defineViewNamed:mapBlock:
-: <a class="el" href="interfaceCouchDesignDocument.html#a78d06c3d01c5aff6bb727d2e4839a51c">CouchDesignDocument</a>
+<li>defineViewNamed:mapBlock:reduceBlock:version:
+: <a class="el" href="interfaceCouchDesignDocument.html#ab5361b36d70f54b3e3d9053f56d87c5c">CouchDesignDocument</a>
 </li>
-<li>defineViewNamed:mapBlock:reduceBlock:
-: <a class="el" href="interfaceCouchDesignDocument.html#af6d34b0d360747a65ace210c787c3582">CouchDesignDocument</a>
+<li>defineViewNamed:mapBlock:version:
+: <a class="el" href="interfaceCouchDesignDocument.html#a7b8be4d14680492ebef8c83f596e7c89">CouchDesignDocument</a>
 </li>
 <li>DELETE
 : <a class="el" href="interfaceRESTResource.html#ae591764ae69c32f8f30ecf8ed5d04532">RESTResource</a>
-</li>
-<li>deleteDocument
-: <a class="el" href="interfaceCouchModel.html#ac56b79c68cb38e51a27514ef56f3fa31">CouchModel</a>
 </li>
 <li>deleteDocuments:
 : <a class="el" href="interfaceCouchDatabase.html#a27ad95f653386df188a2a6db822280d2">CouchDatabase</a>
@@ -233,9 +222,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>designDocumentWithName:
 : <a class="el" href="interfaceCouchDatabase.html#ae0ea4103c0658afeb8c34d67ef10d79b">CouchDatabase</a>
-</li>
-<li>didLoadFromDocument
-: <a class="el" href="interfaceCouchModel.html#a13aa73db92e5023fbe90000f7c60707e">CouchModel</a>
 </li>
 <li>documentWithID:
 : <a class="el" href="interfaceCouchDatabase.html#ac5064dabc1447136a83528f61c5e2708">CouchDatabase</a>
@@ -291,10 +277,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getRevisionHistory
 : <a class="el" href="interfaceCouchDocument.html#a656dd9eb4306d89451a6d75bd2ef8bb3">CouchDocument</a>
 </li>
-<li>getValueOfProperty:
-: <a class="el" href="interfaceCouchDynamicObject.html#ade9f65c71d5f45d00f439fd754da7896">CouchDynamicObject</a>
-, <a class="el" href="interfaceCouchModel.html#a2c0b406cb0278a80cbc51fc96ec86837">CouchModel</a>
-</li>
 <li>getVersion:
 : <a class="el" href="interfaceCouchServer.html#a5a2f9d7dd597b59287b3b03bcf53db84">CouchServer</a>
 </li>
@@ -302,14 +284,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
-<li>idForNewDocumentInDatabase:
-: <a class="el" href="interfaceCouchModel.html#a33028beee6c908ada9cb4e9be5d7dca9">CouchModel</a>
-</li>
 <li>init
 : <a class="el" href="interfaceCouchbaseMobile.html#aeb94718c65d9620cc188fc0ca7efb40d">CouchbaseMobile</a>
-, <a class="el" href="interfaceCouchServer.html#a2265ce32dc22e859fc66db11e36a7aa1">CouchServer</a>
-, <a class="el" href="interfaceCouchModel.html#a92896d1106ca5012c96e60107a680ab1">CouchModel</a>
 , <a class="el" href="interfaceCouchEmbeddedServer.html#a395af1ec6a8f9b692b8b84bc3b68e767">CouchEmbeddedServer</a>
+, <a class="el" href="interfaceCouchTouchDBServer.html#a751750680aa8284c0a309896ef8fd2bd">CouchTouchDBServer</a>
+, <a class="el" href="interfaceCouchServer.html#a2265ce32dc22e859fc66db11e36a7aa1">CouchServer</a>
 </li>
 <li>initUntitledWithParent:
 : <a class="el" href="interfaceRESTResource.html#a0f3ad4a9d5d25715ff94edbabdef7ffa">RESTResource</a>
@@ -323,21 +302,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>initWithData:contentType:
 : <a class="el" href="interfaceRESTBody.html#aaf860518d037d64c300ca35f71d20d9e">RESTBody</a>
 </li>
-<li>initWithDocument:
-: <a class="el" href="interfaceCouchModel.html#a81b7a07079896f59a03c4a388e1d443b">CouchModel</a>
-</li>
-<li>initWithNewDocumentInDatabase:
-: <a class="el" href="interfaceCouchModel.html#aa3138fe8f026c4a27b84e7ba94da4e3e">CouchModel</a>
-</li>
 <li>initWithParent:relativePath:
 : <a class="el" href="interfaceRESTResource.html#a4b5742e374cb3f9eb42f339859589ff2">RESTResource</a>
 </li>
 <li>initWithResource:request:
 : <a class="el" href="interfaceRESTOperation.html#a5bf06f0cb752a85b2f6ed50664e3e3bf">RESTOperation</a>
 </li>
+<li>initWithServerPath:
+: <a class="el" href="interfaceCouchTouchDBServer.html#a09968ea6c9f257e0940524368970de06">CouchTouchDBServer</a>
+</li>
 <li>initWithURL:
 : <a class="el" href="interfaceCouchServer.html#ab16e6429b8132ae19d8b72226e3b4703">CouchServer</a>
 , <a class="el" href="interfaceRESTResource.html#a7f48a64185114282343f2067d9939619">RESTResource</a>
+, <a class="el" href="interfaceCouchTouchDBServer.html#a921fa23b51a172971cb5aa9397e24fa2">CouchTouchDBServer</a>
 , <a class="el" href="interfaceCouchEmbeddedServer.html#a809b413f038d2aed21bed5f8cdd09f44">CouchEmbeddedServer</a>
 </li>
 <li>installDefaultDatabase:
@@ -373,13 +350,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>mapFunctionOfViewNamed:
 : <a class="el" href="interfaceCouchDesignDocument.html#a9aa12e57b591d66f258f2f934669f84b">CouchDesignDocument</a>
 </li>
-<li>markExternallyChanged
-: <a class="el" href="interfaceCouchModel.html#a13e10962997149aca9870e2a4fcbb6e2">CouchModel</a>
-</li>
-<li>modelForDocument:
-: <a class="el" href="interfaceCouchModel.html#a70f250e676f3c37f434f7dc86b6e51e9">CouchModel</a>
-, <a class="el" href="interfaceCouchModelFactory.html#a008c9a843c7e0ef500c9de0c2b4e3e09">CouchModelFactory</a>
-</li>
 </ul>
 
 
@@ -410,15 +380,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>prettyStringWithJSONObject:
 : <a class="el" href="interfaceRESTBody.html#a8af6649ef997a83d14030d2c25a16225">RESTBody</a>
 </li>
-<li>propertiesToSave
-: <a class="el" href="interfaceCouchModel.html#a2b2ac66c9a991a9b7ff4c602fe6cadef">CouchModel</a>
-</li>
 <li>propertyForKey:
 : <a class="el" href="interfaceCouchDocument.html#a6a2f5c62b0fc6f0d2359c130b24626e5">CouchDocument</a>
 , <a class="el" href="interfaceCouchRevision.html#a54701efa2d8b65a2f4debfeae4bc4e46">CouchRevision</a>
-</li>
-<li>propertyNames
-: <a class="el" href="interfaceCouchDynamicObject.html#aadbf5cfea340fb4763e7ed493945f6b2">CouchDynamicObject</a>
 </li>
 <li>pullFromDatabaseAtURL:
 : <a class="el" href="interfaceCouchDatabase.html#a11ecd1674bd8533dbf9c1f7f9d29f180">CouchDatabase</a>
@@ -445,8 +409,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="interfaceRESTResource.html#a90c79ee967837c5e0b7883a8d4d5d5f2">RESTResource</a>
 </li>
 <li>putProperties:
-: <a class="el" href="interfaceCouchDocument.html#a678ae5c5757952216c94f31c4e7c1186">CouchDocument</a>
-, <a class="el" href="interfaceCouchRevision.html#a7f43bd23f952ff4d70b2bcec29d1be2b">CouchRevision</a>
+: <a class="el" href="interfaceCouchRevision.html#a7f43bd23f952ff4d70b2bcec29d1be2b">CouchRevision</a>
+, <a class="el" href="interfaceCouchDocument.html#a678ae5c5757952216c94f31c4e7c1186">CouchDocument</a>
 </li>
 </ul>
 
@@ -461,12 +425,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>reduceFunctionOfViewNamed:
 : <a class="el" href="interfaceCouchDesignDocument.html#af8e765b6c87b54bdc9107379a83f4f38">CouchDesignDocument</a>
-</li>
-<li>registerClass:forDocumentType:
-: <a class="el" href="interfaceCouchModelFactory.html#a304075c1bf404ec0005684a2c7d1860b">CouchModelFactory</a>
-</li>
-<li>removeAttachmentNamed:
-: <a class="el" href="interfaceCouchModel.html#a5625af6098ee1d1ff96a6d771b9764c5">CouchModel</a>
 </li>
 <li>replicateWithURL:exclusively:
 : <a class="el" href="interfaceCouchDatabase.html#a9ceb30e194df080959ec4a9dde91d945">CouchDatabase</a>
@@ -497,6 +455,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>restart
 : <a class="el" href="interfaceCouchbaseMobile.html#a1a9ca4ba77170f2d758962479f7e3e39">CouchbaseMobile</a>
+, <a class="el" href="interfaceCouchPersistentReplication.html#a68599ed634d60c8ddd21610028e69aa4">CouchPersistentReplication</a>
 </li>
 <li>revisionWithID:
 : <a class="el" href="interfaceCouchDocument.html#a511a8b00f2affff1fec9601b0d56eae2">CouchDocument</a>
@@ -514,14 +473,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
-<li>save
-: <a class="el" href="interfaceCouchModel.html#a1388498ae6ae967c7ae6ba7ac90436f2">CouchModel</a>
-</li>
 <li>saveChanges
 : <a class="el" href="interfaceCouchDesignDocument.html#a5d1dc02a41f0fc6fb6e9c99fb08a8da5">CouchDesignDocument</a>
-</li>
-<li>saveModels:
-: <a class="el" href="interfaceCouchModel.html#a555ee3fd25954aae0018b0e1ffa0a18b">CouchModel</a>
 </li>
 <li>sendHTTP:parameters:
 : <a class="el" href="interfaceRESTResource.html#ab5f1d090e19cb42e792110bb32849ab9">RESTResource</a>
@@ -535,16 +488,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>setProtectionSpace:
 : <a class="el" href="interfaceRESTResource.html#aea89722dffd4dc7f6ee05d54e48c60f9">RESTResource</a>
 </li>
+<li>setValidationBlock:
+: <a class="el" href="interfaceCouchDesignDocument.html#a6f7df77f006b49c4d68a1a0067263906">CouchDesignDocument</a>
+</li>
 <li>setValue:forHeader:
 : <a class="el" href="interfaceRESTOperation.html#a549bc6529018af8bb8eddab14e45c4ac">RESTOperation</a>
 </li>
-<li>setValue:ofProperty:
-: <a class="el" href="interfaceCouchDynamicObject.html#a7141c1eca3a1fd9e01140a4cc07d029b">CouchDynamicObject</a>
-, <a class="el" href="interfaceCouchModel.html#a108cad119ff627a2c665d1c988c8937f">CouchModel</a>
-</li>
 <li>sharedInstance
 : <a class="el" href="interfaceCouchEmbeddedServer.html#a466b357eb373534c786626a00c03c8d7">CouchEmbeddedServer</a>
-, <a class="el" href="interfaceCouchModelFactory.html#a2503427bb5bc1d697c92e39650f97c57">CouchModelFactory</a>
+, <a class="el" href="interfaceCouchTouchDBServer.html#a673efb5cb853e1d9a9b3555ebc39a7bf">CouchTouchDBServer</a>
 </li>
 <li>slowQueryWithMap:
 : <a class="el" href="interfaceCouchDatabase.html#a7029724505256f6dcbb32ac4527cb4b2">CouchDatabase</a>
@@ -553,9 +505,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="interfaceCouchDatabase.html#a885f5731cf9285e3979e10d558eb5b27">CouchDatabase</a>
 </li>
 <li>start
-: <a class="el" href="interfaceRESTOperation.html#ad80f8abe72f31a1d8192ccefd3f00a84">RESTOperation</a>
+: <a class="el" href="interfaceCouchQuery.html#ac46be0005c3cdd5f24f44b7246c3d45d">CouchQuery</a>
 , <a class="el" href="interfaceCouchReplication.html#adc5ff0fc26fc4a0eba7010713e485b8d">CouchReplication</a>
-, <a class="el" href="interfaceCouchQuery.html#ac46be0005c3cdd5f24f44b7246c3d45d">CouchQuery</a>
+, <a class="el" href="interfaceRESTOperation.html#ad80f8abe72f31a1d8192ccefd3f00a84">RESTOperation</a>
 , <a class="el" href="interfaceCouchbaseMobile.html#a870675954f299e5fb9dd53de7ac176ee">CouchbaseMobile</a>
 </li>
 <li>start:
@@ -573,7 +525,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </ul>
 
 
+<h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>tellTDDatabaseNamed:to:
+: <a class="el" href="interfaceCouchTouchDBServer.html#aaa246884de74a78a56dd1bbac2e27b21">CouchTouchDBServer</a>
+</li>
+<li>tellTDServer:
+: <a class="el" href="interfaceCouchTouchDBServer.html#a3eaf5bcd0e9e0fe3d2ae800cae81e695">CouchTouchDBServer</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_u"></a>- u -</h3><ul>
+<li>unretainResources
+: <a class="el" href="interfaceRESTCache.html#af9018eb4c57bd6be1be6cca309429690">RESTCache</a>
+</li>
 <li>untitledDocument
 : <a class="el" href="interfaceCouchDatabase.html#ac7ef980b5cc86f2e613332c53b1ff44b">CouchDatabase</a>
 </li>
@@ -586,14 +551,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="interfaceRESTOperation.html#a13e2754a503111dee6aadc1f9c987028">RESTOperation</a>
 </li>
 <li>wait:
-: <a class="el" href="interfaceRESTOperation.html#abcd3ea9435ddcbb5d452f2b4857d4268">RESTOperation</a>
+: <a class="el" href="interfaceRESTOperation.html#a0a323542eb3f7e5a1c8c8743e5e74a8a">RESTOperation</a>
 </li>
 </ul>
 </div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:04 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

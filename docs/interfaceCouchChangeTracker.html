@@ -82,34 +82,73 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#properties">Properties</a>  </div>
   <div class="headertitle">
 <div class="title">CouchChangeTracker Class Reference</div>  </div>
 </div>
 <div class="contents">
 <!-- doxytag: class="CouchChangeTracker" -->
-<p>Reads the continuous-mode _changes feed of a database, and sends the individual lines to -[<a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> receivedChangeChunk:].  
+<p>Reads the continuous-mode _changes feed of a database, and sends the individual change entries to its client's -changeTrackerReceivedChange:.  
  <a href="interfaceCouchChangeTracker.html#details">More...</a></p>
 
 <p><code>#import &lt;<a class="el" href="CouchChangeTracker_8h_source.html">CouchChangeTracker.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for CouchChangeTracker:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="interfaceCouchChangeTracker.png" usemap="#CouchChangeTracker_map" alt=""/>
+  <map id="CouchChangeTracker_map" name="CouchChangeTracker_map">
+<area href="interfaceCouchConnectionChangeTracker.html" title="CouchChangeTracker that uses a regular NSURLConnection." alt="CouchConnectionChangeTracker" shape="rect" coords="0,56,201,80"/>
+<area href="interfaceCouchSocketChangeTracker.html" title="CouchChangeTracker implementation that uses a raw TCP socket to read the chunk-mode HTTP response..." alt="CouchSocketChangeTracker" shape="rect" coords="211,56,412,80"/>
+</map>
+ </div></div>
 
 <p><a href="classCouchChangeTracker-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae728b8b46142e92f7d64f9329f7392da"></a><!-- doxytag: member="CouchChangeTracker::initWithDatabase:" ref="ae728b8b46142e92f7d64f9329f7392da" args="(CouchDatabase *database)" -->
-(id)&#160;</td><td class="memItemRight" valign="bottom">- <b>initWithDatabase:</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac76769609d2f9c7c207ce5fd80886905"></a><!-- doxytag: member="CouchChangeTracker::initWithDatabaseURL:mode:lastSequence:client:" ref="ac76769609d2f9c7c207ce5fd80886905" args="(NSURL *databaseURL,[mode] CouchChangeTrackerMode mode,[lastSequence] NSUInteger lastSequence,[client] id&lt; CouchChangeTrackerClient &gt; client)" -->
+(id)&#160;</td><td class="memItemRight" valign="bottom">- <b>initWithDatabaseURL:mode:lastSequence:client:</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b06217df7e4f387c7013298f630a36d"></a><!-- doxytag: member="CouchChangeTracker::start" ref="a7b06217df7e4f387c7013298f630a36d" args="()" -->
 (BOOL)&#160;</td><td class="memItemRight" valign="bottom">- <b>start</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cd169af274b973ed1345eb5fa5ea0a6"></a><!-- doxytag: member="CouchChangeTracker::stop" ref="a4cd169af274b973ed1345eb5fa5ea0a6" args="()" -->
 (void)&#160;</td><td class="memItemRight" valign="bottom">- <b>stop</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8619057494a7d21f344857804b6a1f3b"></a><!-- doxytag: member="CouchChangeTracker::receivedChunk:" ref="a8619057494a7d21f344857804b6a1f3b" args="(NSData *chunk)" -->
+(void)&#160;</td><td class="memItemRight" valign="bottom">- <b>receivedChunk:</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb04b91cd93b18ed75c24a937d6b33d0"></a><!-- doxytag: member="CouchChangeTracker::receivedPollResponse:" ref="abb04b91cd93b18ed75c24a937d6b33d0" args="(NSData *body)" -->
+(BOOL)&#160;</td><td class="memItemRight" valign="bottom">- <b>receivedPollResponse:</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60600114403a846fb46c6f36dd76e457"></a><!-- doxytag: member="CouchChangeTracker::stopped" ref="a60600114403a846fb46c6f36dd76e457" args="()" -->
+(void)&#160;</td><td class="memItemRight" valign="bottom">- <b>stopped</b></td></tr>
+<tr><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abef073e5dd8366619fd8d90c25e2979c"></a><!-- doxytag: member="CouchChangeTracker::_databaseURL" ref="abef073e5dd8366619fd8d90c25e2979c" args="" -->
+NSURL *&#160;</td><td class="memItemRight" valign="bottom"><b>_databaseURL</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa256acb9dc8d4cf7714c8faff82a1164"></a><!-- doxytag: member="CouchChangeTracker::_client" ref="aa256acb9dc8d4cf7714c8faff82a1164" args="" -->
+id&lt; <a class="el" href="protocolCouchChangeTrackerClient-p.html">CouchChangeTrackerClient</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_client</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46bcfc604fbddbeb70618e57660a923a"></a><!-- doxytag: member="CouchChangeTracker::_mode" ref="a46bcfc604fbddbeb70618e57660a923a" args="" -->
+CouchChangeTrackerMode&#160;</td><td class="memItemRight" valign="bottom"><b>_mode</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a22919dc1cce09074c51c36b625ea1b"></a><!-- doxytag: member="CouchChangeTracker::_lastSequenceNumber" ref="a9a22919dc1cce09074c51c36b625ea1b" args="" -->
+NSUInteger&#160;</td><td class="memItemRight" valign="bottom"><b>_lastSequenceNumber</b></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e502ee0b42777fe59c7f1a37b09b824"></a><!-- doxytag: member="CouchChangeTracker::databaseURL" ref="a4e502ee0b42777fe59c7f1a37b09b824" args="" -->
+NSURL *&#160;</td><td class="memItemRight" valign="bottom"><b>databaseURL</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66ac2f6913bbbc02650534d0a5c0f3fd"></a><!-- doxytag: member="CouchChangeTracker::databaseName" ref="a66ac2f6913bbbc02650534d0a5c0f3fd" args="" -->
+NSString *&#160;</td><td class="memItemRight" valign="bottom"><b>databaseName</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf5202083f4ef5221dca3efb87780d53"></a><!-- doxytag: member="CouchChangeTracker::mode" ref="acf5202083f4ef5221dca3efb87780d53" args="" -->
+CouchChangeTrackerMode&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ebc9bc1dffc45dfb135ce3edca9d50f"></a><!-- doxytag: member="CouchChangeTracker::lastSequenceNumber" ref="a4ebc9bc1dffc45dfb135ce3edca9d50f" args="" -->
 NSUInteger&#160;</td><td class="memItemRight" valign="bottom"><b>lastSequenceNumber</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff5f15bdfd7fa3cdc870d74588402020"></a><!-- doxytag: member="CouchChangeTracker::authCredential" ref="aff5f15bdfd7fa3cdc870d74588402020" args="" -->
+NSURLCredential *&#160;</td><td class="memItemRight" valign="bottom"><b>authCredential</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a702ecba2d90070a84f883e6399574429"></a><!-- doxytag: member="CouchChangeTracker::changesFeedURL" ref="a702ecba2d90070a84f883e6399574429" args="" -->
+NSURL *&#160;</td><td class="memItemRight" valign="bottom"><b>changesFeedURL</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5366cd0ae42c01b600be2864c68caba8"></a><!-- doxytag: member="CouchChangeTracker::changesFeedPath" ref="a5366cd0ae42c01b600be2864c68caba8" args="" -->
+NSString *&#160;</td><td class="memItemRight" valign="bottom"><b>changesFeedPath</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Reads the continuous-mode _changes feed of a database, and sends the individual lines to -[<a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> receivedChangeChunk:]. </p>
+<div class="textblock"><p>Reads the continuous-mode _changes feed of a database, and sends the individual change entries to its client's -changeTrackerReceivedChange:. </p>
 <p>This class is used internally by <a class="el" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a> and you shouldn't need to use it yourself. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>Couch/<a class="el" href="CouchChangeTracker_8h_source.html">CouchChangeTracker.h</a></li>
@@ -119,7 +158,7 @@ NSUInteger&#160;</td><td class="memItemRight" valign="bottom"><b>lastSequenceNum
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchChangeTracker.html">CouchChangeTracker</a>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:31:05 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
