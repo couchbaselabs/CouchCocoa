@@ -63,6 +63,7 @@
     [_filterParams release];
     [_options release];
     [_headers release];
+    [_oauth release];
     [super dealloc];
 }
 
@@ -75,19 +76,21 @@
 
 @synthesize pull=_pull, createTarget=_createTarget, continuous=_continuous,
             filter=_filter, filterParams=_filterParams, options=_options, headers=_headers,
-            localDatabase=_database;
+            OAuth=_oauth, localDatabase=_database;
 
 
 - (RESTOperation*) operationToStart: (BOOL)start {
     id source = _pull ? _remote.absoluteString : _database.relativePath;
     id target = _pull ? _database.relativePath : _remote.absoluteString;
-    if (_headers.count > 0) {
-        // Convert 'source' or 'target' to a dictionary so we can add 'headers' to it:
+    if (_headers.count > 0 || _oauth != nil) {
+        // Convert 'source' or 'target' to a dictionary so we can add metadata to it:
         id *param = _pull ? &source : &target;
-        *param = [NSDictionary dictionaryWithObjectsAndKeys:
+        *param = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                   *param, @"url",
                   _headers, @"headers",
                   nil];
+        if (_oauth)
+            [*param setObject: _oauth forKey: @"oauth"];
     }
     NSMutableDictionary* body = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  source, @"source",

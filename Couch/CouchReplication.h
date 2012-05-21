@@ -36,6 +36,7 @@ typedef enum {
     NSDictionary* _filterParams;
     NSDictionary* _options;
     NSDictionary* _headers;
+    NSDictionary* _oauth;
     BOOL _running;
     NSString* _taskID;
     NSString* _status;
@@ -71,6 +72,10 @@ typedef enum {
 /** Extra HTTP headers to send in all requests to the remote server.
     Should map strings (header names) to strings. */
 @property (nonatomic, copy) NSDictionary* headers;
+
+/** OAuth parameters that the replicator should use when authenticating to the remote database.
+    Keys in the dictionary should be "consumer_key", "consumer_secret", "token", "token_secret", and optionally "signature_method". */
+@property (nonatomic, copy) NSDictionary* OAuth;
 
 /** Other options to be provided to the replicator.
     These will be added to the JSON body of the POST to /_replicate. */

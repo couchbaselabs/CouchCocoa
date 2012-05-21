@@ -119,29 +119,48 @@ static inline BOOL isLocalDBName(NSString* url) {
 }
 
 
-- (NSDictionary*) headers {
+- (NSDictionary*) remoteDictionary {
     id source = self.source;
     if ([source isKindOfClass: [NSDictionary class]] 
             && !isLocalDBName([source objectForKey: @"url"]))
-        return [source objectForKey: @"headers"];
+        return source;
     id target = self.target;
     if ([target isKindOfClass: [NSDictionary class]] 
             && !isLocalDBName([target objectForKey: @"url"]))
-        return [target objectForKey: @"headers"];
+        return target;
     return nil;
 }
 
 
-- (void) setHeaders: (NSDictionary*)headers {
+- (void) setRemoteDictionaryValue: (id)value forKey: (NSString*)key {
     BOOL isPull = self.pull;
     id remote = isPull ? self.source : self.target;
     if ([remote isKindOfClass: [NSString class]])
         remote = [NSMutableDictionary dictionaryWithObject: remote forKey: @"url"];
-    [remote setValue: headers forKey: @"headers"];
+    else
+        remote = [NSMutableDictionary dictionaryWithDictionary: remote];
+    [remote setValue: value forKey: key];
     if (isPull)
         self.source = remote;
     else
         self.target = remote;
+}
+
+
+- (NSDictionary*) headers {
+    return [self.remoteDictionary objectForKey: @"headers"];
+}
+
+- (void) setHeaders: (NSDictionary*)headers {
+    [self setRemoteDictionaryValue: headers forKey: @"headers"];
+}
+
+- (NSDictionary*) OAuth {
+    return [self.remoteDictionary objectForKey: @"oauth"];
+}
+
+- (void) setOAuth: (NSDictionary*)oauth {
+    [self setRemoteDictionaryValue: oauth forKey: @"oauth"];
 }
 
 
