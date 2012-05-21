@@ -129,29 +129,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00061"></a>00061 
 <a name="l00064"></a><a class="code" href="interfaceCouchPersistentReplication.html#a355658a793e48cd057e3af36ff622277">00064</a> <span class="keyword">@property</span> (copy) NSDictionary* headers;
 <a name="l00065"></a>00065 
-<a name="l00072"></a>00072 - (void) actAsUser: (NSString*)username withRoles: (NSArray*)roles;
-<a name="l00073"></a>00073 
-<a name="l00075"></a>00075 - (void) actAsAdmin;
-<a name="l00076"></a>00076 
-<a name="l00078"></a>00078 - (void) restart;
-<a name="l00079"></a>00079 
-<a name="l00081"></a><a class="code" href="interfaceCouchPersistentReplication.html#a8571844e0a5a7503c756cee369bb50e3">00081</a> <span class="keyword">@property</span> (readonly) CouchReplicationState state;
-<a name="l00082"></a>00082 
-<a name="l00084"></a><a class="code" href="interfaceCouchPersistentReplication.html#ac3d44a4412d2adc604a6d2e4e73b0384">00084</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
-<a name="l00085"></a>00085 
-<a name="l00087"></a><a class="code" href="interfaceCouchPersistentReplication.html#a3323b291136cbcf733e568ab10ebf13f">00087</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
-<a name="l00088"></a>00088 
-<a name="l00089"></a>00089 <span class="keyword">@property</span> (nonatomic, readonly, retain) NSError* error;
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091 <span class="keyword">@property</span> (nonatomic, readonly) CouchReplicationMode mode;
+<a name="l00068"></a><a class="code" href="interfaceCouchPersistentReplication.html#a1942a7c92165fd4785627196b010b921">00068</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* OAuth;
+<a name="l00069"></a>00069 
+<a name="l00076"></a>00076 - (void) actAsUser: (NSString*)username withRoles: (NSArray*)roles;
+<a name="l00077"></a>00077 
+<a name="l00079"></a>00079 - (void) actAsAdmin;
+<a name="l00080"></a>00080 
+<a name="l00082"></a>00082 - (void) restart;
+<a name="l00083"></a>00083 
+<a name="l00085"></a><a class="code" href="interfaceCouchPersistentReplication.html#a8571844e0a5a7503c756cee369bb50e3">00085</a> <span class="keyword">@property</span> (readonly) CouchReplicationState state;
+<a name="l00086"></a>00086 
+<a name="l00088"></a><a class="code" href="interfaceCouchPersistentReplication.html#ac3d44a4412d2adc604a6d2e4e73b0384">00088</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
+<a name="l00089"></a>00089 
+<a name="l00091"></a><a class="code" href="interfaceCouchPersistentReplication.html#a3323b291136cbcf733e568ab10ebf13f">00091</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
 <a name="l00092"></a>00092 
-<a name="l00093"></a>00093 <span class="keyword">@end</span>
+<a name="l00093"></a>00093 <span class="keyword">@property</span> (nonatomic, readonly, retain) NSError* error;
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095 <span class="keyword">@property</span> (nonatomic, readonly) CouchReplicationMode mode;
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchPersistentReplication.h</b>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:31:04 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

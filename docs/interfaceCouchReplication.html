@@ -122,6 +122,8 @@ NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_filterPara
 NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_options</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ac9289e321ee551ef592b3d666f2250"></a><!-- doxytag: member="CouchReplication::_headers" ref="a5ac9289e321ee551ef592b3d666f2250" args="" -->
 NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_headers</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9afb25374deccea7ff50d63b4a062096"></a><!-- doxytag: member="CouchReplication::_oauth" ref="a9afb25374deccea7ff50d63b4a062096" args="" -->
+NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_oauth</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8bce2bb4fd2fe46472d4d5296371284"></a><!-- doxytag: member="CouchReplication::_running" ref="ad8bce2bb4fd2fe46472d4d5296371284" args="" -->
 BOOL&#160;</td><td class="memItemRight" valign="bottom"><b>_running</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52812e4f682cea5d03cb9803001810d2"></a><!-- doxytag: member="CouchReplication::_taskID" ref="a52812e4f682cea5d03cb9803001810d2" args="" -->
@@ -155,6 +157,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters to pass to the filter function.  <a href="#a847bae4f6d0ba9f2c9866c52a9659638"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a130c32bc41aeabae0b878d844d5763cb">headers</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra HTTP headers to send in all requests to the remote server.  <a href="#a130c32bc41aeabae0b878d844d5763cb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a0147a6e15b5a306d36985ab8a8581d98">OAuth</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">OAuth parameters that the replicator should use when authenticating to the remote database.  <a href="#a0147a6e15b5a306d36985ab8a8581d98"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSDictionary *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchReplication.html#a1ee02a93fa52d0219a40f39efb4bf85b">options</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Other options to be provided to the replicator.  <a href="#a1ee02a93fa52d0219a40f39efb4bf85b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40675a0efcb3897b64438b47c732b73f"></a><!-- doxytag: member="CouchReplication::running" ref="a40675a0efcb3897b64438b47c732b73f" args="" -->
@@ -320,6 +324,22 @@ CouchReplicationMode&#160;</td><td class="memItemRight" valign="bottom"><b>mode<
 
 </div>
 </div>
+<a class="anchor" id="a0147a6e15b5a306d36985ab8a8581d98"></a><!-- doxytag: member="CouchReplication::OAuth" ref="a0147a6e15b5a306d36985ab8a8581d98" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSDictionary*) OAuth<code> [read, write, copy]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>OAuth parameters that the replicator should use when authenticating to the remote database. </p>
+<p>Keys in the dictionary should be "consumer_key", "consumer_secret", "token", "token_secret", and optionally "signature_method". </p>
+
+</div>
+</div>
 <a class="anchor" id="a1ee02a93fa52d0219a40f39efb4bf85b"></a><!-- doxytag: member="CouchReplication::options" ref="a1ee02a93fa52d0219a40f39efb4bf85b" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -390,7 +410,7 @@ CouchReplicationMode&#160;</td><td class="memItemRight" valign="bottom"><b>mode<
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchReplication.html">CouchReplication</a>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:31:05 for CouchCocoa by&#160;
+      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
