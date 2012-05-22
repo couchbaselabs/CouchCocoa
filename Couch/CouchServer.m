@@ -151,7 +151,7 @@ int gCouchLogLevel = 0;
                                                target: (NSString*)target
 {
     for (CouchPersistentReplication* repl in self.replications) {
-        if ($equal(repl.source, source) && $equal(repl.target, target))
+        if ($equal(repl.sourceURLStr, source) && $equal(repl.targetURLStr, target))
             return repl;
     }
     return [CouchPersistentReplication createWithReplicatorDatabase: self.replicatorDatabase

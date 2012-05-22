@@ -32,15 +32,14 @@ typedef enum {
     CouchReplicationMode _mode;
 }
 
-/** The source URL for the replication.
-    This will be either a complete HTTP(s) URL or the name of a database on this server. */
-@property (readonly, copy) NSString* source;
+/** The local database being replicated to/from. */
+@property (readonly) CouchDatabase* localDatabase;
 
-/** The destination URL for the replication.
-    This will be either a complete HTTP(s) URL or the name of a database on this server. */
-@property (readonly, copy) NSString* target;
-
+/** The remote database being replicated to/from. */
 @property (readonly) NSURL* remoteURL;
+
+/** Does the replication pull from (as opposed to push to) the target? */
+@property (nonatomic, readonly) bool pull;
 
 /** Should the target database be created if it doesn't already exist? (Defaults to NO). */
 @property bool create_target;
@@ -60,11 +59,19 @@ typedef enum {
 /** Sets the documents to specify as part of the replication. */
 @property (copy) NSArray *doc_ids;
 
+/** Extra HTTP headers to send in all requests to the remote server.
+    Should map strings (header names) to strings. */
+@property (copy) NSDictionary* headers;
+
+/** OAuth parameters that the replicator should use when authenticating to the remote database.
+    Keys in the dictionary should be "consumer_key", "consumer_secret", "token", "token_secret", and optionally "signature_method". */
+@property (nonatomic, copy) NSDictionary* OAuth;
+
 /** Sets the "user_ctx" property of the replication, which identifies what privileges it will run with when accessing the local server. To replicate design documents, this should be set to a value with "_admin" in the list of roles.
     The server will not let you specify privileges you don't have, so the request to create the replication must be made with credentials that match what you're setting here, unless the server is in no-authentication "admin party" mode.
     See <https://gist.github.com/832610>, section 8, for details.
     If both 'user' and 'roles' are nil, the user_ctx will be cleared.
-    @param user  A server username, or nil
+    @param username  A server username, or nil
     @param roles  An array of CouchDB role name strings, or nil */
 - (void) actAsUser: (NSString*)username withRoles: (NSArray*)roles;
 
