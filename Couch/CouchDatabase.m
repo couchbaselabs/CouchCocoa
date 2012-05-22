@@ -315,8 +315,9 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (NSArray*) replications {
     NSString* myPath = self.relativePath;
-    return [self.server.replications rest_map: ^(id repl) {
-        if ([[repl source] isEqualToString: myPath] || [[repl target] isEqualToString: myPath])
+    return [self.server.replications rest_map: ^(CouchPersistentReplication* repl) {
+        if ([repl.sourceURLStr isEqualToString: myPath] ||
+                [repl.targetURLStr isEqualToString: myPath])
             return repl;
         else
             return nil;
