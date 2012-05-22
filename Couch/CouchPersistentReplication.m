@@ -156,11 +156,13 @@ static inline BOOL isLocalDBName(NSString* url) {
 }
 
 - (NSDictionary*) OAuth {
-    return [self.remoteDictionary objectForKey: @"oauth"];
+    NSDictionary* auth = $castIf(NSDictionary, [self.remoteDictionary objectForKey: @"auth"]);
+    return [auth objectForKey: @"oauth"];
 }
 
 - (void) setOAuth: (NSDictionary*)oauth {
-    [self setRemoteDictionaryValue: oauth forKey: @"oauth"];
+    NSDictionary* auth = oauth ? [NSDictionary dictionaryWithObject: oauth forKey: @"oauth"] : nil;
+    [self setRemoteDictionaryValue: auth forKey: @"auth"];
 }
 
 

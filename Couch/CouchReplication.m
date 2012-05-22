@@ -89,8 +89,10 @@
                   *param, @"url",
                   _headers, @"headers",
                   nil];
-        if (_oauth)
-            [*param setObject: _oauth forKey: @"oauth"];
+        if (_oauth) {
+            NSDictionary* auth = [NSDictionary dictionaryWithObject: _oauth forKey: @"oauth"];
+            [*param setObject: auth forKey: @"auth"];
+        }
     }
     NSMutableDictionary* body = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  source, @"source",
