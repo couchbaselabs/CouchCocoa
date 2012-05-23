@@ -63,6 +63,7 @@
     [_eTag release];
     [_lastModified release];
     [_url release];
+    [_cachedURL release];
     [_relativePath release];
     [_parent release];
     [super dealloc];
@@ -103,10 +104,9 @@
 }
 
 
-// Internal method used after an untitled resource acquires a URL (e.g. after it's POSTed).
-- (void) createdWithRelativePath: (NSString*)relativePath {
+- (void) assignedRelativePath: (NSString*)relativePath {
     NSParameterAssert(relativePath);
-    NSAssert(!_relativePath, @"Resource already has a relativePath");
+    NSAssert(!_relativePath, @"Already has relativePath %@", _relativePath);
     _relativePath = [relativePath copy];
 }
 
@@ -219,7 +219,7 @@
     if (location) {
         NSURL* locationURL = [NSURL URLWithString: location relativeToURL: _parent.URL];
         if (locationURL) {
-            [self createdWithRelativePath: [locationURL lastPathComponent]];
+            [self assignedRelativePath: [locationURL lastPathComponent]];
             if (![self.URL isEqual: locationURL])
                 _url = [locationURL retain];
         }

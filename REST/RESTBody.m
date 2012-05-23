@@ -220,7 +220,11 @@
 // Conditional compilation for JSONKit and/or NSJSONSerialization.
 // If the app supports OS versions prior to NSJSONSerialization, we'll do a runtime
 // test for it and use it if present, otherwise fall back to JSONKit.
-#define USE_JSONKIT (MAC_OS_X_VERSION_MIN_REQUIRED < 1070 || (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED < 50000))
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+#define USE_JSONKIT (__IPHONE_OS_VERSION_MIN_REQUIRED < 50000)
+#else
+#define USE_JSONKIT (MAC_OS_X_VERSION_MIN_REQUIRED < 1070)
+#endif
 
 #if USE_JSONKIT
 #import "JSONKit.h"

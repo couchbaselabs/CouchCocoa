@@ -18,6 +18,14 @@
 @class CouchDatabase, RESTOperation;
 
 
+typedef enum {
+    kCouchReplicationStopped,
+    kCouchReplicationOffline,
+    kCouchReplicationIdle,
+    kCouchReplicationActive
+} CouchReplicationMode;
+
+
 /** Tracks a CouchDB replication. Can be used to observe its progress. */
 @interface CouchReplication : NSObject
 {
@@ -26,12 +34,25 @@
     bool _pull, _createTarget, _continuous;
     NSString* _filter;
     NSDictionary* _filterParams;
+    NSDictionary* _options;
+    NSDictionary* _headers;
+    NSDictionary* _oauth;
     BOOL _running;
     NSString* _taskID;
     NSString* _status;
     unsigned _completed, _total;
+    CouchReplicationMode _mode;
     NSError* _error;
 }
+
+/** The local database being replicated to/from. */
+@property (nonatomic, readonly) CouchDatabase* localDatabase;
+
+/** The URL of the remote database. */
+@property (nonatomic, readonly) NSURL* remoteURL;
+
+/** Does the replication pull from (as opposed to push to) the target? */
+@property (nonatomic, readonly) bool pull;
 
 /** Should the target database be created if it doesn't already exist? (Defaults to NO). */
 @property (nonatomic) bool createTarget;
@@ -48,6 +69,18 @@
     Should be a JSON-compatible dictionary. */
 @property (nonatomic, copy) NSDictionary* filterParams;
 
+/** Extra HTTP headers to send in all requests to the remote server.
+    Should map strings (header names) to strings. */
+@property (nonatomic, copy) NSDictionary* headers;
+
+/** OAuth parameters that the replicator should use when authenticating to the remote database.
+    Keys in the dictionary should be "consumer_key", "consumer_secret", "token", "token_secret", and optionally "signature_method". */
+@property (nonatomic, copy) NSDictionary* OAuth;
+
+/** Other options to be provided to the replicator.
+    These will be added to the JSON body of the POST to /_replicate. */
+@property (nonatomic, copy) NSDictionary* options;
+
 
 /** Starts the replication, asynchronously.
     @return  The operation to start replication, or nil if replication is already started. */
@@ -55,11 +88,6 @@
 
 /** Stops replication, asynchronously. */
 - (void) stop;
-
-@property (nonatomic, readonly) NSURL* remoteURL;
-
-/** Does the replication pull from (as opposed to push to) the target? */
-@property (nonatomic, readonly) bool pull;
 
 @property (nonatomic, readonly) BOOL running;
 
@@ -74,5 +102,7 @@
 @property (nonatomic, readonly) unsigned total;
 
 @property (nonatomic, readonly, retain) NSError* error;
+
+@property (nonatomic, readonly) CouchReplicationMode mode;
 
 @end

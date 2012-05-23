@@ -391,9 +391,14 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 
 - (void) createdByPOST: (RESTOperation*)op {
-    NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
-    [self createdWithRelativePath: [result objectForKey: @"id"]];
-    [self updateFromSaveResponse: result withProperties: nil];
+    NSDictionary* response = $castIf(NSDictionary, op.responseBody.fromJSON);
+    NSString* docID = [response objectForKey: @"id"];
+    if (docID)
+        [self assignedRelativePath: docID];
+    else
+        [super createdByPOST: op];
+    [self updateFromSaveResponse: response withProperties: nil];
+    
     [self.database documentAssignedID: self];
     [self.database endDocumentOperation: self];   // I was created via a POST
 }
@@ -405,7 +410,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         NSString* docID = self.documentID;
         if (!docID) {
             docID = [result objectForKey: @"id"];
-            [self createdWithRelativePath: docID];
+            [self assignedRelativePath: docID];
             [self.database documentAssignedID: self];
         }
         if (![properties objectForKey: @"_id"]) {

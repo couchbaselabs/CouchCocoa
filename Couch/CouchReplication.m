@@ -29,6 +29,7 @@
 @property (nonatomic, readwrite, copy) NSString* status;
 @property (nonatomic, readwrite) unsigned completed, total;
 @property (nonatomic, readwrite, retain) NSError* error;
+@property (nonatomic, readwrite) CouchReplicationMode mode;
 - (void) stopped;
 @end
 
@@ -53,12 +54,16 @@
 
 
 - (void)dealloc {
-    [self stopped];
+    COUCHLOG2(@"%@: dealloc", self);
     [_remote release];
     [_database release];
+    [_status release];
     [_error release];
     [_filter release];
     [_filterParams release];
+    [_options release];
+    [_headers release];
+    [_oauth release];
     [super dealloc];
 }
 
@@ -70,12 +75,25 @@
 
 
 @synthesize pull=_pull, createTarget=_createTarget, continuous=_continuous,
-            filter=_filter, filterParams=_filterParams;
+            filter=_filter, filterParams=_filterParams, options=_options, headers=_headers,
+            OAuth=_oauth, localDatabase=_database;
 
 
 - (RESTOperation*) operationToStart: (BOOL)start {
-    NSString* source = _pull ? _remote.absoluteString : _database.relativePath;
-    NSString* target = _pull ? _database.relativePath : _remote.absoluteString;
+    id source = _pull ? _remote.absoluteString : _database.relativePath;
+    id target = _pull ? _database.relativePath : _remote.absoluteString;
+    if (_headers.count > 0 || _oauth != nil) {
+        // Convert 'source' or 'target' to a dictionary so we can add metadata to it:
+        id *param = _pull ? &source : &target;
+        *param = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                  *param, @"url",
+                  _headers, @"headers",
+                  nil];
+        if (_oauth) {
+            NSDictionary* auth = [NSDictionary dictionaryWithObject: _oauth forKey: @"oauth"];
+            [*param setObject: auth forKey: @"auth"];
+        }
+    }
     NSMutableDictionary* body = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  source, @"source",
                                  target, @"target",
@@ -89,6 +107,9 @@
         if (_filterParams)
             [body setObject: _filterParams forKey: @"query_params"];
     }
+    if (_options)
+        [body addEntriesFromDictionary: _options];
+
     if (!start)
         [body setObject: (id)kCFBooleanTrue forKey: @"cancel"];
     RESTResource* replicate = [[[RESTResource alloc] initWithParent: _database.server 
@@ -125,6 +146,7 @@
             if (_taskID) {
                 // Successfully started:
                 COUCHLOG(@"%@: task ID = '%@'", self, _taskID);
+                [self retain];  // so I don't go away while active; see [self release] in -stopped
                 [_database.server registerActiveTask: [NSDictionary dictionaryWithObjectsAndKeys:
                                                        @"Replication", @"type",
                                                        _taskID, @"task", nil]];
@@ -134,8 +156,7 @@
                 // Huh, something's wrong.
                 Warn(@"%@ couldn't find _local_id in response: %@", self, response);
                 self.running = NO;
-                self.error = [NSError errorWithDomain: CouchHTTPErrorDomain
-                                                 code: 599 userInfo: nil]; // TODO: Real err
+                self.error = [RESTOperation errorWithHTTPStatus: 599 message: nil URL: _remote]; // TODO: Real err
             }
         }
     }];
@@ -149,8 +170,10 @@
         [_taskID release];
         _taskID = nil;
         [_database.server removeObserver: self forKeyPath: @"activeTasks"];
+        [self autorelease]; // balances [self retain] when successfully started
     }
     self.running = NO;
+    self.mode = kCouchReplicationStopped;
 }
 
 
@@ -163,7 +186,7 @@
 
 
 @synthesize running = _running, status=_status, completed=_completed, total=_total, error = _error;
-@synthesize remoteURL=_remote;
+@synthesize mode=_mode, remoteURL = _remote;
 
 
 - (NSString*) status {
@@ -171,33 +194,50 @@
 }
 
 - (void) setStatus: (NSString*)status {
-    COUCHLOG(@"%@ = %@", self, status);
+    COUCHLOG(@"%@ status line = %@", self, status);
     [_status autorelease];
     _status = [status copy];
+    CouchReplicationMode mode = _mode;
     
-    int completed = 0, total = 0;
-    if (status) {
-        // Current format of status is "Processed \d+ / \d+ changes".
-        NSScanner* scanner = [NSScanner scannerWithString: status];
-        if ([scanner scanString: @"Processed" intoString:NULL]
-                && [scanner scanInt: &completed]
-                && [scanner scanString: @"/" intoString:NULL]
-                && [scanner scanInt: &total]
-                && [scanner scanString: @"changes" intoString:NULL]) {
-        } else {
-            completed = total = 0;
-            Warn(@"CouchReplication: Unable to parse status string \"%@\"", _status);
+    if ([status isEqualToString: @"Stopped"]) {
+        // TouchDB only
+        COUCHLOG(@"%@: Status changed to 'Stopped'", self);
+        [self stopped];
+        mode = kCouchReplicationStopped;
+        
+    } else if ([status isEqualToString: @"Offline"]) {
+        mode = kCouchReplicationOffline;
+    } else if ([status isEqualToString: @"Idle"]) {
+        mode = kCouchReplicationIdle;
+    } else {
+        int completed = 0, total = 0;
+        if (status) {
+            // Current format of status is "Processed \d+ / \d+ changes".
+            NSScanner* scanner = [NSScanner scannerWithString: status];
+            if ([scanner scanString: @"Processed" intoString:NULL]
+                    && [scanner scanInt: &completed]
+                    && [scanner scanString: @"/" intoString:NULL]
+                    && [scanner scanInt: &total]
+                    && [scanner scanString: @"changes" intoString:NULL]) {
+                mode = kCouchReplicationActive;
+            } else {
+                completed = total = 0;
+                Warn(@"CouchReplication: Unable to parse status string \"%@\"", _status);
+            }
+        }
+        
+        if (completed != _completed || total != _total) {
+            [self willChangeValueForKey: @"completed"];
+            [self willChangeValueForKey: @"total"];
+            _completed = completed;
+            _total = total;
+            [self didChangeValueForKey: @"total"];
+            [self didChangeValueForKey: @"completed"];
         }
     }
-    
-    if (completed != _completed || total != _total) {
-        [self willChangeValueForKey: @"completed"];
-        [self willChangeValueForKey: @"total"];
-        _completed = completed;
-        _total = total;
-        [self didChangeValueForKey: @"total"];
-        [self didChangeValueForKey: @"completed"];
-    }
+
+    if (mode != _mode)
+        self.mode = mode;
 }
 
 
@@ -207,13 +247,15 @@
     // Server's activeTasks changed:
     BOOL active = NO;
     NSString* status = nil;
+    NSArray* error = nil;
     for (NSDictionary* task in _database.server.activeTasks) {
         if ([[task objectForKey:@"type"] isEqualToString:@"Replication"]) {
             // Can't look up the task ID directly because it's part of a longer string like
             // "`6390525ac52bd8b5437ab0a118993d0a+continuous`: ..."
             if ([[task objectForKey: @"task"] rangeOfString: _taskID].length > 0) {
                 active = YES;
-                status = [task objectForKey: @"status"];
+                status = $castIf(NSString, [task objectForKey: @"status"]);
+                error = $castIf(NSArray, [task objectForKey: @"error"]);
                 break;
             }
         }
@@ -222,7 +264,20 @@
     if (!active) {
         COUCHLOG(@"%@: No longer an active task", self);
         [self stopped];
-    } else if (!$equal(status, _status)) {
+        return;
+    }
+    
+    // Interpret .error property. This is nonstandard; only TouchDB supports it.
+    if (error.count >= 1) {
+        COUCHLOG(@"%@: error %@", self, error);
+        int status = [$castIf(NSNumber, [error objectAtIndex: 0]) intValue];
+        NSString* message = nil;
+        if (error.count >= 2)
+            message = $castIf(NSString, [error objectAtIndex: 1]);
+        self.error = [RESTOperation errorWithHTTPStatus: status message: message URL: _remote];
+    }
+    
+    if (!$equal(status, _status)) {
         self.status = status;
     }
 }

@@ -64,7 +64,7 @@
         model = [[[self alloc] initWithDocument: document] autorelease];
     } else {
         // If invoked on CouchModel itself, ask the factory to instantiate the appropriate class:
-        model = [[CouchModelFactory sharedInstance] modelForDocument: document];
+        model = [document.database.modelFactory modelForDocument: document];
     }
     return model;
 }
@@ -192,6 +192,15 @@
 
 
 @synthesize isNew=_isNew, autosaves=_autosaves, needsSave=_needsSave;
+
+
+- (void) setAutosaves: (bool) autosaves {
+    if (autosaves != _autosaves) {
+        _autosaves = autosaves;
+        if (_autosaves && _needsSave)
+            [self performSelector: @selector(save) withObject: nil afterDelay: 0.0];
+    }
+}
 
 
 - (void) markNeedsSave {
@@ -388,13 +397,14 @@
     }
     
     // Ask factory to get/create model; if it doesn't know, use the declared class:
-    CouchModel* value = [[CouchModelFactory sharedInstance] modelForDocument: doc];
+    CouchModel* value = [doc.database.modelFactory modelForDocument: doc];
     if (!value) {
         Class declaredClass = [[self class] classOfProperty: property];
         value = [declaredClass modelForDocument: doc];
+        if (!value) 
+            Warn(@"Unable to instantiate %@ from %@ -- property %@ of %@ (%@)",
+                 declaredClass, doc, property, self, _document);
     }
-    if (!value) 
-        Warn(@"Unable to decode model from property %@ of %@", property, _document);
     return value;
 }
 
@@ -404,7 +414,7 @@
     // model object when called.
     NSString* docID = model.document.documentID;
     NSAssert(docID || !model, 
-             @"Cannot assign untitled %@ as the value of model property %@.%@",
+             @"Cannot assign untitled %@ as the value of model property %@.%@ -- save it first",
              model.document, [self class], property);
     [self setValue: docID ofProperty: property];
 }

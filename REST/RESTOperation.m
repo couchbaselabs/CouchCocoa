@@ -195,6 +195,14 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 }
 
 
+- (BOOL) wait: (NSError**)outError {
+    BOOL result = [self wait];
+    if (outError)
+        *outError = _error;
+    return result;
+}
+
+
 + (BOOL) wait: (NSSet*)operations {
     if (operations.count == 0)
         return YES;
@@ -308,7 +316,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
             [[[NSRunLoop currentRunLoop] currentMode] isEqualToString: kRESTObjectRunLoopMode]) {
         // If another RESTOperation is blocked in -wait, don't call out to client code until after
         // it finishes, because clients won't expect to get invoked re-entrantly.
-        NSLog(@"RESTOperation: Deferring completion till other op finishes waiting");
+        if (gRESTLogLevel >= kRESTLogRequestHeaders)
+            NSLog(@"RESTOperation: Deferring completion till other op finishes waiting");
         [self performSelector: _cmd withObject: error
                    afterDelay: 0.0 inModes: [NSArray arrayWithObject: NSRunLoopCommonModes]];
         return;
@@ -424,7 +433,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 
 
 - (void)connectionDidFinishLoading: (NSURLConnection*)connection {
-    NSInteger httpStatus = [_response statusCode];
+    int httpStatus = (int) [_response statusCode];
 
     if (gRESTLogLevel >= kRESTLogRequestURLs) {
         NSLog(@"REST: << %ld for %@ %@ (%lu bytes)",
@@ -440,18 +449,26 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         [self completedWithError: nil];
     } else {
         // Escalate HTTP error to a connection error:
-        NSString* message = [NSHTTPURLResponse localizedStringForStatusCode:httpStatus];
-        NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:
-                              message, NSLocalizedFailureReasonErrorKey,
-                              [NSString stringWithFormat: @"%i %@", httpStatus, message],
-                                NSLocalizedDescriptionKey,
-                              self.URL, NSURLErrorKey,
-                              nil];
-        NSError* error = [NSError errorWithDomain: CouchHTTPErrorDomain
-                                             code: httpStatus
-                                         userInfo: info];
+        NSError* error = [[self class] errorWithHTTPStatus: httpStatus message: nil URL: self.URL];
         [self completedWithError: error];
     }
+}
+
+
++ (NSError*) errorWithHTTPStatus: (int)httpStatus
+                         message: (NSString*)message
+                             URL: (NSURL*)url
+{
+    if (!message)
+        message = [NSHTTPURLResponse localizedStringForStatusCode:httpStatus];
+    NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:
+                          message, NSLocalizedDescriptionKey,
+                          message, NSLocalizedFailureReasonErrorKey,
+                          url, NSURLErrorKey,
+                          nil];
+    return [NSError errorWithDomain: CouchHTTPErrorDomain
+                               code: httpStatus
+                           userInfo: info];
 }
 
 
@@ -481,7 +498,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 {
     if (challenge.previousFailureCount == 0) {
         NSURLCredential* credential = [_resource credentialForOperation: self];
-        NSLog(@"REST: Authentication challenge! credential=%@", credential);
+        if (gRESTLogLevel > kRESTLogRequestURLs)
+            NSLog(@"REST: Authentication challenge! credential=%@", credential);
         if(!credential) {
             NSURLProtectionSpace* acceptableProtectionSpace = [_resource protectionSpaceForOperation:self];
             if(acceptableProtectionSpace) {

@@ -14,30 +14,54 @@
 //  and limitations under the License.
 
 #import <Foundation/Foundation.h>
-@class CouchDatabase;
+@class CouchChangeTracker;
 
 
-/** Reads the continuous-mode _changes feed of a database, and sends the individual lines to -[CouchDatabase receivedChangeChunk:].
+@protocol CouchChangeTrackerClient <NSObject>
+- (void) changeTrackerReceivedChange: (NSDictionary*)change;
+@optional
+- (NSURLCredential*) authCredential;
+- (void) changeTrackerStopped: (CouchChangeTracker*)tracker;
+@end
+
+
+typedef enum CouchChangeTrackerMode {
+    kOneShot,
+    kLongPoll,
+    kContinuous
+} CouchChangeTrackerMode;
+
+
+/** Reads the continuous-mode _changes feed of a database, and sends the individual change entries to its client's -changeTrackerReceivedChange:.
     This class is used internally by CouchDatabase and you shouldn't need to use it yourself. */
 @interface CouchChangeTracker : NSObject <NSStreamDelegate>
 {
-    @private
-    CouchDatabase* _database;
+    @protected
+    NSURL* _databaseURL;
+    id<CouchChangeTrackerClient> _client;
+    CouchChangeTrackerMode _mode;
     NSUInteger _lastSequenceNumber;
-    NSInputStream* _trackingInput;
-    NSOutputStream* _trackingOutput;
-    NSString* _trackingRequest;
-    int _retryCount;
-    
-    NSMutableData* _inputBuffer;
-    int _state;
 }
 
-- (id)initWithDatabase: (CouchDatabase*)database;
+- (id)initWithDatabaseURL: (NSURL*)databaseURL
+                     mode: (CouchChangeTrackerMode)mode
+             lastSequence: (NSUInteger)lastSequence
+                   client: (id<CouchChangeTrackerClient>)client;
 
-@property (nonatomic) NSUInteger lastSequenceNumber;
+@property (readonly, nonatomic) NSURL* databaseURL;
+@property (readonly, nonatomic) NSString* databaseName;
+@property (readonly, nonatomic) CouchChangeTrackerMode mode;
+@property (readonly, nonatomic) NSUInteger lastSequenceNumber;
 
 - (BOOL) start;
 - (void) stop;
+
+// Protected
+@property (readonly) NSURLCredential* authCredential;
+@property (readonly) NSURL* changesFeedURL;
+@property (readonly) NSString* changesFeedPath;
+- (void) receivedChunk: (NSData*)chunk;
+- (BOOL) receivedPollResponse: (NSData*)body;
+- (void) stopped; // override this
 
 @end

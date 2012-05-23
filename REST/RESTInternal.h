@@ -36,13 +36,16 @@ static inline BOOL $equal(id a, id b) {return a==b || [a isEqual: b];}
 
 
 @interface RESTOperation ()
++ (NSError*) errorWithHTTPStatus: (int)httpStatus
+                         message: (NSString*)message
+                             URL: (NSURL*)url;
 @property (nonatomic, readonly) UInt8 retryCount;
 @end
 
 
 @interface RESTResource ()
 - (void) setURL: (NSURL*)url;
-- (void) createdWithRelativePath: (NSString*)relativePath;
+- (void) assignedRelativePath: (NSString*)relativePath;
 @property (readwrite, retain) RESTCache* owningCache;
 - (NSURLCredential*) credentialForOperation: (RESTOperation*)op;
 - (NSURLProtectionSpace*) protectionSpaceForOperation: (RESTOperation*)op;

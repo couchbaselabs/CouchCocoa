@@ -9,8 +9,8 @@
 #import "CouchServer.h"
 @class CouchbaseMobile;
 
-/** A convenience class that glues Couchbase Mobile into CouchCocoa.
-    On creation, starts up an instance of Couchbase (or CouchbaseMobile).
+/** A convenience class that glues Couchbase Mobile into CouchCocoa -- this is ONLY for use with the older Couchbase Mobile, NOT with TouchDB!
+    On creation, starts up an instance of Couchbase Mobile.
     This object will have a placeholder URL until the embedded server has started up, so you can't access it (i.e. creating any databases) until then. */
 @interface CouchEmbeddedServer : CouchServer
 {

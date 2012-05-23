@@ -8,21 +8,21 @@
 
 #import "CouchDesignDocument.h"
 #ifdef COUCHCOCOA_IMPL
-#import "CouchbaseCallbacks.h"
-#elif TARGET_OS_IPHONE
-#import <Couchbase/CouchbaseCallbacks.h>
+typedef id TDMapBlock;
+typedef id TDReduceBlock;
+typedef id TDFilterBlock;
+typedef id TDValidationBlock;
 #else
-#import <CouchbaseMac/CouchbaseCallbacks.h>
+#import <TouchDB/TDDatabase+Insertion.h>
+#import <TouchDB/TDView.h>
 #endif
-
-
-extern NSString* const kCouchLanguageObjectiveC;
 
 
 #define MAPBLOCK(BLOCK) ^(NSDictionary* doc, void (^emit)(id key, id value)){BLOCK}
 #define REDUCEBLOCK(BLOCK) ^id(NSArray* keys, NSArray* values, BOOL rereduce){BLOCK}
-#define VALIDATIONBLOCK(BLOCK) ^BOOL(NSDictionary* doc, id<CouchbaseValidationContext> context)\
+#define VALIDATIONBLOCK(BLOCK) ^BOOL(TDRevision* newRevision, id<TDValidationContext> context)\
                                   {BLOCK}
+#define FILTERBLOCK(BLOCK) ^BOOL(TDRevision* revision) {BLOCK}
 
 
 /** Optional support for native Objective-C map/reduce functions.
@@ -35,15 +35,20 @@ extern NSString* const kCouchLanguageObjectiveC;
     It is very important that this block be a law-abiding map function! As in other languages, it must be a "pure" function, with no side effects, that always emits the same values given the same input document. That means that it should not access or change any external state; be careful, since blocks make that so easy that you might do it inadvertently!
     The block may be called on any thread, or on multiple threads simultaneously. This won't be a problem if the code is "pure" as described above, since it will as a consequence also be thread-safe. */
 - (void) defineViewNamed: (NSString*)viewName
-                mapBlock: (CouchMapBlock)mapBlock;
+                mapBlock: (TDMapBlock)mapBlock
+                 version: (NSString*)version;
 
 /** Defines or deletes a native view with both a map and a reduce function.
     For details, read the documentation of the -defineViewNamed:mapBlock: method.*/
 - (void) defineViewNamed: (NSString*)viewName
-                mapBlock: (CouchMapBlock)mapBlock
-             reduceBlock: (CouchReduceBlock)reduceBlock;
+                mapBlock: (TDMapBlock)mapBlock
+             reduceBlock: (TDReduceBlock)reduceBlock
+                 version: (NSString*)version;
 
-/** An Objective-C block that can validate any document being added/updated to this database. */
-@property (copy) CouchValidateUpdateBlock validationBlock;
+- (void) defineFilterNamed: (NSString*)filterName
+                     block: (TDFilterBlock)filterBlock;
+
+/** An Objective-C block that can validate any document being added/updated/deleted in this database. */
+- (void) setValidationBlock: (TDValidationBlock)validationBlock;
 
 @end

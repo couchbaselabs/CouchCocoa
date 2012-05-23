@@ -26,15 +26,15 @@ void RESTWarn( NSString *msg, ... )
 {
     va_list args;
     va_start(args,msg);
-
     NSLogv([kWarningPrefix stringByAppendingString: msg], args);
+    va_end(args);
     
-    if (gRESTWarnRaisesException)
+    if (gRESTWarnRaisesException) {
+        va_start(args,msg);
         [NSException raise: @"RESTWarning"
                     format: msg
                  arguments: args];
-
-    va_end(args);
+    }
 }
 
 

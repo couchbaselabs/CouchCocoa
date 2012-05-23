@@ -13,13 +13,15 @@
 @implementation CouchModelFactory
 
 
+static CouchModelFactory* sSharedInstance;
+
+
 + (CouchModelFactory*) sharedInstance {
-    static CouchModelFactory* sInstance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sInstance = [[self alloc] init];
+        sSharedInstance = [[self alloc] init];
     });
-    return sInstance;
+    return sSharedInstance;
 }
 
 
@@ -45,6 +47,8 @@
 
 - (Class) classForDocumentType: (NSString*)type {
     id klass = [_typeDict objectForKey: type];
+    if (!klass && self != sSharedInstance)
+        return [sSharedInstance classForDocumentType: type];
     if ([klass isKindOfClass: [NSString class]]) {
         NSString* className = klass;
         klass = NSClassFromString(className);
@@ -54,16 +58,36 @@
 }
 
 
+- (Class) classForDocument: (CouchDocument*)document {
+    NSString* type = [document propertyForKey: @"type"];
+    return type ? [self classForDocumentType: type] : nil;
+}
+
+
 - (id) modelForDocument: (CouchDocument*)document {
     CouchModel* model = document.modelObject;
     if (model)
         return model;
-    NSString* type = [document propertyForKey: @"type"];
-    if (!type)
-        return nil;
-    Class klass = [self classForDocumentType: type];
-    return [klass modelForDocument: document];
+    return [[self classForDocument: document] modelForDocument: document];
 }
 
+
+@end
+
+
+
+
+@implementation CouchDatabase (CouchModelFactory)
+
+- (CouchModelFactory*) modelFactory {
+    if (!_modelFactory)
+        _modelFactory = [[CouchModelFactory alloc] init];
+    return _modelFactory;
+}
+
+- (void) setModelFactory:(CouchModelFactory *)modelFactory {
+    [_modelFactory autorelease];
+    _modelFactory = [modelFactory retain];
+}
 
 @end

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27003411144CBB150029C4BA /* CouchEmbeddedServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 274EB8A214479D71001B7DD0 /* CouchEmbeddedServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2725993913D8B43F006E391E /* CouchCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		2725993A13D8CEB7006E391E /* CouchCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		2739BF2D13BCE53B004829CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2C13BCE53B004829CD /* Foundation.framework */; };
@@ -30,15 +29,12 @@
 		2739BF5B13BCE5BD004829CD /* CouchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B275F1394225600DDD950 /* CouchQuery.m */; };
 		2739BF5C13BCE5BD004829CD /* CouchResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B24CB1392EE3600DDD950 /* CouchResource.m */; };
 		2739BF5D13BCE5BD004829CD /* CouchChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781244513AFA6CD0051A99D /* CouchChangeTracker.m */; };
-		2739BF5E13BCE5CD004829CD /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781242313AC1B2F0051A99D /* JSONKit.m */; };
-		274EB8A414479D72001B7DD0 /* CouchEmbeddedServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 274EB8A214479D71001B7DD0 /* CouchEmbeddedServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		274EB8A514479D72001B7DD0 /* CouchEmbeddedServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 274EB8A214479D71001B7DD0 /* CouchEmbeddedServer.h */; };
-		274EB8A614479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB8A314479D71001B7DD0 /* CouchEmbeddedServer.m */; };
-		274EB8A714479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB8A314479D71001B7DD0 /* CouchEmbeddedServer.m */; };
 		274EB8D014490145001B7DD0 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF413C67C9B00C979BB /* AppKit.framework */; };
 		2759A0B713E0907000866098 /* libcrypto-iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2759A0B613E0907000866098 /* libcrypto-iphonesimulator.a */; };
 		2771C7C21472ECF70012DF57 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2771C7C11472ECF70012DF57 /* logo.png */; };
 		2771C7C31472ECF70012DF57 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2771C7C11472ECF70012DF57 /* logo.png */; };
+		2783A0C6156D616800DC8692 /* CouchEmbeddedServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2783A0C4156D616800DC8692 /* CouchEmbeddedServer.h */; };
+		2783A0C7156D616800DC8692 /* CouchEmbeddedServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2783A0C5156D616800DC8692 /* CouchEmbeddedServer.m */; };
 		2784E1B613CE5249009CC5C8 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		2784E1B713CE5249009CC5C8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
 		2784E1C313CE52FE009CC5C8 /* ShoppingDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */; };
@@ -55,6 +51,14 @@
 		27938C63140C01DC00117675 /* CouchModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 27DB82231408225300E57444 /* CouchModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2795994F140A02DB001C168A /* Test_Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2795994E140A02DB001C168A /* Test_Model.m */; };
 		27959950140A02DB001C168A /* Test_Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2795994E140A02DB001C168A /* Test_Model.m */; };
+		279906D2149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906CE149930DA003D4338 /* CouchConnectionChangeTracker.h */; };
+		279906D3149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906CE149930DA003D4338 /* CouchConnectionChangeTracker.h */; };
+		279906D4149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */; };
+		279906D5149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */; };
+		279906D6149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */; };
+		279906D7149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */; };
+		279906D8149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */; };
+		279906D9149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */; };
 		279CCBF213F9823F00C38C82 /* CouchReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CCBF013F9823F00C38C82 /* CouchReplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		279CCBF313F9823F00C38C82 /* CouchReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CCBF013F9823F00C38C82 /* CouchReplication.h */; };
 		279CCBF413F9823F00C38C82 /* CouchReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 279CCBF113F9823F00C38C82 /* CouchReplication.m */; };
@@ -94,7 +98,6 @@
 		27CDEC2413C67D0300C979BB /* CouchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B275F1394225600DDD950 /* CouchQuery.m */; };
 		27CDEC2513C67D0300C979BB /* CouchResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 278B24CB1392EE3600DDD950 /* CouchResource.m */; };
 		27CDEC2613C67D0300C979BB /* CouchChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781244513AFA6CD0051A99D /* CouchChangeTracker.m */; };
-		27CDEC2713C67D0300C979BB /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781242313AC1B2F0051A99D /* JSONKit.m */; };
 		27CDEC2813C67D1100C979BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF613C67C9B00C979BB /* Foundation.framework */; };
 		27CDEC2913C67D3500C979BB /* RESTResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B231A13916F1400DDD950 /* RESTResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CDEC2A13C67D3500C979BB /* RESTOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22FD138F32CB00DDD950 /* RESTOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -130,6 +133,11 @@
 		27E4DD0E141921E000A3D8F6 /* CouchPersistentReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E4DD0B141921E000A3D8F6 /* CouchPersistentReplication.m */; };
 		27E4DD0F141921E000A3D8F6 /* CouchPersistentReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E4DD0B141921E000A3D8F6 /* CouchPersistentReplication.m */; };
 		27E4DD14141959EB00A3D8F6 /* CouchPersistentReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 27E4DD0A141921E000A3D8F6 /* CouchPersistentReplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27E9C61914A0EECC00F67966 /* CouchTouchDBServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27E9C61A14A0EECC00F67966 /* CouchTouchDBServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */; };
+		27E9C61B14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */; };
+		27E9C61C14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */; };
+		27E9C61E14A0F6A300F67966 /* CouchTouchDBServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EEA59A13D602EA00D7ACA4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */; };
 		27EEA5A913D604F500D7ACA4 /* RESTResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B231A13916F1400DDD950 /* RESTResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EEA5AA13D604F800D7ACA4 /* RESTOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B22FD138F32CB00DDD950 /* RESTOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -211,17 +219,15 @@
 		2739BF3613BCE53C004829CD /* iOS Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2739BF3813BCE53C004829CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		2739BF3B13BCE53C004829CD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
-		274EB8A214479D71001B7DD0 /* CouchEmbeddedServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchEmbeddedServer.h; sourceTree = "<group>"; };
-		274EB8A314479D71001B7DD0 /* CouchEmbeddedServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchEmbeddedServer.m; sourceTree = "<group>"; };
 		274EB8AA14479E7B001B7DD0 /* CouchbaseMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouchbaseMobile.h; sourceTree = "<group>"; };
 		2759A0B613E0907000866098 /* libcrypto-iphonesimulator.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.objfile"; name = "libcrypto-iphonesimulator.a"; path = "Test/libcrypto-iphonesimulator.a"; sourceTree = "<group>"; };
 		2771C7C11472ECF70012DF57 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		2781242213AC1B2F0051A99D /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Vendor/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
-		2781242313AC1B2F0051A99D /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = Vendor/JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 		2781242B13AC265A0051A99D /* RESTCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTCache.h; sourceTree = "<group>"; };
 		2781242C13AC265A0051A99D /* RESTCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTCache.m; sourceTree = "<group>"; };
 		2781244413AFA6CD0051A99D /* CouchChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchChangeTracker.h; sourceTree = "<group>"; };
 		2781244513AFA6CD0051A99D /* CouchChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CouchChangeTracker.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		2783A0C4156D616800DC8692 /* CouchEmbeddedServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchEmbeddedServer.h; sourceTree = "<group>"; };
+		2783A0C5156D616800DC8692 /* CouchEmbeddedServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchEmbeddedServer.m; sourceTree = "<group>"; };
 		2784E1BC13CE5249009CC5C8 /* Shopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShoppingDemo.xib; path = Demo/ShoppingDemo.xib; sourceTree = SOURCE_ROOT; };
 		27853EF413DF6F5E00478EBB /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
@@ -247,6 +253,10 @@
 		279276EC14215D5600002958 /* RESTBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESTBase64.h; sourceTree = "<group>"; };
 		279276ED14215D5600002958 /* RESTBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTBase64.m; sourceTree = "<group>"; };
 		2795994E140A02DB001C168A /* Test_Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test_Model.m; sourceTree = "<group>"; };
+		279906CE149930DA003D4338 /* CouchConnectionChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchConnectionChangeTracker.h; sourceTree = "<group>"; };
+		279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchConnectionChangeTracker.m; sourceTree = "<group>"; };
+		279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchSocketChangeTracker.h; sourceTree = "<group>"; };
+		279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchSocketChangeTracker.m; sourceTree = "<group>"; };
 		279CCBF013F9823F00C38C82 /* CouchReplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchReplication.h; sourceTree = "<group>"; };
 		279CCBF113F9823F00C38C82 /* CouchReplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchReplication.m; sourceTree = "<group>"; };
 		27A577A613970959002776DB /* DemoQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoQuery.h; sourceTree = "<group>"; };
@@ -283,6 +293,8 @@
 		27DB823114084F1800E57444 /* ShoppingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingItem.m; sourceTree = "<group>"; };
 		27E4DD0A141921E000A3D8F6 /* CouchPersistentReplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchPersistentReplication.h; sourceTree = "<group>"; };
 		27E4DD0B141921E000A3D8F6 /* CouchPersistentReplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchPersistentReplication.m; sourceTree = "<group>"; };
+		27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchTouchDBServer.h; sourceTree = "<group>"; };
+		27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchTouchDBServer.m; sourceTree = "<group>"; };
 		27EEA59813D602EA00D7ACA4 /* CouchCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CouchCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27EEA59913D602EA00D7ACA4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		27EF14771396D7BA0052913E /* Addresses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Addresses.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -374,7 +386,6 @@
 				27EF147F1396D7CD0052913E /* Demo */,
 				273175A313CBA6B7000FF426 /* Doxyfile */,
 				27D5997813CE404300694B37 /* README.md */,
-				27A57A51139751B2002776DB /* JSONKit */,
 				27CDEBF713C67C9B00C979BB /* Resources */,
 				272E9D8213A2EBDF009F18E9 /* Frameworks */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
@@ -387,8 +398,10 @@
 			children = (
 				278B22F1138F1F5F00DDD950 /* CouchServer.h */,
 				278B22F2138F1F5F00DDD950 /* CouchServer.m */,
-				274EB8A214479D71001B7DD0 /* CouchEmbeddedServer.h */,
-				274EB8A314479D71001B7DD0 /* CouchEmbeddedServer.m */,
+				27E9C61714A0EECC00F67966 /* CouchTouchDBServer.h */,
+				27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */,
+				2783A0C4156D616800DC8692 /* CouchEmbeddedServer.h */,
+				2783A0C5156D616800DC8692 /* CouchEmbeddedServer.m */,
 				278B22F4138F269200DDD950 /* CouchDatabase.h */,
 				278B22F5138F269200DDD950 /* CouchDatabase.m */,
 				278B22F7138F2AA600DDD950 /* CouchDocument.h */,
@@ -410,6 +423,7 @@
 				27E4DD0A141921E000A3D8F6 /* CouchPersistentReplication.h */,
 				27E4DD0B141921E000A3D8F6 /* CouchPersistentReplication.m */,
 				270A663C13A5B3DF00791F4A /* CouchCocoa.h */,
+				279906DB149930E3003D4338 /* ChangeTracker */,
 				27333BCB13B7E70100EF5A10 /* Internal */,
 			);
 			path = Couch;
@@ -463,8 +477,6 @@
 			isa = PBXGroup;
 			children = (
 				27333BCA13B7E61700EF5A10 /* CouchInternal.h */,
-				2781244413AFA6CD0051A99D /* CouchChangeTracker.h */,
-				2781244513AFA6CD0051A99D /* CouchChangeTracker.m */,
 				274EB8AA14479E7B001B7DD0 /* CouchbaseMobile.h */,
 				27D083B7143FBEEA0067702F /* CouchbaseCallbacks.h */,
 				27CDEC3913C6806400C979BB /* CouchPrefix.pch */,
@@ -500,14 +512,17 @@
 			path = REST;
 			sourceTree = "<group>";
 		};
-		27A57A51139751B2002776DB /* JSONKit */ = {
+		279906DB149930E3003D4338 /* ChangeTracker */ = {
 			isa = PBXGroup;
 			children = (
-				2781242213AC1B2F0051A99D /* JSONKit.h */,
-				2781242313AC1B2F0051A99D /* JSONKit.m */,
+				2781244413AFA6CD0051A99D /* CouchChangeTracker.h */,
+				2781244513AFA6CD0051A99D /* CouchChangeTracker.m */,
+				279906CE149930DA003D4338 /* CouchConnectionChangeTracker.h */,
+				279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */,
+				279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */,
+				279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */,
 			);
-			name = JSONKit;
-			path = Vendor/JSONKit;
+			name = ChangeTracker;
 			sourceTree = "<group>";
 		};
 		27C727F713EB232700C7ADF5 /* UI */ = {
@@ -599,8 +614,11 @@
 				279276EF14215D5600002958 /* RESTBase64.h in Headers */,
 				27CB654D143A746700EEA1F2 /* CouchDesignDocument_Embedded.h in Headers */,
 				27D083B9143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */,
-				274EB8A514479D72001B7DD0 /* CouchEmbeddedServer.h in Headers */,
+				279906D3149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */,
+				279906D7149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */,
+				27E9C61A14A0EECC00F67966 /* CouchTouchDBServer.h in Headers */,
 				27AE23AE147C95D3005AAB52 /* CouchModelFactory.h in Headers */,
+				2783A0C6156D616800DC8692 /* CouchEmbeddedServer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -614,7 +632,7 @@
 				27CDEC2C13C67D3500C979BB /* RESTCache.h in Headers */,
 				27CDEC2D13C67D3500C979BB /* REST.h in Headers */,
 				27CDEC2E13C67D3500C979BB /* CouchServer.h in Headers */,
-				274EB8A414479D72001B7DD0 /* CouchEmbeddedServer.h in Headers */,
+				27E9C61914A0EECC00F67966 /* CouchTouchDBServer.h in Headers */,
 				27CDEC2F13C67D3500C979BB /* CouchDatabase.h in Headers */,
 				27CDEC3013C67D3500C979BB /* CouchDocument.h in Headers */,
 				27CDEC3113C67D3500C979BB /* CouchRevision.h in Headers */,
@@ -631,7 +649,8 @@
 				27CDEC3613C67D3500C979BB /* CouchCocoa.h in Headers */,
 				279276EE14215D5600002958 /* RESTBase64.h in Headers */,
 				27D083B8143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */,
-				27AE23AD147C95D3005AAB52 /* CouchModelFactory.h in Headers */,
+				279906D2149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */,
+				279906D6149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,7 +672,7 @@
 				27EEA5B313D6051800D7ACA4 /* CouchQuery.h in Headers */,
 				27EEA5B413D6051B00D7ACA4 /* CouchResource.h in Headers */,
 				27EEA5AD13D6050600D7ACA4 /* CouchServer.h in Headers */,
-				27003411144CBB150029C4BA /* CouchEmbeddedServer.h in Headers */,
+				27E9C61E14A0F6A300F67966 /* CouchTouchDBServer.h in Headers */,
 				27EEA5AE13D6050C00D7ACA4 /* CouchDatabase.h in Headers */,
 				279CCBF613F9955900C38C82 /* CouchReplication.h in Headers */,
 				27E4DD14141959EB00A3D8F6 /* CouchPersistentReplication.h in Headers */,
@@ -820,7 +839,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "Couchbase, Inc.";
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "CouchCocoa" */;
@@ -934,7 +953,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp \"${CONFIGURATION_BUILD_DIR}/libCouchCocoa.a\" \"${CONFIGURATION_BUILD_DIR}/${EXECUTABLE_PATH}\"";
+			shellScript = "CREATING_UNIVERSAL_DIR=${SYMROOT}/${CONFIGURATION}-${PRODUCT_NAME}-ios-universal\ncp \"${CREATING_UNIVERSAL_DIR}/libCouchCocoa.a\" \"${CONFIGURATION_BUILD_DIR}/${EXECUTABLE_PATH}\"";
 		};
 		27EEA5B813D6062900D7ACA4 /* Build Fat Library */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -948,7 +967,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Version 2.0 (updated for Xcode 4, with some fixes)\n# Changes:\n#    - Works with xcode 4, even when running xcode 3 projects (Workarounds for apple bugs)\n#    - Faster / better: only runs lipo once, instead of once per recursion\n#    - Added some debugging statemetns that can be switched on/off by changing the DEBUG_THIS_SCRIPT variable to \"true\"\n#    - Fixed some typos\n# \n# Purpose:\n#   Create a static library for iPhone from within XCode\n#   Because Apple staff DELIBERATELY broke Xcode to make this impossible from the GUI (Xcode 3.2.3 specifically states this in the Release notes!)\n#   ...no, I don't understand why they did this!\n#\n# Author: Adam Martin - http://twitter.com/redglassesapps\n# Based on: original script from Eonil (main changes: Eonil's script WILL NOT WORK in Xcode GUI - it WILL CRASH YOUR COMPUTER)\n#\n# More info: see this Stack Overflow question: http://stackoverflow.com/questions/3520977/build-fat-static-library-device-simulator-using-xcode-and-sdk-4\n\n#################[ Tests: helps workaround any future bugs in Xcode ]########\n#\nDEBUG_THIS_SCRIPT=\"false\"\n\nif [ $DEBUG_THIS_SCRIPT = \"true\" ]\nthen\necho \"########### TESTS #############\"\necho \"Use the following variables when debugging this script; note that they may change on recursions\"\necho \"BUILD_DIR = $BUILD_DIR\"\necho \"BUILD_ROOT = $BUILD_ROOT\"\necho \"CONFIGURATION_BUILD_DIR = $CONFIGURATION_BUILD_DIR\"\necho \"BUILT_PRODUCTS_DIR = $BUILT_PRODUCTS_DIR\"\necho \"CONFIGURATION_TEMP_DIR = $CONFIGURATION_TEMP_DIR\"\necho \"TARGET_BUILD_DIR = $TARGET_BUILD_DIR\"\nfi\n\n#####################[ part 1 ]##################\n# First, work out the BASESDK version number (NB: Apple ought to report this, but they hide it)\n#    (incidental: searching for substrings in sh is a nightmare! Sob)\n\nSDK_VERSION=$(echo ${SDK_NAME} | grep -o '.\\{3\\}$')\n\n# Next, work out if we're in SIM or DEVICE\n\nif [ ${PLATFORM_NAME} = \"iphonesimulator\" ]\nthen\nOTHER_SDK_TO_BUILD=iphoneos${SDK_VERSION}\nelse\nOTHER_SDK_TO_BUILD=iphonesimulator${SDK_VERSION}\nfi\n\necho \"XCode has selected SDK: ${PLATFORM_NAME} with version: ${SDK_VERSION} (although back-targetting: ${IPHONEOS_DEPLOYMENT_TARGET})\"\necho \"...therefore, OTHER_SDK_TO_BUILD = ${OTHER_SDK_TO_BUILD}\"\n#\n#####################[ end of part 1 ]##################\n\n#####################[ part 2 ]##################\n#\n# IF this is the original invocation, invoke WHATEVER other builds are required\n#\n# Xcode is already building ONE target...\n#\n# ...but this is a LIBRARY, so Apple is wrong to set it to build just one.\n# ...we need to build ALL targets\n# ...we MUST NOT re-build the target that is ALREADY being built: Xcode WILL CRASH YOUR COMPUTER if you try this (infinite recursion!)\n#\n#\n# So: build ONLY the missing platforms/configurations.\n\nif [ \"true\" == ${ALREADYINVOKED:-false} ]\nthen\necho \"RECURSION: I am NOT the root invocation, so I'm NOT going to recurse\"\nelse\n# CRITICAL:\n# Prevent infinite recursion (Xcode sucks)\nexport ALREADYINVOKED=\"true\"\n\necho \"RECURSION: I am the root ... recursing all missing build targets NOW...\"\necho \"RECURSION: ...about to invoke: xcodebuild -configuration \\\"${CONFIGURATION}\\\" -target \\\"${TARGET_NAME}\\\" -sdk \\\"${OTHER_SDK_TO_BUILD}\\\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO\"\nxcodebuild -configuration \"${CONFIGURATION}\" -target \"${TARGET_NAME}\" -sdk \"${OTHER_SDK_TO_BUILD}\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" || exit 1\n\nACTION=\"build\"\n\n#Merge all platform binaries as a fat binary for each configurations.\n\n# Calculate where the (multiple) built files are coming from:\nCURRENTCONFIG_DEVICE_DIR=${SYMROOT}/${CONFIGURATION}-iphoneos\nCURRENTCONFIG_SIMULATOR_DIR=${SYMROOT}/${CONFIGURATION}-iphonesimulator\n\necho \"Taking device build from: ${CURRENTCONFIG_DEVICE_DIR}\"\necho \"Taking simulator build from: ${CURRENTCONFIG_SIMULATOR_DIR}\"\n\nCREATING_UNIVERSAL_DIR=${SYMROOT}/${CONFIGURATION}-ios-universal\necho \"...I will output a universal build to: ${CREATING_UNIVERSAL_DIR}\"\n\n# ... remove the products of previous runs of this script\n#      NB: this directory is ONLY created by this script - it should be safe to delete!\n\nrm -rf \"${CREATING_UNIVERSAL_DIR}\"\nmkdir \"${CREATING_UNIVERSAL_DIR}\"\n\n#\necho \"lipo: for current configuration (${CONFIGURATION}) creating output file: ${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\nlipo -create -output \"${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\" || exit 1\n\n#########\n#\n# Added: StackOverflow suggestion to also copy \"include\" files\n#    (untested, but should work OK)\n#\nif [ -d \"${CURRENTCONFIG_DEVICE_DIR}/usr/local/include\" ]\nthen\nmkdir -p \"${CREATING_UNIVERSAL_DIR}/usr/local/include\"\n# * needs to be outside the double quotes?\ncp \"${CURRENTCONFIG_DEVICE_DIR}/usr/local/include/\"* \"${CREATING_UNIVERSAL_DIR}/usr/local/include\"\nfi\nfi\n";
+			shellScript = "# Version 2.0 (updated for Xcode 4, with some fixes)\n# Changes:\n#    - Works with xcode 4, even when running xcode 3 projects (Workarounds for apple bugs)\n#    - Faster / better: only runs lipo once, instead of once per recursion\n#    - Added some debugging statemetns that can be switched on/off by changing the DEBUG_THIS_SCRIPT variable to \"true\"\n#    - Fixed some typos\n# \n# Purpose:\n#   Create a static library for iPhone from within XCode\n#   Because Apple staff DELIBERATELY broke Xcode to make this impossible from the GUI (Xcode 3.2.3 specifically states this in the Release notes!)\n#   ...no, I don't understand why they did this!\n#\n# Author: Adam Martin - http://twitter.com/redglassesapps\n# Based on: original script from Eonil (main changes: Eonil's script WILL NOT WORK in Xcode GUI - it WILL CRASH YOUR COMPUTER)\n#\n# More info: see this Stack Overflow question: http://stackoverflow.com/questions/3520977/build-fat-static-library-device-simulator-using-xcode-and-sdk-4\n\n#################[ Tests: helps workaround any future bugs in Xcode ]########\n#\nDEBUG_THIS_SCRIPT=\"false\"\n\nif [ $DEBUG_THIS_SCRIPT = \"true\" ]\nthen\necho \"########### TESTS #############\"\necho \"Use the following variables when debugging this script; note that they may change on recursions\"\necho \"BUILD_DIR = $BUILD_DIR\"\necho \"BUILD_ROOT = $BUILD_ROOT\"\necho \"CONFIGURATION_BUILD_DIR = $CONFIGURATION_BUILD_DIR\"\necho \"BUILT_PRODUCTS_DIR = $BUILT_PRODUCTS_DIR\"\necho \"CONFIGURATION_TEMP_DIR = $CONFIGURATION_TEMP_DIR\"\necho \"TARGET_BUILD_DIR = $TARGET_BUILD_DIR\"\nfi\n\n#####################[ part 1 ]##################\n# First, work out the BASESDK version number (NB: Apple ought to report this, but they hide it)\n#    (incidental: searching for substrings in sh is a nightmare! Sob)\n\nSDK_VERSION=$(echo ${SDK_NAME} | grep -o '.\\{3\\}$')\n\n# Next, work out if we're in SIM or DEVICE\n\nif [ ${PLATFORM_NAME} = \"iphonesimulator\" ]\nthen\nOTHER_SDK_TO_BUILD=iphoneos${SDK_VERSION}\nelse\nOTHER_SDK_TO_BUILD=iphonesimulator${SDK_VERSION}\nfi\n\necho \"XCode has selected SDK: ${PLATFORM_NAME} with version: ${SDK_VERSION} (although back-targetting: ${IPHONEOS_DEPLOYMENT_TARGET})\"\necho \"...therefore, OTHER_SDK_TO_BUILD = ${OTHER_SDK_TO_BUILD}\"\n#\n#####################[ end of part 1 ]##################\n\n#####################[ part 2 ]##################\n#\n# IF this is the original invocation, invoke WHATEVER other builds are required\n#\n# Xcode is already building ONE target...\n#\n# ...but this is a LIBRARY, so Apple is wrong to set it to build just one.\n# ...we need to build ALL targets\n# ...we MUST NOT re-build the target that is ALREADY being built: Xcode WILL CRASH YOUR COMPUTER if you try this (infinite recursion!)\n#\n#\n# So: build ONLY the missing platforms/configurations.\n\nif [ \"true\" == ${ALREADYINVOKED:-false} ]\nthen\necho \"RECURSION: I am NOT the root invocation, so I'm NOT going to recurse\"\nelse\n# CRITICAL:\n# Prevent infinite recursion (Xcode sucks)\nexport ALREADYINVOKED=\"true\"\n\necho \"RECURSION: I am the root ... recursing all missing build targets NOW...\"\necho \"RECURSION: ...about to invoke: xcodebuild -configuration \\\"${CONFIGURATION}\\\" -target \\\"${TARGET_NAME}\\\" -sdk \\\"${OTHER_SDK_TO_BUILD}\\\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO\"\nxcodebuild -configuration \"${CONFIGURATION}\" -target \"${TARGET_NAME}\" -sdk \"${OTHER_SDK_TO_BUILD}\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" || exit 1\n\nACTION=\"build\"\n\n#Merge all platform binaries as a fat binary for each configurations.\n\n# Calculate where the (multiple) built files are coming from:\nCURRENTCONFIG_DEVICE_DIR=${SYMROOT}/${CONFIGURATION}-iphoneos\nCURRENTCONFIG_SIMULATOR_DIR=${SYMROOT}/${CONFIGURATION}-iphonesimulator\n\necho \"Taking device build from: ${CURRENTCONFIG_DEVICE_DIR}\"\necho \"Taking simulator build from: ${CURRENTCONFIG_SIMULATOR_DIR}\"\n\nCREATING_UNIVERSAL_DIR=${SYMROOT}/${CONFIGURATION}-${PRODUCT_NAME}-ios-universal\necho \"...I will output a universal build to: ${CREATING_UNIVERSAL_DIR}\"\n\n# ... remove the products of previous runs of this script\n#      NB: this directory is ONLY created by this script - it should be safe to delete!\n\nrm -rf \"${CREATING_UNIVERSAL_DIR}\"\nmkdir \"${CREATING_UNIVERSAL_DIR}\"\n\n#\necho \"lipo: for current configuration (${CONFIGURATION}) creating output file: ${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\nlipo -create -output \"${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\" || exit 1\n\n#########\n#\n# Added: StackOverflow suggestion to also copy \"include\" files\n#    (untested, but should work OK)\n#\nif [ -d \"${CURRENTCONFIG_DEVICE_DIR}/usr/local/include\" ]\nthen\nmkdir -p \"${CREATING_UNIVERSAL_DIR}/usr/local/include\"\n# * needs to be outside the double quotes?\ncp \"${CURRENTCONFIG_DEVICE_DIR}/usr/local/include/\"* \"${CREATING_UNIVERSAL_DIR}/usr/local/include\"\nfi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -958,7 +977,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2739BF5E13BCE5CD004829CD /* JSONKit.m in Sources */,
 				2739BF5713BCE5BD004829CD /* CouchDocument.m in Sources */,
 				2739BF5813BCE5BD004829CD /* CouchRevision.m in Sources */,
 				2739BF5913BCE5BD004829CD /* CouchAttachment.m in Sources */,
@@ -980,8 +998,11 @@
 				27E4DD0F141921E000A3D8F6 /* CouchPersistentReplication.m in Sources */,
 				279276F114215D5600002958 /* RESTBase64.m in Sources */,
 				27CB654F143A746700EEA1F2 /* CouchDesignDocument_Embedded.m in Sources */,
-				274EB8A714479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */,
+				279906D5149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */,
+				279906D9149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */,
+				27E9C61C14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */,
 				27AE23B0147C95D3005AAB52 /* CouchModelFactory.m in Sources */,
+				2783A0C7156D616800DC8692 /* CouchEmbeddedServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1025,14 +1046,15 @@
 				27CDEC2413C67D0300C979BB /* CouchQuery.m in Sources */,
 				27CDEC2513C67D0300C979BB /* CouchResource.m in Sources */,
 				27CDEC2613C67D0300C979BB /* CouchChangeTracker.m in Sources */,
-				27CDEC2713C67D0300C979BB /* JSONKit.m in Sources */,
 				279CCBF413F9823F00C38C82 /* CouchReplication.m in Sources */,
 				27DB821E1408202000E57444 /* CouchDynamicObject.m in Sources */,
 				27DB82271408225300E57444 /* CouchModel.m in Sources */,
 				27E4DD0E141921E000A3D8F6 /* CouchPersistentReplication.m in Sources */,
 				279276F014215D5600002958 /* RESTBase64.m in Sources */,
 				27CB654E143A746700EEA1F2 /* CouchDesignDocument_Embedded.m in Sources */,
-				274EB8A614479D72001B7DD0 /* CouchEmbeddedServer.m in Sources */,
+				279906D4149930DA003D4338 /* CouchConnectionChangeTracker.m in Sources */,
+				279906D8149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */,
+				27E9C61B14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */,
 				27AE23AF147C95D3005AAB52 /* CouchModelFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1101,8 +1123,8 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1123,8 +1145,8 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1189,6 +1211,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = CouchCocoa;
@@ -1208,6 +1231,7 @@
 				);
 				COPY_PHASE_STRIP = YES;
 				DSTROOT = /tmp/iOS_Library.dst;
+				GCC_THUMB_SUPPORT = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = CouchCocoa;
@@ -1316,7 +1340,6 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CouchCocoa;
 				WRAPPER_EXTENSION = framework;
@@ -1336,7 +1359,6 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "Resources/CouchCocoa-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CouchCocoa;
 				WRAPPER_EXTENSION = framework;
@@ -1399,6 +1421,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CouchCocoa;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -1411,7 +1434,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)-ios-universal";
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Couch.frameworik/Couch.frameworik-Prefix.pch";
@@ -1420,6 +1443,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_NAME = CouchCocoa;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = framework;
 			};

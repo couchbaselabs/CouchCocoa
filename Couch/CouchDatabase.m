@@ -26,7 +26,7 @@ NSString* const kCouchDatabaseChangeNotification = @"CouchDatabaseChange";
 static const NSUInteger kDocRetainLimit = 50;
 
 
-@interface CouchDatabase ()
+@interface CouchDatabase () <CouchChangeTrackerClient>
 - (void) processDeferredChanges;
 @end
 
@@ -55,6 +55,7 @@ static const NSUInteger kDocRetainLimit = 50;
     [_busyDocuments release];
     [_deferredChanges release];
     [_onChangeBlock release];
+    [_modelFactory release];
     [super dealloc];
 }
 
@@ -154,6 +155,10 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) clearDocumentCache {
     [_docCache forgetAllResources];
+}
+
+- (void) unretainDocumentCache {
+    [_docCache unretainResources];
 }
 
 
@@ -310,8 +315,9 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (NSArray*) replications {
     NSString* myPath = self.relativePath;
-    return [self.server.replications rest_map: ^(id repl) {
-        if ([[repl source] isEqualToString: myPath] || [[repl target] isEqualToString: myPath])
+    return [self.server.replications rest_map: ^(CouchPersistentReplication* repl) {
+        if ([repl.sourceURLStr isEqualToString: myPath] ||
+                [repl.targetURLStr isEqualToString: myPath])
             return repl;
         else
             return nil;
@@ -371,7 +377,6 @@ static const NSUInteger kDocRetainLimit = 50;
 - (void) setLastSequenceNumber:(NSUInteger)lastSequenceNumber {
     _lastSequenceNumber = lastSequenceNumber;
     _lastSequenceNumberKnown = YES;
-    _tracker.lastSequenceNumber = _lastSequenceNumber;
 }
 
 
@@ -385,8 +390,8 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
-- (void) receivedChange: (NSDictionary*)change
-{
+// Part of <CouchChangeTrackerClient> protocol
+- (void) changeTrackerReceivedChange: (NSDictionary*)change {
     // Get & check sequence number:
     NSNumber* sequenceObj = $castIf(NSNumber, [change objectForKey: @"seq"]);
     if (!sequenceObj)
@@ -398,7 +403,7 @@ static const NSUInteger kDocRetainLimit = 50;
     if (_busyDocuments.count) {
         // Don't process changes while I have pending PUT/POST/DELETEs out. Wait till they finish,
         // so I don't think the change is external.
-        COUCHLOG(@"CouchDatabase deferring change (seq %lu) till operations finish", 
+        COUCHLOG2(@"CouchDatabase deferring change (seq %lu) till operations finish", 
               (unsigned long)sequence);
         if (!_deferredChanges)
             _deferredChanges = [[NSMutableArray alloc] init];
@@ -444,26 +449,14 @@ static const NSUInteger kDocRetainLimit = 50;
     _deferredChanges = nil;
     
     for (NSDictionary* change in changes) {
-        [self receivedChange: change];
+        [self changeTrackerReceivedChange: change];
     }
 }
 
 
-- (void) receivedChangeLine: (NSData*)chunk {
-    NSString* line = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
-                            autorelease];
-    if (!line) {
-        Warn(@"Couldn't parse UTF-8 from _changes");
-        return;
-    }
-    if (line.length == 0 || [line isEqualToString: @"\n"])
-        return;
-    NSDictionary* change = $castIf(NSDictionary, [RESTBody JSONObjectWithString: line]);
-    if (change) {
-        [self receivedChange: change];
-    } else {
-        Warn(@"Received unparseable change line from server: %@", line);
-    }
+// Part of <CouchChangeTrackerClient> protocol
+- (NSURLCredential*) authCredential {
+    return [self credentialForOperation: nil];
 }
 
 
@@ -474,8 +467,10 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) setTracksChanges: (BOOL)track {
     if (track && !_tracker) {
-        _tracker = [[CouchChangeTracker alloc] initWithDatabase: self];
-        _tracker.lastSequenceNumber = self.lastSequenceNumber;
+        _tracker = [[CouchChangeTracker alloc] initWithDatabaseURL: self.URL
+                                                              mode: kContinuous
+                                                      lastSequence: self.lastSequenceNumber
+                                                            client: self];
         [_tracker start];
     } else if (!track && _tracker) {
         [_tracker stop];
