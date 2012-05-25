@@ -15,7 +15,7 @@
 
 #import "CouchDatabase.h"
 #import "RESTCache.h"
-#import "TDChangeTracker.h"
+#import "TDConnectionChangeTracker.h"
 #import "CouchInternal.h"
 
 
@@ -469,11 +469,11 @@ static const NSUInteger kDocRetainLimit = 50;
 - (void) setTracksChanges: (BOOL)track {
     if (track && !_tracker) {
         NSString* lastSequence = [NSString stringWithFormat: @"%u", self.lastSequenceNumber];
-        _tracker = [[TDChangeTracker alloc] initWithDatabaseURL: self.URL
-                                                           mode: kLongPoll
-                                                      conflicts: NO
-                                                   lastSequence: lastSequence
-                                                         client: self];
+        _tracker = [[TDConnectionChangeTracker alloc] initWithDatabaseURL: self.URL
+                                                                     mode: kLongPoll
+                                                                conflicts: NO
+                                                             lastSequence: lastSequence
+                                                                   client: self];
         [_tracker start];
     } else if (!track && _tracker) {
         [_tracker stop];
