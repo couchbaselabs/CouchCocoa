@@ -10,12 +10,7 @@
 #import "CouchInternal.h"
 #import "CouchbaseMobile.h"     // Local copy of public header from Couchbase framework
 
-#if TARGET_OS_IPHONE
 #import <UIKit/UIApplication.h>
-#else
-// Note: Mac support for this is of practical use only with the experimental Mac branch of CBM.
-#import <AppKit/NSApplication.h>
-#endif
 
 
 NSString* const CouchEmbeddedServerDidStartNotification = @"CouchEmbeddedServerDidRestart";
@@ -44,14 +39,10 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
     // We don't know the real port that the server will be assigned, so default to 0 for now.
     self = [super initWithURL: [NSURL URLWithString: @"http://127.0.0.1:0"]];
     if (self) {
-#if TARGET_OS_IPHONE
-        _couchbase = [[CouchbaseMobile alloc] init];
-#else
-        // On Mac, look up class at runtime to avoid dependency on Couchbase.framework:
+        // Look up class at runtime to avoid dependency on Couchbase.framework:
         Class couchbaseClass = NSClassFromString(@"Couchbase");
-        NSAssert(couchbaseClass!=nil, @"Not linked with Couchbase framework");
+        NSAssert(couchbaseClass!=nil, @"Not linked with Couchbase Mobile framework");
         _couchbase = [[couchbaseClass alloc] init];
-#endif
         _couchbase.delegate = self;
     }
     return self;
@@ -118,16 +109,11 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
         if ([couchbase respondsToSelector: @selector(adminCredential)])
             [self setCredential: couchbase.adminCredential];
         self.tracksActiveOperations = YES;
-#if TARGET_OS_IPHONE
         UIApplication* app = [UIApplication sharedApplication];
         [nctr addObserver: self selector: @selector(finishActiveOperations)
                      name: UIApplicationDidEnterBackgroundNotification object: app];
         [nctr addObserver: self selector: @selector(finishActiveOperations)
                      name: UIApplicationWillTerminateNotification object: app];
-#else
-        [nctr addObserver: self selector: @selector(finishActiveOperations)
-                     name: NSApplicationWillTerminateNotification object: NSApp];
-#endif
         _onStartBlock();
         notificationToPost = CouchEmbeddedServerDidStartNotification;
     } else {

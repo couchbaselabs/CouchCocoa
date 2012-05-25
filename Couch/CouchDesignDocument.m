@@ -33,6 +33,7 @@ NSString* const kCouchLanguageErlang = @"erlang";
     [_validation release];
     [_language release];
     [_views release];
+    [_filters release];
     [_viewsRevisionID release];
     [_viewOptions release];
     [super dealloc];
@@ -74,6 +75,14 @@ NSString* const kCouchLanguageErlang = @"erlang";
 }
 
 
+static NSMutableDictionary* mutableCopyProperty(NSDictionary* properties,
+                                                NSString* key) 
+{
+    NSDictionary* dict = $castIf(NSDictionary, [properties objectForKey: key]);
+    return dict ? [dict mutableCopy] : [[NSMutableDictionary alloc] init];
+}
+
+
 /** Returns a dictionary mapping view names to the dictionaries defining them (as in the design document's JSON source.)
     The first call fetches the entire design document; subsequent calls are cached. */
 - (NSDictionary*) views {
@@ -81,15 +90,15 @@ NSString* const kCouchLanguageErlang = @"erlang";
         // cache is invalid now:
         [_views release];
         _views = nil;
+        [_filters release];
+        _filters = nil;
         [_viewsRevisionID release];
         _viewsRevisionID = nil;
     }
     if (!_views) {
-        NSDictionary* views = $castIf(NSDictionary, [self.properties objectForKey: @"views"]);
-        if (views)
-            _views = [views mutableCopy];
-        else
-            _views = [[NSMutableDictionary alloc] init];
+        NSDictionary* properties = self.properties;
+        _views = mutableCopyProperty(properties, @"views");
+        _filters = mutableCopyProperty(properties, @"filters");
         _viewsRevisionID = [self.currentRevisionID copy];
     }
     return _views;
@@ -143,6 +152,23 @@ NSString* const kCouchLanguageErlang = @"erlang";
                      map: (NSString*)mapFunction
 {
     [self defineViewNamed: viewName map: mapFunction reduce: nil];
+}
+
+
+- (NSDictionary*) filters {
+    [self views];  // This also loads/instantiates _filters
+    return _filters;
+}
+
+
+- (void) defineFilterNamed: (NSString*)filterName
+                asFunction: (NSString*)filterFunction
+{
+    [self views];  // This also loads/instantiates _filters
+    if (!$equal(filterFunction, [_filters objectForKey: filterName])) {
+        [_filters setValue: filterFunction forKey: filterName];
+        self.changed = YES;
+    }
 }
 
 
@@ -200,6 +226,8 @@ NSString* const kCouchLanguageErlang = @"erlang";
         newProps = [NSMutableDictionary dictionary];
     if (_views)
         [newProps setObject: _views forKey: @"views"];
+    if (_filters)
+        [newProps setObject: _filters forKey: @"filters"];
     if (_language)
         [newProps setValue: _language forKey: @"language"];
     if (_changedValidation)

@@ -103,10 +103,15 @@ int gCouchLogLevel = 0;
 }
 
 
+- (Class) databaseClass {
+    return [CouchDatabase class];
+}
+
+
 - (CouchDatabase*) databaseNamed: (NSString*)name {
     CouchDatabase* db = (CouchDatabase*) [_dbCache resourceWithRelativePath: name];
     if (!db) {
-        db = [[CouchDatabase alloc] initWithParent: self relativePath: name];
+        db = [[[self databaseClass] alloc] initWithParent: self relativePath: name];
         if (!db)
             return nil;
         if (!_dbCache)

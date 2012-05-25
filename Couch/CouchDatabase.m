@@ -33,8 +33,6 @@ static const NSUInteger kDocRetainLimit = 50;
 
 @implementation CouchDatabase
 
-@dynamic documentPathMap;
-
 
 + (CouchDatabase*) databaseNamed: (NSString*)databaseName
                  onServerWithURL: (NSURL*)serverURL
@@ -74,13 +72,16 @@ static const NSUInteger kDocRetainLimit = 50;
     return [[self PUT: nil parameters: nil] start];
 }
 
-- (void)setDocumentPathMap:(CouchDocumentPathMap)documentPathMap
+
+- (void)setDocumentPathMap: (CouchDocumentPathMap)documentPathMap
 {
+    [_documentPathMap release];
     _documentPathMap = [documentPathMap copy];
     [_docCache forgetAllResources];
 }
 
-- (CouchDocumentPathMap)documentPathMap
+
+- (CouchDocumentPathMap) documentPathMap
 {
     return _documentPathMap;
 }
@@ -469,7 +470,7 @@ static const NSUInteger kDocRetainLimit = 50;
     if (track && !_tracker) {
         NSString* lastSequence = [NSString stringWithFormat: @"%u", self.lastSequenceNumber];
         _tracker = [[TDChangeTracker alloc] initWithDatabaseURL: self.URL
-                                                           mode: kContinuous
+                                                           mode: kLongPoll
                                                       conflicts: NO
                                                    lastSequence: lastSequence
                                                          client: self];

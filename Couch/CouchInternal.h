@@ -39,6 +39,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 - (void) endDocumentOperation: (CouchResource*)resource;
 - (void) onChange: (OnDatabaseChangeBlock)block;  // convenience for unit tests
 - (void) unretainDocumentCache;
+- (void) changeTrackerReceivedChange: (NSDictionary*)change;
 @end
 
 
