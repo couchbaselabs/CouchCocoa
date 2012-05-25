@@ -59,6 +59,10 @@
 		279906D7149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */; };
 		279906D8149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */; };
 		279906D9149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */; };
+		279CA782156FE4B700871563 /* CouchTouchDBDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CA780156FE4B700871563 /* CouchTouchDBDatabase.h */; };
+		279CA783156FE4B700871563 /* CouchTouchDBDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CA780156FE4B700871563 /* CouchTouchDBDatabase.h */; };
+		279CA784156FE4B700871563 /* CouchTouchDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 279CA781156FE4B700871563 /* CouchTouchDBDatabase.m */; };
+		279CA785156FE4B700871563 /* CouchTouchDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 279CA781156FE4B700871563 /* CouchTouchDBDatabase.m */; };
 		279CCBF213F9823F00C38C82 /* CouchReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CCBF013F9823F00C38C82 /* CouchReplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		279CCBF313F9823F00C38C82 /* CouchReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CCBF013F9823F00C38C82 /* CouchReplication.h */; };
 		279CCBF413F9823F00C38C82 /* CouchReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 279CCBF113F9823F00C38C82 /* CouchReplication.m */; };
@@ -257,6 +261,8 @@
 		279906CF149930DA003D4338 /* CouchConnectionChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchConnectionChangeTracker.m; sourceTree = "<group>"; };
 		279906D0149930DA003D4338 /* CouchSocketChangeTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchSocketChangeTracker.h; sourceTree = "<group>"; };
 		279906D1149930DA003D4338 /* CouchSocketChangeTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchSocketChangeTracker.m; sourceTree = "<group>"; };
+		279CA780156FE4B700871563 /* CouchTouchDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchTouchDBDatabase.h; sourceTree = "<group>"; };
+		279CA781156FE4B700871563 /* CouchTouchDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchTouchDBDatabase.m; sourceTree = "<group>"; };
 		279CCBF013F9823F00C38C82 /* CouchReplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchReplication.h; sourceTree = "<group>"; };
 		279CCBF113F9823F00C38C82 /* CouchReplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchReplication.m; sourceTree = "<group>"; };
 		27A577A613970959002776DB /* DemoQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoQuery.h; sourceTree = "<group>"; };
@@ -404,6 +410,8 @@
 				2783A0C5156D616800DC8692 /* CouchEmbeddedServer.m */,
 				278B22F4138F269200DDD950 /* CouchDatabase.h */,
 				278B22F5138F269200DDD950 /* CouchDatabase.m */,
+				279CA780156FE4B700871563 /* CouchTouchDBDatabase.h */,
+				279CA781156FE4B700871563 /* CouchTouchDBDatabase.m */,
 				278B22F7138F2AA600DDD950 /* CouchDocument.h */,
 				278B22F8138F2AA600DDD950 /* CouchDocument.m */,
 				2739BF2013BAB411004829CD /* CouchRevision.h */,
@@ -619,6 +627,7 @@
 				27E9C61A14A0EECC00F67966 /* CouchTouchDBServer.h in Headers */,
 				27AE23AE147C95D3005AAB52 /* CouchModelFactory.h in Headers */,
 				2783A0C6156D616800DC8692 /* CouchEmbeddedServer.h in Headers */,
+				279CA783156FE4B700871563 /* CouchTouchDBDatabase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -651,6 +660,7 @@
 				27D083B8143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */,
 				279906D2149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */,
 				279906D6149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */,
+				279CA782156FE4B700871563 /* CouchTouchDBDatabase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1003,6 +1013,7 @@
 				27E9C61C14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */,
 				27AE23B0147C95D3005AAB52 /* CouchModelFactory.m in Sources */,
 				2783A0C7156D616800DC8692 /* CouchEmbeddedServer.m in Sources */,
+				279CA785156FE4B700871563 /* CouchTouchDBDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1056,6 +1067,7 @@
 				279906D8149930DA003D4338 /* CouchSocketChangeTracker.m in Sources */,
 				27E9C61B14A0EECC00F67966 /* CouchTouchDBServer.m in Sources */,
 				27AE23AF147C95D3005AAB52 /* CouchModelFactory.m in Sources */,
+				279CA784156FE4B700871563 /* CouchTouchDBDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

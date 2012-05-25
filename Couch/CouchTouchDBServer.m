@@ -7,6 +7,7 @@
 //
 
 #import "CouchTouchDBServer.h"
+#import "CouchTouchDBDatabase.h"
 #import "CouchInternal.h"
 
 
@@ -123,6 +124,11 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 
 
 @synthesize error=_error;
+
+
+- (Class) databaseClass {
+    return [CouchTouchDBDatabase class];
+}
 
 
 - (void) tellTDServer: (void (^)(TDServer*))block {
