@@ -10,9 +10,9 @@
 #import "CouchTouchDBServer.h"
 #import "CouchDatabase.h"
 
-#import <TouchDB/TDDatabase+Insertion.h>
-#import <TouchDB/TDView.h>
-#import <TouchDB/TDServer.h>
+#import "TDDatabase+Insertion.h"
+#import "TDView.h"
+#import "TDServer.h"
 
 
 @implementation CouchDesignDocument (Embedded)

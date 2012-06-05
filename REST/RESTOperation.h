@@ -14,7 +14,7 @@
 //  and limitations under the License.
 
 #import <Foundation/Foundation.h>
-@class RESTBody, RESTResource;
+@class RESTBody, RESTResource, TDURLProtocol;
 
 
 /** Error domain used for HTTP errors (status >= 300). The code is the HTTP status. */
@@ -37,6 +37,7 @@ typedef void (^OnCompleteBlock)();
     RESTResource* _resource;
     NSURLRequest* _request;
     NSURLConnection* _connection;
+    TDURLProtocol* _protocol;
     SInt8 _state;
     UInt8 _retryCount;
     BOOL _waiting;

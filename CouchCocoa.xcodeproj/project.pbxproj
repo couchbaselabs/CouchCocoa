@@ -91,7 +91,6 @@
 		27C9104014F6CEED007C5E58 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C9103F14F6CEEC007C5E58 /* libz.dylib */; };
 		27C9104214F6CEF9007C5E58 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C9104114F6CEF9007C5E58 /* SystemConfiguration.framework */; };
 		27C9106414F6F806007C5E58 /* libTouchDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C9106314F6F806007C5E58 /* libTouchDB.a */; };
-		27C9106514F6F850007C5E58 /* libTouchDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C9106314F6F806007C5E58 /* libTouchDB.a */; };
 		27CB654C143A746700EEA1F2 /* CouchDesignDocument_Embedded.h in Headers */ = {isa = PBXBuildFile; fileRef = 27CB654A143A746700EEA1F2 /* CouchDesignDocument_Embedded.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CB654D143A746700EEA1F2 /* CouchDesignDocument_Embedded.h in Headers */ = {isa = PBXBuildFile; fileRef = 27CB654A143A746700EEA1F2 /* CouchDesignDocument_Embedded.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CB654E143A746700EEA1F2 /* CouchDesignDocument_Embedded.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB654B143A746700EEA1F2 /* CouchDesignDocument_Embedded.m */; };
@@ -409,7 +408,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27C9106514F6F850007C5E58 /* libTouchDB.a in Frameworks */,
 				2739BF2D13BCE53B004829CD /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1512,10 +1510,6 @@
 					../TouchDB/vendor/MYUtilities,
 					"$(CONFIGURATION_BUILD_DIR)",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../build/Syncpoint/Build/Products/Debug\"",
-				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = CouchCocoa;
@@ -1539,10 +1533,6 @@
 					"../TouchDB/Source/**",
 					../TouchDB/vendor/MYUtilities,
 					"$(CONFIGURATION_BUILD_DIR)",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../build/Syncpoint/Build/Products/Debug\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";

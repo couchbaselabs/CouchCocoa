@@ -17,6 +17,11 @@
 
 #import "RESTInternal.h"
 
+#define USE_TDURLPROTOCOL 0
+#if USE_TDURLPROTOCOL
+#import "TDURLProtocol.h"
+#endif
+
 
 /** Possible states that a RESTOperation is in during its lifecycle. */
 typedef enum {
@@ -39,6 +44,9 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 
 
 @interface RESTOperation ()
+#if USE_TDURLPROTOCOL
+                            <NSURLProtocolClient>
+#endif
 @property (readwrite, retain) NSError* error;
 @end
 
@@ -65,6 +73,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     [_resultObject release];
     [_connection cancel];
     [_connection release];
+    [_protocol stopLoading];
+    [_protocol release];
     [_request release];
     [_response release];
     [_error release];
@@ -161,12 +171,23 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         }
     }
 
-    _connection = [[NSURLConnection alloc] initWithRequest: _request
-                                                  delegate: self
-                                          startImmediately: NO];
-    [_connection scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSRunLoopCommonModes];
-    [_connection scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: kRESTObjectRunLoopMode];
-    [_connection start];
+#if USE_TDURLPROTOCOL
+    if (YES) {   // TODO: Enable direct TDURLProtocol access if accessing TouchDB
+        NSArray* modes = [NSArray arrayWithObjects: NSRunLoopCommonModes, kRESTObjectRunLoopMode, nil];
+        _protocol = [[TDURLProtocol startProtocolForRequest: _request
+                                                 withClient: self
+                                                      modes: modes] retain];
+    } else 
+#endif
+    {
+        _connection = [[NSURLConnection alloc] initWithRequest: _request
+                                                      delegate: self
+                                              startImmediately: NO];
+        [_connection scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSRunLoopCommonModes];
+        [_connection scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: kRESTObjectRunLoopMode];
+        [_connection start];
+    }
+    
     self.error = nil;
     _state = kRESTObjectLoading;
     
@@ -178,15 +199,27 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 - (BOOL) wait {
     if (_state == kRESTObjectUnloaded)
         [self start];
-    if (_connection && _state == kRESTObjectLoading) {
+    if ((_connection || _protocol) && _state == kRESTObjectLoading) {
         CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+        
+        NSTimer* timer = nil;
+        if (_protocol) {
+            // Need to add a source to the runloop or it might quit while I'm waiting.
+            timer = [NSTimer timerWithTimeInterval: 9999
+                                            target: nil selector: NULL userInfo: NULL repeats: NO];
+            [[NSRunLoop currentRunLoop] addTimer: timer forMode: kRESTObjectRunLoopMode];
+        }
         
         _waiting = YES;
         while (_state == kRESTObjectLoading) {
             if (![[NSRunLoop currentRunLoop] runMode: kRESTObjectRunLoopMode
-                                          beforeDate: [NSDate distantFuture]])
+                                          beforeDate: [NSDate distantFuture]]) {
+                Warn(@"RESTOperation: Runloop stopped while waiting");
                 break;
+            }
         }
+        
+        [timer invalidate];
 
         if (gRESTLogLevel >= kRESTLogRequestURLs)
             NSLog(@"REST: Blocked for %.1f ms", (CFAbsoluteTimeGetCurrent() - start)*1000.0);
@@ -282,6 +315,9 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     [_connection cancel];
     [_connection release];
     _connection = nil;
+    [_protocol stopLoading];
+    [_protocol release];
+    _protocol = nil;
     [_error release];
     _error = nil;
     [_response release];
@@ -326,6 +362,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     
     [_connection release];
     _connection = nil;
+    [_protocol release];
+    _protocol = nil;
     
     _state = error ? kRESTObjectFailed : kRESTObjectReady;
 
@@ -353,6 +391,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 - (void) cancel {
     if (_state == kRESTObjectLoading || _state == kRESTObjectUnloaded) {
         [_connection cancel];
+        [_protocol stopLoading];
         [self completedWithError: [NSError errorWithDomain: NSURLErrorDomain
                                                       code: NSURLErrorCancelled
                                                   userInfo: nil]];
@@ -516,5 +555,54 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     [challenge.sender cancelAuthenticationChallenge: challenge];
 }
 
+
+#pragma mark - NSURLPROTOCOLCLIENT
+
+#if USE_TDURLPROTOCOL
+- (void)URLProtocol:(NSURLProtocol *)protocol wasRedirectedToRequest:(NSURLRequest *)request
+   redirectResponse:(NSURLResponse *)redirectResponse
+{
+    
+}
+
+- (void)URLProtocol:(NSURLProtocol *)protocol
+        cachedResponseIsValid:(NSCachedURLResponse *)cachedResponse
+{
+    
+}
+
+- (void)URLProtocol:(NSURLProtocol *)protocol didReceiveResponse:(NSURLResponse *)response
+        cacheStoragePolicy:(NSURLCacheStoragePolicy)policy
+{
+    [self connection: nil didReceiveResponse: response];
+}
+
+- (void)URLProtocol:(NSURLProtocol *)protocol didLoadData:(NSData *)data
+{
+    [self connection: nil didReceiveData: data];
+}
+
+- (void)URLProtocolDidFinishLoading:(NSURLProtocol *)protocol
+{
+    [self connectionDidFinishLoading: nil];
+}
+
+- (void)URLProtocol:(NSURLProtocol *)protocol didFailWithError:(NSError *)error
+{
+    [self connection: nil didFailWithError: error];
+}
+
+- (void)URLProtocol:(NSURLProtocol *)protocol
+        didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    
+}
+
+- (void)URLProtocol:(NSURLProtocol *)protocol
+        didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    
+}
+#endif // USE_TDURLPROTOCOL
 
 @end
