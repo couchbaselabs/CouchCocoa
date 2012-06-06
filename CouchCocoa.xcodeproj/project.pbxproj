@@ -170,7 +170,6 @@
 		27EB94E414F7030700072752 /* CouchDesignDocument_Embedded.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB654B143A746700EEA1F2 /* CouchDesignDocument_Embedded.m */; };
 		27EB94E514F7030700072752 /* CouchTouchDBServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E9C61814A0EECC00F67966 /* CouchTouchDBServer.m */; };
 		27EB94E614F7030700072752 /* CouchModelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AE23AC147C95D3005AAB52 /* CouchModelFactory.m */; };
-		27EB94E814F7030700072752 /* libTouchDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C9106314F6F806007C5E58 /* libTouchDB.a */; };
 		27EB94E914F7030700072752 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2739BF2C13BCE53B004829CD /* Foundation.framework */; };
 		27EB94EB14F7030700072752 /* CouchReplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CCBF013F9823F00C38C82 /* CouchReplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EB94EC14F7030700072752 /* CouchDynamicObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 27DB82201408202E00E57444 /* CouchDynamicObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -326,7 +325,7 @@
 		27911B741411A8C700ABD31B /* CouchTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchTestCase.m; sourceTree = "<group>"; };
 		2795994E140A02DB001C168A /* Test_Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test_Model.m; sourceTree = "<group>"; };
 		279CA79815700FCE00871563 /* CouchTouchDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchTouchDBDatabase.h; sourceTree = "<group>"; };
-		279CA79915700FCE00871563 /* CouchTouchDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchTouchDBDatabase.m; sourceTree = "<group>"; };
+		279CA79915700FCE00871563 /* CouchTouchDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CouchTouchDBDatabase.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		279CCBF013F9823F00C38C82 /* CouchReplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchReplication.h; sourceTree = "<group>"; };
 		279CCBF113F9823F00C38C82 /* CouchReplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchReplication.m; sourceTree = "<group>"; };
 		27A5792913974B65002776DB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -475,7 +474,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27EB94E814F7030700072752 /* libTouchDB.a in Frameworks */,
 				27EB94E914F7030700072752 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1508,7 +1506,6 @@
 				HEADER_SEARCH_PATHS = (
 					"../TouchDB/Source/**",
 					../TouchDB/vendor/MYUtilities,
-					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -1532,7 +1529,6 @@
 				HEADER_SEARCH_PATHS = (
 					"../TouchDB/Source/**",
 					../TouchDB/vendor/MYUtilities,
-					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -1787,7 +1783,6 @@
 				HEADER_SEARCH_PATHS = (
 					"../TouchDB/Source/**",
 					../TouchDB/vendor/MYUtilities,
-					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1808,7 +1803,6 @@
 				HEADER_SEARCH_PATHS = (
 					"../TouchDB/Source/**",
 					../TouchDB/vendor/MYUtilities,
-					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

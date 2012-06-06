@@ -11,7 +11,7 @@
 #import "CouchInternal.h"
 
 #import "TDDatabase.h"
-#import <TouchDB/TDRevision.h>
+#import "TDRevision.h"
 
 
 @implementation CouchTouchDBDatabase
