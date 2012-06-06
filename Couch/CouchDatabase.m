@@ -327,11 +327,15 @@ static const NSUInteger kDocRetainLimit = 50;
 
 
 - (CouchPersistentReplication*) replicationFromDatabaseAtURL: (NSURL*)sourceURL {
-    return [self.server replicationWithSource: sourceURL.absoluteString target: self.relativePath];
+    return [self.server replicationWithSource: sourceURL.absoluteString target: self.relativePath replaceExisting:NO];
+}
+
+- (CouchPersistentReplication*) replicationFromDatabaseAtURL: (NSURL*)sourceURL replaceExisting:(BOOL)replaceExisting {
+    return [self.server replicationWithSource:sourceURL.absoluteString target:self.relativePath replaceExisting:replaceExisting];
 }
 
 - (CouchPersistentReplication*) replicationToDatabaseAtURL: (NSURL*)targetURL {
-    return [self.server replicationWithSource: self.relativePath target: targetURL.absoluteString];
+    return [self.server replicationWithSource: self.relativePath target: targetURL.absoluteString replaceExisting:NO];
 }
 
 

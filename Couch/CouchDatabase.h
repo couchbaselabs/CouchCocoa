@@ -159,6 +159,14 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
     Returns an object representing this replication. If a replication from this URL already exists, the configuration is unchanged. */
 - (CouchPersistentReplication*) replicationFromDatabaseAtURL: (NSURL*)sourceURL;
 
+/** Creates a persistent replication from a database (a pull).
+    @param sourceURL  The URL of the other database
+    @param replaceExisting  True to indicate that an existing pull from this URL should be delete. False to return
+        the existing pull if one exists. Note that existing pulls may not be deleted by the time the first is returned.
+    @return  The CouchPersistentReplication for the request pull.
+ */
+- (CouchPersistentReplication*) replicationFromDatabaseAtURL: (NSURL*)sourceURL replaceExisting:(BOOL)replaceExisting;
+
 /** Creates a persistent replication to a database (a push).
     Returns an object representing this replication. If a replication from this URL already exists, the configuration is unchanged. */
 - (CouchPersistentReplication*) replicationToDatabaseAtURL: (NSURL*)targetURL;
