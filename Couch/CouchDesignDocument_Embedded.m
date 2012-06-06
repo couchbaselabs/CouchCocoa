@@ -63,6 +63,8 @@
                  version: (NSString*)version
 {
     viewName = [self qualifiedName: viewName];
+    mapBlock = [mapBlock copy];
+    reduceBlock = [reduceBlock copy];
     [self tellTDDatabase: ^(TDDatabase* tddb) {
         if (mapBlock) {
             TDView* view = [tddb viewNamed: viewName];
@@ -72,6 +74,8 @@
             [[tddb existingViewNamed: viewName] deleteView];
         }
     }];
+    [mapBlock release];
+    [reduceBlock release];
 }
 
 
@@ -79,6 +83,7 @@
                      block: (TDFilterBlock)filterBlock
 {
     filterName = [self qualifiedName: filterName];
+    filterBlock = [filterBlock copy];
     [self tellTDDatabase: ^(TDDatabase* tddb) {
         [tddb defineFilter: filterName asBlock: filterBlock];
     }];
@@ -87,9 +92,11 @@
 
 
 - (void) setValidationBlock: (TDValidationBlock)validateBlock {
+    validateBlock = [validateBlock copy];
     [self tellTDDatabase: ^(TDDatabase* tddb) {
         [tddb defineValidation: self.relativePath asBlock: validateBlock];
     }];
+    [validateBlock release];
 }
 
 
