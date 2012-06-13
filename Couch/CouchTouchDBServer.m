@@ -11,16 +11,6 @@
 #import "CouchInternal.h"
 
 
-#if TARGET_OS_IPHONE
-extern NSString* const TDReplicatorProgressChangedNotification;
-extern NSString* const TDReplicatorStoppedNotification;
-#else
-// Copied from TouchDB's TDReplicator.m.
-static NSString* TDReplicatorProgressChangedNotification = @"TDReplicatorProgressChanged";
-static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
-#endif
-
-
 // Declare essential bits of TDServer and TDURLProtocol to avoid having to #import TouchDB:
 @interface TDServer : NSObject
 - (id) initWithDirectory: (NSString*)dirPath error: (NSError**)outError;
@@ -35,6 +25,10 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 + (NSURL*) registerServer: (TDServer*)server;
 @end
 
+@interface TDReplicator
++ (NSString *)progressChangedNotification;
++ (NSString *)stoppedNotification;
+@end
 
 
 @implementation CouchTouchDBServer
@@ -159,22 +153,29 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
     BOOL observe = (interval > 0.0);
     if (observe == _observing)
         return;
+
+    // Look up the notification names (since I am not linked against TouchDB):
+    Class classTDReplicator = NSClassFromString(@"TDReplicator");
+    NSAssert(classTDReplicator, @"Couldn't find class TDReplicator");
+    NSString* replProgressChangedNotification = [classTDReplicator progressChangedNotification];
+    NSString* replStoppedNotification = [classTDReplicator stoppedNotification];
+
     if (observe) {
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(replicationProgressChanged:)
-                                                     name: TDReplicatorProgressChangedNotification
+                                                     name: replProgressChangedNotification
                                                    object: nil];
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(replicationProgressChanged:)
-                                                     name: TDReplicatorStoppedNotification
+                                                     name: replStoppedNotification
                                                    object: nil];
         [self performSelector: @selector(checkActiveTasks) withObject: nil afterDelay: 0.0];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:TDReplicatorProgressChangedNotification
+                                                        name:replProgressChangedNotification
                                                       object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:TDReplicatorStoppedNotification
+                                                        name:replStoppedNotification
                                                       object:nil];
     }
     _observing = observe;
