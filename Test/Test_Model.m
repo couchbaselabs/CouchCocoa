@@ -24,12 +24,24 @@
 @dynamic name, grade, permanentRecord, birthday, otherNames, buddy;
 @end
 
+@interface TestModelSubclass : TestModel
+@property (readonly) NSString* type;
+@property (readwrite, retain) NSString* status;
+@end
+
+@implementation TestModelSubclass
+@dynamic type, status;
+- (void)setDefaultValues {
+    [self setValue:@"test-model" ofProperty:@"type"];
+    [self setValue:@"inactive" ofProperty:@"status"];
+    [self setValue:[NSArray array] ofProperty:@"otherNames"];
+}
+@end
 
 @interface Test_Model : CouchTestCase
 - (TestModel*) createModelWithName: (NSString*)name grade: (int)grade;
 - (NSData*) attachmentData;
 @end
-
 
 @implementation Test_Model
 
@@ -37,6 +49,9 @@
 - (void) test0_propertyNames {
     NSSet* names = [NSSet setWithObjects: @"name", @"grade", @"permanentRecord", @"birthday", @"otherNames", @"buddy", nil];
     STAssertEqualObjects([TestModel propertyNames], names, nil);
+    NSSet* allNames = [NSSet setWithObjects: @"name", @"grade", @"permanentRecord", @"birthday", @"otherNames", @"buddy", @"type", @"status", nil];
+    STAssertEqualObjects([TestModelSubclass propertyNames], allNames, nil);
+    STAssertEqualObjects([TestModelSubclass writablePropertyNames], [names setByAddingObject:@"status"], nil);
 }
 
 
@@ -84,8 +99,11 @@
     student.otherNames = otherNames;
     STAssertEqualObjects(student.otherNames, otherNames, nil);
     
+    STAssertTrue(student.isNew, nil);
+    
     AssertWait([student save]);
     NSString* docID = student.document.documentID;
+    STAssertFalse(student.isNew, nil);
     STAssertNotNil(docID, nil);
     
     // Forget all CouchDocuments!
@@ -235,11 +253,274 @@
 }
 
 
+- (void) test7_setDefaultValues {
+    NSString* docID;
+    NSArray* otherNames = [NSArray arrayWithObjects:@"Alicia", @"Ali", nil];
+    {
+        CouchDocument* doc = [_db untitledDocument];
+        TestModelSubclass* student = [TestModelSubclass modelForDocument: doc];
+        
+        STAssertEqualObjects(student.type, @"test-model", nil);
+        STAssertEqualObjects([student.properties objectForKey:@"type"], @"test-model", nil);
+        STAssertEqualObjects([student.propertiesToSave objectForKey:@"type"], @"test-model", nil);
+        
+        STAssertEqualObjects(student.status, @"inactive", nil);
+        STAssertEqualObjects([student.properties objectForKey:@"status"], @"inactive", nil);
+        STAssertEqualObjects([student.propertiesToSave objectForKey:@"status"], @"inactive", nil);
+        
+        STAssertEqualObjects(student.otherNames, [NSArray array], nil);
+        STAssertEqualObjects([student.properties objectForKey:@"otherNames"], [NSArray array], nil);
+        STAssertEqualObjects([student.propertiesToSave objectForKey:@"otherNames"], [NSArray array], nil);
+        
+        STAssertFalse(student.needsSave, nil); // stock object, with all the defaults
+        
+        student.status = @"active";
+        
+        STAssertTrue(student.needsSave, nil); // stock object, with all the defaults
+        
+        student.otherNames = otherNames;
+        STAssertEqualObjects(student.otherNames, otherNames, nil);
+        
+        STAssertEqualObjects(student.status, @"active", nil);
+        STAssertEqualObjects([student.propertiesToSave objectForKey:@"status"], @"active", nil);
+        STAssertEqualObjects([student.propertiesToSave objectForKey:@"otherNames"], otherNames, nil);
+        
+        STAssertTrue(student.isNew, nil);
+        
+        RESTOperation* op = [student save];
+        AssertWait(op);
+        docID = student.document.documentID;
+    }
+    [_db clearDocumentCache];
+    
+    TestModelSubclass* student = [TestModelSubclass modelForDocument: [_db documentWithID: docID]];
+    STAssertFalse(student.isNew, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"active", nil);
+    STAssertEqualObjects([student.propertiesToSave objectForKey:@"status"], @"active", nil);
+    STAssertEqualObjects([student.propertiesToSave objectForKey:@"otherNames"], otherNames, nil);
+}
+
+- (void) test9_setDefaultValues {
+    {
+        CouchDocument* doc = [_db documentWithID: @"0001"];
+        TestModelSubclass* student = [TestModelSubclass modelForDocument: doc];
+        STAssertTrue(student.isNew, nil);
+        student.name = @"Tweedledum";
+        student.grade = 2;
+        
+        STAssertTrue(student.isNew, nil);
+        STAssertEqualObjects(student.type, @"test-model", nil);
+        STAssertEqualObjects(student.status, @"inactive", nil);
+        
+        student.status = @"suspended";
+        
+        AssertWait([student save]);
+        
+        STAssertEqualObjects(student.status, @"suspended", nil);
+    }
+    [_db clearDocumentCache];
+    
+    TestModelSubclass* student = [TestModelSubclass modelForDocument: [_db documentWithID: @"0001"]];
+    STAssertFalse(student.isNew, nil);
+    STAssertEqualObjects(student.status, @"suspended", nil);
+}
+
+- (void) test10_Properties {
+    TestModel* student = [self createModelWithName: @"Pippi Langstrumpf" grade: 4];
+    [student setValue:@"example" ofProperty:@"extended"];
+    // propertiesToSave will include all properties
+    {
+        NSDictionary* expected = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"Pippi Langstrumpf", @"name", 
+                                  [NSNumber numberWithInt:4], @"grade",
+                                  @"example", @"extended", nil];
+        STAssertEqualObjects(student.propertiesToSave, expected, nil);
+    }
+    // properties will not include properties that have not been explicitly defined
+    {
+        NSDictionary* expected = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"Pippi Langstrumpf", @"name", 
+                                  [NSNumber numberWithInt:4], @"grade", nil];
+        STAssertEqualObjects(student.properties, expected, nil);
+    }
+}
+
+- (void) test11_setProperties {
+    CouchDocument* doc = [_db untitledDocument];
+    TestModelSubclass* student = [TestModelSubclass modelForDocument: doc];
+    STAssertEqualObjects(student.name, nil, nil);
+    STAssertEquals(student.grade, 0, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+    
+    NSArray* otherNames = [NSArray arrayWithObjects:@"Alicia", @"Ali", nil];
+    student.otherNames = otherNames;
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
+    
+    student.properties = [NSDictionary dictionaryWithObjectsAndKeys:@"Alice", @"name", [NSNumber numberWithInt:9], @"grade", nil];
+    STAssertEqualObjects(student.name, @"Alice", nil);
+    STAssertEquals(student.grade, 9, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+    STAssertEqualObjects(student.otherNames, [NSArray array], nil);
+
+    student.properties = [NSDictionary dictionaryWithObjectsAndKeys:@"Bartholomew", @"name", nil];
+    STAssertEqualObjects(student.name, @"Bartholomew", nil);
+    STAssertEquals(student.grade, 0, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+
+    student.properties = [NSDictionary dictionaryWithObjectsAndKeys:@"suspended", @"status", nil];
+    STAssertEqualObjects(student.name, nil, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"suspended", nil);
+    
+    student.properties =[NSDictionary dictionaryWithObjectsAndKeys:@"tricky", @"type", @"example", @"extended", nil];
+    STAssertEqualObjects(student.type, @"tricky", nil); // see difference with updateProperties
+    STAssertEqualObjects([student getValueOfProperty:@"extended"], @"example", nil);
+}
+
+- (void) test12_clearProperties {
+    CouchDocument* doc = [_db untitledDocument];
+    TestModelSubclass* student = [TestModelSubclass modelForDocument: doc];
+    NSDictionary* blank = [NSDictionary dictionaryWithObjectsAndKeys:@"test-model", @"type", @"inactive", @"status", [NSArray array], @"otherNames", nil];
+    STAssertEqualObjects(student.properties, blank, nil);
+ 
+    student.properties = [NSDictionary dictionaryWithObjectsAndKeys:@"Alice", @"name", [NSNumber numberWithInt:9], @"grade", @"example", @"extended", nil];
+    STAssertEqualObjects(student.name, @"Alice", nil);
+    STAssertEquals(student.grade, 9, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+    STAssertEqualObjects(student.otherNames, [NSArray array], nil);
+    STAssertEqualObjects([student getValueOfProperty:@"extended"], @"example", nil);
+    
+    [student clearProperties];
+    
+    STAssertEqualObjects(student.properties, blank, nil);
+}
+
+- (void) test13_updateProperties {
+    CouchDocument* doc = [_db untitledDocument];
+    TestModelSubclass* student = [TestModelSubclass modelForDocument: doc];
+    STAssertEqualObjects(student.name, nil, nil);
+    STAssertEquals(student.grade, 0, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+    
+    NSArray* otherNames = [NSArray arrayWithObjects:@"Alicia", @"Ali", nil];
+    student.otherNames = otherNames;
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
+    
+    [student updateProperties:[NSDictionary dictionaryWithObjectsAndKeys:@"Alice", @"name", [NSNumber numberWithInt:9], @"grade", nil]];
+    STAssertEqualObjects(student.name, @"Alice", nil);
+    STAssertEquals(student.grade, 9, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
+    
+    student.grade = 6;
+    STAssertEquals(student.grade, 6, nil);
+    
+    [student updateProperties:[NSDictionary dictionaryWithObjectsAndKeys:@"Alicia", @"name", nil]];
+    STAssertEqualObjects(student.name, @"Alicia", nil);
+    STAssertEquals(student.grade, 6, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+    
+    [student updateProperties:[NSDictionary dictionaryWithObjectsAndKeys:@"suspended", @"status", nil]];
+    STAssertEqualObjects(student.name, @"Alicia", nil);
+    STAssertEquals(student.grade, 6, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"suspended", nil);
+
+    [student updateProperties:[NSDictionary dictionaryWithObjectsAndKeys:@"tricky", @"type", @"example", @"extended", nil]];
+    STAssertEqualObjects(student.type, @"test-model", nil); // compare with updateProperties
+    STAssertEqualObjects([student getValueOfProperty:@"extended"], nil, nil);
+}
+
+- (void) test14_resetProperties {
+    CouchDocument* doc = [_db untitledDocument];
+    TestModelSubclass* student = [TestModelSubclass modelForDocument: doc];
+    NSDictionary* blank = [NSDictionary dictionaryWithObjectsAndKeys:@"test-model", @"type", @"inactive", @"status", [NSArray array], @"otherNames", nil];
+    STAssertEqualObjects(student.properties, blank, nil);
+    
+    student.properties = [NSDictionary dictionaryWithObjectsAndKeys:@"Alice", @"name", [NSNumber numberWithInt:9], @"grade", @"example", @"extended", nil];
+    
+    NSArray* otherNames = [NSArray arrayWithObjects:@"Alicia", @"Ali", nil];
+    student.otherNames = otherNames;
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
+    
+    STAssertEqualObjects(student.name, @"Alice", nil);
+    STAssertEquals(student.grade, 9, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
+    STAssertEqualObjects([student getValueOfProperty:@"extended"], @"example", nil);
+    
+    [student resetProperties];
+    
+    STAssertEqualObjects(student.name, nil, nil);
+    STAssertEquals(student.grade, 0, nil);
+    STAssertEqualObjects(student.type, @"test-model", nil);
+    STAssertEqualObjects(student.status, @"inactive", nil);
+    STAssertEqualObjects(student.otherNames, [NSArray array], nil);
+    STAssertEqualObjects([student getValueOfProperty:@"extended"], @"example", nil); // not cleared out
+}
+
+- (void) test15_reload {
+    NSArray* otherNames = [NSArray arrayWithObjects:@"Alicia", @"Ali", nil];
+    {
+        CouchDocument* doc = [_db documentWithID: @"0001"];
+        TestModelSubclass* student = [TestModelSubclass modelForDocument: doc];
+        student.name = @"Alice";
+        student.grade = 9;
+        student.status = @"active";
+        student.otherNames = otherNames;
+        [student setValue:@"example" ofProperty:@"extended"];
+        AssertWait([student save]);
+    }
+    [_db clearDocumentCache];
+    
+    TestModelSubclass* student = [TestModelSubclass modelForDocument: [_db documentWithID: @"0001"]];
+    STAssertEqualObjects(student.name, @"Alice", nil);
+    STAssertEqualObjects(student.status, @"active", nil);
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
+    STAssertEqualObjects([student getValueOfProperty:@"extended"], @"example", nil);
+    
+    NSDictionary *originalProperties = [student propertiesToSave];
+    
+    NSArray* names = [NSArray arrayWithObjects:@"Alice", @"Alicia", nil];
+    
+    student.name = @"Ali";
+    student.status = @"suspended";
+    student.otherNames = names;
+    [student setValue:@"changed" ofProperty:@"extended"];
+    STAssertEqualObjects(student.name, @"Ali", nil);
+    STAssertEqualObjects(student.status, @"suspended", nil);
+    STAssertEqualObjects(student.otherNames, names, nil);
+    STAssertEqualObjects([student getValueOfProperty:@"extended"], @"changed", nil);
+    
+    STAssertTrue(student.needsSave, nil);
+    
+    [student reload]; // reload from db
+    
+    STAssertEqualObjects(student.name, @"Alice", nil);
+    STAssertEqualObjects(student.status, @"active", nil);
+    STAssertEqualObjects(student.otherNames, otherNames, nil);
+    STAssertEqualObjects([student getValueOfProperty:@"extended"], @"example", nil);
+    
+    STAssertEqualObjects([student propertiesToSave], originalProperties, nil);
+    
+    STAssertFalse(student.needsSave, nil);
+}
+
 #pragma mark - UTILITIES:
 
 - (TestModel*) createModelWithName: (NSString*)name grade: (int)grade {
     CouchDocument* doc = [_db untitledDocument];
     TestModel* student = [TestModel modelForDocument: doc];
+    STAssertTrue(student.isNew, nil);
     STAssertNil(student.name, nil);
     STAssertEquals(student.grade, 0, nil);
     STAssertNil(student.permanentRecord, nil, nil);

@@ -39,7 +39,6 @@
 		2784E1B713CE5249009CC5C8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A5792913974B65002776DB /* Cocoa.framework */; };
 		2784E1C313CE52FE009CC5C8 /* ShoppingDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2784E1C113CE52FE009CC5C8 /* ShoppingDemo.xib */; };
 		2784E1C513CE5559009CC5C8 /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A577A713970959002776DB /* DemoQuery.m */; };
-		27911B711411A7C100ABD31B /* Test_DynamicObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B701411A7C100ABD31B /* Test_DynamicObject.m */; };
 		27911B721411A7C100ABD31B /* Test_DynamicObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B701411A7C100ABD31B /* Test_DynamicObject.m */; };
 		27911B751411A8C700ABD31B /* CouchTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B741411A8C700ABD31B /* CouchTestCase.m */; };
 		27911B761411A8C700ABD31B /* CouchTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B741411A8C700ABD31B /* CouchTestCase.m */; };
@@ -117,8 +116,6 @@
 		27CDEC3413C67D3500C979BB /* CouchQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B275E1394225600DDD950 /* CouchQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CDEC3513C67D3500C979BB /* CouchResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 278B24CA1392EE3600DDD950 /* CouchResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27CDEC3613C67D3500C979BB /* CouchCocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A663C13A5B3DF00791F4A /* CouchCocoa.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		27CDEC3713C67E1600C979BB /* Test_REST.m in Sources */ = {isa = PBXBuildFile; fileRef = 272E9D9313A2EBE0009F18E9 /* Test_REST.m */; };
-		27CDEC3813C67E1A00C979BB /* Test_Couch.m in Sources */ = {isa = PBXBuildFile; fileRef = 270A663A13A5B36900791F4A /* Test_Couch.m */; };
 		27CDEC3A13C6841E00C979BB /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27CDEBF113C67C9B00C979BB /* CouchCocoa.framework */; };
 		27D083B8143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 27D083B7143FBEEA0067702F /* CouchbaseCallbacks.h */; };
 		27D083B9143FBEEA0067702F /* CouchbaseCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 27D083B7143FBEEA0067702F /* CouchbaseCallbacks.h */; };
@@ -159,6 +156,9 @@
 		27EEA5B613D6052300D7ACA4 /* REST.h in Headers */ = {isa = PBXBuildFile; fileRef = 270A664413A5BA4600791F4A /* REST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EF148C1396D8CC0052913E /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EF148B1396D8CC0052913E /* DemoAppController.m */; };
 		27EF14B31396DD3B0052913E /* AddressesDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27EF14B21396DD3B0052913E /* AddressesDemo.xib */; };
+		5FDC4FC015932E58004B0576 /* Test_REST.m in Sources */ = {isa = PBXBuildFile; fileRef = 272E9D9313A2EBE0009F18E9 /* Test_REST.m */; };
+		5FDC4FC115932E5A004B0576 /* Test_Couch.m in Sources */ = {isa = PBXBuildFile; fileRef = 270A663A13A5B36900791F4A /* Test_Couch.m */; };
+		5FDC4FC215932E5D004B0576 /* Test_DynamicObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 27911B701411A7C100ABD31B /* Test_DynamicObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1075,11 +1075,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27CDEC3713C67E1600C979BB /* Test_REST.m in Sources */,
-				27CDEC3813C67E1A00C979BB /* Test_Couch.m in Sources */,
 				2795994F140A02DB001C168A /* Test_Model.m in Sources */,
-				27911B711411A7C100ABD31B /* Test_DynamicObject.m in Sources */,
 				27911B751411A8C700ABD31B /* CouchTestCase.m in Sources */,
+				5FDC4FC015932E58004B0576 /* Test_REST.m in Sources */,
+				5FDC4FC115932E5A004B0576 /* Test_Couch.m in Sources */,
+				5FDC4FC215932E5D004B0576 /* Test_DynamicObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

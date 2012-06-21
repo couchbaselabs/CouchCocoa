@@ -75,6 +75,14 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 @synthesize isDeleted=_isDeleted, modelObject=_modelObject;
 
 
+- (void) resetCurrentRevision {
+    [_currentRevisionID autorelease];
+    _currentRevisionID = nil;
+    [_currentRevision autorelease];
+    _currentRevision = nil;
+}  
+
+
 - (NSString*) currentRevisionID {
     return _currentRevisionID;
 }

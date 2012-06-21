@@ -105,6 +105,24 @@ static void setDoubleProperty(CouchDynamicObject *self, SEL _cmd, double value) 
 
 #pragma mark - PROPERTY INTROSPECTION:
 
++ (NSMutableSet*) propertyNamesPassingBlock:(BOOL (^)(NSString* name, BOOL isSettable))block {
+    NSMutableSet* propertyNames = [NSMutableSet set];
+    unsigned int count;
+    objc_property_t* propertiesExcludingSuperclass = class_copyPropertyList(self, &count);
+    if (propertiesExcludingSuperclass) {
+        BOOL isSettable = NO;
+        objc_property_t* propertyPtr = propertiesExcludingSuperclass;
+        for ( int i = 0; i < count; i++ )  {
+            objc_property_t property = propertyPtr[i];
+            const char *propName = property_getName(property);
+            getPropertyType(property, &isSettable);
+            NSString* name = [NSString stringWithUTF8String:propName];
+            if (block(name, isSettable)) [propertyNames addObject:name];
+        }
+        free(propertiesExcludingSuperclass);
+    }
+    return propertyNames;
+}
 
 + (NSSet*) propertyNames {
     static NSMutableDictionary* classToNames;
@@ -117,20 +135,34 @@ static void setDoubleProperty(CouchDynamicObject *self, SEL _cmd, double value) 
     NSSet* cachedPropertyNames = [classToNames objectForKey:self];
     if (cachedPropertyNames)
         return cachedPropertyNames;
-    
-    NSMutableSet* propertyNames = [NSMutableSet set];
-    objc_property_t* propertiesExcludingSuperclass = class_copyPropertyList(self, NULL);
-    if (propertiesExcludingSuperclass) {
-        objc_property_t* propertyPtr = propertiesExcludingSuperclass;
-        while (*propertyPtr)
-            [propertyNames addObject:[NSString stringWithUTF8String:property_getName(*propertyPtr++)]];
-        free(propertiesExcludingSuperclass);
-    }
+
+    NSMutableSet* propertyNames = [self propertyNamesPassingBlock:^BOOL(NSString *name, BOOL isSettable) {
+        return YES;
+    }];
     [propertyNames unionSet:[[self superclass] propertyNames]];
     [classToNames setObject:propertyNames forKey:self];
     return propertyNames;
 }
 
++ (NSSet*) writablePropertyNames {
+    static NSMutableDictionary* classToNames;
+    if (!classToNames)
+        classToNames = [[NSMutableDictionary alloc] init];
+    
+    if (self == [CouchDynamicObject class])
+        return [NSSet set];
+    
+    NSSet* cachedPropertyNames = [classToNames objectForKey:self];
+    if (cachedPropertyNames)
+        return cachedPropertyNames;
+    
+    NSMutableSet* propertyNames = [self propertyNamesPassingBlock:^BOOL(NSString *name, BOOL isSettable) {
+        return isSettable;
+    }];
+    [propertyNames unionSet:[[self superclass] propertyNames]];
+    [classToNames setObject:propertyNames forKey:self];
+    return propertyNames;
+}
 
 // Look up the encoded type of a property, and whether it's settable or readonly
 static const char* getPropertyType(objc_property_t property, BOOL *outIsSettable) {

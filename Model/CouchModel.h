@@ -22,7 +22,6 @@
     CouchDocument* _document;
     CFAbsoluteTime _changedTime;
     bool _autosaves :1;
-    bool _isNew     :1;
     bool _needsSave :1;
 
     NSMutableDictionary* _properties;   // Cached property values, including changed values
@@ -44,6 +43,12 @@
     Setting its .database property will cause it to create a CouchDocument.
     (This method is mostly here so that NSController objects can create CouchModels.) */
 - (id) init;
+
+/** Attempts to load the document/revision (properties) if not already loaded **/
+- (BOOL) load;
+
+/** Force reloading of the document/revision (properties) **/
+- (BOOL) reload;
 
 /** The document this item is associated with. Will be nil if it's new and unsaved. */
 @property (readonly, retain) CouchDocument* document;
@@ -92,6 +97,20 @@
 
 #pragma mark - PROPERTIES & ATTACHMENTS:
 
+- (NSDictionary*) properties;
+
+/** Replace the current properties dictionary completely, taking default values into account. **/
+- (void) setProperties:(NSDictionary*)properties;
+
+/** Reset the current properties dictionary completely, while keeping default values. **/
+- (void) clearProperties;
+
+/** Merge the current properties dictionary; writable properties only. **/
+- (void) updateProperties:(NSDictionary*)properties;
+
+/** Reset known (writable) properties to default values. **/
+- (void) resetProperties;
+
 /** Gets a property by name.
     You can use this for document properties that you haven't added @@property declarations for. */
 - (id) getValueOfProperty: (NSString*)property;
@@ -132,6 +151,10 @@
 /** The document ID to use when creating a new document.
     Default is nil, which means to assign no ID (the server will assign one). */
 - (NSString*) idForNewDocumentInDatabase: (CouchDatabase*)db;
+
+/** Called when the model's properties are reset or the document is explicitly loaded, but missing.
+    If it's missing, it's a new document, ready to be initialized with the defaults. */
+- (void) setDefaultValues;
 
 /** Called when the model's properties are reloaded from the document.
     This happens both when initialized from a document, and after an external change. */

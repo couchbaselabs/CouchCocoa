@@ -15,11 +15,20 @@
 @property (readwrite, retain) CouchDocument* document;
 @property (readwrite) bool needsSave;
 - (NSDictionary*) attachmentDataToSave;
+- (void) reset;
 @end
 
 
 @implementation CouchModel
 
+- (BOOL)ensureDefaults {
+    if (self.document.currentRevision == nil) {
+        [self setDefaultValues];
+        _needsSave = NO;
+        return YES;
+    }
+    return NO;
+}
 
 - (id)init {
     return [self initWithDocument: nil];
@@ -32,10 +41,11 @@
         if (document) {
             COUCHLOG2(@"%@ initWithDocument: %@ @%p", self, document, document);
             self.document = document;
+            [self ensureDefaults];
             [self didLoadFromDocument];
         } else {
-            _isNew = true;
             COUCHLOG2(@"%@ init", self);
+            [self setDefaultValues];
         }
     }
     return self;
@@ -89,6 +99,26 @@
 
 #pragma mark - DOCUMENT / DATABASE:
 
+- (BOOL) load {
+    if (!self.document.currentRevisionID) { // not loaded yet
+        if (self.document.currentRevision) [self couchDocumentChanged: self.document];
+        return [self ensureDefaults];
+    }
+    return NO;
+}
+
+- (void) reset {
+    _properties = nil;
+    _changedNames = nil;
+    _changedAttachments = nil;
+    [self.document resetCurrentRevision];
+    _needsSave = NO;
+}
+
+- (BOOL) reload {
+    [self reset];
+    return [self load];
+}  
 
 - (CouchDocument*) document {
     return _document;
@@ -146,6 +176,9 @@
     return op;
 }
 
+- (void) setDefaultValues {
+    // subclasses can override this
+}  
 
 - (void) didLoadFromDocument {
     // subclasses can override this
@@ -191,8 +224,11 @@
 #pragma mark - SAVING:
 
 
-@synthesize isNew=_isNew, autosaves=_autosaves, needsSave=_needsSave;
+@synthesize autosaves=_autosaves, needsSave=_needsSave;
 
+- (bool) isNew {
+    return !(_document && _document.currentRevisionID);
+}  
 
 - (void) setAutosaves: (bool) autosaves {
     if (autosaves != _autosaves) {
@@ -217,7 +253,6 @@
         [self couchDocumentChanged: _document];     // reset to contents from server
         //[NSApp presentError: op.error];
     } else {
-        _isNew = NO;
         [_properties release];
         _properties = nil;
         [_changedNames release];
@@ -280,6 +315,49 @@
     if (self == [CouchModel class])
         return [NSSet set]; // Ignore non-persisted properties declared on base CouchModel
     return [super propertyNames];
+}
+
++ (NSSet*) writablePropertyNames {
+    if (self == [CouchModel class])
+        return [NSSet set]; // Ignore non-persisted properties declared on base CouchModel
+    return [super writablePropertyNames];
+}
+
+- (NSDictionary*) properties {
+    NSMutableDictionary* props = [NSMutableDictionary dictionary];
+    [[self.class propertyNames] enumerateObjectsUsingBlock:^(id key, BOOL *stop) {
+        id value = [self getValueOfProperty:key];
+        [props setValue:value forKey:key];
+    }];
+    return props;
+}
+
+- (void) setProperties:(NSDictionary*)properties {
+    [self resetProperties];
+    [self updateProperties:properties strict:NO];
+}
+
+- (void) updateProperties:(NSDictionary*)properties {
+    [self updateProperties:properties strict:YES];
+}
+
+- (void) updateProperties:(NSDictionary*)properties strict:(BOOL)strict {
+    NSSet *writableNames = [self.class writablePropertyNames];
+    [properties enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+        if (!strict || [writableNames member:key]) [self setValue:value ofProperty:key];
+    }];
+}
+
+- (void) clearProperties {
+    _properties = nil;
+    [self setDefaultValues];
+}
+
+- (void) resetProperties {
+    [[self.class writablePropertyNames] enumerateObjectsUsingBlock:^(id key, BOOL *stop) {
+        [self setValue:nil ofProperty:key];
+    }];
+    [self setDefaultValues];
 }
 
 // Transforms cached property values back into JSON-compatible objects

@@ -146,5 +146,16 @@
     STAssertEqualObjects([test->_dict objectForKey: @"shorty"], [NSNumber numberWithShort: -32768], nil);
 }
 
+- (void) test4_propertyNames {    
+    NSSet* names = [NSSet setWithObjects: @"stringy", @"intey", @"shorty", @"doubley", @"booley", nil];
+    STAssertEqualObjects([TestDynamicObject propertyNames], names, nil);
+    names = [NSSet setWithObjects: @"stringy", @"intey", @"shorty", @"doubley", @"booley", @"dataey", nil];
+    STAssertEqualObjects([TestDynamicSubclass propertyNames], names, nil);
+}
+
+- (void) test5_writablePropertyNames {    
+    NSSet* names = [NSSet setWithObjects: @"stringy", @"shorty", @"doubley", @"booley", nil];
+    STAssertEqualObjects([TestDynamicObject writablePropertyNames], names, nil);
+}
 
 @end

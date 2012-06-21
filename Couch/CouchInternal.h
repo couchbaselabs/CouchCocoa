@@ -51,6 +51,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 - (void) loadCurrentRevisionFrom: (CouchQueryRow*)row;
 - (void) bulkSaveCompleted: (NSDictionary*) result forProperties: (NSDictionary*)properties;
 - (BOOL) notifyChanged: (NSDictionary*)change;
+- (void) resetCurrentRevision;
 @end
 
 
