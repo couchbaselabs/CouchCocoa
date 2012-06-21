@@ -279,6 +279,11 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 }
 
 
+- (RESTOperation*) HEAD {
+    return [self sendHTTP: @"HEAD" parameters: nil];
+}
+
+
 #pragma mark -
 #pragma mark CONTENT:
 

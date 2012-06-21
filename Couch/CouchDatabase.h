@@ -16,7 +16,7 @@
 #import "CouchResource.h"
 #import "CouchReplication.h"
 @class RESTCache, CouchChangeTracker, CouchDocument, CouchDesignDocument, CouchModelFactory,
-        CouchPersistentReplication, CouchQuery, CouchServer;
+        CouchPersistentReplication, CouchQuery, CouchServer, CouchSecurity;
 
 typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 
@@ -165,6 +165,10 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 
 /** All currently configured persistent replications involving this database, as CouchPersistentReplication objects. */
 @property (readonly) NSArray* replications;
+
+#pragma mark SECURITY OBJECT:
+
+- (CouchSecurity*)security;
 
 @end
 

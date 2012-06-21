@@ -84,12 +84,21 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 @end
 
 
+@interface CouchDynamicObject ()
+- (void) updateProperties:(NSDictionary*)properties strict:(BOOL)strict;
+@end
+
+@interface CouchSecurity ()
+- (id) initWithDatabase: (CouchDatabase*)database;
+@end
+
 
 @interface CouchServer ()
 @property (readonly) BOOL isEmbeddedServer;
 - (CouchPersistentReplication*) replicationWithSource: (NSString*)source
                                                target: (NSString*)target;
 - (void) registerActiveTask: (NSDictionary*)activeTask;
+- (Class) userModelClass;
 @end
 
 

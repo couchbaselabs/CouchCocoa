@@ -21,21 +21,26 @@
 
 @implementation CouchModel
 
-- (BOOL)ensureDefaults {
-    if (self.document.currentRevision == nil) {
-        [self setDefaultValues];
-        _needsSave = NO;
-        return YES;
-    }
+
+- (BOOL) setDefault: (id)value ofProperty: (NSString*)property {
+    id current = [self getValueOfProperty:property];
+    if (current == nil) 
+        return [self setValue:value ofProperty:property];
     return NO;
 }
+
+
+- (void)ensureDefaults {
+    _needsSave = [self setDefaultValues];
+}
+
 
 - (id)init {
     return [self initWithDocument: nil];
 }
 
-- (id) initWithDocument: (CouchDocument*)document
-{
+
+- (id) initWithDocument: (CouchDocument*)document {
     self = [super init];
     if (self) {
         if (document) {
@@ -99,13 +104,22 @@
 
 #pragma mark - DOCUMENT / DATABASE:
 
+
 - (BOOL) load {
-    if (!self.document.currentRevisionID) { // not loaded yet
-        if (self.document.currentRevision) [self couchDocumentChanged: self.document];
-        return [self ensureDefaults];
+    if (!self.document.currentRevision) { // not loaded yet, but attempt to
+        [self couchDocumentChanged: self.document];
+        [self ensureDefaults];
+        [self didLoadFromDocument];
+        return YES;
     }
     return NO;
 }
+
+
+- (BOOL) exists {
+    return self.document.exists;
+}
+
 
 - (void) reset {
     _properties = nil;
@@ -115,10 +129,12 @@
     _needsSave = NO;
 }
 
+
 - (BOOL) reload {
     [self reset];
     return [self load];
 }  
+
 
 - (CouchDocument*) document {
     return _document;
@@ -176,8 +192,9 @@
     return op;
 }
 
-- (void) setDefaultValues {
+- (BOOL) setDefaultValues {
     // subclasses can override this
+    return NO; // return YES to mark for saving
 }  
 
 - (void) didLoadFromDocument {
@@ -341,13 +358,6 @@
     [self updateProperties:properties strict:YES];
 }
 
-- (void) updateProperties:(NSDictionary*)properties strict:(BOOL)strict {
-    NSSet *writableNames = [self.class writablePropertyNames];
-    [properties enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
-        if (!strict || [writableNames member:key]) [self setValue:value ofProperty:key];
-    }];
-}
-
 - (void) clearProperties {
     _properties = nil;
     [self setDefaultValues];
@@ -366,6 +376,8 @@
         value = [RESTBody base64WithData: value];
     else if ([value isKindOfClass: [NSDate class]])
         value = [RESTBody JSONObjectWithDate: value];
+    else if ([value isKindOfClass: [NSURL class]])
+        value = [RESTBody JSONObjectWithURL: value];
     return value;
 }
 
@@ -447,6 +459,20 @@
     return value;
 }
 
+- (NSURL*) getURLProperty: (NSString*)property {
+    NSURL* value = [_properties objectForKey: property];
+    if (!value) {
+        id rawValue = [_document propertyForKey: property];
+        if ([rawValue isKindOfClass: [NSString class]])
+            value = [RESTBody urlWithJSONObject: rawValue];
+        if (value) 
+            [self cacheValue: value ofProperty: property changed: NO];
+        else if (rawValue)
+            Warn(@"Unable to decode date from property %@ of %@", property, _document);
+    }
+    return value;
+}
+
 - (CouchDatabase*) databaseForModelProperty: (NSString*)property {
     // This is a hook for subclasses to override if they need to, i.e. if the property
     // refers to a document in a different database.
@@ -509,6 +535,10 @@ static id getDateProperty(CouchModel *self, SEL _cmd) {
     return [self getDateProperty: getterKey(_cmd)];
 }
 
+static id getURLProperty(CouchModel *self, SEL _cmd) {
+    return [self getURLProperty: getterKey(_cmd)];
+}
+
 static id getModelProperty(CouchModel *self, SEL _cmd) {
     return [self getModelProperty: getterKey(_cmd)];
 }
@@ -527,6 +557,8 @@ static void setModelProperty(CouchModel *self, SEL _cmd, id value) {
         return (IMP)getDataProperty;
     else if (propertyClass == [NSDate class])
         return (IMP)getDateProperty;
+    else if (propertyClass == [NSURL class])
+        return (IMP)getURLProperty;
     else if ([propertyClass isSubclassOfClass: [CouchModel class]])
         return (IMP)getModelProperty;
     else 

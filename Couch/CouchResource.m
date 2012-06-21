@@ -28,6 +28,9 @@ NSString* const kCouchDBErrorDomain = @"CouchDB";
     // No, this is not an infinite regress. CouchDatabase overrides this to return self.
 }
 
+- (BOOL) exists {
+    return (BOOL)[[self HEAD] wait];
+}
 
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     error = [super operation: op willCompleteWithError: error];

@@ -14,7 +14,7 @@
     There's a 1::1 mapping between these and CouchDocuments; call +modelForDocument: to get (or create) a model object for a document, and .document to get the document of a model.
     You should subclass this and declare properties in the subclass's @@interface. As with NSManagedObject, you don't need to implement their accessor methods or declare instance variables; simply note them as '@@dynamic' in the class @@implementation. The property value will automatically be fetched from or stored to the document, using the same name.
     Supported scalar types are bool, char, short, int, double. These map to JSON numbers, except 'bool' which maps to JSON 'true' and 'false'. (Use bool instead of BOOL.)
-    Supported object types are NSString, NSNumber, NSData, NSDate, NSArray, NSDictionary. (NSData and NSDate are not native JSON; they will be automatically converted to/from strings in base64 and ISO date formats, respectively.)
+    Supported object types are NSString, NSNumber, NSData, NSDate, NSURL, NSArray, NSDictionary. (NSData, NSDate and NSURL are not native JSON; they will be automatically converted to/from strings in base64 and ISO date formats, respectively.)
     Additionally, a property's type can be a pointer to a CouchModel subclass. This provides references between model objects. The raw property value in the document must be a string whose value is interpreted as a document ID. */
 @interface CouchModel : CouchDynamicObject
 {
@@ -44,10 +44,13 @@
     (This method is mostly here so that NSController objects can create CouchModels.) */
 - (id) init;
 
-/** Attempts to load the document/revision (properties) if not already loaded **/
+/** Performs a synchronous HEAD request to check if the associated document exists. **/
+- (BOOL) exists;
+
+/** Attempts to load the document/revision (properties) from the database if not already loaded. **/
 - (BOOL) load;
 
-/** Force reloading of the document/revision (properties) **/
+/** Force reloading of the document/revision (properties) from the database. **/
 - (BOOL) reload;
 
 /** The document this item is associated with. Will be nil if it's new and unsaved. */
@@ -97,6 +100,7 @@
 
 #pragma mark - PROPERTIES & ATTACHMENTS:
 
+/** A dictionary containing all known properties; excludes those not explicitly defined. **/
 - (NSDictionary*) properties;
 
 /** Replace the current properties dictionary completely, taking default values into account. **/
@@ -105,7 +109,7 @@
 /** Reset the current properties dictionary completely, while keeping default values. **/
 - (void) clearProperties;
 
-/** Merge the current properties dictionary; writable properties only. **/
+/** Merge with the current properties dictionary; writable properties only. **/
 - (void) updateProperties:(NSDictionary*)properties;
 
 /** Reset known (writable) properties to default values. **/
@@ -119,6 +123,9 @@
     You can use this for document properties that you haven't added @@property declarations for. */
 - (BOOL) setValue: (id)value ofProperty: (NSString*)property;
 
+/** Sets the default value of a property by name.
+    The value will only be set if the current value is nil. */
+- (BOOL) setDefault: (id)value ofProperty: (NSString*)property;
 
 /** The names of all attachments (array of strings).
     This reflects unsaved changes made by creating or deleting attachments. */
@@ -153,8 +160,9 @@
 - (NSString*) idForNewDocumentInDatabase: (CouchDatabase*)db;
 
 /** Called when the model's properties are reset or the document is explicitly loaded, but missing.
-    If it's missing, it's a new document, ready to be initialized with the defaults. */
-- (void) setDefaultValues;
+    If it's missing, it's a new document, ready to be initialized with the defaults.
+    Return YES to mark the object for saving just with the defaults. */
+- (BOOL) setDefaultValues;
 
 /** Called when the model's properties are reloaded from the document.
     This happens both when initialized from a document, and after an external change. */

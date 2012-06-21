@@ -14,6 +14,7 @@
 //  and limitations under the License.
 
 #import "CouchServer.h"
+#import "CouchUser.h"
 
 #import "CouchInternal.h"
 #import "RESTCache.h"
@@ -48,6 +49,7 @@ int gCouchLogLevel = 0;
     [_activeTasks release];
     [_activityRsrc release];
     [_replicationsQuery release];
+    [_usersQuery release];
     [_dbCache release];
     [super dealloc];
 }
@@ -56,6 +58,8 @@ int gCouchLogLevel = 0;
 - (void) close {
     [_replicationsQuery release];
     _replicationsQuery = nil;
+    [_usersQuery release];
+    _usersQuery = nil; 
     for (CouchDatabase* db in _dbCache.allCachedResources)
         [db unretainDocumentCache];
 }
@@ -161,6 +165,47 @@ int gCouchLogLevel = 0;
     }
     return [CouchPersistentReplication createWithReplicatorDatabase: self.replicatorDatabase
                                                              source: source target: target];
+}
+
+#pragma mark USERS DATABASE:
+
+
+- (CouchUser*)userWithName:(NSString*)name {
+    NSString *userID = [[self userModelClass] userIDWithName:name];
+    CouchDatabase* db = [self usersDatabase];
+    CouchDocument* doc = [db documentWithID: userID];
+    return [[self userModelClass] modelForDocument:doc];
+}
+
+
+- (CouchDatabase*)usersDatabase {
+    return [self databaseNamed:@"_users"];
+}
+
+
+- (CouchLiveQuery*) usersQuery {
+    if (!_usersQuery) {
+        CouchDatabase* usersDB = [self usersDatabase];
+        usersDB.tracksChanges = YES;
+        _usersQuery = [[[usersDB getAllDocuments] asLiveQuery] retain];
+        [_usersQuery wait];
+    }
+    return _usersQuery;
+}
+
+
+- (NSArray*) users {
+    return [self.usersQuery.rows.allObjects rest_map: ^(id row) {
+        NSString* docID = [row documentID];
+        if ([docID hasPrefix: @"_design/"] || [docID hasPrefix: @"_local/"])
+            return (id)nil;
+        return [CouchUser modelForDocument: [row document]];
+    }];
+}
+
+
+- (Class) userModelClass {
+    return [CouchUser class];
 }
 
 

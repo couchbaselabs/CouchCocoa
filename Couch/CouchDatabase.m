@@ -16,6 +16,7 @@
 #import "CouchDatabase.h"
 #import "RESTCache.h"
 #import "CouchChangeTracker.h"
+#import "CouchSecurity.h"
 #import "CouchInternal.h"
 
 
@@ -357,7 +358,12 @@ static const NSUInteger kDocRetainLimit = 50;
     return repls;
 }
 
+#pragma mark -
+#pragma mark SECURITY OBJECT:
 
+- (CouchSecurity*)security {
+    return [[CouchSecurity alloc] initWithDatabase:self];
+}
 
 #pragma mark -
 #pragma mark TRACKING CHANGES:

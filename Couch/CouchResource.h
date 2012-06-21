@@ -27,4 +27,7 @@ extern NSString* const kCouchDBErrorDomain;
 /** The owning database. */
 @property (readonly) CouchDatabase* database;
 
+/** Performs a HEAD request to check if the resource exists. */
+- (BOOL) exists;
+
 @end

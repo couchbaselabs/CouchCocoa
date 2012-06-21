@@ -27,14 +27,16 @@
 @interface TestModelSubclass : TestModel
 @property (readonly) NSString* type;
 @property (readwrite, retain) NSString* status;
+@property (readwrite, copy) NSURL* homepage;
 @end
 
 @implementation TestModelSubclass
-@dynamic type, status;
-- (void)setDefaultValues {
-    [self setValue:@"test-model" ofProperty:@"type"];
-    [self setValue:@"inactive" ofProperty:@"status"];
-    [self setValue:[NSArray array] ofProperty:@"otherNames"];
+@dynamic type, status, homepage;
+- (BOOL)setDefaultValues {
+    [self setDefault:@"test-model" ofProperty:@"type"];
+    [self setDefault:@"inactive" ofProperty:@"status"];
+    [self setDefault:[NSArray array] ofProperty:@"otherNames"];
+    return NO; // not ready for saving as-is
 }
 @end
 
@@ -49,9 +51,10 @@
 - (void) test0_propertyNames {
     NSSet* names = [NSSet setWithObjects: @"name", @"grade", @"permanentRecord", @"birthday", @"otherNames", @"buddy", nil];
     STAssertEqualObjects([TestModel propertyNames], names, nil);
-    NSSet* allNames = [NSSet setWithObjects: @"name", @"grade", @"permanentRecord", @"birthday", @"otherNames", @"buddy", @"type", @"status", nil];
+    NSSet* allNames = [NSSet setWithObjects: @"name", @"grade", @"permanentRecord", @"birthday", @"otherNames", @"buddy", @"type", @"status", @"homepage", nil];
     STAssertEqualObjects([TestModelSubclass propertyNames], allNames, nil);
-    STAssertEqualObjects([TestModelSubclass writablePropertyNames], [names setByAddingObject:@"status"], nil);
+    NSSet* additionalNames = [names setByAddingObjectsFromSet:[NSSet setWithObjects:@"status", @"homepage", nil]];
+    STAssertEqualObjects([TestModelSubclass writablePropertyNames], additionalNames, nil);
 }
 
 
@@ -302,14 +305,21 @@
 }
 
 - (void) test9_setDefaultValues {
+    NSURL* homepage = [NSURL URLWithString:@"http://www.tweedledum.com"];
     {
         CouchDocument* doc = [_db documentWithID: @"0001"];
         TestModelSubclass* student = [TestModelSubclass modelForDocument: doc];
         STAssertTrue(student.isNew, nil);
+        STAssertFalse(student.needsSave, nil);
+        
         student.name = @"Tweedledum";
         student.grade = 2;
+        student.homepage = homepage;
         
         STAssertTrue(student.isNew, nil);
+        STAssertTrue(student.needsSave, nil);
+        
+        STAssertEqualObjects(student.name, @"Tweedledum", nil);
         STAssertEqualObjects(student.type, @"test-model", nil);
         STAssertEqualObjects(student.status, @"inactive", nil);
         
@@ -324,6 +334,7 @@
     TestModelSubclass* student = [TestModelSubclass modelForDocument: [_db documentWithID: @"0001"]];
     STAssertFalse(student.isNew, nil);
     STAssertEqualObjects(student.status, @"suspended", nil);
+    STAssertEqualObjects(student.homepage, homepage, nil);
 }
 
 - (void) test10_Properties {
@@ -481,8 +492,8 @@
         AssertWait([student save]);
     }
     [_db clearDocumentCache];
-    
-    TestModelSubclass* student = [TestModelSubclass modelForDocument: [_db documentWithID: @"0001"]];
+        
+    TestModelSubclass* student = [TestModelSubclass modelForDocument: [_db documentWithID: @"0001"]];    
     STAssertEqualObjects(student.name, @"Alice", nil);
     STAssertEqualObjects(student.status, @"active", nil);
     STAssertEqualObjects(student.otherNames, otherNames, nil);

@@ -25,6 +25,12 @@
     return NO;
 }
 
+- (void) updateProperties:(NSDictionary*)properties strict:(BOOL)strict {
+    NSSet *writableNames = [self.class writablePropertyNames];
+    [properties enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+        if (!strict || [writableNames member:key]) [self setValue:value ofProperty:key];
+    }];
+}
 
 #pragma mark - SELECTOR-TO-PROPERTY NAME MAPPING:
 
