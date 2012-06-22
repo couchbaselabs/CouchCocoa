@@ -14,13 +14,15 @@
 @interface CouchModel ()
 @property (readwrite, retain) CouchDocument* document;
 @property (readwrite) bool needsSave;
+@property (readwrite) bool isEmbedded;
+@property (readwrite, copy) NSString* referenceID;
 - (NSDictionary*) attachmentDataToSave;
+- (id) modelForDocument:(CouchDocument*)document property:(NSString *)property embed:(BOOL)embed;
 - (void) reset;
 @end
 
 
 @implementation CouchModel
-
 
 - (BOOL) setDefault: (id)value ofProperty: (NSString*)property {
     id current = [self getValueOfProperty:property];
@@ -36,7 +38,9 @@
 
 
 - (id)init {
-    return [self initWithDocument: nil];
+    CouchModel* model = [self initWithDocument: nil];
+    [model ensureDefaults];
+    return model;
 }
 
 
@@ -98,7 +102,13 @@
 
 
 - (NSString*) description {
-    return [NSString stringWithFormat: @"%@[%@]", self.class, self.document.abbreviatedID];
+    if (self.isEmbedded) {
+        NSString* ref = (self.document.abbreviatedID ? self.document.abbreviatedID : @"embedded");
+        return [NSString stringWithFormat: @"%@<%@>", self.class, ref];
+    } else {
+        NSString* ref = (self.document.abbreviatedID ? self.document.abbreviatedID : @"untitled");
+        return [NSString stringWithFormat: @"%@[%@]", self.class, ref];    
+    }
 }
 
 
@@ -244,7 +254,7 @@
 @synthesize autosaves=_autosaves, needsSave=_needsSave;
 
 - (bool) isNew {
-    return !(_document && _document.currentRevisionID);
+    return !(_document && _document.currentRevisionID) || self.isEmbedded;
 }  
 
 - (void) setAutosaves: (bool) autosaves {
@@ -283,7 +293,7 @@
 - (RESTOperation*) save {
     if (!_needsSave || (!_changedNames && !_changedAttachments))
         return nil;
-    NSDictionary* properties = self.propertiesToSave;
+    NSDictionary* properties = self.propertiesToSave;    
     COUCHLOG2(@"%@ Saving <- %@", self, properties);
     self.needsSave = NO;
     RESTOperation* op = [_document putProperties: properties];
@@ -317,14 +327,96 @@
        
     RESTOperation* op = [db putChanges: changes toRevisions: changedDocs];
     [op onCompletion: ^{
+        NSMutableDictionary* lookup = [NSMutableDictionary dictionary];
+        NSArray* results = $castIf(NSArray, op.responseBody.fromJSON);
+        [results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSDictionary* result = $castIf(NSDictionary, obj);
+            if (result) [lookup setObject:result forKey:[result valueForKey:@"id"]];
+        }];
+        
         for (CouchModel* model in changedModels) {
-            [model saveCompleted: op];
-            // TODO: This doesn't handle the case where op succeeded but an individual doc failed
+            NSDictionary* result = [lookup objectForKey:model.document.documentID];
+            if (result && ![result objectForKey:@"error"]) {
+                [model saveCompleted: op];
+            }
         }
     }];
     return op;
 }
 
+#pragma mark - CREATING MODEL PROPERTY INSTANCES:
+
+- (id) modelForDocument:(CouchDocument*)document property:(NSString *)property embed:(BOOL)embed {
+    CouchModel* model = nil;
+    if (embed && [self isEmbedableModelProperty:property]) {
+        model = [CouchModel embeddedModelForDocument:document parent:self property:property];
+    }
+    if (!model) model = [CouchModel modelForDocument:document];  
+    if (!model) {
+        Class declaredClass = [[self class] classOfProperty: property];
+        model = [declaredClass modelForDocument: document];
+    }
+    return model;
+}
+
+- (id) createModelForProperty:(NSString *)property {
+    CouchDocument* doc = [[self databaseForModelProperty: property] untitledDocument];
+    return [self modelForDocument:doc property:property embed:NO];
+}
+
+#pragma mark - EMBEDDED MODELS;
+
+@synthesize isEmbedded=_isEmbedded, referenceID=_referenceID;
+
++ (id) embeddedModelForDocument:(CouchDocument *)document parent:(CouchModel*)parent property:(NSString *)property {
+    return [CouchModel modelForDocument:document];
+}
+
+- (id) embedModelForProperty:(NSString *)property {
+    CouchModel* model = [self createModelForProperty:property];
+    if ([self embedModel:model forProperty:property]) return model;
+    return nil;
+}
+
+- (BOOL) embedModel:(CouchModel*)model forProperty:(NSString *)property {
+    if ([self isEmbedableModel:model forProperty:property]) {
+        [model setIsEmbedded:YES];
+        [model setReferenceID:model.document.documentID];
+        [model didEmbedIn:self forProperty:property];
+        [self setValue:model ofProperty:property];
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL) isEmbedableModel:(CouchModel*)model forProperty:(NSString *)property {
+    Class propertyClass = [self.class classOfProperty:property];
+    return  [model isKindOfClass:propertyClass] &&
+            [self isEmbedableModelProperty:property] && 
+            [model isEmbedableIn:self forProperty:property];
+}
+
+- (BOOL) isEmbedableModelProperty: (NSString*)property {
+    // This is a hook for embeddable subclasses to override if they need to.
+    return YES; // defaults to YES.
+}
+
+- (BOOL) isEmbedableIn: (CouchModel*)parent forProperty:(NSString*)property {
+    // This is a hook for embeddable subclasses to override if they need to.
+    return YES; // defaults to YES.
+}
+
+- (void) didEmbedIn: (CouchModel*)parent forProperty:(NSString*)property {
+    // This is a hook for embeddable subclasses to override if they need to.
+}
+
+- (BOOL) isEmbeddedModelProperty: (NSString*)property {
+    CouchModel* model = [self getValueOfProperty:property];
+    if ([model isKindOfClass:[CouchModel class]]) {
+        return [model isEmbedded];
+    }
+    return NO;
+}
 
 #pragma mark - PROPERTIES:
 
@@ -387,10 +479,19 @@
     if (!properties)
         properties = [[NSMutableDictionary alloc] init];
     for (NSString* key in _changedNames) {
-        id value = [_properties objectForKey: key];
-        [properties setValue: [self externalizePropertyValue: value] forKey: key];
+        id value = [self getValueOfProperty: key];
+        if ([value isKindOfClass: [CouchModel class]] && (CouchModel*)[value isEmbedded]) {
+            CouchModel* model = (CouchModel*)value;
+            [properties setValue:[model propertiesToSave] forKey: key];
+        } else {
+            [properties setValue: [self externalizePropertyValue: value] forKey: key];
+        }
     }
-    [properties setValue: self.attachmentDataToSave forKey: @"_attachments"];
+    if (self.isEmbedded) {
+        if (self.referenceID) [properties setObject:self.referenceID forKey:@"_ref"];
+    } else {
+        [properties setValue: self.attachmentDataToSave forKey: @"_attachments"];
+    }
     return [properties autorelease];
 }
 
@@ -481,46 +582,57 @@
 
 - (CouchModel*) getModelProperty: (NSString*)property {
     // Model-valued properties are kept in raw form as document IDs, not mapped to CouchModel
-    // references, to avoid reference loops.
+    // references, to avoid reference loops. Embedded Objects are allowed.
     
-    // First get the target document ID:
-    NSString* rawValue = [self getValueOfProperty: property];
-    if (!rawValue)
-        return nil;
+    id rawValue = [self getValueOfProperty: property];
+    if (!rawValue) return nil;
     
-    // Look up the CouchDocument:
-    if (![rawValue isKindOfClass: [NSString class]]) {
-        Warn(@"Model-valued property %@ of %@ is not a string", property, _document);
+    if ([self isEmbeddedModelProperty:property]) {
+        return rawValue;
+    } else if ([rawValue isKindOfClass: [NSString class]]) {
+        CouchDocument* doc = [[self databaseForModelProperty: property] documentWithID: rawValue];
+        if (!doc) {
+            Warn(@"Unable to get document from property %@ of %@ (value='%@')",
+                 property, _document, rawValue);
+            return nil;
+        }
+        
+        // Ask factory to get/create model; if it doesn't know, use the declared class:
+        CouchModel* model = [doc.database.modelFactory modelForDocument: doc];
+        if (!model) {
+            Class declaredClass = [[self class] classOfProperty: property];
+            model = [declaredClass modelForDocument: doc];
+            if (!model) 
+                Warn(@"Unable to instantiate %@ from %@ -- property %@ of %@ (%@)",
+                     declaredClass, doc, property, self, _document);
+        }
+        return model;
+    } else if ([self isEmbedableModelProperty:property] && 
+               [rawValue isKindOfClass: [NSDictionary class]]) {
+        CouchModel* model = [self embedModelForProperty:property];
+        model.referenceID = [rawValue valueForKey:@"_ref"];
+        [model updateProperties:rawValue strict:NO];
+        [model didEmbedIn:self forProperty:property];
+        return model;
+    } else {
+        Warn(@"Model-valued property %@ of %@ is not a string or embedded dictionary", property, _document);
         return nil;
     }
-    CouchDocument* doc = [[self databaseForModelProperty: property] documentWithID: rawValue];
-    if (!doc) {
-        Warn(@"Unable to get document from property %@ of %@ (value='%@')",
-             property, _document, rawValue);
-        return nil;
-    }
-    
-    // Ask factory to get/create model; if it doesn't know, use the declared class:
-    CouchModel* value = [doc.database.modelFactory modelForDocument: doc];
-    if (!value) {
-        Class declaredClass = [[self class] classOfProperty: property];
-        value = [declaredClass modelForDocument: doc];
-        if (!value) 
-            Warn(@"Unable to instantiate %@ from %@ -- property %@ of %@ (%@)",
-                 declaredClass, doc, property, self, _document);
-    }
-    return value;
 }
 
 - (void) setModel: (CouchModel*)model forProperty: (NSString*)property {
-    // Don't store the target CouchModel in the _properties dictionary, because this could create
-    // a reference loop. Instead, just store the raw document ID. getModelProperty will map to the
-    // model object when called.
-    NSString* docID = model.document.documentID;
-    NSAssert(docID || !model, 
-             @"Cannot assign untitled %@ as the value of model property %@.%@ -- save it first",
-             model.document, [self class], property);
-    [self setValue: docID ofProperty: property];
+    if ([self isEmbeddedModelProperty: property]) {
+        [self setValue: model ofProperty: property];
+    } else {
+        // Don't store the target CouchModel in the _properties dictionary, because this could create
+        // a reference loop. Instead, just store the raw document ID. getModelProperty will map to the
+        // model object when called.
+        NSString* docID = model.document.documentID;
+        NSAssert(docID || !model, 
+                 @"Cannot assign untitled %@ as the value of model property %@.%@ -- save it first",
+                 model.document, [self class], property);
+        [self setValue: docID ofProperty: property];
+    }
 }
 
 NS_INLINE NSString *getterKey(SEL sel) {

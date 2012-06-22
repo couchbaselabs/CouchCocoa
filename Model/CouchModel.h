@@ -23,7 +23,9 @@
     CFAbsoluteTime _changedTime;
     bool _autosaves :1;
     bool _needsSave :1;
-
+    bool _isEmbedded;
+    
+    NSString* _referenceID;
     NSMutableDictionary* _properties;   // Cached property values, including changed values
     NSMutableSet* _changedNames;        // Names of properties that have been changed but not saved
     NSMutableDictionary* _changedAttachments;
@@ -44,13 +46,13 @@
     (This method is mostly here so that NSController objects can create CouchModels.) */
 - (id) init;
 
-/** Performs a synchronous HEAD request to check if the associated document exists. **/
+/** Performs a synchronous HEAD request to check if the associated document exists. */
 - (BOOL) exists;
 
-/** Attempts to load the document/revision (properties) from the database if not already loaded. **/
+/** Attempts to load the document/revision (properties) from the database if not already loaded. */
 - (BOOL) load;
 
-/** Force reloading of the document/revision (properties) from the database. **/
+/** Force reloading of the document/revision (properties) from the database. */
 - (BOOL) reload;
 
 /** The document this item is associated with. Will be nil if it's new and unsaved. */
@@ -98,21 +100,50 @@
 /** Resets the timeSinceExternallyChanged property to zero. */
 - (void) markExternallyChanged;
 
+#pragma mark - CREATING MODEL PROPERTY INSTANCES:
+
+/** Creates a new model for the given property and returns it. The document will be an untitled 
+    document. It should be saved as a separate document or explicitly embedded. */
+- (id) createModelForProperty:(NSString *)property;
+
+#pragma mark - EMBEDDED MODELS:
+
+/** Whether this model object is currently embedded into another model. */
+@property (readonly) bool isEmbedded;
+
+/** If an existing model was embedded, it will store its original documentID in _ref. */
+@property (readonly, copy) NSString* referenceID;
+
+/** Factory method for creating new instances of embeddable models. The document
+    will be an untitled document. Can be overridden for custom behaviour. */
++ (id) embeddedModelForDocument:(CouchDocument *)document parent:(CouchModel*)parent property:(NSString *)property;
+
+/** Creates a new model for the given property and embeds it. The document
+    will be an untitled document. It won't be saved as a separate document. */
+- (id) embedModelForProperty:(NSString *)property;
+
+/** Embed an existing model for the given property. For models that already
+    refer to a document, the documentID will be stored as a _ref property. */
+- (BOOL) embedModel:(CouchModel*)model forProperty:(NSString *)property;
+
+/** Check if the model can be embedded for the given property. */
+- (BOOL) isEmbedableModel:(CouchModel*)model forProperty:(NSString *)property;
+
 #pragma mark - PROPERTIES & ATTACHMENTS:
 
-/** A dictionary containing all known properties; excludes those not explicitly defined. **/
+/** A dictionary containing all known properties; excludes those not explicitly defined. */
 - (NSDictionary*) properties;
 
-/** Replace the current properties dictionary completely, taking default values into account. **/
+/** Replace the current properties dictionary completely, taking default values into account. */
 - (void) setProperties:(NSDictionary*)properties;
 
-/** Reset the current properties dictionary completely, while keeping default values. **/
+/** Reset the current properties dictionary completely, while keeping default values. */
 - (void) clearProperties;
 
-/** Merge with the current properties dictionary; writable properties only. **/
+/** Merge with the current properties dictionary; writable properties only. */
 - (void) updateProperties:(NSDictionary*)properties;
 
-/** Reset known (writable) properties to default values. **/
+/** Reset known (writable) properties to default values. */
 - (void) resetProperties;
 
 /** Gets a property by name.
@@ -147,8 +178,6 @@
     The attachment will be deleted from the database at the same time as property changes are saved. */
 - (void) removeAttachmentNamed: (NSString*)name;
 
-
-
 #pragma mark - PROTECTED (FOR SUBCLASSES TO OVERRIDE)
 
 /** Designated initializer. Do not call directly except from subclass initializers; to create a new instance call +modelForDocument: instead.
@@ -171,5 +200,21 @@
 /** Returns the database in which to look up the document ID of a model-valued property.
     Defaults to the same database as the receiver's document. You should override this if a document property contains the ID of a document in a different database. */
 - (CouchDatabase*) databaseForModelProperty: (NSString*)propertyName;
+
+#pragma mark - PROTECTED EMBEDDING HOOKS (FOR SUBCLASSES TO OVERRIDE)
+
+/** This is a hook for subclasses to override if they need to, to check if the property
+    on the current/parent object (the one that's embedding models) accepts embbedding.
+    Called on the containing object. Defaults to YES. */
+- (BOOL) isEmbedableModelProperty: (NSString*)property;
+
+/** This is a hook for embeddable subclasses to override if they need to, to check if they
+    accept being embedded in the parent model for the property given.
+    Called on the to object to be embedded. Defaults to YES. */
+- (BOOL) isEmbedableIn: (CouchModel*)parent forProperty:(NSString*)property;
+
+/** This is a hook for embeddable subclasses to override if they need to respond to being embedded. 
+    Called on the object that was embedded when its first embedded, as well as when loaded later. */
+- (void) didEmbedIn: (CouchModel*)parent forProperty:(NSString*)property;
 
 @end

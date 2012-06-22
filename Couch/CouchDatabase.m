@@ -362,7 +362,7 @@ static const NSUInteger kDocRetainLimit = 50;
 #pragma mark SECURITY OBJECT:
 
 - (CouchSecurity*)security {
-    return [[CouchSecurity alloc] initWithDatabase:self];
+    return [[[CouchSecurity alloc] initWithDatabase:self] autorelease];
 }
 
 #pragma mark -

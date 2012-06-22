@@ -424,8 +424,10 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         if (![properties objectForKey: @"_id"]) {
             NSMutableDictionary* nuProperties = [[properties mutableCopy] autorelease];
             [nuProperties setObject: docID forKey: @"_id"];
+            NSString* rev = [result objectForKey:@"rev"];
+            if (rev) [nuProperties setObject:rev forKey: @"_rev"];
             properties = nuProperties;
-        }
+        }        
         [self updateFromSaveResponse: result withProperties: properties];
     }
 }

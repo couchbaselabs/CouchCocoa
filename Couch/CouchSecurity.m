@@ -98,13 +98,15 @@
         if (response && response.count > 0) {
             NSSet *writableNames = [self.class writablePropertyNames];
             [writableNames enumerateObjectsUsingBlock:^(id key, BOOL *stop) {
-                // all mapped keyPaths refer to NSMutableArrays
                 NSString* keyPath = [self keyPathForProperty:key];
-                BOOL isMutable = (BOOL)keyPath;
                 if (!keyPath) keyPath = key;
                 id value = [response valueForKeyPath:keyPath];
-                if (isMutable && [value respondsToSelector:@selector(mutableCopy)]) {
-                    value = [[value mutableCopy] autorelease];
+                if ([[self.class classOfProperty:key] isSubclassOfClass:[NSArray class]]) {
+                    if (value) {
+                        value = [[value mutableCopy] autorelease];
+                    } else {
+                        value = [NSMutableArray array];
+                    }
                 }
                 [self.properties setValue:value forKeyPath:keyPath];
             }];

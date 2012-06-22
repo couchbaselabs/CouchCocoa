@@ -83,9 +83,12 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 @property (readonly) NSString* targetURLStr;
 @end
 
-
 @interface CouchDynamicObject ()
 - (void) updateProperties:(NSDictionary*)properties strict:(BOOL)strict;
+@end
+
+@interface CouchModel ()
+- (BOOL) isEmbeddedModelProperty: (NSString*)property;
 @end
 
 @interface CouchSecurity ()
