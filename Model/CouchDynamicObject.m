@@ -127,7 +127,7 @@ static void setDoubleProperty(CouchDynamicObject *self, SEL _cmd, double value) 
         free(propertiesExcludingSuperclass);
     }
     [propertyNames unionSet:[[self superclass] propertyNames]];
-    [classToNames setObject:propertyNames forKey:self];
+    [classToNames setObject: propertyNames forKey: (id)self];
     return propertyNames;
 }
 
@@ -169,8 +169,9 @@ static BOOL getPropertyInfo(Class cls,
     const char *name = [propertyName UTF8String];
     objc_property_t property = class_getProperty(cls, name);
     if (!property) {
-        if (![propertyName hasPrefix: @"primitive"])    // Ignore "primitiveXXX" KVC accessors
+        if (![propertyName hasPrefix: @"primitive"]) {   // Ignore "primitiveXXX" KVC accessors
             COUCHLOG(@"%@ has no dynamic property named '%@' -- failure likely", cls, propertyName);
+        }
         *propertyType = NULL;
         return NO;
     }

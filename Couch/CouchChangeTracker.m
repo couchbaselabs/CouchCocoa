@@ -62,9 +62,9 @@
 
 - (NSString*) changesFeedPath {
     static NSString* const kModeNames[3] = {@"normal", @"longpoll", @"continuous"};
-    return [NSString stringWithFormat: @"_changes?feed=%@&heartbeat=300000&since=%u",
+    return [NSString stringWithFormat: @"_changes?feed=%@&heartbeat=300000&since=%lu",
             kModeNames[_mode],
-            _lastSequenceNumber];
+            (unsigned long)_lastSequenceNumber];
 }
 
 - (NSURL*) changesFeedURL {
@@ -125,8 +125,9 @@
     id change = [RESTBody JSONObjectWithString: line];
     if (!change)
         Warn(@"Received unparseable change line from server: %@", line);
-    else if (![self receivedChange: change])
+    else if (![self receivedChange: change]) {
         COUCHLOG(@"%@: Couldn't interpret change line %@", self, line);
+    }
 }
 
 - (BOOL) receivedPollResponse: (NSData*)body {
