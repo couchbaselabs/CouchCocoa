@@ -171,7 +171,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     NSArray* items = $castIf(NSArray, op.responseBody.fromJSON);
     if (!items)
         return nil;
-    return [items rest_map: ^(id item) {
+    return [items rest_map: ^id(id item) {
         NSDictionary* contents = $castIf(NSDictionary, [item objectForKey: @"ok"]);
         if (![[contents objectForKey: @"_deleted"] boolValue]) {
             NSString* revisionID = $castIf(NSString, [contents objectForKey: @"_rev"]);
@@ -182,7 +182,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
                 return revision;
             }
         }
-        return (id)nil;
+        return nil;
     }];
 }
 

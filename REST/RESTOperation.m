@@ -119,7 +119,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
             [output appendFormat: @"\t%@: %@\n", key, [headers objectForKey: key]];
     } else if (_error) {
         [output appendFormat: @"\n\tError: (%@, %i) %@\n",
-            _error.domain, _error.code, _error.localizedDescription];
+            _error.domain, (int)_error.code, _error.localizedDescription];
     }
     return output;
 }
