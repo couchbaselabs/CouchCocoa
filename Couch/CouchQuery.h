@@ -77,7 +77,9 @@ typedef enum {
 @property NSUInteger groupLevel;
 
 /** If set to YES, the results will include the entire document contents of the associated rows.
-    These can be accessed via CouchQueryRow's -documentContents property. */
+    These can be accessed via CouchQueryRow's -documentProperties property.
+    This can be a good optimization if you know you'll need the entire contents of each document.
+    (This property is equivalent to "include_docs" in the CouchDB API.) */
 @property BOOL prefetch;
 
 @property BOOL sequences;
