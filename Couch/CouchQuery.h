@@ -85,9 +85,9 @@ typedef enum {
 
 @property BOOL sequences;
 
-/** If non-nil, the error of the last execution of the query
- If nil, the last exexution of the query was successful */
-@property (readonly) NSError* error;
+/** If non-nil, the error of the last execution of the query.
+    If nil, the last exexution of the query was successful */
+@property (readonly,retain) NSError* error;
 
 /** Starts an asynchronous query of the CouchDB view.
     When complete, the operation's resultObject will be the CouchQueryEnumerator. */

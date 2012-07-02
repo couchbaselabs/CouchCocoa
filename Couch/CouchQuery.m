@@ -32,6 +32,10 @@
 @end
 
 
+@interface CouchQuery ()
+@property (readwrite,retain) NSError *error;
+@end
+
 
 @implementation CouchQuery
 
@@ -143,12 +147,11 @@
 
 
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
-    error = [super operation: op willCompleteWithError: error];
-    if (error) {
-        Warn(@"%@ failed with %@", self, error);
-        _error = [error retain];
-    }
-    if (!error && op.httpStatus == 200) {
+    self.error = [super operation: op willCompleteWithError: error];
+    if (_error)
+        Warn(@"%@ failed with %@", self, _error);
+
+    if (!_error && op.httpStatus == 200) {
         NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
         NSArray* rows = $castIf(NSArray, [result objectForKey: @"rows"]);
         if (rows) {
@@ -157,13 +160,12 @@
                                                                        result: result] autorelease];
         } else {
             Warn(@"Couldn't parse rows from CouchDB view response");
-            error = [RESTOperation errorWithHTTPStatus: 502 
+            self.error = [RESTOperation errorWithHTTPStatus: 502 
                                                message: @"Couldn't parse rows from CouchDB view response" 
                                                    URL: self.URL];
-            _error = [error retain];
         }
     }
-    return error;
+    return _error;
 }
 
 
