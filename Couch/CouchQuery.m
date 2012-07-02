@@ -63,13 +63,14 @@
     [_startKeyDocID release];
     [_endKeyDocID release];
     [_keys release];
+    [_error release];
     [super dealloc];
 }
 
 
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
             prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
-            endKeyDocID=_endKeyDocID, stale=_stale, sequences=_sequences;
+            endKeyDocID=_endKeyDocID, stale=_stale, sequences=_sequences, error=_error;
 
 
 - (CouchDesignDocument*) designDocument {
@@ -143,8 +144,10 @@
 
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     error = [super operation: op willCompleteWithError: error];
-    if (error)
+    if (error) {
         Warn(@"%@ failed with %@", self, error);
+        _error = [error retain];
+    }
     if (!error && op.httpStatus == 200) {
         NSDictionary* result = $castIf(NSDictionary, op.responseBody.fromJSON);
         NSArray* rows = $castIf(NSArray, [result objectForKey: @"rows"]);
@@ -154,7 +157,10 @@
                                                                        result: result] autorelease];
         } else {
             Warn(@"Couldn't parse rows from CouchDB view response");
-            error = [RESTOperation errorWithHTTPStatus: 502 message: nil URL: self.URL];
+            error = [RESTOperation errorWithHTTPStatus: 502 
+                                               message: @"Couldn't parse rows from CouchDB view response" 
+                                                   URL: self.URL];
+            _error = [error retain];
         }
     }
     return error;

@@ -38,6 +38,7 @@ typedef enum {
     BOOL _descending, _prefetch, _sequences;
     NSArray *_keys;
     NSUInteger _groupLevel;
+    NSError* _error;
 }
 
 /** The design document that contains this view. */
@@ -84,6 +85,9 @@ typedef enum {
 
 @property BOOL sequences;
 
+/** If non-nil, the error of the last execution of the query
+ If nil, the last exexution of the query was successful */
+@property (readonly) NSError* error;
 
 /** Starts an asynchronous query of the CouchDB view.
     When complete, the operation's resultObject will be the CouchQueryEnumerator. */
