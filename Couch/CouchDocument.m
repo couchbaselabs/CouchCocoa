@@ -75,6 +75,14 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 @synthesize isDeleted=_isDeleted, modelObject=_modelObject;
 
 
+- (void) resetCurrentRevision {
+    [_currentRevisionID autorelease];
+    _currentRevisionID = nil;
+    [_currentRevision autorelease];
+    _currentRevision = nil;
+}  
+
+
 - (NSString*) currentRevisionID {
     return _currentRevisionID;
 }
@@ -416,8 +424,10 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         if (![properties objectForKey: @"_id"]) {
             NSMutableDictionary* nuProperties = [[properties mutableCopy] autorelease];
             [nuProperties setObject: docID forKey: @"_id"];
+            NSString* rev = [result objectForKey:@"rev"];
+            if (rev) [nuProperties setObject:rev forKey: @"_rev"];
             properties = nuProperties;
-        }
+        }        
         [self updateFromSaveResponse: result withProperties: properties];
     }
 }

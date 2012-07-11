@@ -58,6 +58,10 @@
 
 #pragma mark - SERVER & DOCUMENTS:
 
+- (void) test00_Exists {
+    STAssertTrue(_server.exists, nil);
+    STAssertTrue(_db.exists, nil);
+}
 
 - (void) test01_Server {
     static const NSUInteger kUUIDCount = 5;
@@ -99,6 +103,8 @@
 
     RESTOperation* op = AssertWait([doc GET]);
     STAssertEquals(op.httpStatus, 200, @"GET failed");
+    
+    STAssertTrue(doc.exists, nil);
 
     STAssertEqualObjects(doc.userProperties, properties, @"Couldn't get doc properties after GET");
 }

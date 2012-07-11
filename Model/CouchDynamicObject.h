@@ -17,6 +17,9 @@
 /** Returns the names of all properties defined in this class and superclasses up to CouchDynamicObject. */
 + (NSSet*) propertyNames;
 
+///** Returns the names of all writable properties defined in this class and superclasses up to CouchDynamicObject. */
++ (NSSet*) writablePropertyNames;
+
 /** Returns the value of a named property.
     This method will only be called for properties that have been declared in the class's @@interface using @@property.
     You must override this method -- the base implementation just raises an exception. */

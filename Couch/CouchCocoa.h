@@ -19,12 +19,14 @@
 #import "CouchDesignDocument.h"
 #import "CouchDocument.h"
 #import "CouchModel.h"
+#import "CouchUser.h"
+#import "CouchSecurity.h"
 #import "CouchPersistentReplication.h"
 #import "CouchQuery.h"
 #import "CouchRevision.h"
 #import "CouchServer.h"
 #import "CouchTouchDBServer.h"
-
+#import "CouchTouchDBDatabase.h"
 
 /** @mainpage About CouchCocoa
  

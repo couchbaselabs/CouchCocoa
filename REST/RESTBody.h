@@ -103,6 +103,13 @@
     Returns nil if the string isn't parseable, or if it isn't a string at all. */
 + (NSDate*) dateWithJSONObject: (id)jsonObject;
 
+/** Converts an NSURL to a string. */
++ (NSString*) JSONObjectWithURL: (NSURL*)url;
+
+/** Parses a string into an NSURL.
+    Returns nil if the string isn't parseable, or if it isn't a string at all. */
++ (NSURL*) urlWithJSONObject: (id)jsonObject;
+
 /** Encodes NSData to a Base64 string, which can be stored in JSON. */
 + (NSString*) base64WithData: (NSData*)data;
 

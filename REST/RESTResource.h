@@ -90,6 +90,9 @@
 /** Starts an asynchronous HTTP DELETE operation. */
 - (RESTOperation*) DELETE;
 
+/** Starts an asynchronous HTTP HEAD operation. */
+- (RESTOperation*) HEAD;
+
 /** Sends an arbitrary HTTP request.
     All the other HTTP request methods ultimately call this one.
     @param method  The HTTP method, e.g. @"GET". Remember to capitalize it.

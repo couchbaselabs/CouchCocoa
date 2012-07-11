@@ -51,6 +51,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 - (void) loadCurrentRevisionFrom: (CouchQueryRow*)row;
 - (void) bulkSaveCompleted: (NSDictionary*) result forProperties: (NSDictionary*)properties;
 - (BOOL) notifyChanged: (NSDictionary*)change;
+- (void) resetCurrentRevision;
 @end
 
 
@@ -82,6 +83,17 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 @property (readonly) NSString* targetURLStr;
 @end
 
+@interface CouchDynamicObject ()
+- (void) updateProperties:(NSDictionary*)properties strict:(BOOL)strict;
+@end
+
+@interface CouchModel ()
+- (BOOL) isEmbeddedModelProperty: (NSString*)property;
+@end
+
+@interface CouchSecurity ()
+- (id) initWithDatabase: (CouchDatabase*)database;
+@end
 
 
 @interface CouchServer ()
@@ -89,6 +101,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 - (CouchPersistentReplication*) replicationWithSource: (NSString*)source
                                                target: (NSString*)target;
 - (void) registerActiveTask: (NSDictionary*)activeTask;
+- (Class) userModelClass;
 @end
 
 

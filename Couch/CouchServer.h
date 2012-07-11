@@ -14,7 +14,7 @@
 //  and limitations under the License.
 
 #import "CouchResource.h"
-@class CouchDatabase, CouchLiveQuery, CouchPersistentReplication, RESTCache;
+@class CouchDatabase, CouchLiveQuery, CouchPersistentReplication, CouchUser, RESTCache;
 
 
 /** The top level of a CouchDB server. Contains CouchDatabases. */
@@ -28,6 +28,7 @@
     RESTOperation* _activeTasksOp;
     NSTimer* _activityPollTimer;
     CouchLiveQuery* _replicationsQuery;
+    CouchLiveQuery* _usersQuery;
 }
 
 /** Initialize given a server URL. */
@@ -66,9 +67,24 @@
 
 #pragma mark - REPLICATION:
 
+/** This is the server-wide _replicators database **/
+@property (readonly) CouchDatabase* replicatorDatabase; 
+
 /** All currently defined CouchPersistentReplications (as stored in the replicator database.)
     To create a replication, use the methods on CouchDatabase. */
 @property (readonly) NSArray* replications;
+
+#pragma mark - USERS:
+
+/** This is the server-wide _users database **/
+@property (readonly) CouchDatabase* usersDatabase;
+
+/** All currently defined CouchUsers (as stored in the _users database.)
+    To create a user, use userWithName and the CouchUser methods. */
+@property (readonly) NSArray* users;
+
+/** Will get a CouchUser with the correct document ID for the given name. **/
+- (CouchUser*)userWithName:(NSString*)name;
 
 @end
 

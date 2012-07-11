@@ -355,12 +355,32 @@ static NSDateFormatter* getISO8601Formatter() {
     }
 }
 
+
 + (NSDate*) dateWithJSONObject: (id)jsonObject {
     NSString* string = $castIf(NSString, jsonObject);
     if (!string)
         return nil;
     @synchronized(self) {
         return [getISO8601Formatter() dateFromString: string];
+    }
+}
+
+
++ (NSString*) JSONObjectWithURL: (NSURL*)url {
+    if (!url)
+        return nil;
+    @synchronized(self) {
+        return [url absoluteString];
+    }
+}
+
+
++ (NSURL*) urlWithJSONObject: (id)jsonObject {
+    NSString* string = $castIf(NSString, jsonObject);
+    if (!string)
+        return nil;
+    @synchronized(self) {
+        return [NSURL URLWithString:string];
     }
 }
 
