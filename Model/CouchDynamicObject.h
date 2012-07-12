@@ -41,9 +41,9 @@
 
 // ADVANCED STUFF FOR SUBCLASSES TO OVERRIDE:
 
-+ (IMP) impForGetterOfClass: (Class)propertyClass;
-+ (IMP) impForSetterOfClass: (Class)propertyClass;
-+ (IMP) impForGetterOfType: (const char*)propertyType;
-+ (IMP) impForSetterOfType: (const char*)propertyType;
++ (IMP) impForGetterOfProperty: (NSString*)property ofClass: (Class)propertyClass;
++ (IMP) impForSetterOfProperty: (NSString*)property ofClass: (Class)propertyClass;
++ (IMP) impForGetterOfProperty: (NSString*)property ofType: (const char*)propertyType;
++ (IMP) impForSetterOfProperty: (NSString*)property ofType: (const char*)propertyType;
 
 @end

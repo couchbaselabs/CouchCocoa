@@ -9,6 +9,7 @@
 #import "CouchModel.h"
 #import "CouchModelFactory.h"
 #import "CouchInternal.h"
+#import <objc/runtime.h>
 
 
 @interface CouchModel ()
@@ -419,47 +420,37 @@
     [self setValue: docID ofProperty: property];
 }
 
-NS_INLINE NSString *getterKey(SEL sel) {
-    return [NSString stringWithUTF8String:sel_getName(sel)];
-}
 
-static id getDataProperty(CouchModel *self, SEL _cmd) {
-    return [self getDataProperty: getterKey(_cmd)];
-}
-
-static id getDateProperty(CouchModel *self, SEL _cmd) {
-    return [self getDateProperty: getterKey(_cmd)];
-}
-
-static id getModelProperty(CouchModel *self, SEL _cmd) {
-    return [self getModelProperty: getterKey(_cmd)];
-}
-
-static void setModelProperty(CouchModel *self, SEL _cmd, id value) {
-    return [self setModel: value forProperty: [CouchDynamicObject setterKey: _cmd]];
-}
-
-
-+ (IMP) impForGetterOfClass: (Class)propertyClass {
++ (IMP) impForGetterOfProperty: (NSString*)property ofClass: (Class)propertyClass {
     if (propertyClass == Nil || propertyClass == [NSString class]
              || propertyClass == [NSNumber class] || propertyClass == [NSArray class]
              || propertyClass == [NSDictionary class])
-        return [super impForGetterOfClass: propertyClass];  // Basic classes (including 'id')
-    else if (propertyClass == [NSData class])
-        return (IMP)getDataProperty;
-    else if (propertyClass == [NSDate class])
-        return (IMP)getDateProperty;
-    else if ([propertyClass isSubclassOfClass: [CouchModel class]])
-        return (IMP)getModelProperty;
-    else 
+        return [super impForGetterOfProperty: property ofClass: propertyClass];  // Basic classes (including 'id')
+    else if (propertyClass == [NSData class]) {
+        return imp_implementationWithBlock(^id(CouchModel* receiver) {
+            return [receiver getDataProperty: property];
+        });
+    } else if (propertyClass == [NSDate class]) {
+        return imp_implementationWithBlock(^id(CouchModel* receiver) {
+            return [receiver getDateProperty: property];
+        });
+    } else if ([propertyClass isSubclassOfClass: [CouchModel class]]) {
+        return imp_implementationWithBlock(^id(CouchModel* receiver) {
+            return [receiver getModelProperty: property];
+        });
+    } else {
         return NULL;  // Unsupported
+    }
 }
 
-+ (IMP) impForSetterOfClass: (Class)propertyClass {
-    if ([propertyClass isSubclassOfClass: [CouchModel class]])
-        return (IMP)setModelProperty;
-    else 
-        return [super impForSetterOfClass: propertyClass];
++ (IMP) impForSetterOfProperty: (NSString*)property ofClass: (Class)propertyClass {
+    if ([propertyClass isSubclassOfClass: [CouchModel class]]) {
+        return imp_implementationWithBlock(^(CouchModel* receiver, CouchModel* value) {
+            [receiver setModel: value forProperty: property];
+        });
+    } else {
+        return [super impForSetterOfProperty: property ofClass: propertyClass];
+    }
 }
 
 
