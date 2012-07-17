@@ -468,7 +468,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) setTracksChanges: (BOOL)track {
     if (track && !_tracker) {
-        NSString* lastSequence = [NSString stringWithFormat: @"%u", self.lastSequenceNumber];
+        NSString* lastSequence = [NSString stringWithFormat: @"%llu", (SInt64)self.lastSequenceNumber];
         _tracker = [[TDConnectionChangeTracker alloc] initWithDatabaseURL: self.URL
                                                                      mode: kLongPoll
                                                                 conflicts: NO
