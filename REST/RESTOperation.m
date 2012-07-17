@@ -222,7 +222,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         [timer invalidate];
 
         if (gRESTLogLevel >= kRESTLogRequestURLs)
-            NSLog(@"REST: Blocked for %.1f ms", (CFAbsoluteTimeGetCurrent() - start)*1000.0);
+            NSLog(@"REST: Blocked for %.1f ms in %@",
+                  (CFAbsoluteTimeGetCurrent() - start)*1000.0, self);
     }
     return _state == kRESTObjectReady;
 }

@@ -1,5 +1,5 @@
 //
-//  CouchDictObject.m
+//  CouchDynamicObject.m
 //  CouchCocoa
 //
 //  Created by Jens Alfke on 8/6/09.
@@ -9,6 +9,13 @@
 #import "CouchDynamicObject.h"
 #import "CouchInternal.h"   // just for the Warn and COUCHLOG2 macros
 #import <objc/runtime.h>
+
+
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+#define USE_BLOCKS (__IPHONE_OS_VERSION_MIN_REQUIRED >= 50000)
+#else
+#define USE_BLOCKS (MAC_OS_X_VERSION_MIN_REQUIRED >= 1070)
+#endif
 
 
 @implementation CouchDynamicObject
@@ -67,6 +74,15 @@ NS_INLINE NSString *setterKey(SEL sel) {
 #pragma mark - GENERIC ACCESSOR METHOD IMPS:
 
 
+#if USE_BLOCKS
+
+static inline void setIdProperty(CouchDynamicObject *self, NSString* property, id value) {
+    BOOL result = [self setValue: value ofProperty: property];
+    NSCAssert(result, @"Property %@.%@ is not settable", [self class], property);
+}
+
+#else
+
 static id getIdProperty(CouchDynamicObject *self, SEL _cmd) {
     return [self getValueOfProperty: getterKey(_cmd)];
 }
@@ -101,6 +117,8 @@ static double getDoubleProperty(CouchDynamicObject *self, SEL _cmd) {
 static void setDoubleProperty(CouchDynamicObject *self, SEL _cmd, double value) {
     setIdProperty(self, _cmd, [NSNumber numberWithDouble:value]);
 }
+
+#endif // USE_BLOCKS
 
 
 #pragma mark - PROPERTY INTROSPECTION:
@@ -213,52 +231,97 @@ static Class classFromType(const char* propertyType) {
 }
 
 
-// IDEA: Would be awesome to use imp_implementationWithBlock() on OS X 10.7+ and iOS 4.3+.
-
-
-+ (IMP) impForGetterOfClass: (Class)propertyClass {
++ (IMP) impForGetterOfProperty: (NSString*)property ofClass: (Class)propertyClass {
+#if USE_BLOCKS
+    return imp_implementationWithBlock(^id(CouchDynamicObject* receiver) {
+        return [receiver getValueOfProperty: property];
+    });
+#else
     return (IMP)getIdProperty;
+#endif
 }
 
-+ (IMP) impForSetterOfClass: (Class)propertyClass {
++ (IMP) impForSetterOfProperty: (NSString*)property ofClass: (Class)propertyClass {
+#if USE_BLOCKS
+    return imp_implementationWithBlock(^(CouchDynamicObject* receiver, id value) {
+        setIdProperty(receiver, property, value);
+    });
+#else
     return (IMP)setIdProperty;
+#endif
 }
 
 
-+ (IMP) impForGetterOfType: (const char*)propertyType {
++ (IMP) impForGetterOfProperty: (NSString*)property ofType: (const char*)propertyType {
     switch (propertyType[0]) {
         case _C_ID:
-            return [self impForGetterOfClass: classFromType(propertyType)];
+            return [self impForGetterOfProperty: property ofClass: classFromType(propertyType)];
         case _C_INT:
         case _C_SHT:
         case _C_USHT:
         case _C_CHR:
         case _C_UCHR:
+#if USE_BLOCKS
+            return imp_implementationWithBlock(^int(CouchDynamicObject* receiver) {
+                return [[receiver getValueOfProperty: property] intValue];
+            });
+#else
             return (IMP)getIntProperty;
+#endif
         case _C_BOOL:
+#if USE_BLOCKS
+            return imp_implementationWithBlock(^bool(CouchDynamicObject* receiver) {
+                return [[receiver getValueOfProperty: property] boolValue];
+            });
+#else
             return (IMP)getBoolProperty;
+#endif
         case _C_DBL:
+#if USE_BLOCKS
+            return imp_implementationWithBlock(^double(CouchDynamicObject* receiver) {
+                return [[receiver getValueOfProperty: property] doubleValue];
+            });
+#else
             return (IMP)getDoubleProperty;
+#endif
         default:
             // TODO: handle more scalar property types.
             return NULL;
     }
 }
 
-+ (IMP) impForSetterOfType: (const char*)propertyType {
++ (IMP) impForSetterOfProperty: (NSString*)property ofType: (const char*)propertyType {
     switch (propertyType[0]) {
         case _C_ID:
-            return [self impForSetterOfClass: classFromType(propertyType)];
+            return [self impForSetterOfProperty: property ofClass: classFromType(propertyType)];
         case _C_INT:
         case _C_SHT:
         case _C_USHT:
         case _C_CHR:            // Note that "BOOL" is a typedef so it compiles to 'char'
         case _C_UCHR:
+#if USE_BLOCKS
+            return imp_implementationWithBlock(^(CouchDynamicObject* receiver, int value) {
+                setIdProperty(receiver, property, [NSNumber numberWithInt: value]);
+            });
+#else
             return (IMP)setIntProperty;
+#endif
         case _C_BOOL:           // This is the true native C99/C++ "bool" type
+#if USE_BLOCKS
+            return imp_implementationWithBlock(^(CouchDynamicObject* receiver, bool value) {
+                setIdProperty(receiver, property, [NSNumber numberWithBool: value]);
+            });
+#else
             return (IMP)setBoolProperty;
+#endif
         case _C_DBL:
+#if USE_BLOCKS
+            return imp_implementationWithBlock(^(CouchDynamicObject* receiver, double value) {
+                setIdProperty(receiver, property, [NSNumber numberWithDouble: value]);
+            });
+#else
             return (IMP)setDoubleProperty;
+#endif
         default:
             // TODO: handle more scalar property types.
             return NULL;
@@ -282,7 +345,7 @@ static Class classFromType(const char* propertyType) {
         if (getPropertyInfo(self, key, YES, &declaredInClass, &propertyType)) {
             strcpy(signature, "v@: ");
             signature[3] = propertyType[0];
-            accessor = [self impForSetterOfType: propertyType];
+            accessor = [self impForSetterOfProperty: key ofType: propertyType];
         }
     } else if (isGetter(name)) {
         // choose an appropriately typed getter function.
@@ -290,7 +353,7 @@ static Class classFromType(const char* propertyType) {
         if (getPropertyInfo(self, key, NO, &declaredInClass, &propertyType)) {
             strcpy(signature, " @:");
             signature[0] = propertyType[0];
-            accessor = [self impForGetterOfType: propertyType];
+            accessor = [self impForGetterOfProperty: key ofType: propertyType];
         }
     } else {
         // Not a getter or setter name.
