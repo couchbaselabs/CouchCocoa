@@ -99,11 +99,9 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (RESTOperation*) compact {
     // http://wiki.apache.org/couchdb/Compaction
-    CouchResource* rsrc = [[[CouchResource alloc] initWithParent: self relativePath: @"_compact"]
-                           autorelease];
     NSDictionary* params = [NSDictionary dictionaryWithObject: @"application/json"
                                                        forKey: @"Content-Type"];
-    return [[rsrc POST: nil parameters: params] start];
+    return [[[self childWithPath: @"_compact"] POST: nil parameters: params] start];
 }
 
 
@@ -201,10 +199,8 @@ static const NSUInteger kDocRetainLimit = 50;
     }
     NSDictionary* body = [NSDictionary dictionaryWithObject: entries forKey: @"docs"];
     
-    RESTResource* bulkDocs = [[[RESTResource alloc] initWithParent: self 
-                                                      relativePath: @"_bulk_docs"] autorelease];
     [self beginDocumentOperation: self];
-    RESTOperation* op = [bulkDocs POSTJSON: body parameters: nil];
+    RESTOperation* op = [[self childWithPath: @"_bulk_docs"] POSTJSON: body parameters: nil];
     [op onCompletion: ^{
         if (op.isSuccessful) {
             NSArray* responses = $castIf(NSArray, op.responseBody.fromJSON);
@@ -242,6 +238,20 @@ static const NSUInteger kDocRetainLimit = 50;
 - (RESTOperation*) deleteDocuments: (NSArray*)documents {
     NSArray* revisions = [documents rest_map: ^(id document) {return [document currentRevision];}];
     return [self deleteRevisions: revisions];
+}
+
+
+- (RESTOperation*) purgeDocuments: (NSArray*)documents {
+    NSMutableDictionary* param = [NSMutableDictionary dictionary];
+    for (id doc in documents) {
+        NSString* docID;
+        if ([doc isKindOfClass: [NSString class]])
+            docID = doc;
+        else
+            docID = ((CouchDocument*)doc).documentID;
+        [param setObject: [NSMutableArray arrayWithObject: @"*"] forKey: docID];
+    }
+    return [[self childWithPath: @"_purge"] POSTJSON: param parameters: nil];
 }
 
 

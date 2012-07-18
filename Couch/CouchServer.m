@@ -61,11 +61,6 @@ int gCouchLogLevel = 0;
 }
 
 
-- (RESTResource*) childWithPath: (NSString*)name {
-    return [[[CouchResource alloc] initWithParent: self relativePath: name] autorelease];
-}
-
-
 - (CouchDatabase*) database {    // Overridden from CouchResource.
     return nil;
 }
