@@ -11,16 +11,6 @@
 #import "CouchInternal.h"
 
 
-#if TARGET_OS_IPHONE
-extern NSString* const TDReplicatorProgressChangedNotification;
-extern NSString* const TDReplicatorStoppedNotification;
-#else
-// Copied from TouchDB's TDReplicator.m.
-static NSString* TDReplicatorProgressChangedNotification = @"TDReplicatorProgressChanged";
-static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
-#endif
-
-
 // Declare essential bits of TDServer and TDURLProtocol to avoid having to #import TouchDB:
 @interface TDServer : NSObject
 - (id) initWithDirectory: (NSString*)dirPath error: (NSError**)outError;
@@ -35,10 +25,22 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
 + (NSURL*) registerServer: (TDServer*)server;
 @end
 
+@interface TDReplicator
++ (NSString *)progressChangedNotification;
++ (NSString *)stoppedNotification;
+@end
+
+
+@interface CouchTouchDBServer()
+@property (readonly, copy) NSString *replicatorProgressChangedNotification;
+@property (readonly, copy) NSString *replicatorStoppedNotification;
+@end
 
 
 @implementation CouchTouchDBServer
 
+@synthesize replicatorProgressChangedNotification = _replicatorProgressChangedNotification;
+@synthesize replicatorStoppedNotification = _replicatorStoppedNotification;
 
 + (CouchTouchDBServer*) sharedInstance {
     static CouchTouchDBServer* sInstance;
@@ -49,16 +51,23 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
     return sInstance;
 }
 
+- (void)setupReplicatorProgressProperties:(Class)classTDReplicator
+{
+    _replicatorProgressChangedNotification = [classTDReplicator progressChangedNotification];
+    _replicatorStoppedNotification = [classTDReplicator stoppedNotification];
+}
 
 - (id)init {
     // Avoid link-time dependency on TouchDB; look up classes dynamically:
     Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
     Class classTDServer = NSClassFromString(@"TDServer");
-    NSAssert(classTDURLProtocol && classTDServer,
+    Class classTDReplicator = NSClassFromString(@"TDReplicator");
+    NSAssert(classTDURLProtocol && classTDServer && classTDReplicator,
              @"Not linked with TouchDB framework (or you didn't use the -objc linker flag)");
         
     self = [super initWithURL: [classTDURLProtocol rootURL]];
     if (self) {
+        [self setupReplicatorProgressProperties:classTDReplicator];
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
                                                              NSUserDomainMask, YES);
         NSString* path = [paths objectAtIndex:0];
@@ -87,7 +96,8 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
     // classes because they'd create link errors building CouchCocoa.
     Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
     Class classTDServer = NSClassFromString(@"TDServer");
-    NSAssert(classTDURLProtocol && classTDServer,
+    Class classTDReplicator = NSClassFromString(@"TDReplicator");
+    NSAssert(classTDURLProtocol && classTDServer && classTDReplicator,
              @"Not linked with TouchDB framework (or you didn't use the -objc linker flag)");
     
     NSError* error;
@@ -97,6 +107,7 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
     
     self = [super initWithURL: rootURL];
     if (self) {
+        [self setupReplicatorProgressProperties:classTDReplicator];
         _touchServer = server;
         if (!server)
             _error = [error retain];
@@ -162,19 +173,19 @@ static NSString* TDReplicatorStoppedNotification = @"TDReplicatorStopped";
     if (observe) {
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(replicationProgressChanged:)
-                                                     name: TDReplicatorProgressChangedNotification
+                                                     name: self.replicatorProgressChangedNotification
                                                    object: nil];
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(replicationProgressChanged:)
-                                                     name: TDReplicatorStoppedNotification
+                                                     name: self.replicatorStoppedNotification
                                                    object: nil];
         [self performSelector: @selector(checkActiveTasks) withObject: nil afterDelay: 0.0];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:TDReplicatorProgressChangedNotification
+                                                        name:self.replicatorProgressChangedNotification
                                                       object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:TDReplicatorStoppedNotification
+                                                        name:self.replicatorStoppedNotification
                                                       object:nil];
     }
     _observing = observe;
