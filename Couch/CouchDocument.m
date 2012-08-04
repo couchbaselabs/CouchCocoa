@@ -270,7 +270,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     if (!rev)
         return NO;
     
-    if ([_currentRevisionID isEqualToString: rev])
+    if (NSOrderedDescending == [_currentRevisionID compare:rev])
         return NO;
     
     BOOL deleted = [[change objectForKey: @"deleted"] isEqual: (id)kCFBooleanTrue];
