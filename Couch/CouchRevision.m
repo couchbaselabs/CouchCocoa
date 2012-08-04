@@ -253,3 +253,60 @@
 
 
 @end
+
+#pragma mark - COLLATE REVISION IDS:
+
+
+static inline int sgn(int n) {
+    return n>0 ? 1 : (n<0 ? -1 : 0);
+}
+
+static int defaultCollate(const char* str1, int len1, const char* str2, int len2) {
+    int result = memcmp(str1, str2, MIN(len1, len2));
+    return sgn(result ?: (len1 - len2));
+}
+
+static int parseDigits(const char* str, const char* end) {
+    int result = 0;
+    for (; str < end; ++str) {
+        if (!isdigit(*str))
+            return 0;
+        result = 10*result + digittoint(*str);
+    }
+    return result;
+}
+
+/* A proper revision ID consists of a generation number, a hyphen, and an arbitrary suffix.
+ Compare the generation numbers numerically, and then the suffixes lexicographically.
+ If either string isn't a proper rev ID, fall back to lexicographic comparison. */
+int CouchCollateRevIDs(void *context,
+                    int len1, const void * chars1,
+                    int len2, const void * chars2)
+{
+    const char *rev1 = chars1, *rev2 = chars2;
+    const char* dash1 = memchr(rev1, '-', len1);
+    const char* dash2 = memchr(rev2, '-', len2);
+    if ((dash1==rev1+1 && dash2==rev2+1)
+        || dash1 > rev1+8 || dash2 > rev2+8
+        || dash1==NULL || dash2==NULL)
+    {
+        // Single-digit generation #s, or improper rev IDs; just compare as plain text:
+        return defaultCollate(rev1,len1, rev2,len2);
+    }
+    // Parse generation numbers. If either is invalid, revert to default collation:
+    int gen1 = parseDigits(rev1, dash1);
+    int gen2 = parseDigits(rev2, dash2);
+    if (!gen1 || !gen2)
+        return defaultCollate(rev1,len1, rev2,len2);
+    
+    // Compare generation numbers; if they match, compare suffixes:
+    return sgn(gen1 - gen2) ?: defaultCollate(dash1+1, len1-(int)(dash1+1-rev1),
+                                              dash2+1, len2-(int)(dash2+1-rev2));
+}
+
+
+NSComparisonResult CouchCompareRevIDs(NSString* revID1, NSString* revID2) {
+    const char* rev1str = [revID1 UTF8String];
+    const char* rev2str = [revID2 UTF8String];
+    return CouchCollateRevIDs(NULL, (int)strlen(rev1str), rev1str, (int)strlen(rev2str), rev2str);
+}

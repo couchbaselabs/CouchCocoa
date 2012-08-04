@@ -269,8 +269,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     NSString* rev = $castIf(NSString, [changeDict objectForKey: @"rev"]);
     if (!rev)
         return NO;
-    
-    if ([_currentRevisionID isEqualToString: rev])
+    if (_currentRevisionID && CouchCompareRevIDs(_currentRevisionID, rev) != NSOrderedAscending)
         return NO;
     
     BOOL deleted = [[change objectForKey: @"deleted"] isEqual: (id)kCFBooleanTrue];
