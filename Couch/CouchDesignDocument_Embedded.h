@@ -22,7 +22,7 @@ typedef id TDValidationBlock;
 #define REDUCEBLOCK(BLOCK) ^id(NSArray* keys, NSArray* values, BOOL rereduce){BLOCK}
 #define VALIDATIONBLOCK(BLOCK) ^BOOL(TDRevision* newRevision, id<TDValidationContext> context)\
                                   {BLOCK}
-#define FILTERBLOCK(BLOCK) ^BOOL(TDRevision* revision) {BLOCK}
+#define FILTERBLOCK(BLOCK) ^BOOL(TDRevision* revision, NSDictionary* params) {BLOCK}
 
 
 /** Optional support for native Objective-C map/reduce functions.
