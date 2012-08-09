@@ -14,7 +14,7 @@
 // Redeclare API from TouchDB to avoid having to #include external headers:
 typedef unsigned TDContentOptions;
 enum {
-    kTDIncludeUpdateSeq = 256                // adds '_update_seq' property
+    kTDIncludeLocalSeq = 16                // adds '_local_seq' property
 };
 
 @class TDDatabase, TDRevision, TDView;
@@ -75,7 +75,7 @@ enum {
         if (mapBlock) {
             TDView* view = [tddb viewNamed: viewName];
             [view setMapBlock: mapBlock reduceBlock: reduceBlock version: version];
-            view.mapContentOptions = self.includeLocalSequence ? kTDIncludeUpdateSeq : 0;
+            view.mapContentOptions = self.includeLocalSequence ? kTDIncludeLocalSeq : 0;
         } else {
             NSAssert(!reduceBlock, @"Can't set a reduce block without a map block");
             [[tddb existingViewNamed: viewName] deleteView];
