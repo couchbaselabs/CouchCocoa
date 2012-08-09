@@ -25,7 +25,7 @@ typedef id (^CouchReduceBlock)(NSArray* keys, NSArray* values, BOOL rereduce);
 
 
 /** Filter block, used in changes feeds and replication. */
-typedef BOOL (^CouchFilterBlock) (NSDictionary* doc);
+typedef BOOL (^CouchFilterBlock) (NSDictionary* doc, NSDictionary* params);
 
 
 /** Context passed into a CouchValidationBlock. */
@@ -52,7 +52,7 @@ typedef BOOL (^CouchValidationBlock) (NSDictionary* doc,
 #define REDUCEBLOCK(BLOCK) ^id(NSArray* keys, NSArray* values, BOOL rereduce){BLOCK}
 #define VALIDATIONBLOCK(BLOCK) ^BOOL(NSDictionary* newRevision, id<CouchValidationContext> context)\
                                   {BLOCK}
-#define FILTERBLOCK(BLOCK) ^BOOL(NSDictionary* revision) {BLOCK}
+#define FILTERBLOCK(BLOCK) ^BOOL(TDRevision* revision, NSDictionary* params) {BLOCK}
 
 
 /** Optional support for native Objective-C map/reduce functions.

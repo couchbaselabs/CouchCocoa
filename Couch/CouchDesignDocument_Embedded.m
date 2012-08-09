@@ -49,6 +49,7 @@
         if (mapBlock) {
             TDView* view = [tddb viewNamed: viewName];
             [view setMapBlock: mapBlock reduceBlock: reduceBlock version: version];
+            view.mapContentOptions = self.includeLocalSequence ? kTDIncludeLocalSeq : 0;
         } else {
             NSAssert(!reduceBlock, @"Can't set a reduce block without a map block");
             [[tddb existingViewNamed: viewName] deleteView];
@@ -66,8 +67,8 @@
     filterName = [self qualifiedName: filterName];
     filterBlock = [filterBlock copy];
     [self tellTDDatabase: ^(TDDatabase* tddb) {
-        [tddb defineFilter: filterName asBlock: ^(TDRevision* rev) {
-            return filterBlock(rev.properties);
+        [tddb defineFilter: filterName asBlock: ^(TDRevision* rev, NSDictionary* params) {
+            return filterBlock(rev.properties, params);
         }];
     }];
     [filterBlock release];
