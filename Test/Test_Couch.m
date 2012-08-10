@@ -32,7 +32,7 @@
     STAssertNotNil(doc, @"Couldn't create doc");
     STAssertNil(doc.currentRevisionID, nil);
     STAssertNil(doc.currentRevision, nil);
-    STAssertNil(doc.documentID, nil);
+    STAssertNotNil(doc.documentID, @"Document has no ID"); // 'untitled' docs are no longer untitled (8/10/12)
     
     AssertWait([doc putProperties: properties]);  // save it!
     

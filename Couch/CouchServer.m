@@ -89,6 +89,28 @@ int gCouchLogLevel = 0;
 }
 
 
+- (NSString*) generateDocumentID {
+    if (_newDocumentIDs.count == 0) {
+        // As an optimization, request UUIDs from the server in packages of 10:
+        NSArray* newIDs = [self generateUUIDs: 10];
+        if (!newIDs) {
+            // In an emergency, if we can't get IDs from the server, generate a UUID locally:
+            CFUUIDRef uuid = CFUUIDCreate(NULL);
+            CFStringRef cfStr = CFUUIDCreateString(NULL, uuid);
+            CFRelease(uuid);
+            return [(id)cfStr autorelease];
+        }
+        if (!_newDocumentIDs)
+            _newDocumentIDs = [[NSMutableArray alloc] init];
+        [_newDocumentIDs addObjectsFromArray: newIDs];
+    }
+    
+    NSString* result = [[[_newDocumentIDs objectAtIndex: 0] retain] autorelease];
+    [_newDocumentIDs removeObjectAtIndex: 0];
+    return result;
+}
+
+
 - (NSArray*) getDatabases {
     RESTOperation* op = [[self childWithPath: @"_all_dbs"] GET];
     NSArray* names = $castIf(NSArray, op.responseBody.fromJSON); // Blocks!
