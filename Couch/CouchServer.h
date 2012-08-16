@@ -57,6 +57,9 @@
     Multiple calls with the same name will return the same CouchDatabase instance. */
 - (CouchDatabase*) databaseNamed: (NSString*)name;
 
+/** Same as -databaseNamed:. Enables "[]" access in Xcode 4.4+ */
+- (id)objectForKeyedSubscript:(NSString*)key;
+
 #pragma mark - ACTIVITY:
 
 /** The list of active server tasks, as parsed JSON (observable).

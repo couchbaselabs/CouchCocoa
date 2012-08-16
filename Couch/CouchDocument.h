@@ -77,6 +77,9 @@
 /** Shorthand for [self.properties objectForKey: key]. */
 - (id) propertyForKey: (NSString*)key;
 
+/** Same as -propertyForKey:. Enables "[]" access in Xcode 4.4+ */
+- (id)objectForKeyedSubscript:(NSString*)key;
+
 /** Updates the document with new properties, creating a new revision (Asynchronous.)
     The properties dictionary needs to contain a "_rev" key whose value is the current revision's ID; the dictionary returned by -properties will already have this, so if you modify that dictionary you're OK. The exception is if this is a new document, as there is no current revision, so no "_rev" key is needed.
     If the PUT succeeds, the operation's resultObject will be set to the new CouchRevision.

@@ -139,6 +139,12 @@ int gCouchLogLevel = 0;
     return db;
 }
 
+/** Same as -databaseNamed:. Enables "[]" access in Xcode 4.4+ */
+- (id)objectForKeyedSubscript:(NSString*)key {
+    return [self databaseNamed: key];
+}
+
+
 
 #pragma mark - REPLICATOR DATABASE:
 

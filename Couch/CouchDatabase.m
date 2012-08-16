@@ -134,6 +134,11 @@ static const NSUInteger kDocRetainLimit = 50;
     return doc;
 }
 
+/** Same as -documentWithID:. Enables "[]" access in Xcode 4.4+ */
+- (id)objectForKeyedSubscript:(NSString*)key {
+    return [self documentWithID: key];
+}
+
 
 - (CouchDesignDocument*) designDocumentWithName: (NSString*)name {
     return (CouchDesignDocument*)[self documentWithID: [@"_design/" stringByAppendingString: name]];

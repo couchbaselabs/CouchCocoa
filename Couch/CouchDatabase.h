@@ -73,6 +73,9 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
     at a time with the same documentID. */
 - (CouchDocument*) documentWithID: (NSString*)docID;
 
+/** Same as -documentWithID:. Enables "[]" access in Xcode 4.4+ */
+- (id)objectForKeyedSubscript:(NSString*)key;
+
 /** Creates a CouchDocument object with no current ID.
     The first time you PUT to that document, it will be created on the server (via a POST). */
 - (CouchDocument*) untitledDocument;

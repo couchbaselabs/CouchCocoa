@@ -30,6 +30,7 @@
 @property (nonatomic, readwrite) unsigned completed, total;
 @property (nonatomic, readwrite, retain) NSError* error;
 @property (nonatomic, readwrite) CouchReplicationMode mode;
+@property (nonatomic, readwrite) NSArray* currentRequests;
 - (void) stopped;
 @end
 
@@ -76,7 +77,7 @@
 
 @synthesize pull=_pull, createTarget=_createTarget, continuous=_continuous,
             filter=_filter, filterParams=_filterParams, options=_options, headers=_headers,
-            OAuth=_oauth, localDatabase=_database;
+            OAuth=_oauth, localDatabase=_database, currentRequests=_currentRequests;
 
 
 - (RESTOperation*) operationToStart: (BOOL)start {
@@ -248,6 +249,7 @@
     BOOL active = NO;
     NSString* status = nil;
     NSArray* error = nil;
+    NSArray* requests = nil;
     for (NSDictionary* task in _database.server.activeTasks) {
         if ([[task objectForKey:@"type"] isEqualToString:@"Replication"]) {
             // Can't look up the task ID directly because it's part of a longer string like
@@ -256,6 +258,7 @@
                 active = YES;
                 status = $castIf(NSString, [task objectForKey: @"status"]);
                 error = $castIf(NSArray, [task objectForKey: @"error"]);
+                requests = $castIf(NSArray, [task objectForKey: @"requests"]);
                 break;
             }
         }
@@ -276,6 +279,9 @@
             message = $castIf(NSString, [error objectAtIndex: 1]);
         self.error = [RESTOperation errorWithHTTPStatus: status message: message URL: _remote];
     }
+
+    if (!$equal(requests, _currentRequests))
+        self.currentRequests = requests;
     
     if (!$equal(status, _status)) {
         self.status = status;
