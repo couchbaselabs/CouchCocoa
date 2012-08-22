@@ -81,11 +81,3 @@
 
 
 @end
-
-/** Compares revision IDs by CouchDB rules: generation number first, then the suffix. */
-NSComparisonResult CouchCompareRevIDs(NSString* revID1, NSString* revID2);
-
-/** SQLite-compatible collation (comparison) function for revision IDs. */
-int CouchCollateRevIDs(void *context,
-                    int len1, const void * chars1,
-                    int len2, const void * chars2);
