@@ -18,12 +18,7 @@ static NSString* const TDDatabaseChangeNotification = @"TDDatabaseChange";
 @property (readonly) NSString* docID;
 @property (readonly) NSString* revID;
 @property (readonly) BOOL deleted;
-@property (copy) NSDictionary* properties;
 @property SInt64 sequence;
-@end
-
-@interface TDDatabase : NSObject
-- (TDRevision*) newWinnerAfterRev: (TDRevision*)rev;
 @end
 
 
@@ -59,23 +54,21 @@ static NSString* const TDDatabaseChangeNotification = @"TDDatabaseChange";
     // Careful! This method is called on the TouchDB background thread!
     if (!_tracking)
         return;
-    TDDatabase* db = n.object;
     
-    // Adapted from -[TDRouter dbChanged:]
-    TDRevision* rev = [n.userInfo objectForKey: @"rev"];
-    rev = [db newWinnerAfterRev: rev];
+    NSDictionary* userInfo = n.userInfo;
+    TDRevision* rev = [userInfo objectForKey: @"winner"];  // I want winning rev, not newest one
     if (!rev)
         return;
+    SInt64 sequence = [[userInfo objectForKey: @"rev"] sequence];
 
     // Adapted from -[TDRouter changeDictForRev:]
     NSArray* changes = [NSArray arrayWithObject: [NSDictionary dictionaryWithObject: rev.revID
                                                                              forKey: @"rev"]];
     NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
-                          [NSNumber numberWithLongLong: rev.sequence], @"seq",
+                          [NSNumber numberWithLongLong: sequence], @"seq",
                           rev.docID, @"id",
                           changes, @"changes",
                           [NSNumber numberWithBool: rev.deleted], @"deleted",
-                          rev.properties, @"doc",       // may be nil
                           nil];
     [self performSelectorOnMainThread: @selector(changeTrackerReceivedChange:)
                            withObject: dict
