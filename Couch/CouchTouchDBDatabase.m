@@ -22,6 +22,10 @@ static NSString* const TDDatabaseChangeNotification = @"TDDatabaseChange";
 @property SInt64 sequence;
 @end
 
+@interface TDDatabase : NSObject
+- (TDRevision*) newWinnerAfterRev: (TDRevision*)rev;
+@end
+
 
 @implementation CouchTouchDBDatabase
 
@@ -55,8 +59,15 @@ static NSString* const TDDatabaseChangeNotification = @"TDDatabaseChange";
     // Careful! This method is called on the TouchDB background thread!
     if (!_tracking)
         return;
-    // Adapted from -[TDRouter changeDictForRev:]
+    TDDatabase* db = n.object;
+    
+    // Adapted from -[TDRouter dbChanged:]
     TDRevision* rev = [n.userInfo objectForKey: @"rev"];
+    rev = [db newWinnerAfterRev: rev];
+    if (!rev)
+        return;
+
+    // Adapted from -[TDRouter changeDictForRev:]
     NSArray* changes = [NSArray arrayWithObject: [NSDictionary dictionaryWithObject: rev.revID
                                                                              forKey: @"rev"]];
     NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
