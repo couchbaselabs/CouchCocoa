@@ -242,7 +242,10 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 - (RESTOperation*) putProperties: (NSDictionary*)properties {
     NSParameterAssert(properties != nil);
-    
+
+    id idProp = [properties objectForKey: @"_id"];
+    if (idProp && ![idProp isEqual: self.documentID])
+        Warn(@"Trying to PUT wrong _id to %@: %@", self, properties);
     if (_currentRevisionID && ![properties objectForKey: @"_rev"]) {
         Warn(@"Trying to PUT to %@ without specifying a rev ID", self);
     }
