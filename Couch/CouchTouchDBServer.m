@@ -54,9 +54,13 @@
 }
 
 
-- (id) initWithServerPath: (NSString*)serverPath {
+- (id) initWithServerPath: (NSString*)serverPath
+                  options: (const struct TDDatabaseManagerOptions*)options
+{
     NSError* error;
-    TDServer* server = [[TDServer alloc] initWithDirectory: serverPath error: &error];
+    TDServer* server = [[TDServer alloc] initWithDirectory: serverPath
+                                                   options: options
+                                                     error: &error];
     NSURL* rootURL = server ? [TDURLProtocol registerServer: server] : [TDURLProtocol rootURL];
     
     self = [super initWithURL: rootURL];
@@ -68,6 +72,10 @@
         [server release];
     }
     return self;
+}
+
+- (id) initWithServerPath: (NSString*)serverPath {
+    return [self initWithServerPath: serverPath options: NULL];
 }
 
 
