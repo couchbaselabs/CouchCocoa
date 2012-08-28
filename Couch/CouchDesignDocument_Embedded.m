@@ -42,16 +42,17 @@
              reduceBlock: (CouchReduceBlock)reduceBlock
                  version: (NSString*)version
 {
+    NSAssert(mapBlock || !reduceBlock, @"Can't set a reduce block without a map block");
     viewName = [self qualifiedName: viewName];
     mapBlock = [mapBlock copy];
     reduceBlock = [reduceBlock copy];
+    TDContentOptions mapContentOptions = self.includeLocalSequence ? kTDIncludeLocalSeq : 0;
     [self tellTDDatabase: ^(TDDatabase* tddb) {
         if (mapBlock) {
             TDView* view = [tddb viewNamed: viewName];
             [view setMapBlock: mapBlock reduceBlock: reduceBlock version: version];
-            view.mapContentOptions = self.includeLocalSequence ? kTDIncludeLocalSeq : 0;
+            view.mapContentOptions = mapContentOptions;
         } else {
-            NSAssert(!reduceBlock, @"Can't set a reduce block without a map block");
             [[tddb existingViewNamed: viewName] deleteView];
         }
     }];

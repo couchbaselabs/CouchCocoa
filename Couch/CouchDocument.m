@@ -234,6 +234,11 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     return [self.currentRevision propertyForKey: key];
 }
 
+/** Same as -propertyForKey:. Enables "[]" access in Xcode 4.4+ */
+- (id)objectForKeyedSubscript:(NSString*)key {
+    return [self.currentRevision propertyForKey: key];
+}
+
 
 - (RESTOperation*) putProperties: (NSDictionary*)properties {
     NSParameterAssert(properties != nil);

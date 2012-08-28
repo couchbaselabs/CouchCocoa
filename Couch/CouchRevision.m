@@ -163,6 +163,11 @@
     return [self.properties objectForKey: key];
 }
 
+/** Same as -propertyForKey:. Enables "[]" access in Xcode 4.4+ */
+- (id)objectForKeyedSubscript:(NSString*)key {
+    return [self.properties objectForKey: key];
+}
+
 
 - (RESTOperation*) putProperties: (NSDictionary*)properties {
     NSParameterAssert(properties != nil);

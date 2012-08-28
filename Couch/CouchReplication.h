@@ -43,6 +43,7 @@ typedef enum {
     unsigned _completed, _total;
     CouchReplicationMode _mode;
     NSError* _error;
+    NSArray* _currentRequests;
 }
 
 /** The local database being replicated to/from. */
@@ -104,5 +105,7 @@ typedef enum {
 @property (nonatomic, readonly, retain) NSError* error;
 
 @property (nonatomic, readonly) CouchReplicationMode mode;
+
+@property (nonatomic, readonly) NSArray* currentRequests;
 
 @end

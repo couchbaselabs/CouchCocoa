@@ -134,6 +134,11 @@ static const NSUInteger kDocRetainLimit = 50;
     return doc;
 }
 
+/** Same as -documentWithID:. Enables "[]" access in Xcode 4.4+ */
+- (id)objectForKeyedSubscript:(NSString*)key {
+    return [self documentWithID: key];
+}
+
 
 - (CouchDesignDocument*) designDocumentWithName: (NSString*)name {
     return (CouchDesignDocument*)[self documentWithID: [@"_design/" stringByAppendingString: name]];
@@ -141,7 +146,10 @@ static const NSUInteger kDocRetainLimit = 50;
             
             
 - (CouchDocument*) untitledDocument {
-    return [[[CouchDocument alloc] initUntitledWithParent: self] autorelease];
+    // Don't create genuinely untitled documents -- it complicates the doc-ID cache and makes it
+    // too difficult to enforce having only one CouchDocument instance per document ID:
+    // <https://github.com/couchbaselabs/TouchDB-iOS/issues/140>
+    return [self documentWithID: [self.server generateDocumentID]];
 }
 
 
