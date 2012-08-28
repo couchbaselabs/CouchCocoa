@@ -13,7 +13,11 @@
 
 // Declare essential bits of TDServer and TDURLProtocol to avoid having to #import TouchDB:
 @interface TDServer : NSObject
-- (id) initWithDirectory: (NSString*)dirPath error: (NSError**)outError;
+- (id) initWithDirectory: (NSString*)dirPath
+                   error: (NSError**)outError;
+- (id) initWithDirectory: (NSString*)dirPath
+                 options: (const struct TDDatabaseManagerOptions*)options
+                   error: (NSError**)outError;
 - (void) queue: (void(^)())block;
 - (void) tellDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block;
 - (void) close;
@@ -65,7 +69,8 @@
         if ([[NSFileManager defaultManager] createDirectoryAtPath: path
                                       withIntermediateDirectories: YES
                                                        attributes: nil error: &error]) {
-            _touchServer = [[classTDServer alloc] initWithDirectory: path error: &error];
+            _touchServer = [[classTDServer alloc] initWithDirectory: path
+                                                              error: &error];
         }
         if (_touchServer)
             [classTDURLProtocol setServer: _touchServer];
@@ -76,7 +81,9 @@
 }
 
 
-- (id) initWithServerPath: (NSString*)serverPath {
+- (id) initWithServerPath: (NSString*)serverPath
+                  options: (const struct TDDatabaseManagerOptions*)options
+{
     // On Mac OS TouchDB.framework is linked dynamically, so avoid explicit references to its
     // classes because they'd create link errors building CouchCocoa.
     Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
@@ -85,7 +92,16 @@
              @"Not linked with TouchDB framework (or you didn't use the -objc linker flag)");
     
     NSError* error;
-    TDServer* server = [[classTDServer alloc] initWithDirectory: serverPath error: &error];
+    TDServer* server;
+    if ([classTDServer instancesRespondToSelector: @selector(initWithDirectory:options:error:)]) {
+        server = [[classTDServer alloc] initWithDirectory: serverPath
+                                                  options: options
+                                                    error: &error];
+    } else {
+        NSAssert(!options, @"TDServer initializer with options is unavailable in TouchDB");
+        server = [[classTDServer alloc] initWithDirectory: serverPath
+                                                    error: &error];
+    }
     NSURL* rootURL = server ? [classTDURLProtocol registerServer: server]
                             : [classTDURLProtocol rootURL];
     
@@ -98,6 +114,10 @@
         [server release];
     }
     return self;
+}
+
+- (id) initWithServerPath: (NSString*)serverPath {
+    return [self initWithServerPath: serverPath options: NULL];
 }
 
 
