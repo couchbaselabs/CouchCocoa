@@ -15,8 +15,11 @@ var NAVTREE =
       [ "CouchDesignDocument", "interfaceCouchDesignDocument.html", null ],
       [ "CouchDocument", "interfaceCouchDocument.html", null ],
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
+      [ "CouchDynamicObject", "interfaceCouchDynamicObject.html", null ],
       [ "CouchEmbeddedServer", "interfaceCouchEmbeddedServer.html", null ],
       [ "CouchLiveQuery", "interfaceCouchLiveQuery.html", null ],
+      [ "CouchModel", "interfaceCouchModel.html", null ],
+      [ "CouchModelFactory", "interfaceCouchModelFactory.html", null ],
       [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ],
       [ "CouchQuery", "interfaceCouchQuery.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
@@ -26,7 +29,10 @@ var NAVTREE =
       [ "CouchRevision", "interfaceCouchRevision.html", null ],
       [ "CouchServer", "interfaceCouchServer.html", null ],
       [ "CouchSocketChangeTracker", "interfaceCouchSocketChangeTracker.html", null ],
+      [ "CouchTouchDBDatabase", "interfaceCouchTouchDBDatabase.html", null ],
       [ "CouchTouchDBServer", "interfaceCouchTouchDBServer.html", null ],
+      [ "<CouchUITableDelegate>", "protocolCouchUITableDelegate-p.html", null ],
+      [ "CouchUITableSource", "interfaceCouchUITableSource.html", null ],
       [ "RESTBase64", "interfaceRESTBase64.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", null ],
       [ "RESTCache", "interfaceRESTCache.html", null ],
@@ -47,10 +53,17 @@ var NAVTREE =
       ] ],
       [ "<CouchChangeTrackerClient>", "protocolCouchChangeTrackerClient-p.html", null ],
       [ "<CouchDocumentModel>", "protocolCouchDocumentModel-p.html", null ],
-      [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ],
+      [ "CouchDynamicObject", "interfaceCouchDynamicObject.html", [
+        [ "CouchModel", "interfaceCouchModel.html", [
+          [ "CouchPersistentReplication", "interfaceCouchPersistentReplication.html", null ]
+        ] ]
+      ] ],
+      [ "CouchModelFactory", "interfaceCouchModelFactory.html", null ],
       [ "CouchQueryEnumerator", "interfaceCouchQueryEnumerator.html", null ],
       [ "CouchQueryRow", "interfaceCouchQueryRow.html", null ],
       [ "CouchReplication", "interfaceCouchReplication.html", null ],
+      [ "<CouchUITableDelegate>", "protocolCouchUITableDelegate-p.html", null ],
+      [ "CouchUITableSource", "interfaceCouchUITableSource.html", null ],
       [ "RESTBase64", "interfaceRESTBase64.html", null ],
       [ "RESTBody", "interfaceRESTBody.html", [
         [ "RESTMutableBody", "interfaceRESTMutableBody.html", null ]
@@ -60,7 +73,9 @@ var NAVTREE =
       [ "RESTResource", "interfaceRESTResource.html", [
         [ "CouchResource", "interfaceCouchResource.html", [
           [ "CouchAttachment", "interfaceCouchAttachment.html", null ],
-          [ "CouchDatabase", "interfaceCouchDatabase.html", null ],
+          [ "CouchDatabase", "interfaceCouchDatabase.html", [
+            [ "CouchTouchDBDatabase", "interfaceCouchTouchDBDatabase.html", null ]
+          ] ],
           [ "CouchDocument", "interfaceCouchDocument.html", [
             [ "CouchDesignDocument", "interfaceCouchDesignDocument.html", null ]
           ] ],
@@ -96,13 +111,18 @@ var NAVTREE =
       [ "Couch/CouchRevision.h", null, null ],
       [ "Couch/CouchServer.h", null, null ],
       [ "Couch/CouchSocketChangeTracker.h", null, null ],
+      [ "Couch/CouchTouchDBDatabase.h", null, null ],
       [ "Couch/CouchTouchDBServer.h", null, null ],
+      [ "Model/CouchDynamicObject.h", null, null ],
+      [ "Model/CouchModel.h", null, null ],
+      [ "Model/CouchModelFactory.h", null, null ],
       [ "REST/REST.h", null, null ],
       [ "REST/RESTBase64.h", null, null ],
       [ "REST/RESTBody.h", null, null ],
       [ "REST/RESTCache.h", null, null ],
       [ "REST/RESTOperation.h", null, null ],
-      [ "REST/RESTResource.h", null, null ]
+      [ "REST/RESTResource.h", null, null ],
+      [ "UI/iOS/CouchUITableSource.h", null, null ]
     ] ]
   ] ]
 ];

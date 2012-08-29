@@ -89,7 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <!-- doxytag: class="CouchEmbeddedServer" --><!-- doxytag: inherits="CouchServer" -->
-<p>A convenience class that glues Couchbase Mobile into CouchCocoa.  
+<p>A convenience class that glues Couchbase Mobile into CouchCocoa -- this is ONLY for use with the older Couchbase Mobile, NOT with TouchDB! On creation, starts up an instance of Couchbase Mobile.  
  <a href="interfaceCouchEmbeddedServer.html#details">More...</a></p>
 
 <p><code>#import &lt;<a class="el" href="CouchEmbeddedServer_8h_source.html">CouchEmbeddedServer.h</a>&gt;</code></p>
@@ -130,8 +130,8 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If the server fails to start up, this will give the reason why.  <a href="#ae74ac6a859e0314a16609e83eae2893b"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>A convenience class that glues Couchbase Mobile into CouchCocoa. </p>
-<p>On creation, starts up an instance of Couchbase (or <a class="el" href="interfaceCouchbaseMobile.html" title="Manages an embedded instance of CouchDB that runs in a background thread.">CouchbaseMobile</a>). This object will have a placeholder URL until the embedded server has started up, so you can't access it (i.e. creating any databases) until then. </p>
+<div class="textblock"><p>A convenience class that glues Couchbase Mobile into CouchCocoa -- this is ONLY for use with the older Couchbase Mobile, NOT with TouchDB! On creation, starts up an instance of Couchbase Mobile. </p>
+<p>This object will have a placeholder URL until the embedded server has started up, so you can't access it (i.e. creating any databases) until then. </p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a466b357eb373534c786626a00c03c8d7"></a><!-- doxytag: member="CouchEmbeddedServer::sharedInstance" ref="a466b357eb373534c786626a00c03c8d7" args="()" -->
 <div class="memitem">
@@ -259,7 +259,7 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchEmbeddedServer.html">CouchEmbeddedServer</a>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

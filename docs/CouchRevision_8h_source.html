@@ -125,26 +125,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00054"></a>00054 
 <a name="l00056"></a>00056 - (id) propertyForKey: (NSString*)key;
 <a name="l00057"></a>00057 
-<a name="l00059"></a><a class="code" href="interfaceCouchRevision.html#a57362e20a4d57039749ec0351a02b87d">00059</a> <span class="keyword">@property</span> (readonly) BOOL propertiesAreLoaded;
+<a name="l00059"></a>00059 - (id)objectForKeyedSubscript:(NSString*)key;
 <a name="l00060"></a>00060 
-<a name="l00064"></a>00064 - (RESTOperation*) putProperties: (NSDictionary*)properties;
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="preprocessor">#pragma mark ATTACHMENTS</span>
-<a name="l00067"></a>00067 <span class="preprocessor"></span>
-<a name="l00069"></a><a class="code" href="interfaceCouchRevision.html#a2ab98574c689a1fd68f86fe2ff651dbe">00069</a> <span class="keyword">@property</span> (readonly) NSArray* attachmentNames;
-<a name="l00070"></a>00070 
-<a name="l00072"></a>00072 - (<a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>*) attachmentNamed: (NSString*)name;
+<a name="l00062"></a><a class="code" href="interfaceCouchRevision.html#a57362e20a4d57039749ec0351a02b87d">00062</a> <span class="keyword">@property</span> (readonly) BOOL propertiesAreLoaded;
+<a name="l00063"></a>00063 
+<a name="l00067"></a>00067 - (RESTOperation*) putProperties: (NSDictionary*)properties;
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069 <span class="preprocessor">#pragma mark ATTACHMENTS</span>
+<a name="l00070"></a>00070 <span class="preprocessor"></span>
+<a name="l00072"></a><a class="code" href="interfaceCouchRevision.html#a2ab98574c689a1fd68f86fe2ff651dbe">00072</a> <span class="keyword">@property</span> (readonly) NSArray* attachmentNames;
 <a name="l00073"></a>00073 
-<a name="l00077"></a>00077 - (<a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>*) createAttachmentWithName: (NSString*)name type: (NSString*)contentType;
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080 <span class="keyword">@end</span>
+<a name="l00075"></a>00075 - (<a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>*) attachmentNamed: (NSString*)name;
+<a name="l00076"></a>00076 
+<a name="l00080"></a>00080 - (<a class="code" href="interfaceCouchAttachment.html" title="A binary attachment to a document.">CouchAttachment</a>*) createAttachmentWithName: (NSString*)name type: (NSString*)contentType;
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchRevision.h</b>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

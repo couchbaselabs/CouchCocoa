@@ -102,12 +102,14 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a document, attempts to return a <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> for it.  <a href="#a008c9a843c7e0ef500c9de0c2b4e3e09"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModelFactory.html#a304075c1bf404ec0005684a2c7d1860b">registerClass:forDocumentType:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a value of the "type" property with a <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> subclass.  <a href="#a304075c1bf404ec0005684a2c7d1860b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(Class)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModelFactory.html#afeac8b8a1a06398cd0e53f64b001f7d6">classForDocument:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the appropriate <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> subclass for this document.  <a href="#afeac8b8a1a06398cd0e53f64b001f7d6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(Class)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchModelFactory.html#a7def082e9ede91e3bc29ee4043a22dfe">classForDocumentType:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Looks up the <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> subclass that's been registered for a document type.  <a href="#a7def082e9ede91e3bc29ee4043a22dfe"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchModelFactory.html">CouchModelFactory</a> *)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interfaceCouchModelFactory.html#a2503427bb5bc1d697c92e39650f97c57">sharedInstance</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the global shared <a class="el" href="interfaceCouchModelFactory.html" title="A configurable mapping from CouchDocument to CouchModel.">CouchModelFactory</a>.  <a href="#a2503427bb5bc1d697c92e39650f97c57"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a global shared <a class="el" href="interfaceCouchModelFactory.html" title="A configurable mapping from CouchDocument to CouchModel.">CouchModelFactory</a> that's consulted by all databases.  <a href="#a2503427bb5bc1d697c92e39650f97c57"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a982c0fa310764e043a8613155ea89791"></a><!-- doxytag: member="CouchModelFactory::_typeDict" ref="a982c0fa310764e043a8613155ea89791" args="" -->
@@ -131,7 +133,8 @@ NSMutableDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_typ
 </div>
 <div class="memdoc">
 
-<p>Returns the global shared <a class="el" href="interfaceCouchModelFactory.html" title="A configurable mapping from CouchDocument to CouchModel.">CouchModelFactory</a>. </p>
+<p>Returns a global shared <a class="el" href="interfaceCouchModelFactory.html" title="A configurable mapping from CouchDocument to CouchModel.">CouchModelFactory</a> that's consulted by all databases. </p>
+<p>Mappings registered in this instance will be used as a fallback by all other instances if they don't have their own. </p>
 
 </div>
 </div>
@@ -191,6 +194,26 @@ NSMutableDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_typ
 
 </div>
 </div>
+<a class="anchor" id="afeac8b8a1a06398cd0e53f64b001f7d6"></a><!-- doxytag: member="CouchModelFactory::classForDocument:" ref="afeac8b8a1a06398cd0e53f64b001f7d6" args="(CouchDocument *document)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (Class) classForDocument: </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="interfaceCouchDocument.html">CouchDocument</a> *)&#160;</td>
+          <td class="paramname"><em>document</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns the appropriate <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> subclass for this document. </p>
+<p>The default implementation just passes the document's "type" property value to -classForDocumentType:, but subclasses could override this to use different properties (or even the document ID) to decide. </p>
+
+</div>
+</div>
 <a class="anchor" id="a7def082e9ede91e3bc29ee4043a22dfe"></a><!-- doxytag: member="CouchModelFactory::classForDocumentType:" ref="a7def082e9ede91e3bc29ee4043a22dfe" args="(NSString *type)" -->
 <div class="memitem">
 <div class="memproto">
@@ -218,7 +241,7 @@ NSMutableDictionary *&#160;</td><td class="memItemRight" valign="bottom"><b>_typ
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchModelFactory.html">CouchModelFactory</a>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:28:47 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

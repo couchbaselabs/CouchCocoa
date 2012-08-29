@@ -116,6 +116,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array of available revisions.  <a href="#a656dd9eb4306d89451a6d75bd2ef8bb3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDocument.html#a6a2f5c62b0fc6f0d2359c130b24626e5">propertyForKey:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for [self.properties objectForKey: key].  <a href="#a6a2f5c62b0fc6f0d2359c130b24626e5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDocument.html#ae30f3ae1c905e3dc3107cb5a45ffeedd">objectForKeyedSubscript:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as -propertyForKey:.  <a href="#ae30f3ae1c905e3dc3107cb5a45ffeedd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDocument.html#a678ae5c5757952216c94f31c4e7c1186">putProperties:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the document with new properties, creating a new revision (Asynchronous.) The properties dictionary needs to contain a "_rev" key whose value is the current revision's ID; the dictionary returned by -properties will already have this, so if you modify that dictionary you're OK.  <a href="#a678ae5c5757952216c94f31c4e7c1186"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(NSArray *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDocument.html#a25e96a60bbc0f65b43067dedc2068e79">getConflictingRevisions</a></td></tr>
@@ -219,6 +221,26 @@ Properties</h2></td></tr>
 <div class="memdoc">
 
 <p>Shorthand for [self.properties objectForKey: key]. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae30f3ae1c905e3dc3107cb5a45ffeedd"></a><!-- doxytag: member="CouchDocument::objectForKeyedSubscript:" ref="ae30f3ae1c905e3dc3107cb5a45ffeedd" args="(NSString *key)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (id) objectForKeyedSubscript: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>key</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Same as -propertyForKey:. </p>
+<p>Enables "[]" access in Xcode 4.4+ </p>
 
 </div>
 </div>
@@ -452,7 +474,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDocument.html">CouchDocument</a>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

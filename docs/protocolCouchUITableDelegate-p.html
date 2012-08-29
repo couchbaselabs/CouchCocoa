@@ -96,8 +96,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(UITableViewCell *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolCouchUITableDelegate-p.html#a6c9dfc4a235ed505c136ac717b6d0978">couchTableSource:cellForRowAtIndexPath:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows delegate to return its own custom cell, just like -tableView:cellForRowAtIndexPath:.  <a href="#a6c9dfc4a235ed505c136ac717b6d0978"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolCouchUITableDelegate-p.html#af16fc4342476950df35f0758ab2ba86a">couchTableSource:willUpdateFromQuery:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after the query's results change, before the table view is reloaded.  <a href="#af16fc4342476950df35f0758ab2ba86a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolCouchUITableDelegate-p.html#a69386b461041e93e8b8b0065aa4f618a">couchTableSource:updateFromQuery:previousRows:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after the query's results change to update the table view.  <a href="#a69386b461041e93e8b8b0065aa4f618a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolCouchUITableDelegate-p.html#af34685bd246f105c4b7dd5c3b644a812">couchTableSource:willUseCell:forRow:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Called from -tableView:cellForRowAtIndexPath: just before it returns, giving the delegate a chance to customize the new cell.  <a href="#af34685bd246f105c4b7dd5c3b644a812"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocolCouchUITableDelegate-p.html#a00332fd2b1936af5ae6dd087bdd1e840">couchTableSource:operationFailed:</a></td></tr>
@@ -106,6 +110,36 @@ Public Member Functions</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Additional methods for the table view's delegate, that will be invoked by the <a class="el" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a>. </p>
 </div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a6c9dfc4a235ed505c136ac717b6d0978"></a><!-- doxytag: member="CouchUITableDelegate&#45;p::couchTableSource:cellForRowAtIndexPath:" ref="a6c9dfc4a235ed505c136ac717b6d0978" args="(CouchUITableSource *source,[cellForRowAtIndexPath] NSIndexPath *indexPath)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (UITableViewCell *) couchTableSource: </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="interfaceCouchUITableSource.html">CouchUITableSource</a> *)&#160;</td>
+          <td class="paramname"><em>source</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">cellForRowAtIndexPath:</td>
+          <td></td>
+          <td class="paramtype">(NSIndexPath *)&#160;</td>
+          <td class="paramname"><em>indexPath</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td><code> [optional]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Allows delegate to return its own custom cell, just like -tableView:cellForRowAtIndexPath:. </p>
+<p>If this returns nil the table source will create its own cell, as if this method were not implemented. </p>
+
+</div>
+</div>
 <a class="anchor" id="af16fc4342476950df35f0758ab2ba86a"></a><!-- doxytag: member="CouchUITableDelegate&#45;p::couchTableSource:willUpdateFromQuery:" ref="af16fc4342476950df35f0758ab2ba86a" args="(CouchUITableSource *source,[willUpdateFromQuery] CouchLiveQuery *query)" -->
 <div class="memitem">
 <div class="memproto">
@@ -132,6 +166,42 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Called after the query's results change, before the table view is reloaded. </p>
+
+</div>
+</div>
+<a class="anchor" id="a69386b461041e93e8b8b0065aa4f618a"></a><!-- doxytag: member="CouchUITableDelegate&#45;p::couchTableSource:updateFromQuery:previousRows:" ref="a69386b461041e93e8b8b0065aa4f618a" args="(CouchUITableSource *source,[updateFromQuery] CouchLiveQuery *query,[previousRows] NSArray *previousRows)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) couchTableSource: </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="interfaceCouchUITableSource.html">CouchUITableSource</a> *)&#160;</td>
+          <td class="paramname"><em>source</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">updateFromQuery:</td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="interfaceCouchLiveQuery.html">CouchLiveQuery</a> *)&#160;</td>
+          <td class="paramname"><em>query</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">previousRows:</td>
+          <td></td>
+          <td class="paramtype">(NSArray *)&#160;</td>
+          <td class="paramname"><em>previousRows</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td><code> [optional]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Called after the query's results change to update the table view. </p>
+<p>If this method is not implemented by the delegate, reloadData is called on the table view. </p>
 
 </div>
 </div>
@@ -208,7 +278,7 @@ Public Member Functions</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="protocolCouchUITableDelegate-p.html">CouchUITableDelegate</a>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

@@ -105,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00022"></a>00022 <span class="preprocessor"></span><span class="preprocessor">#define REDUCEBLOCK(BLOCK) ^id(NSArray* keys, NSArray* values, BOOL rereduce){BLOCK}</span>
 <a name="l00023"></a>00023 <span class="preprocessor"></span><span class="preprocessor">#define VALIDATIONBLOCK(BLOCK) ^BOOL(TDRevision* newRevision, id&lt;TDValidationContext&gt; context)\</span>
 <a name="l00024"></a>00024 <span class="preprocessor">                                  {BLOCK}</span>
-<a name="l00025"></a>00025 <span class="preprocessor"></span><span class="preprocessor">#define FILTERBLOCK(BLOCK) ^BOOL(TDRevision* revision) {BLOCK}</span>
+<a name="l00025"></a>00025 <span class="preprocessor"></span><span class="preprocessor">#define FILTERBLOCK(BLOCK) ^BOOL(TDRevision* revision, NSDictionary* params) {BLOCK}</span>
 <a name="l00026"></a>00026 <span class="preprocessor"></span>
 <a name="l00027"></a>00027 
 <a name="l00030"></a>00030 <span class="keyword">@interface </span><a class="code" href="interfaceCouchDesignDocument.html" title="A Design Document is a special document type that contains things like map/reduce functions...">CouchDesignDocument</a> (Embedded)
@@ -130,7 +130,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchDesignDocument_Embedded.h</b>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

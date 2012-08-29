@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>CouchCocoa: As Class Reference</title>
+<title>CouchCocoa: Couch/CouchTouchDBDatabase.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -37,8 +37,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li id="searchli">
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -59,10 +59,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
     </ul>
   </div>
 </div>
@@ -76,31 +73,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-  initNavTree('interface_1_1As.html','');
+  initNavTree('CouchTouchDBDatabase_8h.html','');
 </script>
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<div class="title">As Class Reference</div>  </div>
+<div class="title">Couch/CouchTouchDBDatabase.h</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="::As" -->
-<p>Generic model class for Couch documents.  
- <a href="interface_1_1As.html#details">More...</a></p>
-<table class="memberdecls">
-</table>
-<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Generic model class for Couch documents. </p>
-<p>There's a 1::1 mapping between these and CouchDocuments; call +modelForDocument: to get (or create) a model object for a document, and .document to get the document of a model. You should subclass this and declare properties in the subclass's, you don't need to implement their accessor methods or declare instance variables; simply note them as '@dynamic' in the @implementation. The property value will automatically be fetched from or stored to the document, using the same name. Supported scalar types are bool, char, short, int, double. These map to JSON numbers, except 'bool' which maps to JSON 'true' and 'false'. (Use bool instead of BOOL.) Supported object types are NSString, NSNumber, NSData, NSDate, NSArray, NSDictionary. (NSData and NSDate are not native JSON; they will be automatically converted to/from strings in base64 and ISO date formats, respectively.) Additionally, a property's type can be a pointer to a <a class="el" href="interfaceCouchModel.html">CouchModel</a> subclass. This provides references between model objects. The raw property value in the document must be a string whose value is interpreted as a document ID. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>Model/<a class="el" href="CouchModel_8h_source.html">CouchModel.h</a></li>
-</ul>
-</div>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//</span>
+<a name="l00002"></a>00002 <span class="comment">//  CouchTouchDBDatabase.h</span>
+<a name="l00003"></a>00003 <span class="comment">//  CouchCocoa</span>
+<a name="l00004"></a>00004 <span class="comment">//</span>
+<a name="l00005"></a>00005 <span class="comment">//  Created by Jens Alfke on 5/25/12.</span>
+<a name="l00006"></a>00006 <span class="comment">//  Copyright (c) 2012 Couchbase, Inc. All rights reserved.</span>
+<a name="l00007"></a>00007 <span class="comment">//</span>
+<a name="l00008"></a>00008 
+<a name="l00009"></a>00009 <span class="preprocessor">#import &quot;CouchDatabase.h&quot;</span>
+<a name="l00010"></a>00010 
+<a name="l00011"></a><a class="code" href="interfaceCouchTouchDBDatabase.html">00011</a> <span class="keyword">@interface </span><a class="code" href="interfaceCouchTouchDBDatabase.html">CouchTouchDBDatabase</a> : <a class="code" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>
+<a name="l00012"></a>00012 {
+<a name="l00013"></a>00013     <span class="keyword">@private</span>
+<a name="l00014"></a>00014     BOOL _tracking;
+<a name="l00015"></a>00015 }
+<a name="l00016"></a>00016 
+<a name="l00017"></a>00017 <span class="keyword">@end</span>
+</pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><a class="el" href="interface_1_1As.html">As</a>      </li>
-      <li class="footer">Generated on Mon Feb 13 2012 13:23:37 for CouchCocoa by&#160;
+      <li class="navelem"><b>CouchTouchDBDatabase.h</b>      </li>
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

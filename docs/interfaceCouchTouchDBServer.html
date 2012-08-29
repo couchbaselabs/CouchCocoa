@@ -113,6 +113,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Preferred initializer.  <a href="#a751750680aa8284c0a309896ef8fd2bd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchTouchDBServer.html#a09968ea6c9f257e0940524368970de06">initWithServerPath:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts up a server that stores its data at the given path.  <a href="#a09968ea6c9f257e0940524368970de06"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchTouchDBServer.html#aec69548ea137fd334a2234f29545c00e">initWithServerPath:options:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts up a server that stores its data at the given path.  <a href="#aec69548ea137fd334a2234f29545c00e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchTouchDBServer.html#a921fa23b51a172971cb5aa9397e24fa2">initWithURL:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherited initializer, if you want to connect to a remote server for debugging purposes.  <a href="#a921fa23b51a172971cb5aa9397e24fa2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchTouchDBServer.html#ad9dc9c22df1cb928cb1d619fe0df18db">close</a></td></tr>
@@ -193,6 +195,42 @@ Properties</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">serverPath</td><td>The filesystem path to the server directory. If it doesn't already exist it will be created. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aec69548ea137fd334a2234f29545c00e"></a><!-- doxytag: member="CouchTouchDBServer::initWithServerPath:options:" ref="aec69548ea137fd334a2234f29545c00e" args="(NSString *serverPath,[options] const struct TDDatabaseManagerOptions *options)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (id) initWithServerPath: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>serverPath</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">options:</td>
+          <td></td>
+          <td class="paramtype">(const struct TDDatabaseManagerOptions *)&#160;</td>
+          <td class="paramname"><em>options</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Starts up a server that stores its data at the given path. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">serverPath</td><td>The filesystem path to the server directory. If it doesn't already exist it will be created. </td></tr>
+    <tr><td class="paramname">options</td><td>Option settings; can be used to open in read-only mode or to disable the replicator. </td></tr>
   </table>
   </dd>
 </dl>
@@ -314,7 +352,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchTouchDBServer.html">CouchTouchDBServer</a>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:54:10 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

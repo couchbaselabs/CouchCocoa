@@ -119,9 +119,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
 <li>database
 : <a class="el" href="interfaceCouchResource.html#a07378fee7d59775ec0502485747d71f5">CouchResource</a>
+, <a class="el" href="interfaceCouchModel.html#a6ee5e60c15aa738113958d7db30f494b">CouchModel</a>
 </li>
 <li>databaseDirectory
 : <a class="el" href="interfaceCouchbaseMobile.html#abf0dfed6fbc88a5c275f587a13ad1678">CouchbaseMobile</a>
+</li>
+<li>databaseForModelProperty:
+: <a class="el" href="interfaceCouchModel.html#aca9177926e4614f6275f96d11288caae">CouchModel</a>
 </li>
 <li>databaseName
 : <a class="el" href="protocolCouchbaseValidationContext-p.html#abd6501986b4af369c2dc49fa26e5e461">&lt;CouchbaseValidationContext&gt;</a>
@@ -144,6 +148,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>dateWithJSONObject:
 : <a class="el" href="interfaceRESTBody.html#a0fc0b35772438f1ae57652e10edb7f5e">RESTBody</a>
 </li>
+<li>defineFilterNamed:asFunction:
+: <a class="el" href="interfaceCouchDesignDocument.html#a49c762069fc1b5280a85a6b25cd2a116">CouchDesignDocument</a>
+</li>
 <li>defineViewNamed:map:
 : <a class="el" href="interfaceCouchDesignDocument.html#a5eb130406c0e950de996ed8666a85845">CouchDesignDocument</a>
 </li>
@@ -162,11 +169,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>DELETE
 : <a class="el" href="interfaceRESTResource.html#ae591764ae69c32f8f30ecf8ed5d04532">RESTResource</a>
 </li>
+<li>deleteDocument
+: <a class="el" href="interfaceCouchModel.html#ac56b79c68cb38e51a27514ef56f3fa31">CouchModel</a>
+</li>
 <li>deleteDocuments:
 : <a class="el" href="interfaceCouchDatabase.html#a27ad95f653386df188a2a6db822280d2">CouchDatabase</a>
+, <a class="el" href="interfaceCouchUITableSource.html#aace10246c2b839459619b375a28b4aec">CouchUITableSource</a>
+</li>
+<li>deleteDocumentsAtIndexes:
+: <a class="el" href="interfaceCouchUITableSource.html#a212788c58a4bf5e0925a2bc6c85a5899">CouchUITableSource</a>
 </li>
 <li>deleteRevisions:
 : <a class="el" href="interfaceCouchDatabase.html#a4828f0d7bf5f6eb2c6534a5cbd4d28fd">CouchDatabase</a>
+</li>
+<li>deletionAllowed
+: <a class="el" href="interfaceCouchUITableSource.html#a4995a2a5e4fe95f8430319a0b8f484df">CouchUITableSource</a>
 </li>
 <li>descending
 : <a class="el" href="interfaceCouchQuery.html#a3705a833fe2e52aed92a53ca7ec16c0c">CouchQuery</a>
@@ -177,17 +194,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>designDocumentWithName:
 : <a class="el" href="interfaceCouchDatabase.html#ae0ea4103c0658afeb8c34d67ef10d79b">CouchDatabase</a>
 </li>
+<li>didLoadFromDocument
+: <a class="el" href="interfaceCouchModel.html#a13aa73db92e5023fbe90000f7c60707e">CouchModel</a>
+</li>
 <li>doc_ids
 : <a class="el" href="interfaceCouchPersistentReplication.html#ad8133fc10f1adae3961c17d5a8ac8597">CouchPersistentReplication</a>
 </li>
 <li>document
-: <a class="el" href="interfaceCouchQueryRow.html#a4e706a6b4009a1992248ec5714b31983">CouchQueryRow</a>
-, <a class="el" href="interfaceCouchAttachment.html#a9b55b7793eb67a89f350bcf33914d0a4">CouchAttachment</a>
+: <a class="el" href="interfaceCouchModel.html#a9b690fa2ea88e4e228e672dc553d393c">CouchModel</a>
 , <a class="el" href="interfaceCouchRevision.html#a8af951ceded40313b8c552c2d025815c">CouchRevision</a>
+, <a class="el" href="interfaceCouchAttachment.html#a9b55b7793eb67a89f350bcf33914d0a4">CouchAttachment</a>
+, <a class="el" href="interfaceCouchQueryRow.html#a4e706a6b4009a1992248ec5714b31983">CouchQueryRow</a>
+</li>
+<li>documentAtIndexPath:
+: <a class="el" href="interfaceCouchUITableSource.html#ab983571c9c4f7eba65dfd284b971fffc">CouchUITableSource</a>
 </li>
 <li>documentID
-: <a class="el" href="interfaceCouchRevision.html#a36bd80626291ca19de4f5556470e9df8">CouchRevision</a>
-, <a class="el" href="interfaceCouchQueryRow.html#ad46d4d9e6f1737b61a62ae0f2cd8d77e">CouchQueryRow</a>
+: <a class="el" href="interfaceCouchQueryRow.html#ad46d4d9e6f1737b61a62ae0f2cd8d77e">CouchQueryRow</a>
+, <a class="el" href="interfaceCouchRevision.html#a36bd80626291ca19de4f5556470e9df8">CouchRevision</a>
 , <a class="el" href="interfaceCouchDocument.html#a6e78f25602d9222487e1ab3d59cc9834">CouchDocument</a>
 </li>
 <li>documentPathMap
@@ -210,7 +234,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

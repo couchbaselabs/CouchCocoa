@@ -1,2 +1,2 @@
 #!/bin/csh
-rm -r docs && cp -R ../iOS-Couchbase-repo/CouchCocoa/Documentation/html docs
+rm -r docs && cp -R ../CouchCocoa/Documentation/html docs

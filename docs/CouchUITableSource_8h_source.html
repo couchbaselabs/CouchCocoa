@@ -131,23 +131,30 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00061"></a><a class="code" href="protocolCouchUITableDelegate-p.html">00061</a> <span class="keyword">@protocol </span><a class="code" href="protocolCouchUITableDelegate-p.html" title="Additional methods for the table view&#39;s delegate, that will be invoked by the CouchUITableSource.">CouchUITableDelegate</a> &lt;UITableViewDelegate&gt;
 <a name="l00062"></a>00062 <span class="keyword">@optional</span>
 <a name="l00063"></a>00063 
-<a name="l00065"></a>00065 - (void)couchTableSource:(<a class="code" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a>*)source
-<a name="l00066"></a>00066      willUpdateFromQuery:(CouchLiveQuery*)query;
-<a name="l00067"></a>00067 
-<a name="l00069"></a>00069 - (void)couchTableSource:(<a class="code" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a>*)source
-<a name="l00070"></a>00070              willUseCell:(UITableViewCell*)cell
-<a name="l00071"></a>00071                   forRow:(CouchQueryRow*)row;
+<a name="l00066"></a>00066 - (UITableViewCell *)couchTableSource:(<a class="code" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a>*)source
+<a name="l00067"></a>00067                 cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+<a name="l00068"></a>00068 
+<a name="l00070"></a>00070 - (void)couchTableSource:(<a class="code" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a>*)source
+<a name="l00071"></a>00071      willUpdateFromQuery:(CouchLiveQuery*)query;
 <a name="l00072"></a>00072 
 <a name="l00074"></a>00074 - (void)couchTableSource:(<a class="code" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a>*)source
-<a name="l00075"></a>00075          operationFailed:(RESTOperation*)op;
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077 <span class="keyword">@end</span>
+<a name="l00075"></a>00075          updateFromQuery:(CouchLiveQuery*)query
+<a name="l00076"></a>00076             previousRows:(NSArray *)previousRows;
+<a name="l00077"></a>00077 
+<a name="l00079"></a>00079 - (void)couchTableSource:(<a class="code" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a>*)source
+<a name="l00080"></a>00080              willUseCell:(UITableViewCell*)cell
+<a name="l00081"></a>00081                   forRow:(CouchQueryRow*)row;
+<a name="l00082"></a>00082 
+<a name="l00084"></a>00084 - (void)couchTableSource:(<a class="code" href="interfaceCouchUITableSource.html" title="A UITableView data source driven by a CouchLiveQuery.">CouchUITableSource</a>*)source
+<a name="l00085"></a>00085          operationFailed:(RESTOperation*)op;
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchUITableSource.h</b>      </li>
-      <li class="footer">Generated on Sun Oct 30 2011 13:09:28 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

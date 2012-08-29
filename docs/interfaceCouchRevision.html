@@ -109,6 +109,8 @@ Inheritance diagram for CouchRevision:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchRevision.html#a54701efa2d8b65a2f4debfeae4bc4e46">propertyForKey:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for [self.properties objectForKey: key].  <a href="#a54701efa2d8b65a2f4debfeae4bc4e46"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchRevision.html#a75d18b4e65a992a787ca2f5d36f38a6e">objectForKeyedSubscript:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as -propertyForKey:.  <a href="#a75d18b4e65a992a787ca2f5d36f38a6e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchRevision.html#a7f43bd23f952ff4d70b2bcec29d1be2b">putProperties:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new revision with the given properties.  <a href="#a7f43bd23f952ff4d70b2bcec29d1be2b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchAttachment.html">CouchAttachment</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchRevision.html#af24c0ca302c6a2540e0de1561b1d741c">attachmentNamed:</a></td></tr>
@@ -159,6 +161,26 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 
 <p>Shorthand for [self.properties objectForKey: key]. </p>
 <p>(Synchronous) </p>
+
+</div>
+</div>
+<a class="anchor" id="a75d18b4e65a992a787ca2f5d36f38a6e"></a><!-- doxytag: member="CouchRevision::objectForKeyedSubscript:" ref="a75d18b4e65a992a787ca2f5d36f38a6e" args="(NSString *key)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (id) objectForKeyedSubscript: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>key</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Same as -propertyForKey:. </p>
+<p>Enables "[]" access in Xcode 4.4+ </p>
 
 </div>
 </div>
@@ -332,7 +354,7 @@ BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchRevision.html">CouchRevision</a>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

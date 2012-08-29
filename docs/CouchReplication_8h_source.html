@@ -125,52 +125,55 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00043"></a>00043     <span class="keywordtype">unsigned</span> _completed, _total;
 <a name="l00044"></a>00044     CouchReplicationMode _mode;
 <a name="l00045"></a>00045     NSError* _error;
-<a name="l00046"></a>00046 }
-<a name="l00047"></a>00047 
-<a name="l00049"></a><a class="code" href="interfaceCouchReplication.html#a78d5451cbe59b0aad20b19b40df6947e">00049</a> <span class="keyword">@property</span> (nonatomic, readonly) <a class="code" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>* localDatabase;
-<a name="l00050"></a>00050 
-<a name="l00052"></a><a class="code" href="interfaceCouchReplication.html#a2e53951ab75c5cb7200cecf11f8416f8">00052</a> <span class="keyword">@property</span> (nonatomic, readonly) NSURL* remoteURL;
-<a name="l00053"></a>00053 
-<a name="l00055"></a><a class="code" href="interfaceCouchReplication.html#a96e4c099cd222c861ada929785471906">00055</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">bool</span> pull;
-<a name="l00056"></a>00056 
-<a name="l00058"></a><a class="code" href="interfaceCouchReplication.html#a4f7dc6abe19135f688b7ab142785cced">00058</a> <span class="keyword">@property</span> (nonatomic) <span class="keywordtype">bool</span> createTarget;
-<a name="l00059"></a>00059 
-<a name="l00061"></a><a class="code" href="interfaceCouchReplication.html#a5b7323b3a0f0fff0d047ed6814a0385e">00061</a> <span class="keyword">@property</span> (nonatomic) <span class="keywordtype">bool</span> continuous;
-<a name="l00062"></a>00062 
-<a name="l00066"></a><a class="code" href="interfaceCouchReplication.html#a26a5d54183f4c913b5e70b07fb72a450">00066</a> <span class="keyword">@property</span> (nonatomic, copy) NSString* filter;
-<a name="l00067"></a>00067 
-<a name="l00070"></a><a class="code" href="interfaceCouchReplication.html#a847bae4f6d0ba9f2c9866c52a9659638">00070</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* filterParams;
-<a name="l00071"></a>00071 
-<a name="l00074"></a><a class="code" href="interfaceCouchReplication.html#a130c32bc41aeabae0b878d844d5763cb">00074</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* headers;
-<a name="l00075"></a>00075 
-<a name="l00078"></a><a class="code" href="interfaceCouchReplication.html#a0147a6e15b5a306d36985ab8a8581d98">00078</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* OAuth;
-<a name="l00079"></a>00079 
-<a name="l00082"></a><a class="code" href="interfaceCouchReplication.html#a1ee02a93fa52d0219a40f39efb4bf85b">00082</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* options;
-<a name="l00083"></a>00083 
+<a name="l00046"></a>00046     NSArray* _currentRequests;
+<a name="l00047"></a>00047 }
+<a name="l00048"></a>00048 
+<a name="l00050"></a><a class="code" href="interfaceCouchReplication.html#a78d5451cbe59b0aad20b19b40df6947e">00050</a> <span class="keyword">@property</span> (nonatomic, readonly) <a class="code" href="interfaceCouchDatabase.html" title="A CouchDB database; contains CouchDocuments.">CouchDatabase</a>* localDatabase;
+<a name="l00051"></a>00051 
+<a name="l00053"></a><a class="code" href="interfaceCouchReplication.html#a2e53951ab75c5cb7200cecf11f8416f8">00053</a> <span class="keyword">@property</span> (nonatomic, readonly) NSURL* remoteURL;
+<a name="l00054"></a>00054 
+<a name="l00056"></a><a class="code" href="interfaceCouchReplication.html#a96e4c099cd222c861ada929785471906">00056</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">bool</span> pull;
+<a name="l00057"></a>00057 
+<a name="l00059"></a><a class="code" href="interfaceCouchReplication.html#a4f7dc6abe19135f688b7ab142785cced">00059</a> <span class="keyword">@property</span> (nonatomic) <span class="keywordtype">bool</span> createTarget;
+<a name="l00060"></a>00060 
+<a name="l00062"></a><a class="code" href="interfaceCouchReplication.html#a5b7323b3a0f0fff0d047ed6814a0385e">00062</a> <span class="keyword">@property</span> (nonatomic) <span class="keywordtype">bool</span> continuous;
+<a name="l00063"></a>00063 
+<a name="l00067"></a><a class="code" href="interfaceCouchReplication.html#a26a5d54183f4c913b5e70b07fb72a450">00067</a> <span class="keyword">@property</span> (nonatomic, copy) NSString* filter;
+<a name="l00068"></a>00068 
+<a name="l00071"></a><a class="code" href="interfaceCouchReplication.html#a847bae4f6d0ba9f2c9866c52a9659638">00071</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* filterParams;
+<a name="l00072"></a>00072 
+<a name="l00075"></a><a class="code" href="interfaceCouchReplication.html#a130c32bc41aeabae0b878d844d5763cb">00075</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* headers;
+<a name="l00076"></a>00076 
+<a name="l00079"></a><a class="code" href="interfaceCouchReplication.html#a0147a6e15b5a306d36985ab8a8581d98">00079</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* OAuth;
+<a name="l00080"></a>00080 
+<a name="l00083"></a><a class="code" href="interfaceCouchReplication.html#a1ee02a93fa52d0219a40f39efb4bf85b">00083</a> <span class="keyword">@property</span> (nonatomic, copy) NSDictionary* options;
 <a name="l00084"></a>00084 
-<a name="l00087"></a>00087 - (RESTOperation*) start;
-<a name="l00088"></a>00088 
-<a name="l00090"></a>00090 - (void) stop;
-<a name="l00091"></a>00091 
-<a name="l00092"></a>00092 <span class="keyword">@property</span> (nonatomic, readonly) BOOL running;
-<a name="l00093"></a>00093 
-<a name="l00096"></a><a class="code" href="interfaceCouchReplication.html#ad8539ef404692f2c1e05f39b1a278176">00096</a> <span class="keyword">@property</span> (nonatomic, readonly, copy) NSString* status;
-<a name="l00097"></a>00097 
-<a name="l00099"></a><a class="code" href="interfaceCouchReplication.html#a42854483e5f6c8fc40f08431a3a358d2">00099</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
-<a name="l00100"></a>00100 
-<a name="l00102"></a><a class="code" href="interfaceCouchReplication.html#a8a764ea121c757fee8eef4e303e77d1e">00102</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
-<a name="l00103"></a>00103 
-<a name="l00104"></a>00104 <span class="keyword">@property</span> (nonatomic, readonly, retain) NSError* error;
-<a name="l00105"></a>00105 
-<a name="l00106"></a>00106 <span class="keyword">@property</span> (nonatomic, readonly) CouchReplicationMode mode;
-<a name="l00107"></a>00107 
-<a name="l00108"></a>00108 <span class="keyword">@end</span>
+<a name="l00085"></a>00085 
+<a name="l00088"></a>00088 - (RESTOperation*) start;
+<a name="l00089"></a>00089 
+<a name="l00091"></a>00091 - (void) stop;
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 <span class="keyword">@property</span> (nonatomic, readonly) BOOL running;
+<a name="l00094"></a>00094 
+<a name="l00097"></a><a class="code" href="interfaceCouchReplication.html#ad8539ef404692f2c1e05f39b1a278176">00097</a> <span class="keyword">@property</span> (nonatomic, readonly, copy) NSString* status;
+<a name="l00098"></a>00098 
+<a name="l00100"></a><a class="code" href="interfaceCouchReplication.html#a42854483e5f6c8fc40f08431a3a358d2">00100</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> completed;
+<a name="l00101"></a>00101 
+<a name="l00103"></a><a class="code" href="interfaceCouchReplication.html#a8a764ea121c757fee8eef4e303e77d1e">00103</a> <span class="keyword">@property</span> (nonatomic, readonly) <span class="keywordtype">unsigned</span> total;
+<a name="l00104"></a>00104 
+<a name="l00105"></a>00105 <span class="keyword">@property</span> (nonatomic, readonly, retain) NSError* error;
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107 <span class="keyword">@property</span> (nonatomic, readonly) CouchReplicationMode mode;
+<a name="l00108"></a>00108 
+<a name="l00109"></a>00109 <span class="keyword">@property</span> (nonatomic, readonly) NSArray* currentRequests;
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>CouchReplication.h</b>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

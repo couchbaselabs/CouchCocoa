@@ -99,8 +99,9 @@ Inheritance diagram for CouchDatabase:</div>
  <div class="center">
   <img src="interfaceCouchDatabase.png" usemap="#CouchDatabase_map" alt=""/>
   <map id="CouchDatabase_map" name="CouchDatabase_map">
-<area href="interfaceCouchResource.html" title="Superclass of CouchDB model classes." alt="CouchResource" shape="rect" coords="0,56,103,80"/>
-<area href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL." alt="RESTResource" shape="rect" coords="0,0,103,24"/>
+<area href="interfaceCouchResource.html" title="Superclass of CouchDB model classes." alt="CouchResource" shape="rect" coords="0,56,154,80"/>
+<area href="interfaceRESTResource.html" title="Represents an HTTP resource identified by a specific URL." alt="RESTResource" shape="rect" coords="0,0,154,24"/>
+<area href="interfaceCouchTouchDBDatabase.html" alt="CouchTouchDBDatabase" shape="rect" coords="0,168,154,192"/>
 </map>
  </div></div>
 
@@ -118,6 +119,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current total number of documents.  <a href="#a79dd2fef9621694cdc81c3977aec37ff"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDocument.html">CouchDocument</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#ac5064dabc1447136a83528f61c5e2708">documentWithID:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> object with the given ID.  <a href="#ac5064dabc1447136a83528f61c5e2708"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#aa190ca64d7155b5fc5235050df71aa51">objectForKeyedSubscript:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as -documentWithID:.  <a href="#aa190ca64d7155b5fc5235050df71aa51"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchDocument.html">CouchDocument</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#ac7ef980b5cc86f2e613332c53b1ff44b">untitledDocument</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> object with no current ID.  <a href="#ac7ef980b5cc86f2e613332c53b1ff44b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQuery.html">CouchQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a49d0904f438587b988860891e8049885">getAllDocuments</a></td></tr>
@@ -132,6 +135,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the given revisions.  <a href="#a4828f0d7bf5f6eb2c6534a5cbd4d28fd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a27ad95f653386df188a2a6db822280d2">deleteDocuments:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the given documents.  <a href="#a27ad95f653386df188a2a6db822280d2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceRESTOperation.html">RESTOperation</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a1cb9ad730bcd1348eee58bab90c11de4">purgeDocuments:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Purges the given documents from the database; this isn't deletion, more like forgetting entirely about them.  <a href="#a1cb9ad730bcd1348eee58bab90c11de4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a70dd409ff51d61ebc7d3415c9e7dc2f5">clearDocumentCache</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Empties the cache of recently used <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> objects.  <a href="#a70dd409ff51d61ebc7d3415c9e7dc2f5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interfaceCouchQuery.html">CouchQuery</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interfaceCouchDatabase.html#a885f5731cf9285e3979e10d558eb5b27">slowQueryWithMap:reduce:language:</a></td></tr>
@@ -168,6 +173,8 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The last change sequence number received from the database.  <a href="#a64d23366955ed65b5928526249cb05da"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDatabase.html#aa5aca135f28d601fd5ac38ae88eb69c8">replications</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">All currently configured persistent replications involving this database, as <a class="el" href="interfaceCouchPersistentReplication.html" title="A model object representing a persistent replication to or from another database.">CouchPersistentReplication</a> objects.  <a href="#aa5aca135f28d601fd5ac38ae88eb69c8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceCouchModelFactory.html">CouchModelFactory</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCouchDatabase.html#a1fe49c1556794d5a93dd57d07993320b">modelFactory</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> factory object to be used by this database.  <a href="#a1fe49c1556794d5a93dd57d07993320b"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A CouchDB database; contains CouchDocuments. </p>
@@ -317,6 +324,26 @@ Properties</h2></td></tr>
 
 <p>Instantiates a <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> object with the given ID. </p>
 <p>Makes no server calls; a document with that ID doesn't even need to exist yet. CouchDocuments are cached, so there will never be more than one instance (in this database) at a time with the same documentID. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa190ca64d7155b5fc5235050df71aa51"></a><!-- doxytag: member="CouchDatabase::objectForKeyedSubscript:" ref="aa190ca64d7155b5fc5235050df71aa51" args="(NSString *key)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (id) objectForKeyedSubscript: </td>
+          <td></td>
+          <td class="paramtype">(NSString *)&#160;</td>
+          <td class="paramname"><em>key</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Same as -documentWithID:. </p>
+<p>Enables "[]" access in Xcode 4.4+ </p>
 
 </div>
 </div>
@@ -473,6 +500,31 @@ Properties</h2></td></tr>
 <div class="memdoc">
 
 <p>Deletes the given documents. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1cb9ad730bcd1348eee58bab90c11de4"></a><!-- doxytag: member="CouchDatabase::purgeDocuments:" ref="a1cb9ad730bcd1348eee58bab90c11de4" args="(NSArray *documents)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceRESTOperation.html">RESTOperation</a>*) purgeDocuments: </td>
+          <td></td>
+          <td class="paramtype">(NSArray *)&#160;</td>
+          <td class="paramname"><em>documents</em></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Purges the given documents from the database; this isn't deletion, more like forgetting entirely about them. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">documents</td><td>Array of <a class="el" href="interfaceCouchDocument.html" title="A CouchDB document, aka &quot;record&quot; aka &quot;row&quot;.">CouchDocument</a> objects or document IDs (NSStrings). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -771,6 +823,22 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a1fe49c1556794d5a93dd57d07993320b"></a><!-- doxytag: member="CouchDatabase::modelFactory" ref="a1fe49c1556794d5a93dd57d07993320b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interfaceCouchModelFactory.html">CouchModelFactory</a>*) modelFactory<code> [read, write, retain]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The <a class="el" href="interfaceCouchModel.html" title="Generic model class for Couch documents.">CouchModel</a> factory object to be used by this database. </p>
+<p>Every database has its own instance by default, but you can set this property to use a different one -- either to use a custom subclass, or to share a factory among multiple databases, or both. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Couch/<a class="el" href="CouchDatabase_8h_source.html">CouchDatabase.h</a></li>
 </ul>
@@ -779,7 +847,7 @@ Properties</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interfaceCouchDatabase.html">CouchDatabase</a>      </li>
-      <li class="footer">Generated on Mon May 21 2012 14:54:09 for CouchCocoa by&#160;
+      <li class="footer">Generated on Wed Aug 29 2012 13:45:08 for CouchCocoa by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
