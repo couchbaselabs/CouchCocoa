@@ -105,7 +105,7 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 - (RESTOperation*) deleteDocuments: (NSArray*)documents;
 
 /** Purges the given documents from the database; this isn't deletion, more like forgetting entirely about them.
-    @documents  Array of CouchDocument objects or document IDs (NSStrings). */
+    @param documents  Array of CouchDocument objects or document IDs (NSStrings). */
 - (RESTOperation*) purgeDocuments: (NSArray*)documents;
 
 /** Empties the cache of recently used CouchDocument objects.
