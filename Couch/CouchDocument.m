@@ -157,15 +157,18 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 #pragma mark CONFLICTS:
 
 
-- (NSArray*) getConflictingRevisions {
+- (NSArray*) getLeafRevisionsIncludingDeleted: (BOOL)includeDeleted {
     // http://wiki.apache.org/couchdb/Replication_and_conflicts
     // Apparently open_revs isn't official API, and ?conflicts is preferred, but open_revs
     // has the advantage of returning the contents of all conflicting revisions at once.
-    RESTOperation* op = [self sendHTTP: @"GET" 
-                            parameters: [NSDictionary dictionaryWithObjectsAndKeys:
-                                         @"all", @"?open_revs",
-                                         @"application/json", @"Accept",
-                                         nil]];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       @"all", @"?open_revs",
+                                       @"application/json", @"Accept",
+                                       nil];
+    if (includeDeleted)
+        [parameters setObject: @"true" forKey: @"?include_deleted"];
+    RESTOperation* op = [self sendHTTP: @"GET"
+                            parameters: parameters];
     if (![op wait])
         return nil;
     NSArray* items = $castIf(NSArray, op.responseBody.fromJSON);
@@ -173,17 +176,24 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         return nil;
     return [items rest_map: ^id(id item) {
         NSDictionary* contents = $castIf(NSDictionary, [item objectForKey: @"ok"]);
-        if (![[contents objectForKey: @"_deleted"] boolValue]) {
-            NSString* revisionID = $castIf(NSString, [contents objectForKey: @"_rev"]);
-            if (revisionID) {
-                CouchRevision* revision = [self revisionWithID: revisionID];
-                if (!revision.propertiesAreLoaded)
-                    revision.properties = contents;
-                return revision;
-            }
-        }
-        return nil;
+        if (!includeDeleted && [[contents objectForKey: @"_deleted"] boolValue])
+            return nil;  // ignore this rev
+        NSString* revisionID = $castIf(NSString, [contents objectForKey: @"_rev"]);
+        if (!revisionID)
+            return nil;  // bogus rev; ignore
+        CouchRevision* revision = [self revisionWithID: revisionID];
+        if (!revision.propertiesAreLoaded)
+            revision.properties = contents;
+        return revision;
     }];
+}
+
+- (NSArray*) getConflictingRevisions {
+    return [self getLeafRevisionsIncludingDeleted: NO];
+}
+
+- (NSArray*) getLeafRevisions {
+    return [self getLeafRevisionsIncludingDeleted: YES];
 }
 
 
