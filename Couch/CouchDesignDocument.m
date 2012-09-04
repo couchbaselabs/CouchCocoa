@@ -95,7 +95,7 @@ static NSMutableDictionary* mutableCopyProperty(NSDictionary* properties,
         [_viewsRevisionID release];
         _viewsRevisionID = nil;
     }
-    if (!_views || !_viewsRevisionID) {
+    if (!_views) {
         NSDictionary* properties = self.properties;
         _views = mutableCopyProperty(properties, @"views");
         _filters = mutableCopyProperty(properties, @"filters");
