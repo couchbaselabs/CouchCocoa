@@ -89,7 +89,7 @@
     Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
     Class classTDServer = NSClassFromString(@"TDServer");
     NSAssert(classTDURLProtocol && classTDServer,
-             @"Not linked with TouchDB framework (or you didn't use the -objc linker flag)");
+             @"Not linked with TouchDB framework (or you didn't use the -ObjC linker flag)");
     
     NSError* error;
     TDServer* server;
