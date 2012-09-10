@@ -128,7 +128,7 @@
 
 
 - (NSDictionary*) properties {
-    if (!_properties) {
+    if (!_properties && !_gotProperties) {
         [[self GET] wait];   // synchronous!
     }
     return _properties;
@@ -143,6 +143,7 @@
         _properties = [properties copy];
         _isDeleted = [$castIf(NSNumber, [properties objectForKey: @"_deleted"]) boolValue];
     }
+    _gotProperties = YES;
 }
 
 
@@ -213,6 +214,9 @@
             if (rev)
                 [self.document setCurrentRevisionID: rev];
         }
+    } else if (op.isGET && op.httpStatus == 404) {
+        // Remember that we've checked for properties
+        _gotProperties = YES;
     }
 
     if (!op.isReadOnly)
