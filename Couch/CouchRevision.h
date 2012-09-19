@@ -22,6 +22,7 @@
     @private
     NSDictionary* _properties;
     BOOL _isDeleted;
+    BOOL _gotProperties;
 }
 
 /** The document this is a revision of. */

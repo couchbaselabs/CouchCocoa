@@ -48,10 +48,21 @@ static const NSUInteger kDocRetainLimit = 50;
 }
 
 
-- (void)dealloc {
+- (void) close {
     self.tracksChanges = NO;
+    _lastSequenceNumber = 0;
+    _lastSequenceNumberKnown = NO;
     [_busyDocuments release];
+    _busyDocuments = nil;
     [_deferredChanges release];
+    _deferredChanges = nil;
+    [_docCache release];
+    _docCache = nil;
+}
+
+
+- (void)dealloc {
+    [self close];
     [_onChangeBlock release];
     [_modelFactory release];
     [super dealloc];
@@ -103,6 +114,19 @@ static const NSUInteger kDocRetainLimit = 50;
                                                        forKey: @"Content-Type"];
     return [[[self childWithPath: @"_compact"] POST: nil parameters: params] start];
 }
+
+
+- (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
+    error = [super operation: op willCompleteWithError: error];
+    if (op.isDELETE && !error) {
+        // Database deleted!
+        [self close];
+    }
+    return error;
+}
+
+
+#pragma mark - DOCUMENTS:
 
 
 - (NSInteger) getDocumentCount {

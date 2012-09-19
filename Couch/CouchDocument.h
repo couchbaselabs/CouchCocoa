@@ -63,6 +63,11 @@
     The number of historical revisions available may vary; it depends on how recently the database has been compacted. You should not rely on earlier revisions being available, except for those representing unresolved conflicts. */
 - (NSArray*) getRevisionHistory;
 
+/** Returns all the leaf revisions in the document's revision tree.
+    With TouchDB, this includes deleted revisions (i.e. previously-resolved conflicts.)
+    With CouchDB, deleted revisions are NOT included, so this method acts identically to -getConflictingRevisions. */
+- (NSArray*) getLeafRevisions;
+
 #pragma mark PROPERTIES:
 
 /** The contents of the current revision of the document.
