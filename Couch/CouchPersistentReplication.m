@@ -206,7 +206,8 @@ static inline BOOL isLocalDBName(NSString* url) {
         kStateNames = [[NSArray alloc] initWithObjects: @"", @"triggered", @"completed", @"error",
                        nil];
     
-    NSString* stateStr = [self getValueOfProperty: @"_replication_state"];
+    // Bug workaround attempt: https://github.com/couchbaselabs/TouchDB-iOS/issues/164
+    NSString* stateStr = [[[self document] properties] objectForKey:@"_replication_state"];
     
     COUCHLOG(@"%@: stateStr: %@", self, stateStr);
     
