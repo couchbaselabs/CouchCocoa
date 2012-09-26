@@ -32,6 +32,7 @@
 @property (nonatomic, readwrite) CouchReplicationMode mode;
 @property (nonatomic, readwrite) NSArray* currentRequests;
 - (void) stopped;
+-(void) updateTrackingProperty:(unsigned *) property withNewValue:(unsigned) newValue keyPath:(NSString *) keyPath;
 @end
 
 
@@ -226,23 +227,26 @@
                 Warn(@"CouchReplication: Unable to parse status string \"%@\"", _status);
             }
         }
-        
-        if (completed != _completed || total != _total) {
-            [self willChangeValueForKey: @"completed"];
-            [self willChangeValueForKey: @"total"];
-            _completed = completed;
-            _total = total;
-            [self didChangeValueForKey: @"total"];
-            [self didChangeValueForKey: @"completed"];
-        }
+
+       // Update tracking variables.
+		 [self updateTrackingProperty:&_completed withNewValue:completed keyPath:@"completed"];
+		 [self updateTrackingProperty:&_total withNewValue:total keyPath:@"total"];
+
     }
 
     if (mode != _mode)
         self.mode = mode;
 }
 
+-(void) updateTrackingProperty:(unsigned *) property withNewValue:(unsigned) newValue keyPath:(NSString *) keyPath {
+	if (newValue != *property) {
+		[self willChangeValueForKey: keyPath];
+		*property = newValue;
+		[self didChangeValueForKey: keyPath];
+	}
+}
 
-- (void) observeValueForKeyPath: (NSString*)keyPath ofObject: (id)object 
+- (void) observeValueForKeyPath: (NSString*)keyPath ofObject: (id)object
                          change: (NSDictionary*)change context: (void*)context
 {
     // Server's activeTasks changed:
