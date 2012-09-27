@@ -226,15 +226,17 @@
                 Warn(@"CouchReplication: Unable to parse status string \"%@\"", _status);
             }
         }
-        
-        if (completed != _completed || total != _total) {
-            [self willChangeValueForKey: @"completed"];
-            [self willChangeValueForKey: @"total"];
+		 
+		 BOOL completedChanged = completed != _completed;
+		 BOOL totalChanged = total != _total;
+		 if (completedChanged || totalChanged) {
+			 if (completedChanged) [self willChangeValueForKey: @"completed"];
+			 if (totalChanged) [self willChangeValueForKey: @"total"];
             _completed = completed;
             _total = total;
-            [self didChangeValueForKey: @"total"];
-            [self didChangeValueForKey: @"completed"];
-        }
+			 if (completedChanged) [self didChangeValueForKey: @"completed"];
+			 if (totalChanged) [self didChangeValueForKey: @"total"];
+		  }
     }
 
     if (mode != _mode)
