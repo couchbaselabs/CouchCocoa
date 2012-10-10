@@ -160,6 +160,7 @@
     for (CouchDocument* doc in docs) {
         STAssertTrue([doc.currentRevisionID hasPrefix: @"2-"],
                      @"Expected 2nd revision: %@ in %@", doc.currentRevisionID, doc);
+        STAssertEqualObjects([doc propertyForKey:@"_rev"], doc.currentRevisionID, @"_rev incorrect");
         STAssertEqualObjects([doc.currentRevision.properties objectForKey: @"misc"],
                              @"updated!", nil);
     }
@@ -183,6 +184,7 @@
         CouchDocument* doc = [docs objectAtIndex: i];
         STAssertTrue([doc.currentRevisionID hasPrefix: @"1-"],
                      @"Expected 2nd revision: %@ in %@", doc.currentRevisionID, doc);
+        STAssertEqualObjects([doc propertyForKey:@"_rev"], doc.currentRevisionID, @"_rev incorrect");
         STAssertEqualObjects([doc.currentRevision.properties objectForKey: @"order"],
                              [NSNumber numberWithInt: i], nil);
     }
