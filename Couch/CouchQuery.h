@@ -74,6 +74,9 @@ typedef enum {
 /** If non-nil, the query will fetch only the rows with the given keys. */
 @property (copy) NSArray* keys;
 
+/** Allows querying the map or reduce results for views with reduce functions. */
+@property BOOL mapOnly;
+
 /** If non-zero, enables grouping of results, in views that have reduce functions. */
 @property NSUInteger groupLevel;
 
