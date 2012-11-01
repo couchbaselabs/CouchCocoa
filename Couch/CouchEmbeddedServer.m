@@ -40,7 +40,7 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
     self = [super initWithURL: [NSURL URLWithString: @"http://127.0.0.1:0"]];
     if (self) {
         // Look up class at runtime to avoid dependency on Couchbase.framework:
-        Class couchbaseClass = NSClassFromString(@"Couchbase");
+        Class couchbaseClass = NSClassFromString(@"CouchbaseMobile");
         NSAssert(couchbaseClass!=nil, @"Not linked with Couchbase Mobile framework");
         _couchbase = [[couchbaseClass alloc] init];
         _couchbase.delegate = self;

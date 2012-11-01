@@ -248,7 +248,7 @@
     // Server's activeTasks changed:
     BOOL active = NO;
     NSString* status = nil;
-    NSArray* error = nil;
+    NSArray* errorInfo = nil;
     NSArray* requests = nil;
     for (NSDictionary* task in _database.server.activeTasks) {
         if ([[task objectForKey:@"type"] isEqualToString:@"Replication"]) {
@@ -257,7 +257,7 @@
             if ([[task objectForKey: @"task"] rangeOfString: _taskID].length > 0) {
                 active = YES;
                 status = $castIf(NSString, [task objectForKey: @"status"]);
-                error = $castIf(NSArray, [task objectForKey: @"error"]);
+                errorInfo = $castIf(NSArray, [task objectForKey: @"error"]);
                 requests = $castIf(NSArray, [task objectForKey: @"requests"]);
                 break;
             }
@@ -271,21 +271,25 @@
     }
     
     // Interpret .error property. This is nonstandard; only TouchDB supports it.
-    if (error.count >= 1) {
-        COUCHLOG(@"%@: error %@", self, error);
-        int status = [$castIf(NSNumber, [error objectAtIndex: 0]) intValue];
+    NSError *error = nil;
+    if (errorInfo.count >= 1) {
+        if (!_error) {
+            COUCHLOG(@"%@: error %@", self, errorInfo);
+        }
+        int status = [$castIf(NSNumber, [errorInfo objectAtIndex: 0]) intValue];
         NSString* message = nil;
-        if (error.count >= 2)
-            message = $castIf(NSString, [error objectAtIndex: 1]);
-        self.error = [RESTOperation errorWithHTTPStatus: status message: message URL: _remote];
+        if (errorInfo.count >= 2)
+            message = $castIf(NSString, [errorInfo objectAtIndex: 1]);
+        error = [RESTOperation errorWithHTTPStatus: status message: message URL: _remote];
     }
 
+    // Update my properties, triggering KVO notifications, if the values changed:
+    if (!$equal(error, _error))
+        self.error = error;
     if (!$equal(requests, _currentRequests))
         self.currentRequests = requests;
-    
-    if (!$equal(status, _status)) {
+    if (!$equal(status, _status))
         self.status = status;
-    }
 }
 
 

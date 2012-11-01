@@ -24,7 +24,10 @@
 #import "CouchQuery.h"
 #import "CouchRevision.h"
 #import "CouchServer.h"
+
 #import "CouchTouchDBServer.h"
+#import "CouchTouchDBDatabase.h"
+#import "CouchDesignDocument_Embedded.h"
 
 
 /** @mainpage About CouchCocoa

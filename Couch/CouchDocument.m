@@ -431,12 +431,13 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
             [self assignedRelativePath: docID];
             [self.database documentAssignedID: self];
         }
-        if (![properties objectForKey: @"_id"]) {
-            NSMutableDictionary* nuProperties = [[properties mutableCopy] autorelease];
-            [nuProperties setObject: docID forKey: @"_id"];
-            properties = nuProperties;
-        }
-        [self updateFromSaveResponse: result withProperties: properties];
+        NSMutableDictionary* fullProperties = [properties mutableCopy];
+        [fullProperties setObject: docID forKey: @"_id"];
+        NSString *rev = [result objectForKey:@"rev"];
+        if (rev)
+            [fullProperties setObject:rev forKey:@"_rev"];
+        [self updateFromSaveResponse: result withProperties: fullProperties];
+        [fullProperties release];
     }
 }
 
