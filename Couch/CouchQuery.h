@@ -35,7 +35,7 @@ typedef enum {
     NSString* _startKeyDocID;
     NSString* _endKeyDocID;
     CouchStaleness _stale;
-    BOOL _descending, _prefetch, _sequences, _includeDeleted;
+    BOOL _descending, _prefetch, _sequences, _includeDeleted, _mapOnly;
     NSArray *_keys;
     NSUInteger _groupLevel;
     NSError* _error;

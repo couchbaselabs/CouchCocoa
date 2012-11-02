@@ -74,7 +74,7 @@
 
 
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
-            prefetch=_prefetch, keys=_keys, mapOnly = _mapOnly, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
+            prefetch=_prefetch, keys=_keys, mapOnly=_mapOnly, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
             endKeyDocID=_endKeyDocID, stale=_stale, sequences=_sequences,
             includeDeleted=_includeDeleted, error=_error;
 
