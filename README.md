@@ -25,7 +25,7 @@ Xcode 4.3 or later, with the SDK for iOS 4.3 or later.
 
 ### One-Time Repository Setup
 
-If you cloned the CouchCocoa Git repository, aso opposed to downloading a precompiled framework, then you'll next need to initialize Git "submodules". This will clone the dependency JSONKit into the "vendor" subfolder:
+If you cloned the CouchCocoa Git repository, as opposed to downloading a precompiled framework, then you'll next need to initialize Git "submodules". This will clone the dependency JSONKit into the "vendor" subfolder:
 
     cd CouchCocoa
     git submodule init
