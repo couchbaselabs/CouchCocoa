@@ -320,8 +320,8 @@
 
 - (id) getValueOfProperty: (NSString*)property {
     id value = [_properties objectForKey: property];
-    if (!value && ![_changedNames containsObject: property]) {
-        value = [_document propertyForKey: property];
+    if (!value && !self.isNew && ![_changedNames containsObject: property]) {
+      value = [_document propertyForKey: property];
     }
     return value;
 }

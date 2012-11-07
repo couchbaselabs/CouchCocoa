@@ -50,6 +50,7 @@
         _descending = query.descending;
         _prefetch = query.prefetch;
         self.keys = query.keys;
+        self.mapOnly = query.mapOnly;
         _groupLevel = query.groupLevel;
         self.startKeyDocID = query.startKeyDocID;
         self.endKeyDocID = query.endKeyDocID;
@@ -73,7 +74,7 @@
 
 
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
-            prefetch=_prefetch, keys=_keys, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
+            prefetch=_prefetch, keys=_keys, mapOnly=_mapOnly, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
             endKeyDocID=_endKeyDocID, stale=_stale, sequences=_sequences,
             includeDeleted=_includeDeleted, error=_error;
 
@@ -119,6 +120,8 @@
         [params setObject: @"true" forKey: @"?include_docs"];
     if (_sequences)
         [params setObject: @"true" forKey: @"?local_seq"];
+    if (_mapOnly)
+        [params setObject:@"false" forKey:@"?reduce"];
     if (_groupLevel > 0)
         [params setObject: [NSNumber numberWithUnsignedLong: _groupLevel] forKey: @"?group_level"];
     if (_includeDeleted)
