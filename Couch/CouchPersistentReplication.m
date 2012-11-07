@@ -341,9 +341,8 @@ static inline BOOL isLocalDBName(NSString* url) {
             COUCHLOG(@"%@: WARNING: myReplicationID is empty", self);
         }
         NSString* status = nil;
-        NSArray* error = nil;
-        
 
+        NSArray* errorInfo = nil;
         for (NSDictionary* task in server.activeTasks) {
             if ([[task objectForKey:@"type"] isEqualToString:@"Replication"]) {
 
@@ -353,7 +352,7 @@ static inline BOOL isLocalDBName(NSString* url) {
                     COUCHLOG(@"%@: task == myReplicationId (%@ == %@)", self, [task objectForKey: @"task"], myReplicationID);
 
                     status = [task objectForKey: @"status"];
-                    error = $castIf(NSArray, [task objectForKey: @"error"]);
+                    errorInfo = $castIf(NSArray, [task objectForKey: @"error"]);
                     break;
                 }
                 else {
@@ -364,16 +363,22 @@ static inline BOOL isLocalDBName(NSString* url) {
         }
 
         // Interpret .error property. This is nonstandard; only TouchDB supports it.
-        if (error.count >= 1) {
-            COUCHLOG(@"%@: error %@", self, error);
-            int status = [$castIf(NSNumber, [error objectAtIndex: 0]) intValue];
+        NSError *error = nil;
+        if (errorInfo.count >= 1) {
+            if (!_error) {
+                COUCHLOG(@"%@: error %@", self, errorInfo);
+            }
+            int status = [$castIf(NSNumber, [errorInfo objectAtIndex: 0]) intValue];
             NSString* message = nil;
-            if (error.count >= 2)
-                message = $castIf(NSString, [error objectAtIndex: 1]);
-            self.error = [RESTOperation errorWithHTTPStatus: status message: message
-                                                        URL: self.document.URL];
+            if (errorInfo.count >= 2)
+                message = $castIf(NSString, [errorInfo objectAtIndex: 1]);
+            error = [RESTOperation errorWithHTTPStatus: status message: message
+                                                   URL: self.remoteURL];
         }
-        
+
+        // Update my properties, triggering KVO notifications, if the values changed:
+        if (!$equal(error, _error))
+            self.error = error;
         if (!$equal(status, _statusString))
             [self setStatusString: status];
     } else {
