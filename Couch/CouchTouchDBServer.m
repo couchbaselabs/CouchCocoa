@@ -11,22 +11,22 @@
 #import "CouchInternal.h"
 
 
-// Declare essential bits of TDServer and TDURLProtocol to avoid having to #import TouchDB:
-@interface TDServer : NSObject
+// Declare essential bits of TD_Server and TDURLProtocol to avoid having to #import TouchDB:
+@interface TD_Server : NSObject
 - (id) initWithDirectory: (NSString*)dirPath
                    error: (NSError**)outError;
 - (id) initWithDirectory: (NSString*)dirPath
-                 options: (const struct TDDatabaseManagerOptions*)options
+                 options: (const struct TD_DatabaseManagerOptions*)options
                    error: (NSError**)outError;
 - (void) queue: (void(^)())block;
-- (void) tellDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block;
+- (void) tellDatabaseNamed: (NSString*)dbName to: (void (^)(TD_Database*))block;
 - (void) close;
 @end
 
 @interface TDURLProtocol : NSURLProtocol
 + (NSURL*) rootURL;
-+ (void) setServer: (TDServer*)server;
-+ (NSURL*) registerServer: (TDServer*)server;
++ (void) setServer: (TD_Server*)server;
++ (NSURL*) registerServer: (TD_Server*)server;
 @end
 
 @interface TDReplicator
@@ -51,7 +51,7 @@
 - (id)init {
     // Avoid link-time dependency on TouchDB; look up classes dynamically:
     Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
-    Class classTDServer = NSClassFromString(@"TDServer");
+    Class classTDServer = NSClassFromString(@"TD_Server");
     NSAssert(classTDURLProtocol && classTDServer,
              @"Not linked with TouchDB framework (or you didn't use the -ObjC linker flag)");
         
@@ -82,23 +82,23 @@
 
 
 - (id) initWithServerPath: (NSString*)serverPath
-                  options: (const struct TDDatabaseManagerOptions*)options
+                  options: (const struct TD_DatabaseManagerOptions*)options
 {
     // On Mac OS TouchDB.framework is linked dynamically, so avoid explicit references to its
     // classes because they'd create link errors building CouchCocoa.
     Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
-    Class classTDServer = NSClassFromString(@"TDServer");
+    Class classTDServer = NSClassFromString(@"TD_Server");
     NSAssert(classTDURLProtocol && classTDServer,
              @"Not linked with TouchDB framework (or you didn't use the -ObjC linker flag)");
     
     NSError* error;
-    TDServer* server;
+    TD_Server* server;
     if ([classTDServer instancesRespondToSelector: @selector(initWithDirectory:options:error:)]) {
         server = [[classTDServer alloc] initWithDirectory: serverPath
                                                   options: options
                                                     error: &error];
     } else {
-        NSAssert(!options, @"TDServer initializer with options is unavailable in TouchDB");
+        NSAssert(!options, @"TD_Server initializer with options is unavailable in TouchDB");
         server = [[classTDServer alloc] initWithDirectory: serverPath
                                                     error: &error];
     }
@@ -145,13 +145,13 @@
 }
 
 
-- (void) tellTDServer: (void (^)(TDServer*))block {
-    TDServer* server = _touchServer;
+- (void) tellTDServer: (void (^)(TD_Server*))block {
+    TD_Server* server = _touchServer;
     [_touchServer queue: ^{ block(server); }];
 }
 
 
-- (void) tellTDDatabaseNamed: (NSString*)dbName to: (void (^)(TDDatabase*))block {
+- (void) tellTDDatabaseNamed: (NSString*)dbName to: (void (^)(TD_Database*))block {
     [_touchServer tellDatabaseNamed: dbName to: block];
 }
 

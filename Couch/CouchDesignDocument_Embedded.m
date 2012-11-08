@@ -17,21 +17,21 @@ enum {
     kTDIncludeLocalSeq = 16                // adds '_local_seq' property
 };
 
-@class TDDatabase, TDRevision, TDView;
+@class TD_Database, TD_Revision, TD_View;
 
-@interface TDServer : NSObject
-- (TDDatabase*) databaseNamed: (NSString*)name;
+@interface TD_Server : NSObject
+- (TD_Database*) databaseNamed: (NSString*)name;
 @end
 
-@interface TDDatabase : NSObject
-- (TDView*) viewNamed: (NSString*)name;
-- (TDView*) existingViewNamed: (NSString*)name;
-- (void) defineFilter: (NSString*)filterName asBlock: (TDFilterBlock)filterBlock;
-- (void) defineValidation: (NSString*)validationName asBlock: (TDValidationBlock)validationBlock;
-- (TDValidationBlock) validationNamed: (NSString*)validationName;
+@interface TD_Database : NSObject
+- (TD_View*) viewNamed: (NSString*)name;
+- (TD_View*) existingViewNamed: (NSString*)name;
+- (void) defineFilter: (NSString*)filterName asBlock: (TD_FilterBlock)filterBlock;
+- (void) defineValidation: (NSString*)validationName asBlock: (TD_ValidationBlock)validationBlock;
+- (TD_ValidationBlock) validationNamed: (NSString*)validationName;
 @end
 
-@interface TDView : NSObject
+@interface TD_View : NSObject
 - (BOOL) setMapBlock: (TDMapBlock)mapBlock
          reduceBlock: (TDReduceBlock)reduceBlock
              version: (NSString*)version;
@@ -44,7 +44,7 @@ enum {
 @implementation CouchDesignDocument (Embedded)
 
 
-- (void) tellTDDatabase: (void(^)(TDDatabase*))block {
+- (void) tellTDDatabase: (void(^)(TD_Database*))block {
     [(CouchTouchDBServer*)self.database.server tellTDDatabaseNamed: self.database.relativePath
                                                                 to: block];
 }
@@ -73,9 +73,9 @@ enum {
     mapBlock = [mapBlock copy];
     reduceBlock = [reduceBlock copy];
     TDContentOptions mapContentOptions = self.includeLocalSequence ? kTDIncludeLocalSeq : 0;
-    [self tellTDDatabase: ^(TDDatabase* tddb) {
+    [self tellTDDatabase: ^(TD_Database* tddb) {
         if (mapBlock) {
-            TDView* view = [tddb viewNamed: viewName];
+            TD_View* view = [tddb viewNamed: viewName];
             [view setMapBlock: mapBlock reduceBlock: reduceBlock version: version];
             view.mapContentOptions = mapContentOptions;
         } else {
@@ -88,20 +88,20 @@ enum {
 
 
 - (void) defineFilterNamed: (NSString*)filterName
-                     block: (TDFilterBlock)filterBlock
+                     block: (TD_FilterBlock)filterBlock
 {
     filterName = [self qualifiedName: filterName];
     filterBlock = [filterBlock copy];
-    [self tellTDDatabase: ^(TDDatabase* tddb) {
+    [self tellTDDatabase: ^(TD_Database* tddb) {
         [tddb defineFilter: filterName asBlock: filterBlock];
     }];
     [filterBlock release];
 }
 
 
-- (void) setValidationBlock: (TDValidationBlock)validateBlock {
+- (void) setValidationBlock: (TD_ValidationBlock)validateBlock {
     validateBlock = [validateBlock copy];
-    [self tellTDDatabase: ^(TDDatabase* tddb) {
+    [self tellTDDatabase: ^(TD_Database* tddb) {
         [tddb defineValidation: self.relativePath asBlock: validateBlock];
     }];
     [validateBlock release];

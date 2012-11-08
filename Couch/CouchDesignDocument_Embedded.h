@@ -10,19 +10,19 @@
 #ifdef COUCHCOCOA_IMPL
 typedef id TDMapBlock;
 typedef id TDReduceBlock;
-typedef id TDFilterBlock;
-typedef id TDValidationBlock;
+typedef id TD_FilterBlock;
+typedef id TD_ValidationBlock;
 #else
-#import <TouchDB/TDDatabase+Insertion.h>
-#import <TouchDB/TDView.h>
+#import <TouchDB/TD_Database+Insertion.h>
+#import <TouchDB/TD_View.h>
 #endif
 
 
 #define MAPBLOCK(BLOCK) ^(NSDictionary* doc, void (^emit)(id key, id value)){BLOCK}
 #define REDUCEBLOCK(BLOCK) ^id(NSArray* keys, NSArray* values, BOOL rereduce){BLOCK}
-#define VALIDATIONBLOCK(BLOCK) ^BOOL(TDRevision* newRevision, id<TDValidationContext> context)\
+#define VALIDATIONBLOCK(BLOCK) ^BOOL(TD_Revision* newRevision, id<TD_ValidationContext> context)\
                                   {BLOCK}
-#define FILTERBLOCK(BLOCK) ^BOOL(TDRevision* revision, NSDictionary* params) {BLOCK}
+#define FILTERBLOCK(BLOCK) ^BOOL(TD_Revision* revision, NSDictionary* params) {BLOCK}
 
 
 /** Optional support for native Objective-C map/reduce functions.
@@ -46,9 +46,9 @@ typedef id TDValidationBlock;
                  version: (NSString*)version;
 
 - (void) defineFilterNamed: (NSString*)filterName
-                     block: (TDFilterBlock)filterBlock;
+                     block: (TD_FilterBlock)filterBlock;
 
 /** An Objective-C block that can validate any document being added/updated/deleted in this database. */
-- (void) setValidationBlock: (TDValidationBlock)validationBlock;
+- (void) setValidationBlock: (TD_ValidationBlock)validationBlock;
 
 @end

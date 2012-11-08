@@ -11,10 +11,10 @@
 #import "CouchInternal.h"
 
 
-// Declared in TDDatabase.h and TDRevision.h; redeclare here to avoid linking against TouchDB:
-static NSString* const TDDatabaseChangeNotification = @"TDDatabaseChange";
+// Declared in TD_Database.h and TD_Revision.h; redeclare here to avoid linking against TouchDB:
+static NSString* const TD_DatabaseChangeNotification = @"TD_DatabaseChange";
 
-@interface TDRevision : NSObject
+@interface TD_Revision : NSObject
 @property (readonly) NSString* docID;
 @property (readonly) NSString* revID;
 @property (readonly) BOOL deleted;
@@ -36,15 +36,15 @@ static NSString* const TDDatabaseChangeNotification = @"TDDatabaseChange";
     
     if (track) {
         [(CouchTouchDBServer*)self.parent tellTDDatabaseNamed: self.relativePath
-                                                           to: ^(TDDatabase* tddb) {
+                                                           to: ^(TD_Database* tddb) {
             [[NSNotificationCenter defaultCenter] addObserver: self
                                                     selector: @selector(tdDatabaseChanged:)
-                                                        name: TDDatabaseChangeNotification
+                                                        name: TD_DatabaseChangeNotification
                                                       object: tddb];
         }];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                        name: TDDatabaseChangeNotification
+                                                        name: TD_DatabaseChangeNotification
                                                       object: nil];
     }
 }
@@ -56,7 +56,7 @@ static NSString* const TDDatabaseChangeNotification = @"TDDatabaseChange";
         return;
     
     NSDictionary* userInfo = n.userInfo;
-    TDRevision* rev = [userInfo objectForKey: @"winner"];  // I want winning rev, not newest one
+    TD_Revision* rev = [userInfo objectForKey: @"winner"];  // I want winning rev, not newest one
     if (!rev)
         return;
     SInt64 sequence = [[userInfo objectForKey: @"rev"] sequence];
