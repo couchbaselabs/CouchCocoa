@@ -60,7 +60,7 @@ typedef enum CouchChangeTrackerMode {
 @property (readonly) NSURLCredential* authCredential;
 @property (readonly) NSURL* changesFeedURL;
 @property (readonly) NSString* changesFeedPath;
-- (void) receivedChunk: (NSData*)chunk;
+- (void) receivedLine: (NSString*)line;
 - (BOOL) receivedPollResponse: (NSData*)body;
 - (void) stopped; // override this
 

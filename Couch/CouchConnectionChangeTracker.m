@@ -89,12 +89,25 @@
             if (!eol)
                 break;  // Wait till we have a complete line
             ptrdiff_t lineLength = eol - start;
+            
             NSData* chunk = [[[NSData alloc] initWithBytes: start
-                                                       length: lineLength] autorelease];
+                                                    length: lineLength] autorelease];
+            
             [_inputBuffer replaceBytesInRange: NSMakeRange(0, lineLength + 1)
                                     withBytes: NULL length: 0];
             // Finally! Send the line to the database to parse:
-            [self receivedChunk: chunk];
+            NSString* line = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
+                              autorelease];
+            if (!line) {
+                Warn(@"Couldn't parse UTF-8 from _changes");
+                return;
+            }
+            
+            if (line == @"\n") {
+                return;
+            }
+            
+            [self receivedLine: line];
         }
     }
 }

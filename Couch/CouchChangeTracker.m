@@ -62,7 +62,7 @@
 
 - (NSString*) changesFeedPath {
     static NSString* const kModeNames[3] = {@"normal", @"longpoll", @"continuous"};
-    return [NSString stringWithFormat: @"_changes?feed=%@&heartbeat=300000&since=%lu",
+    return [NSString stringWithFormat: @"_changes?feed=%@&heartbeat=30000&since=%lu",
             kModeNames[_mode],
             (unsigned long)_lastSequenceNumber];
 }
@@ -113,15 +113,12 @@
     return YES;
 }
 
-- (void) receivedChunk: (NSData*)chunk {
-    NSString* line = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
-                      autorelease];
-    if (!line) {
-        Warn(@"Couldn't parse UTF-8 from _changes");
+- (void) receivedLine: (NSString*)line {
+    if (line.length == 0)
         return;
-    }
-    if (line.length == 0 || [line isEqualToString: @"\n"])
-        return;
+    
+    COUCHLOG(@"Received change line from server: %@", line);
+    
     id change = [RESTBody JSONObjectWithString: line];
     if (!change)
         Warn(@"Received unparseable change line from server: %@", line);
