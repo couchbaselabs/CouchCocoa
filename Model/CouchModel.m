@@ -147,6 +147,34 @@
     return op;
 }
 
+- (RESTOperation*) deleteDocumentWithAdditionalProperties:(NSDictionary *)additionalProperties {
+    
+    if (!_document)
+        return nil;
+    
+    COUCHLOG2(@"%@ Deleting document with additional properties", self);
+    
+    if (additionalProperties == nil) {
+        additionalProperties = @{};
+    }
+    
+    NSMutableDictionary* properties = [additionalProperties mutableCopy];
+    [properties setValue:[NSNumber numberWithBool:TRUE] forKey:@"_deleted"];
+    [properties setValue:[self getValueOfProperty:@"_id"] forKey:@"_id"];
+    [properties setValue:[self getValueOfProperty:@"_rev"] forKey:@"_rev"];
+
+    COUCHLOG2(@"%@ Saving <- %@", self, properties);
+    self.needsSave = NO;
+    RESTOperation* op = [_document putProperties: properties];
+    [op onCompletion: ^{
+        if (op.isSuccessful)
+            [self detachFromDocument];
+    }];
+    [op start];
+    return op;
+    
+}
+
 
 - (void) didLoadFromDocument {
     // subclasses can override this

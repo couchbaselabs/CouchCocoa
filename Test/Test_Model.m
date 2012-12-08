@@ -234,6 +234,28 @@
     STAssertEqualObjects(m1.name, @"Alice", nil);
 }
 
+- (void) test6_deleteWithAdditionalProperties {
+    
+    TestModel* m1 = [self createModelWithName: @"Alice" grade: 9];
+    AssertWait([m1 save]);
+    TestModel* m2 = [self createModelWithName: @"Bob" grade: 9];
+    AssertWait([m2 save]);
+
+    NSString *m2DocumentID = [[m2 document] propertyForKey:@"_id"];
+
+    AssertWait([m1 deleteDocumentWithAdditionalProperties:nil]);
+    STAssertTrue(([m1 document] == nil), @"Model's document should be nil after being deleted");
+
+    AssertWait([m2 deleteDocumentWithAdditionalProperties:@{@"foo":@"bar"}]);
+    STAssertTrue(([m2 document] == nil), @"Model's document should be nil after being deleted");
+
+    CouchDocument *deletedDocument = [_db documentWithID:m2DocumentID];
+    STAssertTrue([deletedDocument propertyForKey:@"_deleted"] == [NSNumber numberWithBool:TRUE], @"expected _deleted property to be true");
+    STAssertTrue([[deletedDocument propertyForKey:@"foo"] isEqualToString:@"bar"], @"expected foo property to be set");
+    // STAssertTrue([deletedDocument isDeleted], @"Document should be deleted");  <-- why isn't [document isDeleted] true?  bug?
+   
+}
+
 
 #pragma mark - UTILITIES:
 

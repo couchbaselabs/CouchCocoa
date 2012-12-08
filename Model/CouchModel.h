@@ -76,6 +76,11 @@
     You can still use the model object afterwards, but it will refer to the deleted revision. */
 - (RESTOperation*) deleteDocument;
 
+/** Deletes the document from the database via a PUT rather than a DELETE, saving 
+ the additionalProperties into the deleted document.
+ You can still use the model object afterwards, but it will refer to the deleted revision. */
+- (RESTOperation*) deleteDocumentWithAdditionalProperties:(NSDictionary *)additionalProperties;
+
 /** The time interval since the document was last changed externally (e.g. by a "pull" replication.
     This value can be used to highlight recently-changed objects in the UI. */
 @property (readonly) NSTimeInterval timeSinceExternallyChanged;
