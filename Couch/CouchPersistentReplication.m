@@ -172,15 +172,22 @@ static inline BOOL isLocalDBName(NSString* url) {
 
 
 - (void) setState:(CouchReplicationState)state {
+    
+    COUCHLOG(@"%@: setState called with: %d.  current state: %d", self, state, _state);
+
     // Add/remove myself as an observer of the server's activeTasks:
     CouchServer* server = self.database.server;
     if (state == kReplicationTriggered) {
         if (_state != kReplicationTriggered) {
+            COUCHLOG(@"%@: addObserver forKeyPath: activeTasks", self);
+
             [server addObserver: self forKeyPath: @"activeTasks"
                         options:0 context: NULL];
         }
     } else {
         if (_state == kReplicationTriggered) {
+            COUCHLOG(@"%@: removeObserver forKeyPath: activeTasks", self);
+
             [server removeObserver: self forKeyPath: @"activeTasks"];
             [self setStatusString: nil];
         }
@@ -190,18 +197,36 @@ static inline BOOL isLocalDBName(NSString* url) {
 
 
 - (void) didLoadFromDocument {
+    
+    COUCHLOG(@"%@: didLoadFromDocument", self);
+
     // Update state:
     static NSArray* kStateNames;
     if (!kStateNames)
         kStateNames = [[NSArray alloc] initWithObjects: @"", @"triggered", @"completed", @"error",
                        nil];
-    NSString* stateStr = [self getValueOfProperty: @"_replication_state"];
+    
+    // Bug workaround attempt: https://github.com/couchbaselabs/TouchDB-iOS/issues/164
+    NSString* stateStr = [[[self document] properties] objectForKey:@"_replication_state"];
+    
+    COUCHLOG(@"%@: stateStr: %@", self, stateStr);
+    
     NSUInteger state = stateStr ? [kStateNames indexOfObject: stateStr] : NSNotFound;
-    if (state == NSNotFound)
+    if (state == NSNotFound) {
+        COUCHLOG(@"%@: state == NSNotFound, state = kReplicationIdle", self);
+        
+        COUCHLOG(@"%@: self.document: %@", self, self.document);
+        COUCHLOG(@"%@: self.document.properties: %@", self, self.document.properties);
+
         state = kReplicationIdle;
+    }
     if (state != _state) {
         COUCHLOG(@"%@: state := %@", self, stateStr);
         self.state = (CouchReplicationState) state;
+    }
+    else {
+        COUCHLOG(@"%@: state == _state (%d == %d), doing nothing", self, state, _state);
+
     }
 }
 
@@ -242,10 +267,14 @@ static inline BOOL isLocalDBName(NSString* url) {
         } else if (op.error) {
             Warn(@"%@: Restart failed, %@", self, op.error);
         }
+        COUCHLOG(@"%@ restart finished.  current doc properties: %@", self, [[self document] properties]);
+
     }];
 }
 
 - (void) restart {
+    COUCHLOG(@"%@ restart called.  current doc properties: %@", self, [[self document] properties]);
+
     [self restartWithRetries: 10];
 }
 
@@ -302,20 +331,33 @@ static inline BOOL isLocalDBName(NSString* url) {
 - (void) observeValueForKeyPath: (NSString*)keyPath ofObject: (id)object 
                          change: (NSDictionary*)change context: (void*)context
 {
+    COUCHLOG(@"%@: observeValueForKeyPath called, keyPath: %@", self, keyPath);
     CouchServer* server = self.database.server;
     if ([keyPath isEqualToString: @"activeTasks"] && object == server) {
+
         // Server's activeTasks changed:
         NSString* myReplicationID = [self getValueOfProperty: @"_replication_id"];
+        if (myReplicationID == nil || [myReplicationID length] == 0) {
+            COUCHLOG(@"%@: WARNING: myReplicationID is empty", self);
+        }
         NSString* status = nil;
+
         NSArray* errorInfo = nil;
         for (NSDictionary* task in server.activeTasks) {
             if ([[task objectForKey:@"type"] isEqualToString:@"Replication"]) {
+
                 // Can't look up the task ID directly because it's part of a longer string like
                 // "`6390525ac52bd8b5437ab0a118993d0a+continuous`: ..."
                 if ([[task objectForKey: @"task"] rangeOfString: myReplicationID].length > 0) {
+                    COUCHLOG(@"%@: task == myReplicationId (%@ == %@)", self, [task objectForKey: @"task"], myReplicationID);
+
                     status = [task objectForKey: @"status"];
                     errorInfo = $castIf(NSArray, [task objectForKey: @"error"]);
                     break;
+                }
+                else {
+                    COUCHLOG(@"%@: task != myReplicationId (%@ == %@)", self, [task objectForKey: @"task"], myReplicationID);
+
                 }
             }
         }
