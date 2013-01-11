@@ -59,7 +59,11 @@ static const NSUInteger kDefaultRetainLimit = 50;
     for (RESTResource* doc in _map.objectEnumerator)
         doc.owningCache = nil;
     [_map release];
-    [_cache release];
+    // Calling -release on the cache right now is dangerous because it might already be
+    // flushing itself (which may have triggered deallocation of my owner and hence myself),
+    // and deallocing it in the midst of that will cause it to deadlock. So delay the release.
+    // See <https://github.com/couchbaselabs/TouchDB-iOS/issues/216>
+    [_cache autorelease];
     [super dealloc];
 }
 
