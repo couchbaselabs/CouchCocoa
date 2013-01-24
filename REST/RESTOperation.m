@@ -514,7 +514,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         }
     }
     // give up
-    [challenge.sender cancelAuthenticationChallenge: challenge];
+    [challenge.sender continueWithoutCredentialForAuthenticationChallenge: challenge];
 }
 
 
