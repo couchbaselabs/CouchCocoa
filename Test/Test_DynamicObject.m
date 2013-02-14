@@ -97,9 +97,9 @@
     TestDynamicObject *test = [[TestDynamicObject alloc] initWithDictionary: 
                                     [NSDictionary dictionary]];
     STAssertTrue([test respondsToSelector: @selector(setStringy:)], nil);
-    STAssertFalse([test respondsToSelector: @selector(setIntey:)], nil);
+    STAssertFalse([test respondsToSelector: NSSelectorFromString(@"setIntey:")], nil);
     STAssertFalse([test respondsToSelector: @selector(dataey)], nil);
-    STAssertFalse([test respondsToSelector: @selector(size)], nil);
+    STAssertFalse([test respondsToSelector: NSSelectorFromString(@"size")], nil);
     STAssertEqualObjects(test.stringy, nil, nil);
     STAssertEquals(test.intey, 0, nil);
     STAssertEquals(test.doubley, 0.0, nil);

@@ -197,7 +197,7 @@
 - (RESTOperation*) sendRequest: (NSURLRequest*)request {
     RESTOperation* op = [super sendRequest: request];
     if (!op.isReadOnly)
-        [self.database beginDocumentOperation: self];
+        [self.database beginDocumentOperation: self];   // balanced in -operationDidComplete:
     return op;
 }
 
@@ -218,11 +218,15 @@
         // Remember that we've checked for properties
         _gotProperties = YES;
     }
-
-    if (!op.isReadOnly)
-        [self.database endDocumentOperation: self];
     
     return error;
+}
+
+
+- (void) operationDidComplete: (RESTOperation*)op {
+    [super operationDidComplete: op];
+    if (op.resource == self && !op.isReadOnly)
+        [self.database endDocumentOperation: self];
 }
 
 

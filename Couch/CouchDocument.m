@@ -268,8 +268,8 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
             parameters: (NSDictionary*)parameters
 {
     RESTOperation* op = [super PUT: body parameters: parameters];
-    if (op.isPOST)
-        [self.database beginDocumentOperation: self];   // I'm being created via a POST
+    if (op.isPOST)                                          // I'm being created via a POST
+        [self.database beginDocumentOperation: self];       // balanced in -createdByPOST:
     return op;
 }
 
@@ -320,7 +320,7 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 - (RESTOperation*) sendRequest: (NSURLRequest*)request {
     RESTOperation* op = [super sendRequest: request];
     if (!op.isReadOnly)
-        [self.database beginDocumentOperation: self];
+        [self.database beginDocumentOperation: self];       // balanced in -operationDidComplete:
     return op;
 }
 
@@ -363,11 +363,15 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
         if ([[op.responseBody.fromJSON objectForKey: @"reason"] isEqualToString: @"deleted"])
             self.isDeleted = YES;
     }
-    
-    if (!op.isReadOnly)
-        [self.database endDocumentOperation: self];
 
     return error;
+}
+
+
+- (void) operationDidComplete: (RESTOperation*)op {
+    [super operationDidComplete: op];
+    if (op.resource == self && !op.isReadOnly)
+        [self.database endDocumentOperation: self];
 }
 
 
