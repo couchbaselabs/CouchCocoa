@@ -47,11 +47,18 @@ typedef void (^OnCompleteBlock)();
     id _resultObject;
 
     NSMutableArray* _onCompletes;
+    
+    id _loadedBytesObj;
+    SEL _loadedBytesSel;
 }
 
 /** Initializes a RESTOperation, but doesn't start loading it yet.
     Call -load, -wait or any synchronous method to start it. */
 - (id) initWithResource: (RESTResource*)resource request: (NSURLRequest*)request;
+
+/** Progress addition */
+@property (nonatomic, assign) id loadedBytesObj;
+@property (nonatomic, assign) SEL loadedBytesSel;
 
 /** The RESTResource instance that created this operation. */
 @property (readonly) RESTResource* resource;

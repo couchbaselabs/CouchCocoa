@@ -103,7 +103,7 @@
                 return;
             }
             
-            if (line == @"\n") {
+            if ([line isEqual: @"\n"]) {
                 return;
             }
             
