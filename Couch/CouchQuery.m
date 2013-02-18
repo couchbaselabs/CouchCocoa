@@ -55,6 +55,7 @@
         self.startKeyDocID = query.startKeyDocID;
         self.endKeyDocID = query.endKeyDocID;
         _includeDeleted = query.includeDeleted;
+        _exclusiveEnd = query.exclusiveEnd;
         _stale = query.stale;
     }
     return self;
@@ -76,7 +77,7 @@
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
             prefetch=_prefetch, keys=_keys, mapOnly=_mapOnly, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
             endKeyDocID=_endKeyDocID, stale=_stale, sequences=_sequences,
-            includeDeleted=_includeDeleted, error=_error;
+            includeDeleted=_includeDeleted, exclusiveEnd=_exclusiveEnd, error=_error;
 
 
 - (CouchDesignDocument*) designDocument {
@@ -126,6 +127,8 @@
         [params setObject: [NSNumber numberWithUnsignedLong: _groupLevel] forKey: @"?group_level"];
     if (_includeDeleted)
         [params setObject: @"true" forKey: @"?include_deleted"];
+    if (_exclusiveEnd)
+        [params setObject: @"false" forKey: @"?inclusive_end"];
     [params setObject: @"true" forKey: @"?update_seq"];
     return params;
 }

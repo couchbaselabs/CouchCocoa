@@ -35,7 +35,7 @@ typedef enum {
     NSString* _startKeyDocID;
     NSString* _endKeyDocID;
     CouchStaleness _stale;
-    BOOL _descending, _prefetch, _sequences, _includeDeleted, _mapOnly;
+    BOOL _descending, _prefetch, _sequences, _includeDeleted, _mapOnly, _exclusiveEnd;
     NSArray *_keys;
     NSUInteger _groupLevel;
     NSError* _error;
@@ -92,6 +92,9 @@ typedef enum {
 /** If set to YES, deleted documents are included in a getAllDocuments query.
     This has NO EFFECT in view queries, and it's only supported on TouchDB, not CouchDB. */
 @property BOOL includeDeleted;
+
+/** If set to YES, the row matching endKeyDocID is not included */
+@property BOOL exclusiveEnd;
 
 /** If non-nil, the error of the last execution of the query.
     If nil, the last exexution of the query was successful */
