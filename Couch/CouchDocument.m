@@ -113,7 +113,9 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
 
 - (void) setCurrentRevision:(CouchRevision*)currentRevision {
     if (currentRevision != _currentRevision) {
+        [_currentRevision release];
         _currentRevision = currentRevision;
+        [_currentRevision retain];
     }
 }
 
