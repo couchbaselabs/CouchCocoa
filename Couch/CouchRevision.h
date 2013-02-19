@@ -25,6 +25,8 @@
     BOOL _gotProperties;
 }
 
+- (id) initWithOperation: (RESTOperation*)operation;
+
 /** The document this is a revision of. */
 @property (readonly) CouchDocument* document;
 
