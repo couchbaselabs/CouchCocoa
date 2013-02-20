@@ -112,7 +112,7 @@
     if (_startKeyDocID)
         [params setObject: _startKeyDocID forKey: @"?startkey_docid"];
     if (_endKeyDocID)
-        [params setObject: _startKeyDocID forKey: @"?endkey_docid"];
+        [params setObject: _endKeyDocID forKey: @"?endkey_docid"];
     if (_stale != kCouchStaleNever)
         [params setObject: kStaleNames[_stale] forKey: @"?stale"];
     if (_descending)
