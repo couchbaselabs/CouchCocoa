@@ -23,6 +23,8 @@ enum {
 
 @implementation CouchSocketChangeTracker
 
+NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
+
 - (BOOL) start {
     NSAssert(!_trackingInput, @"Already started");
     NSAssert(_mode == kContinuous, @"CouchSocketChangeTracker only supports continuous mode");
@@ -202,9 +204,18 @@ enum {
  */
 
 - (void) errorOccurred: (NSError*)error {
-    //never give up :)
     [self stop];
-    [self performSelector: @selector(start) withObject: nil afterDelay: 2];
+    Warn(@"%@: Can't connect, giving up: %@", self, error);
+
+    NSNotification* n = [NSNotification notificationWithName: kCouchSocketErrorNotification
+                                                      object: self
+                                                    userInfo: @{@"error":error}];
+    NSNotificationQueue* queue = [NSNotificationQueue defaultQueue];
+    [queue enqueueNotification: n
+                  postingStyle: NSPostASAP 
+                  coalesceMask: NSNotificationCoalescingOnSender
+                      forModes: [NSArray arrayWithObject: NSRunLoopCommonModes]];
+
 }
 
 - (void) stream: (NSInputStream*)stream handleEvent: (NSStreamEvent)eventCode {

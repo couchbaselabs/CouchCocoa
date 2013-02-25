@@ -21,4 +21,5 @@
     NSMutableData* _inputBuffer;
     int _state;
 }
+
 @end

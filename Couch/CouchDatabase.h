@@ -183,3 +183,5 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
     from another process or from a "pull" replication), the notification's userInfo dictionary will
     contain an "external" key with a value of YES. */
 extern NSString* const kCouchDatabaseChangeNotification;
+
+extern NSString* const kCouchSocketErrorNotification;
