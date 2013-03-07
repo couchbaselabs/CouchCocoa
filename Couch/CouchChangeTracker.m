@@ -23,12 +23,13 @@
 
 @implementation CouchChangeTracker
 
-@synthesize lastSequenceNumber=_lastSequenceNumber, databaseURL=_databaseURL, mode=_mode;
+@synthesize lastSequenceNumber=_lastSequenceNumber, databaseURL=_databaseURL, mode=_mode, options=_options;
 
 - (id)initWithDatabaseURL: (NSURL*)databaseURL
                      mode: (CouchChangeTrackerMode)mode
              lastSequence: (NSUInteger)lastSequence
-                   client: (id<CouchChangeTrackerClient>)client {
+                   client: (id<CouchChangeTrackerClient>)client
+                  options: (NSDictionary*)options {
     NSParameterAssert(databaseURL);
     NSParameterAssert(client);
     self = [super init];
@@ -39,19 +40,22 @@
                 return (id) [[CouchSocketChangeTracker alloc] initWithDatabaseURL: databaseURL
                                                                              mode: mode
                                                                      lastSequence: lastSequence
-                                                                           client: client];
+                                                                           client: client
+                                                                          options: options];
             } else {
                 return (id) [[CouchConnectionChangeTracker alloc] initWithDatabaseURL: databaseURL
                                                                                  mode: mode
                                                                          lastSequence: lastSequence
-                                                                               client: client];
+                                                                               client: client
+                                                                              options: options];
             }
         }
-    
+        
         _databaseURL = [databaseURL retain];
         _client = client;
         _mode = mode;
         _lastSequenceNumber = lastSequence;
+        _options = options;
     }
     return self;
 }
@@ -61,10 +65,22 @@
 }
 
 - (NSString*) changesFeedPath {
+    NSString* optionsString = @"";
+    if (self.options) {
+        for (NSString* key in self.options.allKeys) {
+            NSString* value = [self.options objectForKey:key];
+            if (![value isKindOfClass:[NSString class]]) {
+                value = [RESTBody stringWithJSONObject:[self.options objectForKey:key]];
+            }
+            optionsString = [optionsString stringByAppendingFormat:@"&%@=%@", key, value];
+        }
+    }
+    
     static NSString* const kModeNames[3] = {@"normal", @"longpoll", @"continuous"};
-    return [NSString stringWithFormat: @"_changes?feed=%@&heartbeat=30000&since=%lu",
+    return [NSString stringWithFormat: @"_changes?feed=%@&heartbeat=30000&since=%lu%@",
             kModeNames[_mode],
-            (unsigned long)_lastSequenceNumber];
+            (unsigned long)_lastSequenceNumber,
+            optionsString];
 }
 
 - (NSURL*) changesFeedURL {

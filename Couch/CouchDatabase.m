@@ -33,6 +33,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 @implementation CouchDatabase
 
+@synthesize changesOptions;
 
 + (CouchDatabase*) databaseNamed: (NSString*)databaseName
                  onServerWithURL: (NSURL*)serverURL
@@ -513,7 +514,8 @@ static const NSUInteger kDocRetainLimit = 50;
         _tracker = [[CouchChangeTracker alloc] initWithDatabaseURL: self.URL
                                                               mode: kContinuous
                                                       lastSequence: self.lastSequenceNumber
-                                                            client: self];
+                                                            client: self
+                                                           options: self.changesOptions];
         [_tracker start];
     } else if (!track && _tracker) {
         [_tracker stop];

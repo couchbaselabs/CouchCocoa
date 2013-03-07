@@ -33,10 +33,10 @@ typedef enum CouchChangeTrackerMode {
 
 
 /** Reads the continuous-mode _changes feed of a database, and sends the individual change entries to its client's -changeTrackerReceivedChange:.
-    This class is used internally by CouchDatabase and you shouldn't need to use it yourself. */
+ This class is used internally by CouchDatabase and you shouldn't need to use it yourself. */
 @interface CouchChangeTracker : NSObject <NSStreamDelegate>
 {
-    @protected
+@protected
     NSURL* _databaseURL;
     id<CouchChangeTrackerClient> _client;
     CouchChangeTrackerMode _mode;
@@ -46,12 +46,14 @@ typedef enum CouchChangeTrackerMode {
 - (id)initWithDatabaseURL: (NSURL*)databaseURL
                      mode: (CouchChangeTrackerMode)mode
              lastSequence: (NSUInteger)lastSequence
-                   client: (id<CouchChangeTrackerClient>)client;
+                   client: (id<CouchChangeTrackerClient>)client
+                  options: (NSDictionary*)options;
 
 @property (readonly, nonatomic) NSURL* databaseURL;
 @property (readonly, nonatomic) NSString* databaseName;
 @property (readonly, nonatomic) CouchChangeTrackerMode mode;
 @property (readonly, nonatomic) NSUInteger lastSequenceNumber;
+@property (readonly, nonatomic) NSDictionary* options;
 
 - (BOOL) start;
 - (void) stop;

@@ -173,6 +173,9 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 /** All currently configured persistent replications involving this database, as CouchPersistentReplication objects. */
 @property (readonly) NSArray* replications;
 
+/** Options for changes stream */
+@property (retain) NSDictionary* changesOptions;
+
 @end
 
 
@@ -184,4 +187,5 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
     contain an "external" key with a value of YES. */
 extern NSString* const kCouchDatabaseChangeNotification;
 
+/** This notification is posted whenever there are problems with the socket change tracker. */
 extern NSString* const kCouchSocketErrorNotification;

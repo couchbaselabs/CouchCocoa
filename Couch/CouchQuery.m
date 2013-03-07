@@ -56,6 +56,7 @@
         self.endKeyDocID = query.endKeyDocID;
         _includeDeleted = query.includeDeleted;
         _exclusiveEnd = query.exclusiveEnd;
+        _options = query.options;
         _stale = query.stale;
     }
     return self;
@@ -77,7 +78,7 @@
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
             prefetch=_prefetch, keys=_keys, mapOnly=_mapOnly, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
             endKeyDocID=_endKeyDocID, stale=_stale, sequences=_sequences,
-            includeDeleted=_includeDeleted, exclusiveEnd=_exclusiveEnd, error=_error;
+            includeDeleted=_includeDeleted, exclusiveEnd=_exclusiveEnd, error=_error, options=_options;
 
 
 - (CouchDesignDocument*) designDocument {
@@ -129,6 +130,9 @@
         [params setObject: @"true" forKey: @"?include_deleted"];
     if (_exclusiveEnd)
         [params setObject: @"false" forKey: @"?inclusive_end"];
+    if (_options) {
+        [params addEntriesFromDictionary:_options];
+    }
     [params setObject: @"true" forKey: @"?update_seq"];
     return params;
 }

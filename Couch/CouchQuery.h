@@ -96,6 +96,9 @@ typedef enum {
 /** If set to YES, the row matching endKeyDocID is not included */
 @property BOOL exclusiveEnd;
 
+/** Extra url options */
+@property (retain) NSDictionary* options;
+
 /** If non-nil, the error of the last execution of the query.
     If nil, the last exexution of the query was successful */
 @property (readonly,retain) NSError* error;
