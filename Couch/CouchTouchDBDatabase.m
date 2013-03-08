@@ -11,6 +11,14 @@
 #import "CouchInternal.h"
 
 
+@interface TD_Database : NSObject
+@property (readonly) BOOL exists;
+- (BOOL) replaceWithDatabaseFile: (NSString*)databasePath
+                 withAttachments: (NSString*)attachmentsPath
+                           error: (NSError**)outError;
+@end
+
+
 // Declared in TD_Database.h and TD_Revision.h; redeclare here to avoid linking against TouchDB:
 static NSString* const TD_DatabaseChangeNotification = @"TD_DatabaseChange";
 
@@ -23,6 +31,23 @@ static NSString* const TD_DatabaseChangeNotification = @"TD_DatabaseChange";
 
 
 @implementation CouchTouchDBDatabase
+
+
+- (void) installCannedDatabase: (NSString*)cannedDbPath
+               withAttachments: (NSString*)cannedAttPath
+{
+    [(CouchTouchDBServer*)self.parent tellTDDatabaseNamed: self.relativePath
+                                                       to: ^(TD_Database* tddb) {
+        // Careful: this block runs async on the background TouchDB thread
+        NSError* error = nil;
+        if (!tddb.exists) {
+            BOOL ok = [tddb replaceWithDatabaseFile: cannedDbPath
+                                    withAttachments: cannedAttPath
+                                              error: &error];
+            NSAssert(ok, @"Failed to install database: %@", error);
+        }
+    }];
+}
 
 
 - (BOOL) tracksChanges {
