@@ -53,6 +53,8 @@
     This method may need to make a synchronous call to the server to fetch the revision, if its revision ID is not yet known. */
 - (CouchRevision*) currentRevision;
 
+- (void) setCurrentRevision:(CouchRevision*)currentRevision;
+
 /** The revision with the specified ID.
     This is merely a factory method that doesn't fetch anything from the server,
     or even verify that the ID is valid. */

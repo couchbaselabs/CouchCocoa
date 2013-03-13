@@ -111,6 +111,14 @@ NSString* const kCouchDocumentChangeNotification = @"CouchDocumentChange";
     return _currentRevision;
 }
 
+- (void) setCurrentRevision:(CouchRevision*)currentRevision {
+    if (currentRevision != _currentRevision) {
+        [_currentRevision release];
+        _currentRevision = currentRevision;
+        [_currentRevision retain];
+    }
+}
+
 
 - (void) loadCurrentRevisionFrom: (CouchQueryRow*)row {
     NSString* rev = row.documentRevision;

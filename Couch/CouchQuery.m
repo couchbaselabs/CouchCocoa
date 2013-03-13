@@ -55,6 +55,8 @@
         self.startKeyDocID = query.startKeyDocID;
         self.endKeyDocID = query.endKeyDocID;
         _includeDeleted = query.includeDeleted;
+        _exclusiveEnd = query.exclusiveEnd;
+        _options = query.options;
         _stale = query.stale;
     }
     return self;
@@ -76,7 +78,7 @@
 @synthesize limit=_limit, skip=_skip, descending=_descending, startKey=_startKey, endKey=_endKey,
             prefetch=_prefetch, keys=_keys, mapOnly=_mapOnly, groupLevel=_groupLevel, startKeyDocID=_startKeyDocID,
             endKeyDocID=_endKeyDocID, stale=_stale, sequences=_sequences,
-            includeDeleted=_includeDeleted, error=_error;
+            includeDeleted=_includeDeleted, exclusiveEnd=_exclusiveEnd, error=_error, options=_options;
 
 
 - (CouchDesignDocument*) designDocument {
@@ -111,7 +113,7 @@
     if (_startKeyDocID)
         [params setObject: _startKeyDocID forKey: @"?startkey_docid"];
     if (_endKeyDocID)
-        [params setObject: _startKeyDocID forKey: @"?endkey_docid"];
+        [params setObject: _endKeyDocID forKey: @"?endkey_docid"];
     if (_stale != kCouchStaleNever)
         [params setObject: kStaleNames[_stale] forKey: @"?stale"];
     if (_descending)
@@ -126,6 +128,11 @@
         [params setObject: [NSNumber numberWithUnsignedLong: _groupLevel] forKey: @"?group_level"];
     if (_includeDeleted)
         [params setObject: @"true" forKey: @"?include_deleted"];
+    if (_exclusiveEnd)
+        [params setObject: @"false" forKey: @"?inclusive_end"];
+    if (_options) {
+        [params addEntriesFromDictionary:_options];
+    }
     [params setObject: @"true" forKey: @"?update_seq"];
     return params;
 }

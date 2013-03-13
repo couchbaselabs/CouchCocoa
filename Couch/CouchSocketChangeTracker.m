@@ -23,18 +23,25 @@ enum {
 
 @implementation CouchSocketChangeTracker
 
+NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
+
 - (BOOL) start {
     NSAssert(!_trackingInput, @"Already started");
     NSAssert(_mode == kContinuous, @"CouchSocketChangeTracker only supports continuous mode");
     
     NSMutableString* request = [NSMutableString stringWithFormat:
-                                     @"GET /%@/%@ HTTP/1.1\r\n"
-                                     @"Host: %@\r\n",
+                                @"GET /%@/%@ HTTP/1.1\r\n"
+                                @"Host: %@\r\n",
                                 self.databaseName, self.changesFeedPath, _databaseURL.host];
     NSURLCredential* credential = self.authCredential;
     if (credential) {
         NSString* auth = [NSString stringWithFormat: @"%@:%@",
                           credential.user, credential.password];
+        auth = [RESTBody base64WithData: [auth dataUsingEncoding: NSUTF8StringEncoding]];
+        [request appendFormat: @"Authorization: Basic %@\r\n", auth];
+    } else if (_databaseURL.user != nil && _databaseURL.password != nil) {
+        NSString* auth = [NSString stringWithFormat: @"%@:%@",
+                          _databaseURL.user, _databaseURL.password];
         auth = [RESTBody base64WithData: [auth dataUsingEncoding: NSUTF8StringEncoding]];
         [request appendFormat: @"Authorization: Basic %@\r\n", auth];
     }
@@ -43,17 +50,24 @@ enum {
     _trackingRequest = [request copy];
     
     /* Why are we using raw TCP streams rather than NSURLConnection? Good question.
-        NSURLConnection seems to have some kind of bug with reading the output of _changes, maybe
-        because it's chunked and the stream doesn't close afterwards. At any rate, at least on
-        OS X 10.6.7, the delegate never receives any notification of a response. The workaround
-        is to act as a dumb HTTP parser and do the job ourselves. */
+     NSURLConnection seems to have some kind of bug with reading the output of _changes, maybe
+     because it's chunked and the stream doesn't close afterwards. At any rate, at least on
+     OS X 10.6.7, the delegate never receives any notification of a response. The workaround
+     is to act as a dumb HTTP parser and do the job ourselves. */
+    
+    BOOL ssl = NO;
+    NSInteger port = _databaseURL.port.intValue?:80;
+    if ([@"https" isEqualToString:_databaseURL.scheme]) {
+        port = 443;
+        ssl = YES;
+    }
     
 #if TARGET_OS_IPHONE
     CFReadStreamRef cfInputStream = NULL;
     CFWriteStreamRef cfOutputStream = NULL;
     CFStreamCreatePairWithSocketToHost(NULL,
                                        (CFStringRef)_databaseURL.host,
-                                       _databaseURL.port.intValue ?: 80,
+                                       port,
                                        &cfInputStream, &cfOutputStream);
     if (!cfInputStream)
         return NO;
@@ -61,13 +75,18 @@ enum {
     _trackingOutput = (NSOutputStream*)cfOutputStream;
 #else
     [NSStream getStreamsToHost: [NSHost hostWithName: _databaseURL.host]
-                          port: _databaseURL.port.intValue ?: 80
+                          port: port
                    inputStream: &_trackingInput outputStream: &_trackingOutput];
     if (!_trackingOutput)
         return NO;
     [_trackingInput retain];
     [_trackingOutput retain];
 #endif
+    
+    if (ssl) {
+        [_trackingInput setProperty:NSStreamSocketSecurityLevelTLSv1 forKey:NSStreamSocketSecurityLevelKey];
+        [_trackingOutput setProperty:NSStreamSocketSecurityLevelTLSv1 forKey:NSStreamSocketSecurityLevelKey];
+    }
     
     _state = kStateStatus;
     
@@ -148,7 +167,17 @@ enum {
                 [_inputBuffer replaceBytesInRange: NSMakeRange(0, lineLength + 2 + chunkLength)
                                         withBytes: NULL length: 0];
                 // Finally! Send the line to the database to parse:
-                [self receivedChunk: chunk];
+                NSString* chunkString = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
+                                         autorelease];
+                if (!chunkString) {
+                    Warn(@"Couldn't parse UTF-8 from _changes");
+                    return YES;
+                }
+                NSArray* lines = [chunkString componentsSeparatedByString:@"\n"];
+                for (NSString* line in lines) {
+                    [self receivedLine:line];
+                }
+                
                 return YES;
             }
         }
@@ -162,16 +191,32 @@ enum {
 }
 
 
+/*
+ - (void) errorOccurred: (NSError*)error {
+ [self stop];
+ if (++_retryCount <= kMaxRetries) {
+ NSTimeInterval retryDelay = 0.2 * (1 << (_retryCount-1));
+ [self performSelector: @selector(start) withObject: nil afterDelay: retryDelay];
+ } else {
+ Warn(@"%@: Can't connect, giving up: %@", self, error);
+ }
+ }
+ */
+
 - (void) errorOccurred: (NSError*)error {
     [self stop];
-    if (++_retryCount <= kMaxRetries) {
-        NSTimeInterval retryDelay = 0.2 * (1 << (_retryCount-1));
-        [self performSelector: @selector(start) withObject: nil afterDelay: retryDelay];
-    } else {
-        Warn(@"%@: Can't connect, giving up: %@", self, error);
-    }
-}
+    Warn(@"%@: Can't connect, giving up: %@", self, error);
 
+    NSNotification* n = [NSNotification notificationWithName: kCouchSocketErrorNotification
+                                                      object: nil
+                                                    userInfo: @{@"error":error}];
+    NSNotificationQueue* queue = [NSNotificationQueue defaultQueue];
+    [queue enqueueNotification: n
+                  postingStyle: NSPostASAP 
+                  coalesceMask: NSNotificationCoalescingOnSender
+                      forModes: [NSArray arrayWithObject: NSRunLoopCommonModes]];
+
+}
 
 - (void) stream: (NSInputStream*)stream handleEvent: (NSStreamEvent)eventCode {
     switch (eventCode) {
@@ -207,6 +252,7 @@ enum {
             if (_inputBuffer.length > 0)
                 Warn(@"%@ connection closed with unparsed data in buffer", self);
             [self stop];
+            [self start];
             break;
         case NSStreamEventErrorOccurred:
             COUCHLOG(@"%@: ErrorOccurred %@: %@", self, stream, stream.streamError);

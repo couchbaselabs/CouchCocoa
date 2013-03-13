@@ -25,6 +25,8 @@
     BOOL _gotProperties;
 }
 
+- (id) initWithDocument: (CouchDocument*)document properties: (NSDictionary*)properties;
+
 /** The document this is a revision of. */
 @property (readonly) CouchDocument* document;
 

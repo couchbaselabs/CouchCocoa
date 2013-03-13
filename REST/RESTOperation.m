@@ -47,6 +47,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 
 
 @synthesize resource=_resource, request=_request, response=_response, error=_error;
+@synthesize loadedBytesSel=_loadedBytesSel, loadedBytesObj=_loadedBytesObj;
 
 
 - (id) initWithResource: (RESTResource*)resource request: (NSURLRequest*)request {
@@ -56,6 +57,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         _resource = [resource retain];
         _request = [request mutableCopy];   // starts out mutable
         _state = kRESTObjectUnloaded;
+        self.loadedBytesObj = nil;
+        self.loadedBytesSel = nil;
     }
     return self;
 }
@@ -107,19 +110,19 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 
 - (NSString*) dump {
     NSMutableString* output = [NSMutableString stringWithFormat: @"\t%@ %@\n",
-                                _request.HTTPMethod, _request.URL];
+                               _request.HTTPMethod, _request.URL];
     NSDictionary* headers = _request.allHTTPHeaderFields;
     for (NSString* key in headers)
         [output appendFormat: @"\t%@: %@\n", key, [headers objectForKey: key]];
     if (_response) {
         [output appendFormat: @"\n\t%i %@\n",
-             self.httpStatus, [NSHTTPURLResponse localizedStringForStatusCode: self.httpStatus]];
+         self.httpStatus, [NSHTTPURLResponse localizedStringForStatusCode: self.httpStatus]];
         headers = _response.allHeaderFields;
         for (NSString* key in headers)
             [output appendFormat: @"\t%@: %@\n", key, [headers objectForKey: key]];
     } else if (_error) {
         [output appendFormat: @"\n\tError: (%@, %i) %@\n",
-            _error.domain, (int)_error.code, _error.localizedDescription];
+         _error.domain, (int)_error.code, _error.localizedDescription];
     }
     return output;
 }
@@ -147,9 +150,9 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 - (RESTOperation*) start {
     if (_state != kRESTObjectUnloaded)
         return self;
-
+    
     if (gRESTLogLevel >= kRESTLogRequestURLs) {
-        NSMutableString* message = [NSMutableString stringWithFormat: @"%@ %@", 
+        NSMutableString* message = [NSMutableString stringWithFormat: @"%@ %@",
                                     _request.HTTPMethod, _request.URL];
         if (_retryCount > 0)
             [message appendFormat: @" [#%u]", _retryCount+1];
@@ -160,7 +163,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
                 NSLog(@"REST:    %@: %@", key, [headers objectForKey: key]);
         }
     }
-
+    
     _connection = [[NSURLConnection alloc] initWithRequest: _request
                                                   delegate: self
                                           startImmediately: NO];
@@ -187,7 +190,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
                                           beforeDate: [NSDate distantFuture]])
                 break;
         }
-
+        
         if (gRESTLogLevel >= kRESTLogRequestURLs)
             NSLog(@"REST: Blocked for %.1f ms in %@",
                   (CFAbsoluteTimeGetCurrent() - start)*1000.0, self);
@@ -209,7 +212,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         return YES;
     operations = [[operations copy] autorelease];   // make sure set doesn't mutate
     CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
-
+    
     // Mark each active operation as waiting:
     for (RESTOperation* op in operations)
         if (op->_state == kRESTObjectLoading)
@@ -219,7 +222,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     do {
         int numWaiting = 0;
         for (RESTOperation* op in operations) {
-            if (op->_waiting) 
+            if (op->_waiting)
                 ++numWaiting;
         }
         if (numWaiting == 0)
@@ -230,10 +233,10 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
                                       beforeDate: [NSDate distantFuture]]);
     
     if (gRESTLogLevel >= kRESTLogRequestURLs)
-        NSLog(@"REST: Blocked on %u ops for %.1f ms", 
+        NSLog(@"REST: Blocked on %u ops for %.1f ms",
               (unsigned)operations.count,
               (CFAbsoluteTimeGetCurrent() - start)*1000.0);
-
+    
     // Return YES if all operations were successful:
     for (RESTOperation* op in operations) {
         if (op->_state != kRESTObjectReady)
@@ -269,8 +272,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         return NO;
     // Retry after NSURLErrorCannotConnectToHost (ECONN) because the embedded server might
     // not have finished [re]launching yet.
-    if ([error.domain isEqualToString: NSURLErrorDomain] 
-            && error.code == NSURLErrorCannotConnectToHost)
+    if ([error.domain isEqualToString: NSURLErrorDomain]
+        && error.code == NSURLErrorCannotConnectToHost)
         return YES;
     return NO;
 }
@@ -306,15 +309,15 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         if (gRESTLogLevel >= kRESTLogRequestURLs)
             NSLog(@"REST:    Error = %@, will retry in %.1lf sec...",
                   error.localizedDescription, delay);
-        [self performSelector: @selector(retry) withObject: nil 
+        [self performSelector: @selector(retry) withObject: nil
                    afterDelay: delay
                       inModes: [NSArray arrayWithObjects: NSRunLoopCommonModes,
-                                                          kRESTObjectRunLoopMode, nil]];
+                                kRESTObjectRunLoopMode, nil]];
         return;
     }
     
     if (!_waiting &&
-            [[[NSRunLoop currentRunLoop] currentMode] isEqualToString: kRESTObjectRunLoopMode]) {
+        [[[NSRunLoop currentRunLoop] currentMode] isEqualToString: kRESTObjectRunLoopMode]) {
         // If another RESTOperation is blocked in -wait, don't call out to client code until after
         // it finishes, because clients won't expect to get invoked re-entrantly.
         if (gRESTLogLevel >= kRESTLogRequestHeaders)
@@ -329,19 +332,19 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     _connection = nil;
     
     _state = error ? kRESTObjectFailed : kRESTObjectReady;
-
+    
     // Give my owning resource a chance to interpret the error:
     if (_resource)
         error = [_resource operation: self willCompleteWithError: error];
-
+    
     if (gRESTLogLevel >= kRESTLogRequestHeaders) {
         if (error)
             NSLog(@"REST:    Error = %@", error.localizedDescription);
     }
-
+    
     _state = error ? kRESTObjectFailed : kRESTObjectReady;
     self.error = error;
-
+    
     NSArray* onCompletes = [_onCompletes autorelease];
     _onCompletes = nil;
     for (OnCompleteBlock onComplete in onCompletes)
@@ -393,9 +396,9 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     [self wait]; // block till loaded
     if (!_body)
         return nil;
-    return [[[RESTBody alloc] initWithContent: _body 
-                                  headers: [RESTBody entityHeadersFrom: _response.allHeaderFields]
-                                 resource: _resource] autorelease];
+    return [[[RESTBody alloc] initWithContent: _body
+                                      headers: [RESTBody entityHeadersFrom: _response.allHeaderFields]
+                                     resource: _resource] autorelease];
 }
 
 
@@ -430,12 +433,16 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
         _body = [data mutableCopy];
     else
         [_body appendData: data];
+    
+    if (self.loadedBytesObj != nil && self.loadedBytesSel != nil) {
+        [self.loadedBytesObj performSelector:self.loadedBytesSel withObject:[NSNumber numberWithUnsignedInteger:_body.length]];
+    }
 }
 
 
 - (void)connectionDidFinishLoading: (NSURLConnection*)connection {
     int httpStatus = (int) [_response statusCode];
-
+    
     if (gRESTLogLevel >= kRESTLogRequestURLs) {
         NSLog(@"REST: << %ld for %@ %@ (%lu bytes)",
               (long)httpStatus, _request.HTTPMethod, _request.URL, (unsigned long)_body.length);
@@ -445,7 +452,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
                 NSLog(@"REST:    %@: %@", key, [headers objectForKey: key]);
         }
     }
-
+    
     if (httpStatus < 300) {
         [self completedWithError: nil];
     } else {
@@ -478,7 +485,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
 }
 
 
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection 
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection
                   willCacheResponse:(NSCachedURLResponse *)cachedResponse
 {
     return nil;
@@ -494,8 +501,8 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
     return protectionSpace.serverTrust == nil && protectionSpace.distinguishedNames == nil;
 }
 
-- (void)connection:(NSURLConnection *)connection 
-    didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+- (void)connection:(NSURLConnection *)connection
+didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     if (challenge.previousFailureCount == 0) {
         NSURLCredential* credential = [_resource credentialForOperation: self];
@@ -505,7 +512,7 @@ RESTLogLevel gRESTLogLevel = kRESTLogNothing;
             NSURLProtectionSpace* acceptableProtectionSpace = [_resource protectionSpaceForOperation:self];
             if(acceptableProtectionSpace) {
                 credential = [[[NSURLCredential alloc] initWithTrust:
-                                            acceptableProtectionSpace.serverTrust] autorelease];
+                               acceptableProtectionSpace.serverTrust] autorelease];
             }
         }
         if (credential) {
