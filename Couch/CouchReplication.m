@@ -44,28 +44,13 @@
     NSParameterAssert(remote);
     self = [super init];
     if (self) {
-        _database = [database retain];
-        _remote = [remote retain];
+        _database = database;
+        _remote = remote;
         // Give the caller a chance to customize parameters like .filter before calling -start,
         // but make sure -start will be run even if the caller doesn't call it.
         [self performSelector: @selector(start) withObject: nil afterDelay: 0.0];
     }
     return self;
-}
-
-
-- (void)dealloc {
-    COUCHLOG2(@"%@: dealloc", self);
-    [_remote release];
-    [_database release];
-    [_status release];
-    [_error release];
-    [_filter release];
-    [_filterParams release];
-    [_options release];
-    [_headers release];
-    [_oauth release];
-    [super dealloc];
 }
 
 
@@ -85,14 +70,14 @@
     id target = _pull ? _database.relativePath : _remote.absoluteString;
     if (_headers.count > 0 || _oauth != nil) {
         // Convert 'source' or 'target' to a dictionary so we can add metadata to it:
-        id *param = _pull ? &source : &target;
-        *param = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                  *param, @"url",
+        id param = _pull?source:target;
+        param = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                  param, @"url",
                   _headers, @"headers",
                   nil];
         if (_oauth) {
             NSDictionary* auth = [NSDictionary dictionaryWithObject: _oauth forKey: @"oauth"];
-            [*param setObject: auth forKey: @"auth"];
+            [param setObject: auth forKey: @"auth"];
         }
     }
     NSMutableDictionary* body = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -113,8 +98,8 @@
 
     if (!start)
         [body setObject: (id)kCFBooleanTrue forKey: @"cancel"];
-    RESTResource* replicate = [[[RESTResource alloc] initWithParent: _database.server 
-                                                       relativePath: @"_replicate"] autorelease];
+    RESTResource* replicate = [[RESTResource alloc] initWithParent: _database.server 
+                                                       relativePath: @"_replicate"];
     return [replicate POSTJSON: body parameters: nil];
 }
 
@@ -147,7 +132,6 @@
             if (_taskID) {
                 // Successfully started:
                 COUCHLOG(@"%@: task ID = '%@'", self, _taskID);
-                [self retain];  // so I don't go away while active; see [self release] in -stopped
                 [_database.server registerActiveTask: [NSDictionary dictionaryWithObjectsAndKeys:
                                                        @"Replication", @"type",
                                                        _taskID, @"task", nil]];
@@ -168,10 +152,8 @@
 - (void) stopped {
     self.status = nil;
     if (_taskID) {
-        [_taskID release];
         _taskID = nil;
         [_database.server removeObserver: self forKeyPath: @"activeTasks"];
-        [self autorelease]; // balances [self retain] when successfully started
     }
     self.running = NO;
     self.mode = kCouchReplicationStopped;
@@ -196,7 +178,6 @@
 
 - (void) setStatus: (NSString*)status {
     COUCHLOG(@"%@ status line = %@", self, status);
-    [_status autorelease];
     _status = [status copy];
     CouchReplicationMode mode = _mode;
     

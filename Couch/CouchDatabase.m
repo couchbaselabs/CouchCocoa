@@ -17,7 +17,7 @@
 #import "RESTCache.h"
 #import "CouchChangeTracker.h"
 #import "CouchInternal.h"
-
+#import "CouchModelFactory.h"
 
 NSString* const kCouchDatabaseChangeNotification = @"CouchDatabaseChange";
 
@@ -33,12 +33,12 @@ static const NSUInteger kDocRetainLimit = 50;
 
 @implementation CouchDatabase
 
-@synthesize changesOptions;
+@synthesize changesOptions=_changesOptions;
 
 + (CouchDatabase*) databaseNamed: (NSString*)databaseName
                  onServerWithURL: (NSURL*)serverURL
 {
-    CouchServer* server = [[[CouchServer alloc] initWithURL: serverURL] autorelease];
+    CouchServer* server = [[CouchServer alloc] initWithURL: serverURL];
     return [server databaseNamed: databaseName];
 }
 
@@ -53,20 +53,14 @@ static const NSUInteger kDocRetainLimit = 50;
     self.tracksChanges = NO;
     _lastSequenceNumber = 0;
     _lastSequenceNumberKnown = NO;
-    [_busyDocuments release];
     _busyDocuments = nil;
-    [_deferredChanges release];
     _deferredChanges = nil;
-    [_docCache release];
     _docCache = nil;
 }
 
 
 - (void)dealloc {
     [self close];
-    [_onChangeBlock release];
-    [_modelFactory release];
-    [super dealloc];
 }
 
 
@@ -87,7 +81,6 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void)setDocumentPathMap: (CouchDocumentPathMap)documentPathMap
 {
-    [_documentPathMap release];
     _documentPathMap = [documentPathMap copy];
     [_docCache forgetAllResources];
 }
@@ -154,7 +147,6 @@ static const NSUInteger kDocRetainLimit = 50;
         if (!_docCache)
             _docCache = [[RESTCache alloc] initWithRetainLimit: kDocRetainLimit];
         [_docCache addResource: doc];
-        [doc autorelease];
     }
     return doc;
 }
@@ -216,7 +208,7 @@ static const NSUInteger kDocRetainLimit = 50;
                                                           forKey: @"_deleted"];
         } else {
             NSAssert([props isKindOfClass:[NSDictionary class]], @"invalid property dict");
-            contents = [[props mutableCopy] autorelease];
+            contents = [props mutableCopy];
         }
         if (revisions) {
             // Elements of 'revisions' may be CouchRevisions or CouchDocuments.
@@ -310,7 +302,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 
 - (CouchQuery*) getAllDocuments {
-    CouchQuery *query = [[[CouchQuery alloc] initWithParent: self relativePath: @"_all_docs"] autorelease];
+    CouchQuery *query = [[CouchQuery alloc] initWithParent: self relativePath: @"_all_docs"];
     query.prefetch = YES;
     return query;
 }
@@ -328,17 +320,17 @@ static const NSUInteger kDocRetainLimit = 50;
                           reduce: (NSString*)reduce
                         language: (NSString*)language
 {
-    return [[[CouchFunctionQuery alloc] initWithDatabase: self
+    return [[CouchFunctionQuery alloc] initWithDatabase: self
                                                      map: map
                                                   reduce: reduce
-                                                language: language] autorelease];
+                                                language: language];
 }
 
 - (CouchQuery*) slowQueryWithMap: (NSString*)map {
-    return [[[CouchFunctionQuery alloc] initWithDatabase: self
+    return [[CouchFunctionQuery alloc] initWithDatabase: self
                                                      map: map
                                                   reduce: nil
-                                                language: nil] autorelease];
+                                                language: nil];
 }
 
 
@@ -353,7 +345,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL
 {
-    return [[[CouchReplication alloc] initWithDatabase: self remote: targetURL] autorelease];
+    return [[CouchReplication alloc] initWithDatabase: self remote: targetURL];
 }
 
 
@@ -489,7 +481,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 
 - (void) processDeferredChanges {
-    NSArray* changes = [_deferredChanges autorelease];
+    NSArray* changes = _deferredChanges;
     _deferredChanges = nil;
     
     for (NSDictionary* change in changes) {
@@ -519,10 +511,14 @@ static const NSUInteger kDocRetainLimit = 50;
         [_tracker start];
     } else if (!track && _tracker) {
         [_tracker stop];
-        [_tracker release];
         _tracker = nil;
     }
 }
 
+-(void)setChangesOptions:(NSDictionary *)changesOptions {
+    if (_changesOptions != changesOptions) {
+        _changesOptions = changesOptions;
+    }
+}
 
 @end

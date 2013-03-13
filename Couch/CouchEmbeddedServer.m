@@ -59,9 +59,6 @@ NSString* const CouchEmbeddedServerDidRestartNotification = @"CouchEmbeddedServe
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    [_error release];
-    [_onStartBlock release];
-    [super dealloc];
 }
 
 

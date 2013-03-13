@@ -36,8 +36,8 @@ static const NSUInteger kDefaultRetainLimit = 50;
         CFDictionaryValueCallBacks valueCB = kCFTypeDictionaryValueCallBacks;
         valueCB.retain = NULL;
         valueCB.release = NULL;
-        _map = (NSMutableDictionary*)CFDictionaryCreateMutable(
-                       NULL, 100, &kCFCopyStringDictionaryKeyCallBacks, &valueCB);
+        _map = (NSMutableDictionary*)CFBridgingRelease(CFDictionaryCreateMutable(
+                       NULL, 100, &kCFCopyStringDictionaryKeyCallBacks, &valueCB));
 #else
         // Construct an NSMapTable that doesn't retain its values:
         _map = [[NSMapTable alloc] initWithKeyOptions: NSPointerFunctionsStrongMemory |
@@ -58,9 +58,6 @@ static const NSUInteger kDefaultRetainLimit = 50;
 - (void)dealloc {
     for (RESTResource* doc in _map.objectEnumerator)
         doc.owningCache = nil;
-    [_map release];
-    [_cache release];
-    [super dealloc];
 }
 
 
@@ -72,8 +69,6 @@ static const NSUInteger kDefaultRetainLimit = 50;
     [_map setObject: resource forKey: key];
     if (_cache)
         [_cache setObject: resource forKey: key];
-    else
-        [[resource retain] autorelease];
 }
 
 

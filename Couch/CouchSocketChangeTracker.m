@@ -66,13 +66,13 @@ NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
     CFReadStreamRef cfInputStream = NULL;
     CFWriteStreamRef cfOutputStream = NULL;
     CFStreamCreatePairWithSocketToHost(NULL,
-                                       (CFStringRef)_databaseURL.host,
+                                       (__bridge CFStringRef)_databaseURL.host,
                                        port,
                                        &cfInputStream, &cfOutputStream);
     if (!cfInputStream)
         return NO;
-    _trackingInput = (NSInputStream*)cfInputStream;
-    _trackingOutput = (NSOutputStream*)cfOutputStream;
+    _trackingInput = (__bridge NSInputStream*)cfInputStream;
+    _trackingOutput = (__bridge NSOutputStream*)cfOutputStream;
 #else
     [NSStream getStreamsToHost: [NSHost hostWithName: _databaseURL.host]
                           port: port
@@ -105,16 +105,12 @@ NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
 - (void) stop {
     COUCHLOG2(@"%@: stop", self);
     [_trackingInput close];
-    [_trackingInput release];
     _trackingInput = nil;
     
     [_trackingOutput close];
-    [_trackingOutput release];
     _trackingOutput = nil;
     
-    [_trackingRequest release];
     _trackingRequest = nil;
-    [_inputBuffer release];
     _inputBuffer = nil;
     
     [super stop];
@@ -127,9 +123,9 @@ NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
     if (!crlf)
         return NO;  // Wait till we have a complete line
     ptrdiff_t lineLength = crlf - start;
-    NSString* line = [[[NSString alloc] initWithBytes: start
+    NSString* line = [[NSString alloc] initWithBytes: start
                                                length: lineLength
-                                             encoding: NSUTF8StringEncoding] autorelease];
+                                             encoding: NSUTF8StringEncoding];
     COUCHLOG3(@"%@: LINE: \"%@\"", self, line);
     if (line) {
         switch (_state) {
@@ -167,8 +163,7 @@ NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
                 [_inputBuffer replaceBytesInRange: NSMakeRange(0, lineLength + 2 + chunkLength)
                                         withBytes: NULL length: 0];
                 // Finally! Send the line to the database to parse:
-                NSString* chunkString = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
-                                         autorelease];
+                NSString* chunkString = [[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding];
                 if (!chunkString) {
                     Warn(@"Couldn't parse UTF-8 from _changes");
                     return YES;
@@ -228,7 +223,6 @@ NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
                 NSAssert(written == strlen(buffer), @"Output stream didn't write entire request");
                 // FIX: It's unlikely but possible that the stream won't take the entire request; need to
                 // write the rest later.
-                [_trackingRequest release];
                 _trackingRequest = nil;
             }
             break;

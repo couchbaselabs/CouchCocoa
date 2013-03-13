@@ -33,13 +33,6 @@ static CouchModelFactory* sSharedInstance;
     return self;
 }
 
-
-- (void)dealloc {
-    [_typeDict release];
-    [super dealloc];
-}
-
-
 - (void) registerClass: (id)classOrName forDocumentType: (NSString*)type {
     [_typeDict setValue: classOrName forKey: type];
 }
@@ -86,8 +79,7 @@ static CouchModelFactory* sSharedInstance;
 }
 
 - (void) setModelFactory:(CouchModelFactory *)modelFactory {
-    [_modelFactory autorelease];
-    _modelFactory = [modelFactory retain];
+    _modelFactory = modelFactory;
 }
 
 @end

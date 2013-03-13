@@ -51,7 +51,6 @@
 // This is overridden by RESTMutableBody to make _headers a mutable copy.
 - (void) setHeaders:(NSDictionary *)headers {
     if (headers != _headers) {
-        [_headers release];
         _headers = [headers copy];
     }
 }
@@ -89,18 +88,8 @@
                         resource: nil];
 }
 
-
-- (void) dealloc
-{
-    [_content release];
-    [_headers release];
-    [_fromJSON release];
-    [super dealloc];
-}
-
-
 - (id) copyWithZone:(NSZone *)zone {
-    return [self retain];
+    return self;
 }
 
 
@@ -131,7 +120,7 @@
 
 - (NSString*) asString {
     NSStringEncoding encoding = NSUTF8StringEncoding;   //FIX: Get from _response.textEncodingName
-    return [[[NSString alloc] initWithData: _content encoding: encoding] autorelease];
+    return [[NSString alloc] initWithData: _content encoding: encoding];
 }
 
 
@@ -156,22 +145,19 @@
 
 - (void) setContent:(NSData *)content {
     if (content != _content) {
-        [_content release];
         _content = [content copy];
-        [_fromJSON release];
         _fromJSON = nil;
     }
 }
 
 
 - (NSDictionary*) headers {
-    return [[_headers copy] autorelease];
+    return [_headers copy];
 }
 
 
 - (void) setHeaders:(NSDictionary *)headers {
     if (headers != _headers) {
-        [_headers release];
         _headers = [headers mutableCopy];
     }
 }
@@ -205,8 +191,7 @@
 
 - (void) setResource:(RESTResource *)resource {
     if (resource != _resource) {
-        [_resource release];
-        _resource = [resource retain];
+        _resource = resource;
     }
 }
 
@@ -281,7 +266,7 @@ static Class sJSONSerialization;
                                                     error: NULL];
     if (!data)
         return nil;
-    return [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
+    return [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
 }
 
 + (NSString*) prettyStringWithJSONObject: (id)obj {
@@ -295,7 +280,7 @@ static Class sJSONSerialization;
                                                     error: NULL];
     if (!data)
         return nil;
-    return [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
+    return [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
 }
 
 
@@ -339,9 +324,8 @@ static NSDateFormatter* getISO8601Formatter() {
         sFormatter = [[NSDateFormatter alloc] init];
         sFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
         sFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-        sFormatter.calendar = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]
-                                    autorelease];
-        sFormatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
+        sFormatter.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        sFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     }
     return sFormatter;
 }

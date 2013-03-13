@@ -48,7 +48,6 @@ typedef void (^OnCompleteBlock)();
 
     NSMutableArray* _onCompletes;
     
-    id _loadedBytesObj;
     SEL _loadedBytesSel;
 }
 

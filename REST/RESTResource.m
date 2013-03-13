@@ -19,19 +19,18 @@
 #import "RESTCache.h"
 #import "RESTBase64.h"
 
-
 @implementation RESTResource
 
 
 @synthesize parent=_parent, relativePath=_relativePath, delegate=_delegate,
-            cachedURL=_cachedURL;
+cachedURL=_cachedURL;
 
 
 - (id) initWithURL: (NSURL*)url {
     NSParameterAssert(url);
     self = [super init];
     if (self) {
-        _url = [url retain];
+        _url = url;
     }
     return self;
 }
@@ -40,7 +39,7 @@
     NSParameterAssert(parent);
     self = [super init];
     if (self) {
-        _parent = [parent retain];
+        _parent = parent;
     }
     return self;
 }
@@ -57,16 +56,6 @@
 - (void) dealloc
 {
     [_owningCache resourceBeingDealloced: self];
-    [_activeOperations release];
-    [_credential release];
-    [_protectionSpace release];
-    [_eTag release];
-    [_lastModified release];
-    [_url release];
-    [_cachedURL release];
-    [_relativePath release];
-    [_parent release];
-    [super dealloc];
 }
 
 
@@ -99,8 +88,7 @@
 - (void) setURL: (NSURL*)url {
     NSParameterAssert(url);
     NSAssert(!_parent, @"Can only change URL of root");
-    [_url autorelease];
-    _url = [url retain];
+    _url = url;
 }
 
 
@@ -112,8 +100,12 @@
 
 
 - (void) callDelegate: (SEL)selector forResource: (RESTResource*)resource withObject: (id)object {
-    if ([_delegate respondsToSelector: selector])
-        [(id)_delegate performSelector: selector withObject: resource withObject: object];
+    if ([_delegate respondsToSelector: selector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [_delegate performSelector: selector withObject: resource withObject: object];
+#pragma clang diagnostic pop
+    }
     [_parent callDelegate: selector forResource: resource withObject: object];
 }
 
@@ -127,13 +119,13 @@
 {
     NSMutableString* queries = nil;
     BOOL firstQuery;
-
+    
     NSURL* url = self.URL;
     NSAssert1(url, @"Resource has no URL: %@", self);
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL: url];
     request.HTTPMethod = method;
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
-
+    
     for (NSString* key in parameters) {
         NSString* value = [[parameters objectForKey: key] description];
         if ([key hasPrefix: @"?"]) {
@@ -153,18 +145,18 @@
                                                                           (CFStringRef)value,
                                                                           NULL, (CFStringRef)@"&",
                                                                           kCFStringEncodingUTF8);
-            [queries appendString: (id)escaped];
+            [queries appendString: (__bridge id)escaped];
             CFRelease(escaped);
         } else {
             [request setValue: value forHTTPHeaderField: key];
         }
     }
-
+    
     if (queries) {
         NSString* urlStr = [url.absoluteString stringByAppendingString: queries];
         request.URL = [NSURL URLWithString: urlStr];
     }
-
+    
     // if the URL contains basic-auth credentials, use them without waiting for 401 challenge
     NSString* username = [request.URL user];
     NSString* password = [request.URL password];
@@ -173,20 +165,20 @@
         creds = [RESTBase64 encode: [creds dataUsingEncoding:NSUTF8StringEncoding]];
         [request addValue:[NSString stringWithFormat:@"Basic %@", creds] forHTTPHeaderField:@"Authorization"];
     }
-
+    
     return request;
 }
 
 
 - (RESTOperation*) sendRequest: (NSMutableURLRequest*)request {
     [self callDelegate: @selector(resource:willSendRequest:) forResource: self withObject: request];
-    return [[[RESTOperation alloc] initWithResource: self request: request] autorelease];
+    return [[RESTOperation alloc] initWithResource: self request: request];
 }
 
 
 - (RESTOperation*) sendHTTP: (NSString*)method parameters: (NSDictionary*)parameters {
     NSMutableURLRequest* request = [self requestWithMethod: method parameters: parameters];
-
+    
     // Conditional GET?
     if ([method isEqualToString: @"GET"] && [_cachedURL isEqual: request.URL]) {
         if (_eTag)
@@ -194,7 +186,7 @@
         if (_lastModified)
             [request setValue: _lastModified forHTTPHeaderField: @"If-Modified-Since"];
     }
-
+    
     return [self sendRequest: request];
 }
 
@@ -205,7 +197,7 @@
 
 
 - (RESTOperation*) POST: (NSData*)body
-            parameters: (NSDictionary*)parameters
+             parameters: (NSDictionary*)parameters
 {
     NSMutableURLRequest* request = [self requestWithMethod: @"POST" parameters: parameters];
     if (body)
@@ -221,21 +213,21 @@
         if (locationURL) {
             [self assignedRelativePath: [locationURL lastPathComponent]];
             if (![self.URL isEqual: locationURL])
-                _url = [locationURL retain];
+                _url = locationURL;
         }
     }
 }
 
 
 - (RESTOperation*) PUT: (NSData*)body
-           parameters: (NSDictionary*)parameters
+            parameters: (NSDictionary*)parameters
 {
     if (_relativePath) {
         NSMutableURLRequest* request = [self requestWithMethod: @"PUT" parameters: parameters];
         if (body)
             [request setHTTPBody:body];
         return [self sendRequest: request];
-
+        
     } else {
         // If I have no URL yet, do a POST to my parent:
         RESTOperation* op = [self.parent POST: body parameters: parameters];
@@ -254,9 +246,9 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
     if ([parameters objectForKey: @"Content-Type"])
         return parameters;
     NSMutableDictionary* moreParams = parameters ? [parameters mutableCopy]
-                                                 : [[NSMutableDictionary alloc] init];
+    : [[NSMutableDictionary alloc] init];
     [moreParams setObject: @"application/json" forKey: @"Content-Type"];
-    return [moreParams autorelease];
+    return moreParams;
 }
 
 
@@ -317,7 +309,6 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
     if (tracks && !_activeOperations)
         _activeOperations = [[NSMutableSet alloc] init];
     else if (!tracks && _activeOperations) {
-        [_activeOperations release];
         _activeOperations = nil;
     }
 }
@@ -336,7 +327,7 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 - (NSError*) operation: (RESTOperation*)op willCompleteWithError: (NSError*)error {
     NSHTTPURLResponse* response = op.response;
     if (response)
-        [self callDelegate: @selector(resource:didReceiveResponse:) 
+        [self callDelegate: @selector(resource:didReceiveResponse:)
                forResource: self withObject: response];
     
     if (op.isGET) {
@@ -344,7 +335,7 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
             error = nil;            // 304 Not Modified is not an error
         }
     }
-
+    
     return error;
 }
 
@@ -360,8 +351,7 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 
 
 - (void) setCredential:(NSURLCredential *)credential {
-    [_credential autorelease];
-    _credential = [credential retain];
+    _credential = credential;
 }
 
 
@@ -370,8 +360,7 @@ static NSDictionary* addJSONType(NSDictionary* parameters) {
 }
 
 - (void) setProtectionSpace: (NSURLProtectionSpace*)protectionSpace {
-    [_protectionSpace autorelease];
-    _protectionSpace = [protectionSpace retain];
+    _protectionSpace = protectionSpace;
 }
 
 - (NSURLProtectionSpace*) protectionSpaceForOperation: (RESTOperation*)op {

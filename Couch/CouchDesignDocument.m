@@ -28,22 +28,10 @@ NSString* const kCouchLanguageErlang = @"erlang";
 
 @implementation CouchDesignDocument
 
-
-- (void)dealloc {
-    [_validation release];
-    [_language release];
-    [_views release];
-    [_filters release];
-    [_viewsRevisionID release];
-    [_viewOptions release];
-    [super dealloc];
-}
-
-
 - (CouchQuery*) queryViewNamed: (NSString*)viewName {
     [[self saveChanges] wait];
     NSString* path = [@"_view/" stringByAppendingString: viewName];
-    return [[[CouchQuery alloc] initWithParent: self relativePath: path] autorelease];
+    return [[CouchQuery alloc] initWithParent: self relativePath: path];
 }
 
 
@@ -68,7 +56,6 @@ NSString* const kCouchLanguageErlang = @"erlang";
 - (void) setLanguage:(NSString *)language {
     NSParameterAssert(language != nil);
     if (![language isEqualToString: self.language]) {
-        [_language autorelease];
         _language = [language copy];
         _changed = YES;
     }
@@ -88,11 +75,8 @@ static NSMutableDictionary* mutableCopyProperty(NSDictionary* properties,
 - (NSDictionary*) views {
     if (_views && !$equal(_viewsRevisionID, self.currentRevisionID)) {
         // cache is invalid now:
-        [_views release];
         _views = nil;
-        [_filters release];
         _filters = nil;
-        [_viewsRevisionID release];
         _viewsRevisionID = nil;
     }
     if (!_views) {
@@ -139,7 +123,7 @@ static NSMutableDictionary* mutableCopyProperty(NSDictionary* properties,
 {
     NSMutableDictionary* view = nil;
     if (mapFunction) {
-        view = [[[self definitionOfViewNamed: viewName] mutableCopy] autorelease];
+        view = [[self definitionOfViewNamed: viewName] mutableCopy];
         if (!view)
             view = [NSMutableDictionary dictionaryWithCapacity: 3];
         [view setValue: mapFunction forKey: @"map"];
@@ -180,7 +164,6 @@ static NSMutableDictionary* mutableCopyProperty(NSDictionary* properties,
 
 - (void) setValidation:(NSString *)validation {
     if (!$equal(validation, self.validation)) {
-        [_validation autorelease];
         _validation = [validation copy];
         _changedValidation = YES;
         _changed = YES;
@@ -221,7 +204,7 @@ static NSMutableDictionary* mutableCopyProperty(NSDictionary* properties,
     if (!_changed)
         return nil;
     
-    NSMutableDictionary* newProps = [[self.properties mutableCopy] autorelease];
+    NSMutableDictionary* newProps = [self.properties mutableCopy];
     if (!newProps)
         newProps = [NSMutableDictionary dictionary];
     if (_views)
@@ -243,7 +226,6 @@ static NSMutableDictionary* mutableCopyProperty(NSDictionary* properties,
         _savingOp = nil;
         _changedValidation = NO;
         _changedViewOptions = NO;
-        [_language release];
         _language = nil;
         self.changed = NO;
     }];

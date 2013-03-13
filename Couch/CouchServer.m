@@ -43,18 +43,7 @@ int gCouchLogLevel = 0;
     return [self initWithURL:[NSURL URLWithString: kLocalServerURL]];
 }
 
-
-- (void)dealloc {
-    [_activeTasks release];
-    [_activityRsrc release];
-    [_replicationsQuery release];
-    [_dbCache release];
-    [super dealloc];
-}
-
-
 - (void) close {
-    [_replicationsQuery release];
     _replicationsQuery = nil;
     for (CouchDatabase* db in _dbCache.allCachedResources)
         [db unretainDocumentCache];
@@ -98,14 +87,14 @@ int gCouchLogLevel = 0;
             CFUUIDRef uuid = CFUUIDCreate(NULL);
             CFStringRef cfStr = CFUUIDCreateString(NULL, uuid);
             CFRelease(uuid);
-            return [(id)cfStr autorelease];
+            return (__bridge id)cfStr;
         }
         if (!_newDocumentIDs)
             _newDocumentIDs = [[NSMutableArray alloc] init];
         [_newDocumentIDs addObjectsFromArray: newIDs];
     }
     
-    NSString* result = [[[_newDocumentIDs objectAtIndex: 0] retain] autorelease];
+    NSString* result = [_newDocumentIDs objectAtIndex: 0];
     [_newDocumentIDs removeObjectAtIndex: 0];
     return result;
 }
@@ -134,7 +123,6 @@ int gCouchLogLevel = 0;
         if (!_dbCache)
             _dbCache = [[RESTCache alloc] initWithRetainLimit: 0];
         [_dbCache addResource: db];
-        [db release];
     }
     return db;
 }
@@ -158,7 +146,7 @@ int gCouchLogLevel = 0;
     if (!_replicationsQuery) {
         CouchDatabase* replicatorDB = [self replicatorDatabase];
         replicatorDB.tracksChanges = YES;
-        _replicationsQuery = [[[replicatorDB getAllDocuments] asLiveQuery] retain];
+        _replicationsQuery = [[replicatorDB getAllDocuments] asLiveQuery];
         [_replicationsQuery wait];
     }
     return _replicationsQuery;
@@ -239,13 +227,12 @@ int gCouchLogLevel = 0;
 - (void) setActivityPollInterval: (NSTimeInterval)interval {
     if (interval != self.activityPollInterval) {
         [_activityPollTimer invalidate];
-        [_activityPollTimer release];
         if (interval > 0) {
-            _activityPollTimer = [[NSTimer scheduledTimerWithTimeInterval: interval
+            _activityPollTimer = [NSTimer scheduledTimerWithTimeInterval: interval
                                                                    target: self 
                                                                  selector: @selector(checkActiveTasks)
                                                                  userInfo: NULL
-                                                                  repeats: YES] retain];
+                                                                  repeats: YES];
             [self checkActiveTasks];
         } else {
             _activityPollTimer = nil;
@@ -267,7 +254,7 @@ int gCouchLogLevel = 0;
     // and won't find out that the task is gone. By changing .activeTasks now to account for the
     // new task, we know it'll change again if the task is gone on the next poll, so the observer
     // will find out.
-    NSMutableArray* tasks = _activeTasks ? [[_activeTasks mutableCopy] autorelease]
+    NSMutableArray* tasks = _activeTasks ? [_activeTasks mutableCopy]
                                          : [NSMutableArray array];
     [tasks addObject: activeTask];
     self.activeTasks = tasks;

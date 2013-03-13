@@ -24,7 +24,7 @@
     request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
     request.timeoutInterval = 6.02e23;
     
-    _connection = [[NSURLConnection connectionWithRequest: request delegate: self] retain];
+    _connection = [NSURLConnection connectionWithRequest: request delegate: self];
     [_connection start];
     COUCHLOG(@"%@: Started... <%@>", self, request.URL);
     return YES;
@@ -32,9 +32,7 @@
 
 
 - (void) clearConnection {
-    [_connection autorelease];
     _connection = nil;
-    [_inputBuffer release];
     _inputBuffer = nil;
     _status = 0;
 }
@@ -90,14 +88,13 @@
                 break;  // Wait till we have a complete line
             ptrdiff_t lineLength = eol - start;
             
-            NSData* chunk = [[[NSData alloc] initWithBytes: start
-                                                    length: lineLength] autorelease];
+            NSData* chunk = [[NSData alloc] initWithBytes: start
+                                                    length: lineLength];
             
             [_inputBuffer replaceBytesInRange: NSMakeRange(0, lineLength + 1)
                                     withBytes: NULL length: 0];
             // Finally! Send the line to the database to parse:
-            NSString* line = [[[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding]
-                              autorelease];
+            NSString* line = [[NSString alloc] initWithData: chunk encoding:NSUTF8StringEncoding];
             if (!line) {
                 Warn(@"Couldn't parse UTF-8 from _changes");
                 return;
@@ -120,10 +117,9 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     if (_mode != kContinuous) {
         int status = _status;
-        NSData* input = [_inputBuffer retain];
+        NSData* input = _inputBuffer;
         COUCHLOG3(@"%@: Got entire body, %u bytes", self, (unsigned)input.length);
         BOOL responseOK = [self receivedPollResponse: input];
-        [input release];
         
         [self clearConnection];
         if (_mode == kLongPoll && status == 200 && responseOK)

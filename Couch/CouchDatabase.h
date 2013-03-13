@@ -174,7 +174,7 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 @property (readonly) NSArray* replications;
 
 /** Options for changes stream */
-@property (retain) NSDictionary* changesOptions;
+@property (nonatomic, retain) NSDictionary* changesOptions;
 
 @end
 

@@ -36,7 +36,6 @@
     NSParameterAssert(properties);
     NSString* revisionID = $castIf(NSString, [properties objectForKey: @"_rev"]);
     if (!revisionID) {
-        [self release];
         return nil;
     }
     
@@ -60,7 +59,6 @@
         } else {
             if (operation.httpStatus != 404)
                 Warn(@"CouchRevision initWithOperation failed: %@ on %@", operation.error, operation);
-            [self release];
             return nil;
         }
     }
@@ -77,13 +75,6 @@
     NSAssert(NO, @"Wrong initializer for CouchRevision");
     return nil;
 }
-
-
-- (void)dealloc {
-    [_properties release];
-    [super dealloc];
-}
-
 
 - (NSURL*) URL {
     if (!self.relativePath)
@@ -139,7 +130,6 @@
     if (properties != _properties) {
         NSAssert([[properties objectForKey: @"_id"] isEqual: self.documentID],
                  @"properties have wrong ID %@ for %@", [properties objectForKey: @"_id"], self);
-        [_properties release];
         _properties = [properties copy];
         _isDeleted = [$castIf(NSNumber, [properties objectForKey: @"_deleted"]) boolValue];
     }
@@ -172,7 +162,7 @@
 
 - (RESTOperation*) putProperties: (NSDictionary*)properties {
     NSParameterAssert(properties != nil);
-    NSMutableDictionary* contents = [[properties mutableCopy] autorelease];
+    NSMutableDictionary* contents = [properties mutableCopy];
     [contents setObject: self.documentID forKey: @"_id"];
     [contents setObject: self.revisionID forKey: @"_rev"];
     
@@ -186,7 +176,6 @@
                 CouchRevision* savedRev = [[CouchRevision alloc] initWithDocument: self.document
                                                                        properties: contents];
                 op.resultObject = savedRev;
-                [savedRev release];
             }
         }
     }];
@@ -249,15 +238,14 @@
     NSDictionary* metadata = [self attachmentMetadataFor: name];
     if (!metadata)
         return nil;
-    return [[[CouchAttachment alloc] initWithParent: self name: name metadata: metadata] autorelease];
+    return [[CouchAttachment alloc] initWithParent: self name: name metadata: metadata];
 }
 
 
 - (CouchAttachment*) createAttachmentWithName: (NSString*)name type: (NSString*)contentType {
     NSDictionary* metadata = [NSDictionary dictionaryWithObject: contentType
                                                          forKey: @"content_type"];
-    return [[[CouchAttachment alloc] initWithParent: self name: name metadata: metadata]
-                autorelease];
+    return [[CouchAttachment alloc] initWithParent: self name: name metadata: metadata];
 }
 
 

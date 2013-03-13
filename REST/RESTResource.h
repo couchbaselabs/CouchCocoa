@@ -28,7 +28,6 @@
     RESTResource* _parent;
     NSString* _relativePath;
     RESTCache* _owningCache;
-    id<RESTResourceDelegate> _delegate;
     NSMutableSet* _activeOperations;
 
     NSString* _eTag;

@@ -35,7 +35,6 @@
     self = [super init];
     if (self) {
         if ([self class] == [CouchChangeTracker class]) {
-            [self release];
             if (mode == kContinuous && [databaseURL.scheme.lowercaseString hasPrefix: @"http"]) {
                 return (id) [[CouchSocketChangeTracker alloc] initWithDatabaseURL: databaseURL
                                                                              mode: mode
@@ -51,7 +50,7 @@
             }
         }
         
-        _databaseURL = [databaseURL retain];
+        _databaseURL = databaseURL;
         _client = client;
         _mode = mode;
         _lastSequenceNumber = lastSequence;
@@ -94,8 +93,6 @@
 
 - (void)dealloc {
     [self stop];
-    [_databaseURL release];
-    [super dealloc];
 }
 
 - (NSURLCredential*) authCredential {

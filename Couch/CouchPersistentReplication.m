@@ -42,7 +42,7 @@
     rep.autosaves = YES;
     rep.source = source;
     rep.target = target;
-    return [rep autorelease];
+    return rep;
 }
 
 
@@ -56,8 +56,6 @@
 
 - (void)dealloc {
     self.state = kReplicationIdle;  // turns off observing
-    [_statusString release];
-    [super dealloc];
 }
 
 
@@ -255,7 +253,6 @@ static inline BOOL isLocalDBName(NSString* url) {
 
 - (void) setStatusString: (NSString*)status {
     COUCHLOG(@"%@ = %@", self, status);
-    [_statusString autorelease];
     _statusString = [status copy];
     CouchReplicationMode mode = _mode;
     int completed = _completed, total = _total;

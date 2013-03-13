@@ -65,12 +65,11 @@ NSArray* RESTCastIfArrayOf(Class itemClass, id object)
 - (NSArray*) rest_map: (id (^)(id obj))block {
     NSMutableArray* mapped = [[NSMutableArray alloc] initWithCapacity: self.count];
     for (id obj in self) {
-        obj = block(obj);
-        if (obj)
-            [mapped addObject: obj];
+        id blockObj = block(obj);
+        if (blockObj)
+            [mapped addObject: blockObj];
     }
-    NSArray* result = [[mapped copy] autorelease];
-    [mapped release];
+    NSArray* result = [mapped copy];
     return result;
 }
 

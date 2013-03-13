@@ -30,7 +30,7 @@ NSString* const kCouchDBErrorDomain = @"CouchDB";
 
 
 - (CouchResource*) childWithPath: (NSString*)relativePath {
-    return [[[CouchResource alloc] initWithParent: self relativePath: relativePath] autorelease];
+    return [[CouchResource alloc] initWithParent: self relativePath: relativePath];
 }
 
 

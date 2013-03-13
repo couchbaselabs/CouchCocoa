@@ -22,7 +22,6 @@
 @interface CouchDocument : CouchResource
 {
     @private
-    id _modelObject;
     BOOL _isDeleted;
     NSString* _currentRevisionID;
     CouchRevision* _currentRevision;
