@@ -208,7 +208,7 @@ NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
     Warn(@"%@: Can't connect, giving up: %@", self, error);
 
     NSNotification* n = [NSNotification notificationWithName: kCouchSocketErrorNotification
-                                                      object: self
+                                                      object: nil
                                                     userInfo: @{@"error":error}];
     NSNotificationQueue* queue = [NSNotificationQueue defaultQueue];
     [queue enqueueNotification: n
