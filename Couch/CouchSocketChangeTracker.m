@@ -104,9 +104,11 @@ NSString* const kCouchSocketErrorNotification = @"CouchSocketError";
 
 - (void) stop {
     COUCHLOG2(@"%@: stop", self);
+    [_trackingInput removeFromRunLoop: [NSRunLoop currentRunLoop] forMode: NSRunLoopCommonModes];
     [_trackingInput close];
     _trackingInput = nil;
-    
+
+    [_trackingOutput removeFromRunLoop: [NSRunLoop currentRunLoop] forMode: NSRunLoopCommonModes];
     [_trackingOutput close];
     _trackingOutput = nil;
     
