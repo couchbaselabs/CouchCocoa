@@ -85,6 +85,7 @@ typedef void (^OnDatabaseChangeBlock)(CouchDocument*, BOOL externalChange);
 
 
 @interface CouchServer ()
+@property (readonly) CouchDatabase* replicatorDatabase;
 @property (readonly) BOOL isEmbeddedServer;
 - (CouchPersistentReplication*) replicationWithSource: (NSString*)source
                                                target: (NSString*)target;

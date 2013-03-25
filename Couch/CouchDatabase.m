@@ -376,6 +376,20 @@ static const NSUInteger kDocRetainLimit = 50;
     return [self.server replicationWithSource: self.relativePath target: targetURL.absoluteString];
 }
 
+- (CouchPersistentReplication*) createPersistentPullFromDatabaseAtURL: (NSURL*)sourceURL {
+
+    return [CouchPersistentReplication createWithReplicatorDatabase: self.server.replicatorDatabase
+                                                             source: sourceURL.absoluteString
+                                                             target: self.relativePath];
+}
+
+- (CouchPersistentReplication*) createPersistentPushToDatabaseAtURL: (NSURL*)targetURL {
+
+    return [CouchPersistentReplication createWithReplicatorDatabase: self.server.replicatorDatabase
+                                                             source: self.relativePath
+                                                             target: targetURL.absoluteString];
+}
+
 
 - (NSArray*) replicateWithURL: (NSURL*)targetURL exclusively: (BOOL)exclusively {
     NSMutableArray* repls = nil;

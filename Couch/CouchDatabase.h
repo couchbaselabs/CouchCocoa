@@ -146,15 +146,27 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
 
 #pragma mark REPLICATION & SYNCHRONIZATION:
 
-/** Triggers replication from a source database, to this database.
+/** Triggers a non-persistent replication from a source database, to this database.
     @param sourceURL  The URL of the database to replicate from.
     @return  The CouchReplication object managing the replication. You have a chance to customize its properties (like .continuous and .filter) before it starts. */
 - (CouchReplication*) pullFromDatabaseAtURL: (NSURL*)sourceURL;
 
-/** Triggers replication from this database to a target database.
+/** Triggers a non-persistent replication from this database to a target database.
     @param targetURL  The URL of the database to replicate to.
     @return  The CouchReplication object managing the replication. You have a chance to customize its properties (like .continuous and .filter) before it starts.*/
 - (CouchReplication*) pushToDatabaseAtURL: (NSURL*)targetURL;
+
+/** Creates a new persistent replication from a source database, to this database.
+    Be careful with this -- since persistent replications are recreated on launch, if you call this method every time the app launches you will create more and more redundant replications! It's often more appropriate to call -replicationFromDatabaseAtURL: unless you know for sure that you need multiple replications.
+    @param sourceURL  The URL of the database to replicate from.
+    @return  The CouchPersistentReplication object managing the replication. You have a chance to customize its properties (like .continuous and .filter) before it starts. */
+- (CouchPersistentReplication*) createPersistentPullFromDatabaseAtURL: (NSURL*)sourceURL;
+
+/** Creates a new persistent replication from this database, to a target database.
+    Be careful with this -- since persistent replications are recreated on launch, if you call this method every time the app launches you will create more and more redundant replications! It's often more appropriate to call -replicationToDatabaseAtURL: unless you know for sure that you need multiple replications.
+    @param targetURL  The URL of the database to replicate to.
+    @return  The CouchPersistentReplication object managing the replication. You have a chance to customize its properties (like .continuous and .filter) before it starts. */
+- (CouchPersistentReplication*) createPersistentPushToDatabaseAtURL: (NSURL*)targetURL;
 
 /** Configures this database to replicate bidirectionally (sync to and from) a database at the given URL.
     @param otherURL  The URL of the other database, or nil to indicate no replication.
@@ -162,12 +174,12 @@ typedef NSString* (^CouchDocumentPathMap)(NSString* documentID);
     @return  A two-element NSArray whose values are the CouchPersistentReplications from and to the other URL, respectively. Returns nil if no target URL was given, or on failure. */
 - (NSArray*) replicateWithURL: (NSURL*)otherURL exclusively: (BOOL)exclusively;
 
-/** Creates a persistent replication from a database (a pull).
+/** Creates or returns a persistent replication from a database (a pull).
     Returns an object representing this replication. If a replication from this URL already exists, the configuration is unchanged. */
 - (CouchPersistentReplication*) replicationFromDatabaseAtURL: (NSURL*)sourceURL;
 
-/** Creates a persistent replication to a database (a push).
-    Returns an object representing this replication. If a replication from this URL already exists, the configuration is unchanged. */
+/** Creates or returns a persistent replication to a database (a push).
+    Returns an object representing this replication. If a replication to this URL already exists, the configuration is unchanged. */
 - (CouchPersistentReplication*) replicationToDatabaseAtURL: (NSURL*)targetURL;
 
 /** All currently configured persistent replications involving this database, as CouchPersistentReplication objects. */
