@@ -68,6 +68,13 @@
     With CouchDB, deleted revisions are NOT included, so this method acts identically to -getConflictingRevisions. */
 - (NSArray*) getLeafRevisions;
 
+/** Compares the cached current revision against the server by sending a conditional GET. This is useful if you're connected to a remote database (not TouchDB) and don't have .tracksChanges turned on.
+    There are a couple of possibilities:
+    1. The CouchDocument doesn't currently have a cached currentRevision. It will do nothing (not even contact the server).
+    2. The currentRevision is found to be still current.
+    3. The currentRevision is out of date. Updates the currentRevision from the server response. */
+- (void) refresh;
+
 #pragma mark PROPERTIES:
 
 /** The contents of the current revision of the document.

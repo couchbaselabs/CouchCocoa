@@ -130,6 +130,15 @@
 }
 
 
+- (void) test021_RefreshDocument {
+    CouchDocument* doc = [self createDocumentWithProperties: @{@"foo": @1}];
+    STAssertTrue(doc.currentRevisionID != nil, @"no cur revision ID after creating");
+    STAssertTrue(doc.currentRevision != nil, @"no cur revision after creating");
+    [doc refresh];
+    STAssertTrue(doc.currentRevisionID != nil, @"no cur revision ID after refresh");
+}
+
+
 - (void) test03_SaveMultipleDocuments {
     NSMutableArray* docs = [NSMutableArray array];
     for (int i=0; i<5; i++) {
