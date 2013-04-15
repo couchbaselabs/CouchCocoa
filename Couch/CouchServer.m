@@ -44,6 +44,11 @@ int gCouchLogLevel = 0;
 }
 
 
+- (id) copyWithZone: (NSZone*)zone {
+    return [[[self class] alloc] initWithURL: self.URL];
+}
+
+
 - (void)dealloc {
     [_activeTasks release];
     [_activityRsrc release];

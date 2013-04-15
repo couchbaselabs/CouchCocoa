@@ -40,44 +40,27 @@
 
 + (CouchTouchDBServer*) sharedInstance {
     static CouchTouchDBServer* sInstance;
+    static NSThread* sThread;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sInstance = [[self alloc] init];
+        sThread = [NSThread currentThread];
     });
+    NSAssert([NSThread currentThread] == sThread,
+             @"Don't use CouchTouchDBServer sharedInstance on multiple threads");
     return sInstance;
 }
 
 
 - (id)init {
-    // Avoid link-time dependency on TouchDB; look up classes dynamically:
-    Class classTDURLProtocol = NSClassFromString(@"TDURLProtocol");
-    Class classTDServer = NSClassFromString(@"TD_Server");
-    NSAssert(classTDURLProtocol && classTDServer,
-             @"Not linked with TouchDB framework (or you didn't use the -ObjC linker flag)");
-        
-    self = [super initWithURL: [classTDURLProtocol rootURL]];
-    if (self) {
-        NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
-                                                             NSUserDomainMask, YES);
-        NSString* path = [paths objectAtIndex:0];
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+                                                         NSUserDomainMask, YES);
+    NSString* path = [paths objectAtIndex:0];
 #if !TARGET_OS_IPHONE
-        path = [path stringByAppendingPathComponent: [[NSBundle mainBundle] bundleIdentifier]];
+    path = [path stringByAppendingPathComponent: [[NSBundle mainBundle] bundleIdentifier]];
 #endif
-        path = [path stringByAppendingPathComponent: @"TouchDB"];
-        COUCHLOG(@"Creating CouchTouchDBServer at %@", path);
-        NSError* error = nil;
-        if ([[NSFileManager defaultManager] createDirectoryAtPath: path
-                                      withIntermediateDirectories: YES
-                                                       attributes: nil error: &error]) {
-            _touchServer = [[classTDServer alloc] initWithDirectory: path
-                                                              error: &error];
-        }
-        if (_touchServer)
-            [classTDURLProtocol setServer: _touchServer];
-        else
-            _error = [error retain];
-    }
-    return self;
+    path = [path stringByAppendingPathComponent: @"TouchDB"];
+    return [self initWithServerPath: path options: NULL];
 }
 
 
@@ -91,6 +74,7 @@
     NSAssert(classTDURLProtocol && classTDServer,
              @"Not linked with TouchDB framework (or you didn't use the -ObjC linker flag)");
     
+    COUCHLOG(@"Creating CouchTouchDBServer at %@", serverPath);
     NSError* error;
     TD_Server* server;
     if ([classTDServer instancesRespondToSelector: @selector(initWithDirectory:options:error:)]) {
@@ -126,6 +110,14 @@
         return [super initWithURL: url];
     else
         return [self init];
+}
+
+
+- (id) copyWithZone: (NSZone*)zone {
+    CouchTouchDBServer* copied = [[[self class] alloc] initWithURL: self.URL];
+    if (copied)
+        copied->_touchServer = _touchServer;
+    return copied;
 }
 
 

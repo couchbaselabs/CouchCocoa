@@ -18,7 +18,7 @@
 
 
 /** The top level of a CouchDB server. Contains CouchDatabases. */
-@interface CouchServer : CouchResource
+@interface CouchServer : CouchResource <NSCopying>
 {
     @private
     RESTCache* _dbCache;
