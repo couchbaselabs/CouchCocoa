@@ -5,7 +5,7 @@ CouchCocoa is a medium-level Objective-C API for working with [TouchDB][10] and 
 * It doesn't require knowledge of the HTTP API, only of CouchDB's architecture. You won't have to remember special paths or URL query parameters.
 * But it doesn't completely abstract away the fact that you're working with a database, the way CoreData does. You still work with CouchDB-style documents and queries, although there is a CouchModel class that does some of the dirty work of mapping between documents and native objects.
 
-This API is not the only way to access CouchDB or TouchDB -- if you prefer, you can go down to the metal and talk to the HTTP API yourself using NSURLConnection.
+This API is not the only way to access CouchDB or TouchDB; just the most convenient one. If you prefer, you can go down to the metal and talk to the HTTP API yourself using NSURLConnection.
 
 ### Kick The Tires!
 
@@ -18,6 +18,10 @@ This API is not the only way to access CouchDB or TouchDB -- if you prefer, you 
 * You might also want to look at the [issue tracker][5] to see known problems and feature requests.
 
 ## Build Instructions
+
+### Binary Builds
+
+Pre-built libraries are available. The latest build is always at [this address](http://files.couchbase.com/developer-previews/mobile/ios/couchcocoa/CouchCocoa.zip). If you need them, [earlier versions](http://files.couchbase.com/developer-previews/mobile/ios/couchcocoa/) are available too.
 
 ### Prerequisite
 
@@ -81,8 +85,6 @@ The framework will be located at:
 4. Drag the copied framework into the project window's file list.
 5. Add the framework to your target (if you weren't already prompted to in the previous step.)
 
-You'll probably want to run a local database server on your iOS device, since it'll allow your app to work offline (and improves performance.) CouchCocoa.framework doesn't contain CouchDB itself, so you should also add the [Couchbase Mobile][9] framework to your app. Using the two together is very simple: when the CouchbaseMobile object calls your delegate method to tell you the server's up and running, just use the URL it gives you to instantiate a CouchServer object.
-
 ## License
 
 Released under the [Apache license, version 2.0][6].
@@ -103,7 +105,6 @@ Copyright 2012, Couchbase, Inc.
 [6]: http://www.apache.org/licenses/LICENSE-2.0.html
 [7]: https://github.com/couchbaselabs/CouchCocoa/wiki/Example-Snippets
 [8]: http://couchbaselabs.github.com/CouchCocoa/docs/
-[9]: http://www.couchbase.org/get/couchbase-mobile-for-ios/current
 [10]: https://github.com/couchbaselabs/TouchDB-iOS
 [11]: http://mxcl.github.com/homebrew/
 [12]: https://github.com/couchbaselabs/iOS-Couchbase-Demo
