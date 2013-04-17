@@ -60,6 +60,11 @@
     path = [path stringByAppendingPathComponent: [[NSBundle mainBundle] bundleIdentifier]];
 #endif
     path = [path stringByAppendingPathComponent: @"TouchDB"];
+
+    [[NSFileManager defaultManager] createDirectoryAtPath: path
+                              withIntermediateDirectories: YES
+                                               attributes: nil error: NULL];
+
     return [self initWithServerPath: path options: NULL];
 }
 
