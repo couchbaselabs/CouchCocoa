@@ -372,7 +372,7 @@
 
 - (NSData*) getDataProperty: (NSString*)property {
     NSData* value = [_properties objectForKey: property];
-    if (!value) {
+    if (!value && !self.isNew && ![_changedNames containsObject: property]) {
         id rawValue = [_document propertyForKey: property];
         if ([rawValue isKindOfClass: [NSString class]])
             value = [RESTBody dataWithBase64: rawValue];
@@ -386,7 +386,7 @@
 
 - (NSDate*) getDateProperty: (NSString*)property {
     NSDate* value = [_properties objectForKey: property];
-    if (!value) {
+    if (!value && !self.isNew && ![_changedNames containsObject: property]) {
         id rawValue = [_document propertyForKey: property];
         if ([rawValue isKindOfClass: [NSString class]])
             value = [RESTBody dateWithJSONObject: rawValue];
