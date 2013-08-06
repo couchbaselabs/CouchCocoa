@@ -22,7 +22,7 @@ void RESTWarn(NSString* format, ...) __attribute__((format(__NSString__, 1, 2)))
 #define Warn RESTWarn
 
 extern BOOL gRESTWarnRaisesException;
-
+NSString *EscapeRelativePath(NSString *path);
 
 // Safe dynamic cast that returns nil if the object is not the expected class:
 #define $castIf(CLASSNAME,OBJ)      ((CLASSNAME*)(RESTCastIf([CLASSNAME class],(OBJ))))

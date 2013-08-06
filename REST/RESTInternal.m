@@ -59,6 +59,18 @@ NSArray* RESTCastIfArrayOf(Class itemClass, id object)
     return array;
 }
 
+NSString *EscapeRelativePath(NSString *path) {
+    /*
+     Escapes reserved URI characters.
+     RFC 3986 section 2.2 http://www.ietf.org/rfc/rfc3986.txt
+     */
+    CFStringRef escapedPath = CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                      (CFStringRef)path,
+                                                                      NULL,
+                                                                      (CFStringRef)@":/?#[]@!$&'()*+,;=",
+                                                                      kCFStringEncodingUTF8);
+    return [(NSString *)escapedPath autorelease];
+}
 
 @implementation NSArray (RESTExtensions)
 

@@ -180,6 +180,31 @@
 }
 
 
+#pragma mark - Overrides
+
+- (NSURL *)URL {
+    NSArray *relativePathComponents = [self.relativePath pathComponents];
+    NSString *prefix = relativePathComponents[0];
+    
+    // Init buffer with prefix and unescaped '/'
+    NSMutableString *escapedCompsBuffer;
+    escapedCompsBuffer = [[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"%@/", prefix]];
+    
+    // Go over rest of components, accumulating after escaping them
+    for (int i = 1; i<[relativePathComponents count]; i++) {
+        NSString *comp = relativePathComponents[i];
+        comp = EscapeRelativePath(comp);
+        [escapedCompsBuffer appendString:comp];
+    }
+    
+    // Add a forward slash, if it's missing, to the parent URL
+    NSURL *parentURL = [self.parent.URL URLByAppendingPathComponent:@""];
+    NSURL *URL = [NSURL URLWithString:escapedCompsBuffer relativeToURL:parentURL];
+    
+    return URL;
+}
+
+
 @end
 
 
