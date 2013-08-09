@@ -158,7 +158,7 @@
         additionalProperties = @{};
     }
     
-    NSMutableDictionary* properties = [additionalProperties mutableCopy];
+    NSMutableDictionary* properties = [[additionalProperties mutableCopy] autorelease];
     [properties setValue:[NSNumber numberWithBool:TRUE] forKey:@"_deleted"];
     [properties setValue:[self getValueOfProperty:@"_id"] forKey:@"_id"];
     [properties setValue:[self getValueOfProperty:@"_rev"] forKey:@"_rev"];
