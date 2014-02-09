@@ -110,7 +110,7 @@
         [params setObject: [RESTBody stringWithJSONObject: _endKey] forKey: @"?endkey"];
     if (_startKeyDocID)
         [params setObject: _startKeyDocID forKey: @"?startkey_docid"];
-    if (_endKeyDocID)
+    if (_startKeyDocID && _endKeyDocID)
         [params setObject: _startKeyDocID forKey: @"?endkey_docid"];
     if (_stale != kCouchStaleNever)
         [params setObject: kStaleNames[_stale] forKey: @"?stale"];
