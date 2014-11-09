@@ -86,13 +86,16 @@
 }
 
 
-- (NSURL*) URL {
-    if (_url)
+- (NSURL *)URL {
+    if (_url) {
         return _url;
-    else if (_relativePath)
-        return [_parent.URL URLByAppendingPathComponent: _relativePath];
-    else
+    } else if (_relativePath) {
+        // add a forward slash if it's missing
+        NSURL *parentURL = [_parent.URL URLByAppendingPathComponent:@""];
+        return [NSURL URLWithString:EscapeRelativePath(_relativePath) relativeToURL:parentURL];
+    } else {
         return nil;
+    }
 }
 
 
