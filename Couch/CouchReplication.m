@@ -125,6 +125,7 @@
         return nil;
     self.error = nil;
     self.running = YES;
+    _database.tracksChanges = YES;
     RESTOperation* op = [self operationToStart: YES];
     [op onCompletion: ^{
         if (!_running)
