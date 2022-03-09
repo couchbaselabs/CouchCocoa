@@ -1,3 +1,5 @@
+⚠️ This repo is obsolete.  TouchDB is now known as [Couchbase Lite](https://www.couchbase.com/products/lite).
+
 ## CouchCocoa: An Objective-C API To TouchDB and Apache CouchDB™
 
 CouchCocoa is a medium-level Objective-C API for working with [TouchDB][10] and [CouchDB][1] on iOS and Mac OS. By "medium-level" we mean:
