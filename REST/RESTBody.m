@@ -290,8 +290,7 @@ static Class sJSONSerialization;
         return [obj JSONStringWithOptions: JKSerializeOptionPretty error: nil];
 #endif
     NSData* data = [sJSONSerialization dataWithJSONObject: obj                                               
-                                                  options: NSJSONReadingAllowFragments
-                                                            | NSJSONWritingPrettyPrinted
+                                                  options: NSJSONWritingPrettyPrinted
                                                     error: NULL];
     if (!data)
         return nil;
